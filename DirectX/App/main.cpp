@@ -1,7 +1,7 @@
 ﻿#include <Windows.h>
-#include <GameEngineBase\GameEngineFile.h>
-#include <GameEngineBase\GameEngineDirectory.h>
-#include <GameEngineCore\GameEngineCore.h>
+#include <GameEngineBase/GameEngineFile.h>
+#include <GameEngineBase/GameEngineDirectory.h>
+#include <GameEngineCore/GameEngineCore.h>
 
 #pragma comment(lib, "GameEngineBase.lib")
 
