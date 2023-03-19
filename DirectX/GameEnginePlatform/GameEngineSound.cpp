@@ -8,9 +8,9 @@
 // lib를 통해서 dll을 사용한다고 하는건.
 // fmod.dll을 쓰겠다.
 #ifdef _DEBUG
-#pragma comment(lib, "GameEnginePlatform\\ThirdParty\\FMOD\\lib\\x64\\fmodL_vc.lib")
+#pragma comment(lib, "..\\GameEnginePlatform\\ThirdParty\\FMOD\\lib\\x64\\fmodL_vc.lib")
 #else
-#pragma comment(lib, "GameEnginePlatform\\ThirdParty\\FMOD\\lib\\x64\\fmod_vc.lib")
+#pragma comment(lib, "..\\GameEnginePlatform\\ThirdParty\\FMOD\\lib\\x64\\fmod_vc.lib")
 #endif
 
 // FMOD는 자신들의 기능을 이용할수 있게 해주는 클래스의 포인터를 주고
@@ -19,7 +19,7 @@ FMOD::System* SoundSystem = nullptr;
 class SoundSystemCreator
 {
 public:
-	SoundSystemCreator() 
+	SoundSystemCreator()
 	{
 		FMOD::System_Create(&SoundSystem);
 
@@ -32,10 +32,10 @@ public:
 		{
 			MsgAssert("사운드 시스템 이니셜라이즈에 실패했습니다.");
 		}
-		
+
 	}
 
-	~SoundSystemCreator() 
+	~SoundSystemCreator()
 	{
 		SoundSystem->release();
 	}
@@ -54,15 +54,15 @@ void GameEngineSound::SoundUpdate()
 	SoundSystem->update();
 }
 
-GameEngineSound::GameEngineSound() 
+GameEngineSound::GameEngineSound()
 {
 }
 
-GameEngineSound::~GameEngineSound() 
+GameEngineSound::~GameEngineSound()
 {
 }
 
-void GameEngineSound::SoundLoad(const std::string_view& _Path) 
+void GameEngineSound::SoundLoad(const std::string_view& _Path)
 {
 	std::string UTF8Path = GameEngineString::AnsiToUTF8(_Path);
 
