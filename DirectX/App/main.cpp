@@ -2,7 +2,7 @@
 #include <GameEngineBase\GameEngineFile.h>
 #include <GameEngineBase\GameEngineDirectory.h>
 #include <GameEngineCore\GameEngineCore.h>
-#include <GameEngineContents\ContentsCore.h>
+#include <GameEngineContents\FECore.h>
 
 #pragma comment(lib, "GameEngineCore.lib")
 #pragma comment(lib, "GameEngineContents.lib")
@@ -13,8 +13,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	_In_ int       nCmdShow)
 {
 	GameEngineCore::Start(hInstance,
-		ContentsCore::GameStart,
-		ContentsCore::GameEnd
+		FECore::GameStart,
+		FECore::GameEnd
 	);
 }
 

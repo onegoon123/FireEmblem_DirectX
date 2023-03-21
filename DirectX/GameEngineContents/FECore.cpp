@@ -1,26 +1,26 @@
-#include "ContentsCore.h"
+#include "FECore.h"
 #include <GameEngineCore\GameEngineCore.h>
 #include "PlayLevel.h"
 #include "TitleLevel.h"
 
-ContentsCore::ContentsCore()
+FECore::FECore()
 {
 }
 
-ContentsCore::~ContentsCore()
+FECore::~FECore()
 {
 }
 
-void ContentsCore::GameStart()
+void FECore::GameStart()
 {
 	new int();
 
 	GameEngineCore::CreateLevel<TitleLevel>();
 	GameEngineCore::CreateLevel<PlayLevel>();
-	GameEngineCore::ChangeLevel("TitleLevel");
+	GameEngineCore::ChangeLevel("PlayLevel");
 }
 
-void ContentsCore::GameEnd()
+void FECore::GameEnd()
 {
 
 }

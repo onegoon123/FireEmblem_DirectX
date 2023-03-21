@@ -155,12 +155,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ContentsCore.cpp" />
+    <ClCompile Include="BattleActor.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="FECore.cpp" />
     <ClCompile Include="PlayLevel.cpp" />
     <ClCompile Include="TitleLevel.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ContentsCore.h" />
+    <ClInclude Include="BattleActor.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="FECore.h" />
     <ClInclude Include="PlayLevel.h" />
     <ClInclude Include="TitleLevel.h" />
   </ItemGroup>
