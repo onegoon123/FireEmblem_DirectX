@@ -1,8 +1,9 @@
 #pragma once
+#include "GameEngineObject.h"
 #include <GameEngineBase\GameEngineTimeEvent.h>
 
 // Ό³Έν :
-class GameEngineLevel
+class GameEngineLevel : public GameEngineObject
 {
 	friend class GameEngineCore;
 

@@ -8,11 +8,11 @@ GameEngineTimeEvent::~GameEngineTimeEvent()
 {
 }
 
-void GameEngineTimeEvent::AddEvent(float _Time, std::function<void()> _Event, bool _Loop /*= false*/)
+void GameEngineTimeEvent::AddEvent(float _Time, std::function<void(TimeEvent&, GameEngineTimeEvent*)> _Event, bool _Loop /*= false*/)
 {
 	// 기본 생성자가 있으면
 	// 그냥 자기가 내부에서 기본생성자 가지고 만들어주는 것.
-	TimeEvent& NewEvent = Event.emplace_back();
+	TimeEvent& NewEvent = Events.emplace_back();
 	NewEvent.CurTime = _Time;
 	NewEvent.Time = _Time;
 	NewEvent.Loop = _Loop;
@@ -21,17 +21,28 @@ void GameEngineTimeEvent::AddEvent(float _Time, std::function<void()> _Event, bo
 
 void GameEngineTimeEvent::Update(float _DeltaTime)
 {
-	for (size_t i = 0; i < Event.size(); i++)
-	{
-		Event[i].CurTime -= _DeltaTime;
+	// [1][2][4][5][6][7][]
+	std::list<TimeEvent>::iterator StartIter = Events.begin();
+	std::list<TimeEvent>::iterator EndIter = Events.end();
 
-		if (Event[i].CurTime < 0.0f)
+	for (; StartIter != EndIter;)
+	{
+		TimeEvent& CurEvent = *StartIter;
+
+		CurEvent.CurTime -= _DeltaTime;
+
+		if (CurEvent.CurTime < 0.0f)
 		{
-			Event[i].Event();
-			if (true == Event[i].Loop)
+			CurEvent.Event(CurEvent, this);
+			CurEvent.CurTime = CurEvent.Time;
+
+			if (false == CurEvent.Loop)
 			{
-				Event[i].CurTime = Event[i].Time;
+				StartIter = Events.erase(StartIter);
+				continue;
 			}
 		}
+
+		++StartIter;
 	}
 }
