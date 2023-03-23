@@ -49,8 +49,5 @@
     <Filter Include="Object">
       <UniqueIdentifier>{372ee968-b803-420e-badb-2c5f978c795a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Manager">
-      <UniqueIdentifier>{e2f0adac-05b0-449d-ace1-5329b882c09e}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
 </Project>
