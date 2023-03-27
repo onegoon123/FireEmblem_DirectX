@@ -47,11 +47,53 @@ public:
 		return float4(cosf(_Rad), sinf(_Rad), 0.0f, 1.0f);
 	}
 
+	static float4 CrossReturn(const float4& _Left, const float4& _Right)
+	{
+		float4 ReturnValue;
+		ReturnValue.x = (_Left.y * _Right.z) - (_Left.z * _Right.y);
+		ReturnValue.y = (_Left.z * _Right.x) - (_Left.x * _Right.z);
+		ReturnValue.z = (_Left.x * _Right.y) - (_Left.y * _Right.x);
+		return ReturnValue;
+	}
+
 public:
-	float x = 0.0f;
-	float y = 0.0f;
-	float z = 0.0f;
-	float w = 1.0f;
+	union
+	{
+		struct
+		{
+			float x;
+			float y;
+			float z;
+			float w;
+		};
+
+		float Arr1D[4];
+	};
+
+	float4()
+		: x(0.0f), y(0.0f), z(0.0f), w(1.0f)
+	{
+
+	}
+
+	float4(float _x, float _y)
+		: x(_x), y(_y), z(0.0f), w(1.0f)
+	{
+
+	}
+
+	float4(float _x, float _y, float _z)
+		: x(_x), y(_y), z(_z), w(1.0f)
+	{
+
+	}
+
+	float4(float _x, float _y, float _z, float _w)
+		: x(_x), y(_y), z(_z), w(_w)
+	{
+
+	}
+
 	// 마지막이 1인지는 3d 때 배우게 될겁니다.
 
 	int ix() const
@@ -120,22 +162,43 @@ public:
 		return GetAnagleRad() * GameEngineMath::RadToDeg;
 	}
 
-	void RotaitonXDeg(float _Deg)
+	float4 RotationXDegReturn(float _Deg)
 	{
-		RotaitonXRad(_Deg * GameEngineMath::DegToRad);
+		float4 ReturnValue = *this;
+		ReturnValue.RotationXRad(_Deg * GameEngineMath::DegToRad);
+		return ReturnValue;
 	}
 
-	void RotaitonYDeg(float _Deg)
+	float4 RotationYDegReturn(float _Deg)
 	{
-		RotaitonYRad(_Deg * GameEngineMath::DegToRad);
+		float4 ReturnValue = *this;
+		ReturnValue.RotationYRad(_Deg * GameEngineMath::DegToRad);
+		return ReturnValue;
 	}
 
-	void RotaitonZDeg(float _Deg)
+	float4 RotationZDegReturn(float _Deg)
 	{
-		RotaitonZRad(_Deg * GameEngineMath::DegToRad);
+		float4 ReturnValue = *this;
+		ReturnValue.RotationZRad(_Deg * GameEngineMath::DegToRad);
+		return ReturnValue;
 	}
 
-	void RotaitonXRad(float _Rad)
+	void RotationXDeg(float _Deg)
+	{
+		RotationXRad(_Deg * GameEngineMath::DegToRad);
+	}
+
+	void RotationYDeg(float _Deg)
+	{
+		RotationYRad(_Deg * GameEngineMath::DegToRad);
+	}
+
+	void RotationZDeg(float _Deg)
+	{
+		RotationZRad(_Deg * GameEngineMath::DegToRad);
+	}
+
+	void RotationXRad(float _Rad)
 	{
 		float4 Copy = *this;
 		float Z = Copy.z;
@@ -144,7 +207,7 @@ public:
 		y = Z * sinf(_Rad) + Y * cosf(_Rad);
 	}
 
-	void RotaitonYRad(float _Rad)
+	void RotationYRad(float _Rad)
 	{
 		float4 Copy = *this;
 		float X = Copy.x;
@@ -153,7 +216,7 @@ public:
 		z = X * sinf(_Rad) + Z * cosf(_Rad);
 	}
 
-	void RotaitonZRad(float _Rad)
+	void RotationZRad(float _Rad)
 	{
 		float4 Copy = *this;
 		float X = Copy.x;
@@ -161,14 +224,6 @@ public:
 		x = X * cosf(_Rad) - Y * sinf(_Rad);
 		y = X * sinf(_Rad) + Y * cosf(_Rad);
 	}
-
-	float4 RotaitonZDegReturn(float _Deg)
-	{
-		float4 Copy = *this;
-		Copy.RotaitonZDeg(_Deg);
-		return Copy;
-	}
-
 
 	float GetAnagleRad()
 	{
@@ -342,6 +397,8 @@ public:
 		return *this;
 	}
 
+	float4 operator*(const class float4x4& _Other);
+
 	std::string ToString()
 	{
 		char ArrReturn[256];
@@ -392,4 +449,53 @@ public:
 	{
 		return float4{ Right(), Bot() };
 	}
+};
+
+class float4x4
+{
+public:
+	union
+	{
+		float Arr1D[16];
+		float Arr2D[4][4];
+		float4 ArrVector[4];
+
+		struct
+		{
+			float _00;
+			float _01;
+			float _02;
+			float _03;
+			float _10;
+			float _11;
+			float _12;
+			float _13;
+			float _20;
+			float _21;
+			float _22;
+			float _23;
+			float _30;
+			float _31;
+			float _32;
+			float _33;
+		};
+	};
+
+	float4x4()
+	{
+		Identity();
+	}
+
+	void Identity()
+	{
+		memset(Arr1D, 0, sizeof(float) * 16);
+		Arr2D[0][0] = 1.0f;
+		Arr2D[1][1] = 1.0f;
+		Arr2D[2][2] = 1.0f;
+		Arr2D[3][3] = 1.0f;
+	}
+
+
+	// float4 operator*()
+
 };
