@@ -47,7 +47,14 @@ public:
 		return float4(cosf(_Rad), sinf(_Rad), 0.0f, 1.0f);
 	}
 
-	static float4 CrossReturn(const float4& _Left, const float4& _Right)
+	// 외적의 결과는 두개의 백터가 겹칠때 주의해서 처리해줘야 한다.
+	static float4 Cross3DReturnNormal(const float4& _Left, const float4& _Right)
+	{
+		return Cross3DReturn(_Left.NormalizeReturn(), _Right.NormalizeReturn()).NormalizeReturn();
+	}
+
+
+	static float4 Cross3DReturn(const float4& _Left, const float4& _Right)
 	{
 		float4 ReturnValue;
 		ReturnValue.x = (_Left.y * _Right.z) - (_Left.z * _Right.y);
@@ -162,43 +169,43 @@ public:
 		return GetAnagleRad() * GameEngineMath::RadToDeg;
 	}
 
-	float4 RotationXDegReturn(float _Deg)
+	float4 RotaitonXDegReturn(float _Deg)
 	{
 		float4 ReturnValue = *this;
-		ReturnValue.RotationXRad(_Deg * GameEngineMath::DegToRad);
+		ReturnValue.RotaitonXRad(_Deg * GameEngineMath::DegToRad);
 		return ReturnValue;
 	}
 
-	float4 RotationYDegReturn(float _Deg)
+	float4 RotaitonYDegReturn(float _Deg)
 	{
 		float4 ReturnValue = *this;
-		ReturnValue.RotationYRad(_Deg * GameEngineMath::DegToRad);
+		ReturnValue.RotaitonYRad(_Deg * GameEngineMath::DegToRad);
 		return ReturnValue;
 	}
 
-	float4 RotationZDegReturn(float _Deg)
+	float4 RotaitonZDegReturn(float _Deg)
 	{
 		float4 ReturnValue = *this;
-		ReturnValue.RotationZRad(_Deg * GameEngineMath::DegToRad);
+		ReturnValue.RotaitonZRad(_Deg * GameEngineMath::DegToRad);
 		return ReturnValue;
 	}
 
-	void RotationXDeg(float _Deg)
+	void RotaitonXDeg(float _Deg)
 	{
-		RotationXRad(_Deg * GameEngineMath::DegToRad);
+		RotaitonXRad(_Deg * GameEngineMath::DegToRad);
 	}
 
-	void RotationYDeg(float _Deg)
+	void RotaitonYDeg(float _Deg)
 	{
-		RotationYRad(_Deg * GameEngineMath::DegToRad);
+		RotaitonYRad(_Deg * GameEngineMath::DegToRad);
 	}
 
-	void RotationZDeg(float _Deg)
+	void RotaitonZDeg(float _Deg)
 	{
-		RotationZRad(_Deg * GameEngineMath::DegToRad);
+		RotaitonZRad(_Deg * GameEngineMath::DegToRad);
 	}
 
-	void RotationXRad(float _Rad)
+	void RotaitonXRad(float _Rad)
 	{
 		float4 Copy = *this;
 		float Z = Copy.z;
@@ -207,7 +214,7 @@ public:
 		y = Z * sinf(_Rad) + Y * cosf(_Rad);
 	}
 
-	void RotationYRad(float _Rad)
+	void RotaitonYRad(float _Rad)
 	{
 		float4 Copy = *this;
 		float X = Copy.x;
@@ -216,7 +223,7 @@ public:
 		z = X * sinf(_Rad) + Z * cosf(_Rad);
 	}
 
-	void RotationZRad(float _Rad)
+	void RotaitonZRad(float _Rad)
 	{
 		float4 Copy = *this;
 		float X = Copy.x;
@@ -262,7 +269,7 @@ public:
 	float Size() const
 	{
 		// 완벽
-		return sqrtf(x * x + y * y);
+		return sqrtf(x * x + y * y + z * z);
 	}
 
 	// 2, 0
@@ -276,7 +283,7 @@ public:
 	}
 
 	// 자기가 길이 1로 줄어든 애를 리턴해주는것.
-	float4 NormalizeReturn()
+	float4 NormalizeReturn() const
 	{
 		float4 Result = *this;
 		Result.Normalize();
@@ -313,9 +320,13 @@ public:
 		return Return;
 	}
 
+	bool operator ==(const float4& _Value) const
+	{
+		return _Value.x == x && _Value.y == y && _Value.z == z;
+	}
 
 
-	float4 operator +(const float4 _Value) const
+	float4 operator +(const float4& _Value) const
 	{
 		float4 Return;
 		Return.x = x + _Value.x;
@@ -324,7 +335,7 @@ public:
 		return Return;
 	}
 
-	float4 operator -(const float4 _Value) const
+	float4 operator -(const float4& _Value) const
 	{
 		float4 Return;
 		Return.x = x - _Value.x;
@@ -333,7 +344,7 @@ public:
 		return Return;
 	}
 
-	float4 operator *(const float4 _Value) const
+	float4 operator *(const float4& _Value) const
 	{
 		float4 Return;
 		Return.x = x * _Value.x;
@@ -342,7 +353,7 @@ public:
 		return Return;
 	}
 
-	float4 operator /(const float4 _Value) const
+	float4 operator /(const float4& _Value) const
 	{
 		float4 Return;
 		Return.x = x / _Value.x;
@@ -364,7 +375,7 @@ public:
 		return *this;
 	}
 
-	float4& operator *=(const float& _Value)
+	float4& operator *=(const float _Value)
 	{
 		x *= _Value;
 		y *= _Value;
@@ -453,6 +464,17 @@ public:
 
 class float4x4
 {
+	static const float4x4 Zero;
+
+	static const int YCount = 4;
+	static const int XCount = 4;
+
+private:
+	float4x4(bool)
+	{
+		memset(Arr1D, 0, sizeof(float4x4));
+	}
+
 public:
 	union
 	{
@@ -495,7 +517,57 @@ public:
 		Arr2D[3][3] = 1.0f;
 	}
 
+	void Scale(const float4& _Value)
+	{
+		//100, 0 , 0 , 0
+		// 0 ,100, 0 , 0
+		// 0 , 0 ,100, 0
+		// 0 , 0 , 0 , 1
 
-	// float4 operator*()
+		Identity();
+		Arr2D[0][0] = _Value.x;
+		Arr2D[1][1] = _Value.y;
+		Arr2D[2][2] = _Value.z;
+	}
+
+
+	void Pos(const float4& _Value)
+	{
+		//  0   1   2   3
+		//0 0,  0 , 0 , 0
+		//1 0 , 0,  0 , 0
+		//2 0 , 0 , 0 , 0
+		//3 200, 200 , 200 , 1
+
+		Identity();
+		Arr2D[3][0] = _Value.x;
+		Arr2D[3][1] = _Value.y;
+		Arr2D[3][2] = _Value.z;
+	}
+
+	float4x4 operator*(const float4x4& _Other)
+	{
+		//  0   0   0   0			   		  0   0   0   0	    0   0   0   0
+		//  0,  0 , 0 , 0			   		  0,  0 , 0 , 0	    0,  0 , 0 , 0
+		//  0 , 0,  0 , 0          *   		  0 , 0,  0 , 0  =  0 , 0,  0 , 0
+		//  0 , 0 , 0 , 0			   		  0 , 0 , 0 , 0	    0 , 0 , 0 , 0
+
+		this->Arr2D;
+		_Other.Arr2D;
+
+		float4x4 Return = Zero;
+		for (size_t y = 0; y < YCount; y++)
+		{
+			for (size_t x = 0; x < XCount; x++)
+			{
+				for (size_t j = 0; j < 4; j++)
+				{
+					Return.Arr2D[y][x] += Arr2D[y][j] * _Other.Arr2D[j][x];
+				}
+			}
+		}
+
+		return Return;
+	}
 
 };
