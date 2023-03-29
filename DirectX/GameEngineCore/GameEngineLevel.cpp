@@ -1,8 +1,10 @@
 #include "GameEngineLevel.h"
 #include "GameEngineActor.h"
+#include "GameEngineCamera.h"
 
 GameEngineLevel::GameEngineLevel()
 {
+	MainCamera = CreateActor<GameEngineCamera>();
 }
 
 GameEngineLevel::~GameEngineLevel()

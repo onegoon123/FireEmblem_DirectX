@@ -20,6 +20,5 @@ protected:
 	void Update(float _DeltaTime) override;
 
 private:
-	int a = 0;
 };
 

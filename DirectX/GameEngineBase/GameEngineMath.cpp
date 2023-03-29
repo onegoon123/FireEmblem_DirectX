@@ -17,6 +17,7 @@ const float4 float4::Down = { 0.0f, 1.0f, 0.0f, 1.0f };
 const float4 float4::Forward = { 0.0f, 0.0f, 1.0f, 1.0f };
 const float4 float4::Back = { 0.0f, 0.0f, -1.0f, 1.0f };
 
+const float4 float4::One = { 1.0f, 1.0f, 1.0f, 1.0f };
 const float4 float4::Zero = { 0.0f, 0.0f, 0.0f, 1.0f };
 const float4 float4::Null = { 0.0f, 0.0f, 0.0f, 0.0f };
 
@@ -109,6 +110,16 @@ float4 float4::operator*(const class float4x4& _Other)
 	//(0 * 0) + (0 * 0) + (100 * 1) + (50 * 1);
 	//(0 * 0) + (0 * 0) + (0 * 0) +   (1 * 1);
 
+	// Å©±â
+	// 1.0f, 0.0f, 0.0f, 1; *    1   0   0   0
+	// 					         0   1   0   0
+	// 					         0   0   1   0
+	// 					         0   0   0   1
+
+	// 0.5f, 0.5f, 0.0f  1  x 0   0  -1   0
+	//						y 0   1   0   0
+	//						z 1   0   0   0
+	//						  0   0   0   1
 
 	float4 ReturnValue;
 	ReturnValue.x = (_Other.Arr2D[0][0] * Arr1D[0]) + (_Other.Arr2D[1][0] * Arr1D[1]) + (_Other.Arr2D[2][0] * Arr1D[2]) + (_Other.Arr2D[3][0] * Arr1D[3]);

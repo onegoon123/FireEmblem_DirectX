@@ -15,18 +15,12 @@ void BattleActor::Start()
 void BattleActor::Update(float _DeltaTime)
 {
 }
-float4 Position = {0,0,0};
-float4 Angle = {0,0,0};
-float4 Scale = {0,0,0};
+
 void BattleActor::Render(float _DeltaTime)
 {
 	HDC Dc = GameEngineWindow::GetWindowBackBufferHdc();
 
-	// Rectangle(Dc, 0, 0, 100, 100);
-
 	const int VertexCount = 24;
-
-	float4 Pos = { 640, 360 };
 
 	// 최초의 버텍스의 위치를 로컬공간이라고 부릅니다.
 	float4 ArrVertex[VertexCount];
@@ -64,32 +58,14 @@ void BattleActor::Render(float _DeltaTime)
 	ArrVertex[22] = ArrVertex[2].RotaitonXDegReturn(-90.0f);
 	ArrVertex[23] = ArrVertex[3].RotaitonXDegReturn(-90.0f);
 
-	Scale += float4(_DeltaTime * 10, _DeltaTime * 10, _DeltaTime * 10);
-	Position += float4(_DeltaTime * 100, _DeltaTime * 100, _DeltaTime * 100);
 	POINT ArrPoint[VertexCount];
 
-	float4x4 ScaleMat;
-	ScaleMat.Scale(Scale);
-
-	float4x4 PosMat;
-	PosMat.Pos(Position);
-
-	float4x4 WorldMat = ScaleMat * PosMat;
-
-	// 크자이공부
-
-	// 크기를 키우고
-	// 회전시킨다음
-	// 이동하고
-	// 공전시키고
-	// 부모의 변환을 적용시킨다.
-	// 공간변환의 순서.
-
-	// 벡터의 외적에 대해서 알아봅시다.
+	GetTransform().SetLocalScale({ 100, 100, 100 });
+	GetTransform().AddLocalRotation({ _DeltaTime * 10, _DeltaTime * 35, _DeltaTime * 85 });
 
 	for (size_t i = 0; i < VertexCount; i++)
 	{
-		ArrVertex[i] = ArrVertex[i] * WorldMat;
+		ArrVertex[i] = ArrVertex[i] * GetTransform().GetLocalWorldMatrixRef();
 		ArrPoint[i] = ArrVertex[i].ToWindowPOINT();
 	}
 

@@ -2,10 +2,13 @@
 #include <GameEngineBase/GameEngineMath.h>
 #include <list>
 #include <memory>
+#include "GameEngineTransform.h"
 
 // 설명 :
 class GameEngineObject
 {
+	friend class GameEngineLevel;
+
 public:
 	// constrcuter destructer
 	GameEngineObject();
@@ -46,6 +49,7 @@ public:
 		IsDeath = true;
 	}
 
+	//                 "드래곤"
 	// 동적할당 1번을 줄이려고.
 	void SetName(const std::string_view& _Name)
 	{
@@ -60,6 +64,11 @@ public:
 	GameEngineObject* GetParent()
 	{
 		return Parent;
+	}
+
+	GameEngineTransform& GetTransform()
+	{
+		return Transform;
 	}
 
 protected:
@@ -79,13 +88,7 @@ private:
 
 	////////////////////////////////////////////////////////////// Transform 기하구조
 
-public:
-	float4 GetPos()
-	{
-		return Pos;
-	}
-
 private:
-	float4 Pos;
+	GameEngineTransform Transform;
 
 };

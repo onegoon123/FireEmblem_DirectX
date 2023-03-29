@@ -33,6 +33,7 @@ public:
 	static const float4 Down;
 	static const float4 Forward;
 	static const float4 Back;
+	static const float4 One;
 	static const float4 Zero;
 	static const float4 Null;
 
@@ -210,8 +211,8 @@ public:
 		float4 Copy = *this;
 		float Z = Copy.z;
 		float Y = Copy.y;
-		z = Z * cosf(_Rad) - Y * sinf(_Rad);
-		y = Z * sinf(_Rad) + Y * cosf(_Rad);
+		z = Y * cosf(_Rad) - Z * sinf(_Rad);
+		y = Y * sinf(_Rad) + Z * cosf(_Rad);
 	}
 
 	void RotaitonYRad(float _Rad)
@@ -219,8 +220,8 @@ public:
 		float4 Copy = *this;
 		float X = Copy.x;
 		float Z = Copy.z;
-		x = X * cosf(_Rad) - Z * sinf(_Rad);
-		z = X * sinf(_Rad) + Z * cosf(_Rad);
+		x = Z * cosf(_Rad) - X * sinf(_Rad);
+		z = Z * sinf(_Rad) + X * cosf(_Rad);
 	}
 
 	void RotaitonZRad(float _Rad)
@@ -464,6 +465,7 @@ public:
 
 class float4x4
 {
+public:
 	static const float4x4 Zero;
 
 	static const int YCount = 4;
@@ -544,6 +546,69 @@ public:
 		Arr2D[3][1] = _Value.y;
 		Arr2D[3][2] = _Value.z;
 	}
+
+	void RotationDeg(const float4& _Deg)
+	{
+		// 짐벌락 현상이라는 것이 있습니다.
+		// 축이 겹치는 이상한 현상이 있는데 그 현상을 해결하려면
+		// 곱하는 순서를 바꿔야 해결이 된다.
+		// Rot = RotX * RotY * RotZ;
+
+		// 기본적으로 쿼터니온 회전이라는걸 사용하는데 
+		// 짐벌락 해결함.
+		float4x4 RotX = float4x4::Zero;
+		float4x4 RotY = float4x4::Zero;
+		float4x4 RotZ = float4x4::Zero;
+		RotX.RotationXDeg(_Deg.x);
+		RotY.RotationYDeg(_Deg.y);
+		RotZ.RotationZDeg(_Deg.z);
+
+		*this = RotX * RotY * RotZ;
+	}
+
+	void RotationXDeg(const float _Deg)
+	{
+		RotationXRad(_Deg * GameEngineMath::DegToRad);
+	}
+
+	void RotationXRad(const float _Rad)
+	{
+		Identity();
+		Arr2D[1][1] = cosf(_Rad);
+		Arr2D[1][2] = sinf(_Rad);
+		Arr2D[2][1] = -sinf(_Rad);
+		Arr2D[2][2] = cosf(_Rad);
+	}
+
+
+	void RotationYDeg(const float _Deg)
+	{
+		RotationYRad(_Deg * GameEngineMath::DegToRad);
+	}
+
+	void RotationYRad(const float _Rad)
+	{
+		Identity();
+		Arr2D[0][0] = cosf(_Rad);
+		Arr2D[0][2] = -sinf(_Rad);
+		Arr2D[2][0] = sinf(_Rad);
+		Arr2D[2][2] = cosf(_Rad);
+	}
+
+	void RotationZDeg(const float _Deg)
+	{
+		RotationZRad(_Deg * GameEngineMath::DegToRad);
+	}
+
+	void RotationZRad(const float _Rad)
+	{
+		Identity();
+		Arr2D[0][0] = cosf(_Rad);
+		Arr2D[0][1] = sinf(_Rad);
+		Arr2D[1][0] = -sinf(_Rad);
+		Arr2D[1][1] = cosf(_Rad);
+	}
+
 
 	float4x4 operator*(const float4x4& _Other)
 	{
