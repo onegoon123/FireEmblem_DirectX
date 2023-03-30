@@ -29,6 +29,8 @@ private:
 
 	float4x4 View;
 	float4x4 Projection;
+	float Near = 0.1f;
+	float Far = 10000.0f;
 
 };
 

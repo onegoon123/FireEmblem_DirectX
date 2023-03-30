@@ -515,6 +515,36 @@ public:
 		Arr2D[3][3] = 1.0f;
 	}
 
+	// z -x _EyeDir
+
+	//                                           1280 / 720
+	//                         수직시야각        화면의 종횡비   근평면      원평면
+	void PerspectiveFovLH(float _FovAngle, float _AspectRatio, float _NearZ = 0.1f, float _FarZ = 10000.0f)
+	{
+		Identity();
+
+		// 수직시야각이라면
+		float FOV = _FovAngle * GameEngineMath::DegToRad;
+		//  _FovAngle * _AspectRatio;// 수평시야각 구하는법
+
+		// [0] [] [] []
+		// [] [0] [] []
+		// [] [] [0][1]
+		// [] [] [] [0]
+		Arr2D[2][3] = 1.0f;
+		Arr2D[3][3] = 0.0f;
+
+		Arr2D[0][0] = 1 / tanf(FOV / 2.0f) * _AspectRatio;
+
+		// y 300
+		// z 5000
+		Arr2D[1][1] = 1 / tanf(FOV / 2.0f); // y / z
+
+		Arr2D[2][2] = _FarZ / (_FarZ - _NearZ);
+
+		Arr2D[3][2] = -(_NearZ * _FarZ) / (_FarZ - _NearZ);
+	}
+
 	void LookAtLH(const float4& _EyePos, const float4& _EyeDir, const float4& _EyeUp)
 	{
 		Identity();
@@ -538,12 +568,39 @@ public:
 		float D2Value = float4::DotProduct3D(EyeDir, NegEyePos);
 
 		// 여기서 내적을 사용합니다.
+		// x + 1;
+		// 역함수 혹은 역행렬이라고 부릅니다.
+		// x - 1;
 
-		ArrVector[0] = { 1, 0, 0, 0 };
-		ArrVector[1] = { 0, 1, 0, 0 };
-		ArrVector[2] = { 0, 0, 1, 0 };
+		ArrVector[0] = Right;
+		ArrVector[1] = UpVector;
+		ArrVector[2] = EyeDir;
+
+		Transpose();
+
 		ArrVector[3] = { D0Value, D1Value, D2Value, 0 };
+	}
 
+	// 전치 행렬이라고 부르는행려
+	void Transpose()
+	{
+		// 0   , 0, -1
+		// 100 , 1,  0
+		// 1   , 0,  0
+
+		// 0 , 100,  1
+		// 0,    1,  0
+		// -1 ,  0,  0
+
+		float4x4 This = *this;
+		Identity();
+		for (size_t y = 0; y < YCount; y++)
+		{
+			for (size_t x = 0; x < XCount; x++)
+			{
+				Arr2D[x][y] = This.Arr2D[y][x];
+			}
+		}
 
 	}
 
