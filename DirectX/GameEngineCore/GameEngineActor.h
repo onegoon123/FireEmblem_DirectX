@@ -17,9 +17,17 @@ public:
 	GameEngineActor& operator=(const GameEngineActor& _Other) = delete;
 	GameEngineActor& operator=(GameEngineActor&& _Other) noexcept = delete;
 
+	inline class GameEngineLevel* GetLevel() const
+	{
+		return Level;
+	}
+
 protected:
+	virtual void Start() {}
+	virtual void Update(float _DeltaTime) {}
+	virtual void Render(float _DeltaTime) {}
 
 private:
-
+	class GameEngineLevel* Level;
 };
 

@@ -58,10 +58,8 @@ public:
 
 protected:
 	virtual void Loading() = 0;
-
-	void Update(float _DeltaTime) override;
-
-	void Render(float _DeltaTime) override;
+	void Update(float _DeltaTime);
+	void Render(float _DeltaTime);
 
 private:
 	std::shared_ptr<GameEngineCamera> MainCamera;

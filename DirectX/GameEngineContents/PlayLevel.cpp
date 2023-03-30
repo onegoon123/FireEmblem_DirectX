@@ -19,7 +19,3 @@ void PlayLevel::Loading()
 
 
 }
-
-void PlayLevel::Update(float _DeltaTime)
-{
-}

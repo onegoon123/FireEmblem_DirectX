@@ -1,5 +1,7 @@
 #include "BattleActor.h"
-#include <GameEnginePlatform/GameEngineWindow.h>6
+#include <GameEnginePlatform/GameEngineWindow.h>
+#include <GameEngineCore/GameEngineLevel.h>
+#include <GameEngineCore/GameEngineCamera.h>
 BattleActor::BattleActor()
 {
 }
@@ -61,11 +63,16 @@ void BattleActor::Render(float _DeltaTime)
 	POINT ArrPoint[VertexCount];
 
 	GetTransform().SetLocalScale({ 100, 100, 100 });
-	GetTransform().AddLocalRotation({ _DeltaTime * 10, _DeltaTime * 35, _DeltaTime * 85 });
+	GetTransform().AddLocalRotation({ _DeltaTime * 360.0f, _DeltaTime * 360.0f, _DeltaTime * 360.0f });
+
+	GetTransform().SetView(GetLevel()->GetMainCamera()->GetView());
+
+	// 
+
 
 	for (size_t i = 0; i < VertexCount; i++)
 	{
-		ArrVertex[i] = ArrVertex[i] * GetTransform().GetLocalWorldMatrixRef();
+		ArrVertex[i] = ArrVertex[i] * GetTransform().GetWorldMatrixRef();
 		ArrPoint[i] = ArrVertex[i].ToWindowPOINT();
 	}
 

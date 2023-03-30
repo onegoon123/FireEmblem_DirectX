@@ -48,6 +48,27 @@ public:
 		return float4(cosf(_Rad), sinf(_Rad), 0.0f, 1.0f);
 	}
 
+	static float GetAngleVectorToVectorDeg(const float4& _Left, const float4& _Right)
+	{
+		return GetAngleVectorToVectorRad(_Left, _Right) * GameEngineMath::RadToDeg;
+	}
+
+	// 외적의 결과는 두개의 백터가 겹칠때 주의해서 처리해줘야 한다.
+	static float GetAngleVectorToVectorRad(const float4& _Left, const float4& _Right)
+	{
+		float4 Left = _Left;
+		float4 Right = _Right;
+
+		Left.Normalize();
+		Right.Normalize();
+
+		float CosSeta = DotProduct3D(Left, Right);
+
+		float Angle = acosf(CosSeta);
+
+		return Angle;
+	}
+
 	// 외적의 결과는 두개의 백터가 겹칠때 주의해서 처리해줘야 한다.
 	static float4 Cross3DReturnNormal(const float4& _Left, const float4& _Right)
 	{
@@ -62,6 +83,13 @@ public:
 		ReturnValue.y = (_Left.z * _Right.x) - (_Left.x * _Right.z);
 		ReturnValue.z = (_Left.x * _Right.y) - (_Left.y * _Right.x);
 		return ReturnValue;
+	}
+
+	static float DotProduct3D(const float4& _Left, const float4& _Right)
+	{
+		//            1         1          1          0          0          0
+		float Value = _Left.x * _Right.x + _Left.y * _Right.y + _Left.z * _Right.z;
+		return Value;
 	}
 
 public:
@@ -165,9 +193,9 @@ public:
 		return w * 0.5f;
 	}
 
-	float GetAnagleDeg()
+	float GetAnagleDegZ()
 	{
-		return GetAnagleRad() * GameEngineMath::RadToDeg;
+		return GetAnagleRadZ() * GameEngineMath::RadToDeg;
 	}
 
 	float4 RotaitonXDegReturn(float _Deg)
@@ -206,34 +234,11 @@ public:
 		RotaitonZRad(_Deg * GameEngineMath::DegToRad);
 	}
 
-	void RotaitonXRad(float _Rad)
-	{
-		float4 Copy = *this;
-		float Z = Copy.z;
-		float Y = Copy.y;
-		z = Y * cosf(_Rad) - Z * sinf(_Rad);
-		y = Y * sinf(_Rad) + Z * cosf(_Rad);
-	}
+	void RotaitonXRad(float _Rad);
+	void RotaitonYRad(float _Rad);
+	void RotaitonZRad(float _Rad);
 
-	void RotaitonYRad(float _Rad)
-	{
-		float4 Copy = *this;
-		float X = Copy.x;
-		float Z = Copy.z;
-		x = Z * cosf(_Rad) - X * sinf(_Rad);
-		z = Z * sinf(_Rad) + X * cosf(_Rad);
-	}
-
-	void RotaitonZRad(float _Rad)
-	{
-		float4 Copy = *this;
-		float X = Copy.x;
-		float Y = Copy.y;
-		x = X * cosf(_Rad) - Y * sinf(_Rad);
-		y = X * sinf(_Rad) + Y * cosf(_Rad);
-	}
-
-	float GetAnagleRad()
+	float GetAnagleRadZ()
 	{
 		float4 AngleCheck = (*this);
 		AngleCheck.Normalize();
@@ -410,6 +415,7 @@ public:
 	}
 
 	float4 operator*(const class float4x4& _Other);
+	float4& operator*=(const class float4x4& _Other);
 
 	std::string ToString()
 	{
@@ -471,12 +477,6 @@ public:
 	static const int YCount = 4;
 	static const int XCount = 4;
 
-private:
-	float4x4(bool)
-	{
-		memset(Arr1D, 0, sizeof(float4x4));
-	}
-
 public:
 	union
 	{
@@ -505,10 +505,6 @@ public:
 		};
 	};
 
-	float4x4()
-	{
-		Identity();
-	}
 
 	void Identity()
 	{
@@ -517,6 +513,38 @@ public:
 		Arr2D[1][1] = 1.0f;
 		Arr2D[2][2] = 1.0f;
 		Arr2D[3][3] = 1.0f;
+	}
+
+	void LookAtLH(const float4& _EyePos, const float4& _EyeDir, const float4& _EyeUp)
+	{
+		Identity();
+
+
+		float4 EyePos = _EyePos;
+
+		// 합쳐져서 회전행렬이 된다.
+		float4 EyeDir = _EyeDir.NormalizeReturn();
+		float4 EyeUp = _EyeUp;
+		float4 Right = float4::Cross3DReturn(EyeUp, EyeDir);
+		Right.Normalize();
+
+		float4 UpVector = float4::Cross3DReturn(_EyeDir, Right);
+		Right.Normalize();
+
+		float4 NegEyePos = -_EyePos;
+
+		float D0Value = float4::DotProduct3D(Right, NegEyePos);
+		float D1Value = float4::DotProduct3D(UpVector, NegEyePos);
+		float D2Value = float4::DotProduct3D(EyeDir, NegEyePos);
+
+		// 여기서 내적을 사용합니다.
+
+		ArrVector[0] = { 1, 0, 0, 0 };
+		ArrVector[1] = { 0, 1, 0, 0 };
+		ArrVector[2] = { 0, 0, 1, 0 };
+		ArrVector[3] = { D0Value, D1Value, D2Value, 0 };
+
+
 	}
 
 	void Scale(const float4& _Value)
@@ -635,4 +663,18 @@ public:
 		return Return;
 	}
 
+	float4x4()
+	{
+		Identity();
+	}
+
+	float4x4(float4 _x, float4 _y, float4 _z, float4 _w)
+	{
+		ArrVector[0] = _x;
+		ArrVector[1] = _y;
+		ArrVector[2] = _z;
+		ArrVector[3] = _w;
+	}
+
 };
+
