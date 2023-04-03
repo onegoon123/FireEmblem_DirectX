@@ -103,10 +103,17 @@ public:
 		return WorldMatrix;
 	}
 
-	inline const void SetView(const float4x4& _View)
+	inline const void SetCameraMatrix(const float4x4& _View, const float4x4& _Projection)
 	{
 		View = _View;
-		WorldMatrix = WorldMatrix * View;
+		Projection = _Projection;
+		WorldMatrix = WorldMatrix * View * Projection;
+	}
+
+	inline const void SetViewPort(const float4x4& _ViewPort)
+	{
+		ViewPort = _ViewPort;
+		WorldMatrix *= ViewPort;
 	}
 
 protected:
@@ -131,5 +138,7 @@ private:
 	float4x4 WorldMatrix;
 
 	float4x4 View;
+	float4x4 Projection;
+	float4x4 ViewPort;
 };
 

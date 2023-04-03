@@ -2,26 +2,26 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="FECore.cpp" />
-    <ClCompile Include="BattleActor.cpp">
-      <Filter>Object</Filter>
-    </ClCompile>
     <ClCompile Include="PlayLevel.cpp">
       <Filter>Levels</Filter>
     </ClCompile>
     <ClCompile Include="TitleLevel.cpp">
       <Filter>Levels</Filter>
     </ClCompile>
+    <ClCompile Include="BattleActor.cpp">
+      <Filter>Battle</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FECore.h" />
-    <ClInclude Include="BattleActor.h">
-      <Filter>Object</Filter>
-    </ClInclude>
     <ClInclude Include="PlayLevel.h">
       <Filter>Levels</Filter>
     </ClInclude>
     <ClInclude Include="TitleLevel.h">
       <Filter>Levels</Filter>
+    </ClInclude>
+    <ClInclude Include="BattleActor.h">
+      <Filter>Battle</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -30,6 +30,9 @@
     </Filter>
     <Filter Include="Levels">
       <UniqueIdentifier>{b816690e-a0dd-45b5-b55c-a0c2ffa8da46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle">
+      <UniqueIdentifier>{74de81d3-4e6f-4da7-b36c-d82a231e9fe3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

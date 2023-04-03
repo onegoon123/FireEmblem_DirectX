@@ -111,9 +111,7 @@ void GameEngineCamera::Update(float _DeltaTime)
 	float4 EyeUp = GetTransform().GetLocalUpVector();
 	float4 EyePos = GetTransform().GetLocalPosition();
 
-	View.LookAtLH(EyePos, EyeDir, EyeUp);
-
-
-
+	View.LookToLH(EyePos, EyeDir, EyeUp);
 	Projection.PerspectiveFovLH(60.0f, GameEngineWindow::GetScreenSize().x / GameEngineWindow::GetScreenSize().y, Near, Far);
+	ViewPort.ViewPort(GameEngineWindow::GetScreenSize().x, GameEngineWindow::GetScreenSize().y, 0.0f, 0.0f);
 }

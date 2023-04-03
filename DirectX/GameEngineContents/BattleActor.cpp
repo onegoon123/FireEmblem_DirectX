@@ -24,6 +24,8 @@ void BattleActor::Render(float _DeltaTime)
 
 	const int VertexCount = 24;
 
+	// float4 Pos = {640, 360};
+
 	// 최초의 버텍스의 위치를 로컬공간이라고 부릅니다.
 	float4 ArrVertex[VertexCount];
 	// 앞면
@@ -60,19 +62,27 @@ void BattleActor::Render(float _DeltaTime)
 	ArrVertex[22] = ArrVertex[2].RotaitonXDegReturn(-90.0f);
 	ArrVertex[23] = ArrVertex[3].RotaitonXDegReturn(-90.0f);
 
+
 	POINT ArrPoint[VertexCount];
 
 	GetTransform().SetLocalScale({ 100, 100, 100 });
-	GetTransform().AddLocalRotation({ _DeltaTime * 360.0f, _DeltaTime * 360.0f, _DeltaTime * 360.0f });
+	// GetTransform().AddLocalRotation({ _Delta * 360.0f, _Delta * 360.0f, _Delta * 360.0f });
 
-	GetTransform().SetView(GetLevel()->GetMainCamera()->GetView());
+	GetTransform().SetCameraMatrix(GetLevel()->GetMainCamera()->GetView(), GetLevel()->GetMainCamera()->GetProjection());
 
-	// 
-
+	// GetTransform().SetViewPort(GetLevel()->GetMainCamera()->GetViewPort());
 
 	for (size_t i = 0; i < VertexCount; i++)
 	{
 		ArrVertex[i] = ArrVertex[i] * GetTransform().GetWorldMatrixRef();
+		// 투영행렬의 핵심
+		ArrVertex[i] /= ArrVertex[i].w;
+
+		// TransformCoord
+		ArrVertex[i].w = 1.0f;
+
+		ArrVertex[i] *= GetLevel()->GetMainCamera()->GetViewPort();
+
 		ArrPoint[i] = ArrVertex[i].ToWindowPOINT();
 	}
 
@@ -88,7 +98,7 @@ void BattleActor::Render(float _DeltaTime)
 		float4 Dir1 = Vector1 - Vector2;
 
 		float4 Cross = float4::Cross3DReturn(Dir0, Dir1);
-		if (0 <= Cross.z)
+		if (0 >= Cross.z)
 		{
 			continue;
 		}
