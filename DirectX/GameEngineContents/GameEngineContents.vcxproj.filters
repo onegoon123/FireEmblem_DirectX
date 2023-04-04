@@ -11,6 +11,9 @@
     <ClCompile Include="BattleActor.cpp">
       <Filter>Battle</Filter>
     </ClCompile>
+    <ClCompile Include="Unit.cpp">
+      <Filter>Battle\Unit</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FECore.h" />
@@ -23,6 +26,12 @@
     <ClInclude Include="BattleActor.h">
       <Filter>Battle</Filter>
     </ClInclude>
+    <ClInclude Include="Unit.h">
+      <Filter>Battle\Unit</Filter>
+    </ClInclude>
+    <ClInclude Include="FERandom.h">
+      <Filter>Battle</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Object">
@@ -33,6 +42,9 @@
     </Filter>
     <Filter Include="Battle">
       <UniqueIdentifier>{74de81d3-4e6f-4da7-b36c-d82a231e9fe3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\Unit">
+      <UniqueIdentifier>{af2e3ee8-2b51-417b-bce9-0d67dad112b3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
