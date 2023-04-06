@@ -21,7 +21,7 @@ protected:
 private:
 	int IdentityCode = 0;
 	std::string UnitName = "";
-	Stat UnitStat;
+	//Stat UnitStat;
 };
 
 // ∏ﬁ¿Œ Ω∫≈»

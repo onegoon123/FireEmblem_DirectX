@@ -14,6 +14,9 @@
     <ClCompile Include="Unit.cpp">
       <Filter>Battle\Unit</Filter>
     </ClCompile>
+    <ClCompile Include="Stat.cpp">
+      <Filter>Battle\Unit</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FECore.h" />

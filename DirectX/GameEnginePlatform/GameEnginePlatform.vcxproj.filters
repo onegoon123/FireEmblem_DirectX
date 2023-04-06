@@ -1,15 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="GameEngineImage.cpp" />
-    <ClCompile Include="GameEngineInput.cpp" />
-    <ClCompile Include="GameEngineSound.cpp" />
     <ClCompile Include="GameEngineWindow.cpp" />
+    <ClCompile Include="GameEngineInput.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineImage.cpp">
+      <Filter>Resources\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineSound.cpp">
+      <Filter>Resources\Sound</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GameEngineImage.h" />
-    <ClInclude Include="GameEngineInput.h" />
-    <ClInclude Include="GameEngineSound.h" />
     <ClInclude Include="GameEngineWindow.h" />
     <ClInclude Include="ThirdParty\FMOD\inc\fmod.h">
       <Filter>ThirdParty\FMOD\Header</Filter>
@@ -35,6 +38,15 @@
     <ClInclude Include="ThirdParty\FMOD\inc\fmod_output.h">
       <Filter>ThirdParty\FMOD\Header</Filter>
     </ClInclude>
+    <ClInclude Include="GameEngineInput.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineImage.h">
+      <Filter>Resources\Image</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineSound.h">
+      <Filter>Resources\Sound</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ThirdParty">
@@ -48,6 +60,18 @@
     </Filter>
     <Filter Include="ThirdParty\FMOD\Header">
       <UniqueIdentifier>{9ba84d00-4a98-4f04-9035-941b14fde758}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Input">
+      <UniqueIdentifier>{72ad6c97-6f78-4151-a14c-1fa762240c3e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{e8be1be7-a10f-4f3a-9cb7-f5b2b05f1781}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Image">
+      <UniqueIdentifier>{8c9972e5-ae93-440c-81d4-e0404d54653b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Sound">
+      <UniqueIdentifier>{a5e574af-718b-4c1e-885a-91b3f23bfd10}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

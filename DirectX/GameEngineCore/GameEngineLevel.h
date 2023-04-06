@@ -1,5 +1,5 @@
 #pragma once
-#include "GameEngineObject.h"
+#include "GameEngineUpdateObject.h"
 #include <GameEngineBase\GameEngineTimeEvent.h>
 #include <string_view>
 #include <map>
@@ -7,7 +7,7 @@
 // Ό³Έν :
 class GameEngineActor;
 class GameEngineCamera;
-class GameEngineLevel : public GameEngineObject
+class GameEngineLevel : public GameEngineUpdateObject
 {
 	friend class GameEngineCore;
 
@@ -46,7 +46,6 @@ public:
 
 		ActorInit(NewActor, _Order, this);
 
-		Actors[_Order].push_back(NewActor);
 
 		return std::dynamic_pointer_cast<ActorType>(NewActor);
 	}
@@ -57,7 +56,7 @@ public:
 	}
 
 protected:
-	virtual void Loading() = 0;
+	virtual void Start() = 0;
 	void Update(float _DeltaTime);
 	void Render(float _DeltaTime);
 

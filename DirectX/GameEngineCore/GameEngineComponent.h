@@ -1,9 +1,11 @@
 #pragma once
-#include "GameEngineObject.h"
+#include "GameEngineActor.h"
 
 // Ό³Έν :
-class GameEngineComponent : public GameEngineObject
+class GameEngineComponent : public GameEngineUpdateObject
 {
+	friend class GameEngineActor;
+
 public:
 	// constrcuter destructer
 	GameEngineComponent();
@@ -15,9 +17,22 @@ public:
 	GameEngineComponent& operator=(const GameEngineComponent& _Other) = delete;
 	GameEngineComponent& operator=(GameEngineComponent&& _Other) noexcept = delete;
 
+	class GameEngineActor* GetActor()
+	{
+		return Actor;
+	}
+
+	class GameEngineLevel* GetLevel()
+	{
+		return Actor->GetLevel();
+	}
+
 protected:
 
 private:
+	class GameEngineActor* Actor;
+
+	void SetActor(class GameEngineActor* _Actor);
 
 };
 

@@ -2,6 +2,8 @@
 #include <GameEnginePlatform/GameEngineWindow.h>
 #include <GameEngineCore/GameEngineLevel.h>
 #include <GameEngineCore/GameEngineCamera.h>
+#include <GameEngineCore/GameEngineRenderer.h>
+#include <GameEnginePlatform/GameEngineInput.h>
 BattleActor::BattleActor()
 {
 }
@@ -12,97 +14,141 @@ BattleActor::~BattleActor()
 
 void BattleActor::Start()
 {
+	if (false == GameEngineInput::IsKey("PlayerMoveLeft"))
+	{
+		GameEngineInput::CreateKey("PlayerMoveLeft", 'A');
+		GameEngineInput::CreateKey("PlayerMoveRight", 'D');
+		GameEngineInput::CreateKey("PlayerMoveUp", 'Q');
+		GameEngineInput::CreateKey("PlayerMoveDown", 'E');
+		GameEngineInput::CreateKey("PlayerMoveForward", 'W');
+		GameEngineInput::CreateKey("PlayerMoveBack", 'S');
+
+		GameEngineInput::CreateKey("PlayerScaleY+", 'Y');
+		GameEngineInput::CreateKey("PlayerScaleY-", 'U');
+		GameEngineInput::CreateKey("PlayerScaleZ+", 'H');
+		GameEngineInput::CreateKey("PlayerScaleZ-", 'J');
+		GameEngineInput::CreateKey("PlayerScaleX+", 'N');
+		GameEngineInput::CreateKey("PlayerScaleX-", 'M');
+
+
+		GameEngineInput::CreateKey("PlayerRotY+", VK_NUMPAD1);
+		GameEngineInput::CreateKey("PlayerRotY-", VK_NUMPAD2);
+		GameEngineInput::CreateKey("PlayerRotZ+", VK_NUMPAD4);
+		GameEngineInput::CreateKey("PlayerRotZ-", VK_NUMPAD5);
+		GameEngineInput::CreateKey("PlayerRotX+", VK_NUMPAD7);
+		GameEngineInput::CreateKey("PlayerRotX-", VK_NUMPAD8);
+		GameEngineInput::CreateKey("PlayerSpeedBoost", VK_LSHIFT);
+	}
+
+
+	// 나는 스케일을 1로 고정해 놓는게 좋다.
+	Render0 = CreateComponent<GameEngineRenderer>();
+	Render1 = CreateComponent<GameEngineRenderer>();
+	Render2 = CreateComponent<GameEngineRenderer>();
+
+	Render1->GetTransform()->DebugOn();
+
+	Render0->GetTransform()->SetLocalPosition({ -200.0f, 0.0f, 0.0f });
+	Render2->GetTransform()->SetLocalPosition({ 200.0f, 0.0f, 0.0f });
 }
 
 void BattleActor::Update(float _DeltaTime)
 {
+	float RotSpeed = 180.0f;
+
+	float Speed = 200.0f;
+
+	if (true == GameEngineInput::IsPress("PlayerSpeedBoost"))
+	{
+		Speed = 500.0f;
+	}
+
+	if (true == GameEngineInput::IsPress("PlayerMoveLeft"))
+	{
+		GetTransform()->AddLocalPosition(float4::Left * Speed * _DeltaTime);
+	}
+	if (true == GameEngineInput::IsPress("PlayerMoveRight"))
+	{
+		GetTransform()->AddLocalPosition(float4::Right * Speed * _DeltaTime);
+	}
+	if (true == GameEngineInput::IsPress("PlayerMoveUp"))
+	{
+		GetTransform()->AddLocalPosition(float4::Up * Speed * _DeltaTime);
+	}
+	if (true == GameEngineInput::IsPress("PlayerMoveDown"))
+	{
+		GetTransform()->AddLocalPosition(float4::Down * Speed * _DeltaTime);
+	}
+	if (true == GameEngineInput::IsPress("PlayerMoveForward"))
+	{
+		GetTransform()->AddLocalPosition(GetTransform()->GetLocalForwardVector() * Speed * _DeltaTime);
+		// GetTransform()->AddLocalPosition(float4::Forward * Speed * _DeltaTime);
+	}
+	if (true == GameEngineInput::IsPress("PlayerMoveBack"))
+	{
+		GetTransform()->AddLocalPosition(float4::Back * Speed * _DeltaTime);
+	}
+
+	if (true == GameEngineInput::IsPress("PlayerRotY+"))
+	{
+		GetTransform()->AddLocalRotation({ 0.0f, RotSpeed * _DeltaTime, 0.0f });
+	}
+	if (true == GameEngineInput::IsPress("PlayerRotY-"))
+	{
+		GetTransform()->AddLocalRotation({ 0.0f, -RotSpeed * _DeltaTime, 0.0f });
+	}
+	if (true == GameEngineInput::IsPress("PlayerRotZ+"))
+	{
+		GetTransform()->AddLocalRotation({ 0.0f, 0.0f, RotSpeed * _DeltaTime });
+	}
+	if (true == GameEngineInput::IsPress("PlayerRotZ-"))
+	{
+		GetTransform()->AddLocalRotation({ 0.0f, 0.0f, -RotSpeed * _DeltaTime });
+	}
+	if (true == GameEngineInput::IsPress("PlayerRotX+"))
+	{
+		GetTransform()->AddLocalRotation({ RotSpeed * _DeltaTime, 0.0f, 0.0f });
+	}
+	if (true == GameEngineInput::IsPress("PlayerRotX-"))
+	{
+		GetTransform()->AddLocalRotation({ -RotSpeed * _DeltaTime, 0.0f, 0.0f });
+	}
+
+	float ScaleSpeed = 10.0f;
+
+	if (true == GameEngineInput::IsPress("PlayerScaleY+"))
+	{
+		GetTransform()->AddLocalScale({ 0.0f, ScaleSpeed * _DeltaTime, 0.0f });
+	}
+	if (true == GameEngineInput::IsPress("PlayerScaleY-"))
+	{
+		GetTransform()->AddLocalScale({ 0.0f, -ScaleSpeed * _DeltaTime, 0.0f });
+	}
+	if (true == GameEngineInput::IsPress("PlayerScaleZ+"))
+	{
+		GetTransform()->AddLocalScale({ 0.0f, 0.0f, ScaleSpeed * _DeltaTime });
+	}
+	if (true == GameEngineInput::IsPress("PlayerScaleZ-"))
+	{
+		GetTransform()->AddLocalScale({ 0.0f, 0.0f, -ScaleSpeed * _DeltaTime });
+	}
+	if (true == GameEngineInput::IsPress("PlayerScaleX+"))
+	{
+		GetTransform()->AddLocalScale({ ScaleSpeed * _DeltaTime, 0.0f, 0.0f });
+	}
+	if (true == GameEngineInput::IsPress("PlayerScaleX-"))
+	{
+		GetTransform()->AddLocalScale({ -ScaleSpeed * _DeltaTime, 0.0f, 0.0f });
+	}
+
+	// Render1->GetTransform()->SetWorldPosition({ 0.0f, 0.0f, 0.0f });
+
+
+
+	Render1->GetTransform()->SetLocalRotation(-GetTransform()->GetWorldRotation());
 }
 
 void BattleActor::Render(float _DeltaTime)
 {
-	HDC Dc = GameEngineWindow::GetWindowBackBufferHdc();
 
-	const int VertexCount = 24;
-
-	// float4 Pos = {640, 360};
-
-	// 최초의 버텍스의 위치를 로컬공간이라고 부릅니다.
-	float4 ArrVertex[VertexCount];
-	// 앞면
-	ArrVertex[0] = { -0.5f, -0.5f, 0.5f };
-	ArrVertex[1] = { 0.5f, -0.5f,0.5f };
-	ArrVertex[2] = { 0.5f, 0.5f,0.5f };
-	ArrVertex[3] = { -0.5f, 0.5f,0.5f };
-
-	// 뒷면
-	ArrVertex[4] = ArrVertex[0].RotaitonXDegReturn(180.0f);
-	ArrVertex[5] = ArrVertex[1].RotaitonXDegReturn(180.0f);
-	ArrVertex[6] = ArrVertex[2].RotaitonXDegReturn(180.0f);
-	ArrVertex[7] = ArrVertex[3].RotaitonXDegReturn(180.0f);
-
-	// 왼쪽면
-	ArrVertex[8] = ArrVertex[0].RotaitonYDegReturn(90.0f);
-	ArrVertex[9] = ArrVertex[1].RotaitonYDegReturn(90.0f);
-	ArrVertex[10] = ArrVertex[2].RotaitonYDegReturn(90.0f);
-	ArrVertex[11] = ArrVertex[3].RotaitonYDegReturn(90.0f);
-
-	// 오른쪽
-	ArrVertex[12] = ArrVertex[0].RotaitonYDegReturn(-90.0f);
-	ArrVertex[13] = ArrVertex[1].RotaitonYDegReturn(-90.0f);
-	ArrVertex[14] = ArrVertex[2].RotaitonYDegReturn(-90.0f);
-	ArrVertex[15] = ArrVertex[3].RotaitonYDegReturn(-90.0f);
-
-	ArrVertex[16] = ArrVertex[0].RotaitonXDegReturn(90.0f);
-	ArrVertex[17] = ArrVertex[1].RotaitonXDegReturn(90.0f);
-	ArrVertex[18] = ArrVertex[2].RotaitonXDegReturn(90.0f);
-	ArrVertex[19] = ArrVertex[3].RotaitonXDegReturn(90.0f);
-
-	ArrVertex[20] = ArrVertex[0].RotaitonXDegReturn(-90.0f);
-	ArrVertex[21] = ArrVertex[1].RotaitonXDegReturn(-90.0f);
-	ArrVertex[22] = ArrVertex[2].RotaitonXDegReturn(-90.0f);
-	ArrVertex[23] = ArrVertex[3].RotaitonXDegReturn(-90.0f);
-
-
-	POINT ArrPoint[VertexCount];
-
-	GetTransform().SetLocalScale({ 100, 100, 100 });
-	// GetTransform().AddLocalRotation({ _Delta * 360.0f, _Delta * 360.0f, _Delta * 360.0f });
-
-	GetTransform().SetCameraMatrix(GetLevel()->GetMainCamera()->GetView(), GetLevel()->GetMainCamera()->GetProjection());
-
-	// GetTransform().SetViewPort(GetLevel()->GetMainCamera()->GetViewPort());
-
-	for (size_t i = 0; i < VertexCount; i++)
-	{
-		ArrVertex[i] = ArrVertex[i] * GetTransform().GetWorldMatrixRef();
-		// 투영행렬의 핵심
-		ArrVertex[i] /= ArrVertex[i].w;
-
-		// TransformCoord
-		ArrVertex[i].w = 1.0f;
-
-		ArrVertex[i] *= GetLevel()->GetMainCamera()->GetViewPort();
-
-		ArrPoint[i] = ArrVertex[i].ToWindowPOINT();
-	}
-
-	for (size_t i = 0; i < 6; i++)
-	{
-		size_t Index = i * 4;
-
-		float4 Vector0 = ArrVertex[Index + 0];
-		float4 Vector1 = ArrVertex[Index + 1];
-		float4 Vector2 = ArrVertex[Index + 2];
-
-		float4 Dir0 = Vector0 - Vector1;
-		float4 Dir1 = Vector1 - Vector2;
-
-		float4 Cross = float4::Cross3DReturn(Dir0, Dir1);
-		if (0 >= Cross.z)
-		{
-			continue;
-		}
-
-		Polygon(Dc, &ArrPoint[i * 4], 4);
-	}
 }

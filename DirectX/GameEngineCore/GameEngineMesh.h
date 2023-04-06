@@ -4,7 +4,7 @@
 #include <GameEngineBase/GameEngineMath.h>
 
 // 설명 :
-class GameEngineMesh : public GameEngineResource
+class GameEngineMesh : public GameEngineResource<GameEngineMesh>
 {
 public:
 	// constrcuter destructer
@@ -17,10 +17,15 @@ public:
 	GameEngineMesh& operator=(const GameEngineMesh& _Other) = delete;
 	GameEngineMesh& operator=(GameEngineMesh&& _Other) noexcept = delete;
 
+	static void Create(const std::string_view& _Name, const std::vector<float4>& _Vertexs)
+	{
+		std::shared_ptr<GameEngineMesh> NewMesh = GameEngineResource::Create(_Name);
+	}
+
+
 protected:
 
 private:
-	// 소프트웨어 랜더링
 	std::vector<float4> Vertexs;
 
 };

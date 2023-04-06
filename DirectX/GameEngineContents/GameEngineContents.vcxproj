@@ -161,6 +161,7 @@
     </ClCompile>
     <ClCompile Include="FECore.cpp" />
     <ClCompile Include="PlayLevel.cpp" />
+    <ClCompile Include="Stat.cpp" />
     <ClCompile Include="TitleLevel.cpp" />
     <ClCompile Include="Unit.cpp">
       <SubType>

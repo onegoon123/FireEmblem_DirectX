@@ -12,9 +12,6 @@
 #include <d3dcompiler.h>
 #include <DirectXPackedVector.h>
 
-#pragma comment(lib, "d3d11")
-#pragma comment(lib, "d3dcompiler")
-#pragma comment(lib, "dxguid")
 
 
 
@@ -158,8 +155,14 @@ public:
 
 	}
 
+	void RotaitonXRad(float _Rad);
+	void RotaitonYRad(float _Rad);
+	void RotaitonZRad(float _Rad);
+	float4 EulerDegToQuaternion();
+	class float4x4 QuaternionToRotationMatrix();
 
-	// 마지막이 1인지는 3d 때 배우게 될겁니다.
+	float4 QuaternionToEulerDeg();
+	float4 QuaternionToEulerRad();
 
 	int ix() const
 	{
@@ -222,6 +225,47 @@ public:
 		return w * 0.5f;
 	}
 
+
+	int uix() const
+	{
+		return static_cast<unsigned int>(x);
+	}
+
+	int uiy() const
+	{
+		return static_cast<unsigned int>(y);
+	}
+
+	int uiz() const
+	{
+		return static_cast<unsigned int>(z);
+	}
+
+	int uiw() const
+	{
+		return static_cast<unsigned int>(w);
+	}
+
+	int uhix() const
+	{
+		return static_cast<unsigned int>(x * 0.5f);
+	}
+
+	int uhiy() const
+	{
+		return static_cast<unsigned int>(y * 0.5f);
+	}
+
+	int uhiz() const
+	{
+		return static_cast<unsigned int>(z * 0.5f);
+	}
+
+	int uhiw() const
+	{
+		return static_cast<unsigned int>(w * 0.5f);
+	}
+
 	float GetAnagleDegZ()
 	{
 		return GetAnagleRadZ() * GameEngineMath::RadToDeg;
@@ -262,10 +306,6 @@ public:
 	{
 		RotaitonZRad(_Deg * GameEngineMath::DegToRad);
 	}
-
-	void RotaitonXRad(float _Rad);
-	void RotaitonYRad(float _Rad);
-	void RotaitonZRad(float _Rad);
 
 	float GetAnagleRadZ()
 	{
@@ -363,6 +403,8 @@ public:
 		//Return.y = y * _Value;
 		//Return.z = z * _Value;
 	}
+
+
 
 	bool operator ==(const float4& _Value) const
 	{
@@ -533,6 +575,8 @@ public:
 	}
 };
 
+typedef float4 Quaternion;
+
 class float4x4
 {
 public:
@@ -573,6 +617,7 @@ public:
 
 	void Identity()
 	{
+
 		DirectMatrix = DirectX::XMMatrixIdentity();
 
 		/*memset(Arr1D, 0, sizeof(float) * 16);
@@ -628,6 +673,35 @@ public:
 		Arr2D[3][1] = _Height * 0.5f + _Right;
 		Arr2D[3][2] = _ZMax != 0.0f ? 0.0f : _ZMin / _ZMax;
 		Arr2D[3][3] = 1.0f;
+	}
+
+	void Decompose(float4& _Scale, float4& _RotQuaternion, float4& _Pos)
+	{
+		DirectX::XMMatrixDecompose(&_Scale.DirectVector, &_RotQuaternion.DirectVector, &_Pos.DirectVector, DirectMatrix);
+	}
+
+	void DecomposeRotQuaternion(float4& _RotQuaternion)
+	{
+		float4 Temp0;
+		float4 Temp1;
+
+		DirectX::XMMatrixDecompose(&Temp0.DirectVector, &_RotQuaternion.DirectVector, &Temp1.DirectVector, DirectMatrix);
+	}
+
+	void DecomposePos(float4& _Pos)
+	{
+		float4 Temp0;
+		float4 Temp1;
+
+		DirectX::XMMatrixDecompose(&Temp0.DirectVector, &Temp1.DirectVector, &_Pos.DirectVector, DirectMatrix);
+	}
+
+	void DecomposeScale(float4& _Scale)
+	{
+		float4 Temp0;
+		float4 Temp1;
+
+		DirectX::XMMatrixDecompose(&_Scale.DirectVector, &Temp0.DirectVector, &Temp1.DirectVector, DirectMatrix);
 	}
 
 	void LookToLH(const float4& _EyePos, const float4& _EyeDir, const float4& _EyeUp)
@@ -693,6 +767,18 @@ public:
 
 	}
 
+	void Inverse()
+	{
+		DirectMatrix = DirectX::XMMatrixInverse(nullptr, *this);
+	}
+
+	float4x4 InverseReturn() const
+	{
+		float4x4 Return = *this;
+		Return.Inverse();
+		return Return;
+	}
+
 	void Scale(const float4& _Value)
 	{
 		//100, 0 , 0 , 0
@@ -728,6 +814,19 @@ public:
 		//Arr2D[3][2] = _Value.z;
 	}
 
+	void RotationDegToXYZ(const float4& _Deg)
+	{
+		float4 Rot = _Deg * GameEngineMath::DegToRad;
+
+		float4x4 RotX = DirectX::XMMatrixRotationX(Rot.x);
+		float4x4 RotY = DirectX::XMMatrixRotationY(Rot.y);
+		float4x4 RotZ = DirectX::XMMatrixRotationZ(Rot.z);
+
+		*this = RotX * RotY * RotZ;
+
+		// DirectMatrix = DirectX::XMMatrixRotationRollPitchYaw(Rot.x, Rot.y, Rot.z);
+	}
+
 	void RotationDeg(const float4& _Deg)
 	{
 		// 짐벌락 현상이라는 것이 있습니다.
@@ -746,8 +845,11 @@ public:
 
 		// *this = RotX * RotY * RotZ;
 
-		DirectMatrix = DirectX::XMMatrixRotationRollPitchYawFromVector(_Deg * GameEngineMath::DegToRad);
+		float4 Rot = _Deg * GameEngineMath::DegToRad;
 
+		// DirectX::XMQuaternionRotationMatrix()
+
+		DirectMatrix = DirectX::XMMatrixRotationRollPitchYaw(Rot.x, Rot.y, Rot.z);
 	}
 
 	void RotationXDeg(const float _Deg)
@@ -878,4 +980,5 @@ public:
 	}
 
 };
+
 

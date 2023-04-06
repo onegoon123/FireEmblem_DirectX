@@ -11,11 +11,11 @@ PlayLevel::~PlayLevel()
 }
 
 
-void PlayLevel::Loading()
+void PlayLevel::Start()
 {
-	GetMainCamera()->GetTransform().SetLocalPosition({ 0, 0, -1000.0f });
+	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -1000.0f });
 
-	std::shared_ptr<BattleActor> NewPlayer = CreateActor<BattleActor>("BattleActor");
+	std::shared_ptr<BattleActor> NewPlayer = CreateActor<BattleActor>("Player");
 
 
 }

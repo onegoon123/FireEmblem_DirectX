@@ -168,8 +168,17 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="GameEngineCore.cpp" />
+    <ClCompile Include="GameEngineCore_Resources.cpp" />
+    <ClCompile Include="GameEngineDevice.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="GameEngineLevel.cpp" />
     <ClCompile Include="GameEngineMesh.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="GameEngineNameObject.cpp">
       <SubType>
       </SubType>
     </ClCompile>
@@ -177,11 +186,27 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="GameEngineObjectBase.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="GameEngineRenderer.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="GameEngineResource.cpp">
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="GameEngineTexture.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="GameEngineTransform.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="GameEngineUpdateObject.cpp">
       <SubType>
       </SubType>
     </ClCompile>
@@ -200,8 +225,16 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="GameEngineCore.h" />
+    <ClInclude Include="GameEngineDevice.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="GameEngineLevel.h" />
     <ClInclude Include="GameEngineMesh.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="GameEngineNameObject.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -209,11 +242,27 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="GameEngineObjectBase.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="GameEngineRenderer.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="GameEngineResource.h">
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="GameEngineTexture.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="GameEngineTransform.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="GameEngineUpdateObject.h">
       <SubType>
       </SubType>
     </ClInclude>
