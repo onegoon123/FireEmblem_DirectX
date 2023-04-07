@@ -1,17 +1,38 @@
 #include "Unit.h"
-
+#include "FERandom.h"
 void Stat::SetIdentity(int _IdentityCode)
 {
 }
 
+const int NeedExperience = 100;		// 레벨업시 필요한 경험치
 bool Stat::AddExperience(int _Experience)
 {
+	Experience += _Experience;
+
+	// 경험치가 100을 넘기면
+	if (NeedExperience <= Experience)
+	{
+		Experience -= NeedExperience;
+		return true;	// 레벨업 필요 시 true를 리턴.
+	}
+
 	return false;
 }
 
 MainStat Stat::LevelUp()
 {
-	return MainStat();
+	// 성장률 확률만큼 레벨업시 스텟 성장
+	MainStat UpValue;
+	if (FERandom::RandomInt() < GrowthRates_HP == true) { MainStatValue.HP++; UpValue.HP++; }
+	if (FERandom::RandomInt() < GrowthRates_Strength == true) { MainStatValue.Strength++; UpValue.Strength++; }
+	if (FERandom::RandomInt() < GrowthRates_Magic == true) { MainStatValue.Magic++; UpValue.Magic++; }
+	if (FERandom::RandomInt() < GrowthRates_Dexterity == true) { MainStatValue.Dexterity++; UpValue.Dexterity++; }
+	if (FERandom::RandomInt() < GrowthRates_Speed == true) { MainStatValue.Speed++; UpValue.Speed++; }
+	if (FERandom::RandomInt() < GrowthRates_Luck == true) { MainStatValue.Luck++; UpValue.Luck++; }
+	if (FERandom::RandomInt() < GrowthRates_Defense == true) { MainStatValue.Defense++; UpValue.Defense++; }
+	if (FERandom::RandomInt() < GrowthRates_Resistance == true) { MainStatValue.Resistance++; UpValue.Resistance++; }
+
+	return UpValue;
 }
 
 void Stat::SetStat_Lyn()
@@ -303,4 +324,52 @@ void Stat::SetStat_Wallace()
 	GrowthRates_Luck = 25;
 	GrowthRates_Defense = 28;
 	GrowthRates_Resistance = 20;
+}
+
+void Stat::SetStat_Brigand()
+{
+	// Brigand
+	MainStatValue.HP = 20;
+	MainStatValue.Strength = 5;
+	MainStatValue.Magic = 2;
+	MainStatValue.Dexterity = 1;
+	MainStatValue.Speed = 5;
+	MainStatValue.Luck = 0;
+	MainStatValue.Defense = 3;
+	MainStatValue.Resistance = 0;
+	MainStatValue.Constitution = 12;
+	ClassValue = BattleClass::Brigand;
+	Movement = 5;
+	GrowthRates_HP = 82;
+	GrowthRates_Strength = 50;
+	GrowthRates_Magic = 40;
+	GrowthRates_Dexterity = 30;
+	GrowthRates_Speed = 20;
+	GrowthRates_Luck = 15;
+	GrowthRates_Defense = 10;
+	GrowthRates_Resistance = 13;
+}
+
+void Stat::SetStat_Soldier()
+{
+	// Soldier
+	MainStatValue.HP = 20;
+	MainStatValue.Strength = 3;
+	MainStatValue.Magic = 2;
+	MainStatValue.Dexterity = 0;
+	MainStatValue.Speed = 1;
+	MainStatValue.Luck = 0;
+	MainStatValue.Defense = 0;
+	MainStatValue.Resistance = 0;
+	MainStatValue.Constitution = 6;
+	ClassValue = BattleClass::Soldier;
+	Movement = 5;
+	GrowthRates_HP = 80;
+	GrowthRates_Strength = 50;
+	GrowthRates_Magic = 40;
+	GrowthRates_Dexterity = 30;
+	GrowthRates_Speed = 20;
+	GrowthRates_Luck = 25;
+	GrowthRates_Defense = 12;
+	GrowthRates_Resistance = 15;
 }

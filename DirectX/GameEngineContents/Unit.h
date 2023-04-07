@@ -28,15 +28,15 @@ private:
 // 레벨업시 성장할 능력치들
 struct MainStat
 {
-	int HP;				// 체력
-	int Strength;		// 힘
-	int Magic;			// 마력
-	int Dexterity;		// 기술
-	int Speed;			// 속도
-	int Defense;		// 수비
-	int Resistance;		// 마방
-	int Luck;			// 행운
-	int Constitution;	// 체격
+	int HP = 0;				// 체력
+	int Strength = 0;		// 힘
+	int Magic = 0;			// 마력
+	int Dexterity = 0;		// 기술
+	int Speed = 0;			// 속도
+	int Defense = 0;		// 수비
+	int Resistance = 0;		// 마방
+	int Luck = 0;			// 행운
+	int Constitution = 0;	// 체격
 };
 
 enum class BattleClass
@@ -104,4 +104,8 @@ private:
 	void SetStat_Ninian();
 	void SetStat_Lucius();
 	void SetStat_Wallace();
+	void SetStat_Brigand();
+	void SetStat_Soldier();
+
+	
 };
