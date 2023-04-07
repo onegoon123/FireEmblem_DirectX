@@ -26,7 +26,7 @@ private:
 
 // 메인 스탯
 // 레벨업시 성장할 능력치들
-class MainStat
+struct MainStat
 {
 	int HP;				// 체력
 	int Strength;		// 힘
@@ -70,7 +70,8 @@ private:
 	int Level;			// 레벨
 	BattleClass ClassValue;
 	MainStat MainStatValue;
-	int Experience;				// 경험치
+	int Movement;				// 이동력
+	int Experience = 0;			// 경험치
 	int GrowthRates_HP;			// 체력 성장률
 	int GrowthRates_Strength;	// 힘   성장률
 	int GrowthRates_Magic;		// 마력 성장률
