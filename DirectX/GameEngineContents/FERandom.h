@@ -14,8 +14,8 @@ public:
 	// 0~99 반환 명중 수치가 반환값 보다 높으면 명중입니다.
 	static int RandomInt()
 	{
-		GameEngineRandom::MainRandom.RandomInt(0, 99);
 		RandomCount++;
+		return GameEngineRandom::MainRandom.RandomInt(0, 99);
 	}
 	// 난수를 _Count번째 난수로 세팅합니다
 	static void SetRandomCount(int _Count)

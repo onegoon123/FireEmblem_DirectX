@@ -35,6 +35,9 @@
     <ClInclude Include="FERandom.h">
       <Filter>Battle</Filter>
     </ClInclude>
+    <ClInclude Include="Stat.h">
+      <Filter>Battle\Unit</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Object">

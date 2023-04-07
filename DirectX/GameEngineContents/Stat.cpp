@@ -1,4 +1,4 @@
-#include "Unit.h"
+#include "Stat.h"
 #include "FERandom.h"
 void Stat::SetIdentity(int _IdentityCode)
 {

@@ -179,6 +179,7 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="PlayLevel.h" />
+    <ClInclude Include="Stat.h" />
     <ClInclude Include="TitleLevel.h" />
     <ClInclude Include="Unit.h">
       <SubType>
