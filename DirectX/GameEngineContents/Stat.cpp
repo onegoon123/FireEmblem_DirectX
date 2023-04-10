@@ -1,3 +1,4 @@
+#include "PrecompileHeader.h"
 #include "Stat.h"
 #include "FERandom.h"
 void Stat::SetIdentity(int _IdentityCode)
@@ -86,9 +87,6 @@ void Stat::SetStat_Cavalier()
 	GrowthRates_Resistance = 15;
 }
 
-void Stat::SetStat_Kent()
-{
-}
 
 void Stat::SetStat_PegasusKnight()
 {

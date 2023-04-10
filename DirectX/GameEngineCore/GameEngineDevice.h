@@ -18,14 +18,25 @@ public:
 
 	static void Release();
 
+	static void RenderStart();
+
+	static void RenderEnd();
+
+	static ID3D11Device* GetDevice()
+	{
+		return Device;
+	}
+
+	static ID3D11DeviceContext* GetContext()
+	{
+		return Context;
+	}
+
 	// HWND
 protected:
 
 private:
-	// 다이렉트9에서는 이 디바이스로 모든걸 다했습니다.
-	// ID3D9Device*
 
-	// 11부터는 인터페이스를 2개로 분리했다.
 	// 1. 리소스는 디바이스 인터페이스가 있다.
 	//    그래픽카드의 ram에 해당하는 부분에 대한 권한은 Device
 	static ID3D11Device* Device;
@@ -39,6 +50,14 @@ private:
 	static IDXGISwapChain* SwapChain;
 
 	static IDXGIAdapter* GetHighPerformanceAdapter();
+
+	static std::shared_ptr<class GameEngineRenderTarget> BackBufferTarget;
+
+	// HBITMAP
+	// static ID3D11Texture2D* BackBufferTexture;
+
+	// HDC
+	// static ID3D11RenderTargetView* RenderTarget;
 
 	// constrcuter destructer
 	GameEngineDevice();

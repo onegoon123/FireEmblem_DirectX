@@ -1,13 +1,14 @@
+#include "PrecompileHeader.h"
 #include "GameEngineDirectory.h"
 #include "GameEngineFile.h"
-#include "GameEngineDebug.h"
+#include <GameEngineBase/GameEngineDebug.h>
 
 
-GameEngineDirectory::GameEngineDirectory() 
+GameEngineDirectory::GameEngineDirectory()
 {
 }
 
-GameEngineDirectory::~GameEngineDirectory() 
+GameEngineDirectory::~GameEngineDirectory()
 {
 }
 void GameEngineDirectory::MoveParentToDirectory(const std::string_view& _String)

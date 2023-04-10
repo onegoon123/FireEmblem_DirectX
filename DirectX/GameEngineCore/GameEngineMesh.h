@@ -17,16 +17,17 @@ public:
 	GameEngineMesh& operator=(const GameEngineMesh& _Other) = delete;
 	GameEngineMesh& operator=(GameEngineMesh&& _Other) noexcept = delete;
 
-	static void Create(const std::string_view& _Name, const std::vector<float4>& _Vertexs)
-	{
-		std::shared_ptr<GameEngineMesh> NewMesh = GameEngineResource::Create(_Name);
-	}
+	//template<typename VertexType>
+	//static void Create(const std::string_view& _Name, const std::vector<VertexType>& _Vertexs)
+	//{
+	//	std::shared_ptr<GameEngineMesh> NewMesh = GameEngineResource::Create(_Name);
+	//}
 
 
 protected:
 
 private:
-	std::vector<float4> Vertexs;
+	// std::vector<float4> Vertexs;
 
 };
 

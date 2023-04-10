@@ -11,6 +11,7 @@
     <ClCompile Include="GameEngineSound.cpp">
       <Filter>Resources\Sound</Filter>
     </ClCompile>
+    <ClCompile Include="PrecompileHeader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngineWindow.h" />
@@ -47,6 +48,7 @@
     <ClInclude Include="GameEngineSound.h">
       <Filter>Resources\Sound</Filter>
     </ClInclude>
+    <ClInclude Include="PrecompileHeader.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ThirdParty">

@@ -47,8 +47,6 @@ public:
 protected:
 
 private:
-	// 고생고생해서 만들지 않게 되었습니다.
-	// std::string Path;
 	std::filesystem::path Path;
 
 };

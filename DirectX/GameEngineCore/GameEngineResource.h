@@ -7,6 +7,7 @@
 #include <GameEngineCore/GameEngineNameObject.h>
 #include <GameEngineBase/GameEngineString.h>
 #include <GameEngineBase/GameEngineDebug.h>
+#include "GameEngineDevice.h"
 
 // Ό³Έν :
 template<typename ResourcesType>

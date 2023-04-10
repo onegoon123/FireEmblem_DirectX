@@ -1,3 +1,4 @@
+#include "PrecompileHeader.h"
 #include "GameEngineRenderer.h"
 #include <GameEnginePlatform/GameEngineWindow.h>
 #include <GameEngineCore/GameEngineLevel.h>
@@ -12,7 +13,7 @@ GameEngineRenderer::~GameEngineRenderer()
 }
 
 
-void GameEngineRenderer::Render(float _Delta)
+void GameEngineRenderer::Render(float _DeltaTime)
 {
 	// 여기서 랜더링 할수 있겠지만 랜더러 못받는다.
 	//여기서 하고 싶다 모든 구조를 이해하고 다 직접
