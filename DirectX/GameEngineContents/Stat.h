@@ -20,13 +20,11 @@ enum class BattleClass
 	Lord,		// 로드
 	BladeLord,	// 블레이드 로드 *
 	Cavalier,	// 소셜나이트
-	Paladin,	// 팔라딘 * 
 	PegasusKnight,// 페가수스 나이트
 	Archer,		// 아쳐
 	Fighter,	// 전사
 	Warrior,	// 워리어 *
 	Cleric,		// 시스터
-	Bishop,		// 비숍 *
 	Mage,		// 마도사
 	Nomad,		// 유목민
 	Thief,		// 도적
@@ -34,8 +32,10 @@ enum class BattleClass
 	Dancer,		// 무희
 	Monk,		// 승려
 	Knight,		// 아머나이트
-	Brigand,	// 산적
-	Soldier,	// 군인
+	General,	// 제너럴 *
+	Brigand,	// 산적 (도끼든 적)
+	Soldier,	// 군인 (창든 적)
+	Mercenary,	// 용병 (검든 적)
 };
 
 // 스탯 클래스
@@ -67,21 +67,25 @@ public:
 
 
 private:
-	void SetStat_Lyn();
-	void SetStat_Sain();
-	void SetStat_Kent();
-	void SetStat_Fiora();
-	void SetStat_Wil();
-	void SetStat_Dorcas();
-	void SetStat_Serra();
-	void SetStat_Erk();
-	void SetStat_Rath();
-	void SetStat_Matthew();
-	void SetStat_Ninian();
-	void SetStat_Lucius();
-	void SetStat_Wallace();
+	void SetStat_Lord();
+	void SetStat_BladeLord();
+	void SetStat_Cavalier();
+	void SetStat_PegasusKnight();
+	void SetStat_Archer();
+	void SetStat_Fighter();
+	void SetStat_Warrior();
+	void SetStat_Cleric();
+	void SetStat_Mage();
+	void SetStat_Nomad();
+	void SetStat_Thief();
+	void SetStat_Assassin();
+	void SetStat_Dancer();
+	void SetStat_Monk();
+	void SetStat_Knight();
+	void SetStat_General();
 	void SetStat_Brigand();
 	void SetStat_Soldier();
+	void SetStat_Mercenary();
 
 
 };

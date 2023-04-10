@@ -35,7 +35,7 @@ MainStat Stat::LevelUp()
 	return UpValue;
 }
 
-void Stat::SetStat_Lyn()
+void Stat::SetStat_Lord()
 {
 	MainStatValue.HP = 16;
 	MainStatValue.Strength = 4;
@@ -58,7 +58,11 @@ void Stat::SetStat_Lyn()
 	GrowthRates_Resistance = 20;
 }
 
-void Stat::SetStat_Sain()
+void Stat::SetStat_BladeLord()
+{
+}
+
+void Stat::SetStat_Cavalier()
 {
 	// male cavalier
 	MainStatValue.HP = 20;
@@ -86,7 +90,7 @@ void Stat::SetStat_Kent()
 {
 }
 
-void Stat::SetStat_Fiora()
+void Stat::SetStat_PegasusKnight()
 {
 	// Pegasus Knight
 	MainStatValue.HP = 14;
@@ -110,7 +114,7 @@ void Stat::SetStat_Fiora()
 	GrowthRates_Resistance = 35;
 }
 
-void Stat::SetStat_Wil()
+void Stat::SetStat_Archer()
 {
 	// Archer
 	MainStatValue.HP = 18;
@@ -134,7 +138,7 @@ void Stat::SetStat_Wil()
 	GrowthRates_Resistance = 15;
 }
 
-void Stat::SetStat_Dorcas()
+void Stat::SetStat_Fighter()
 {
 	// Fighter
 	MainStatValue.HP = 20;
@@ -158,7 +162,11 @@ void Stat::SetStat_Dorcas()
 	GrowthRates_Resistance = 15;
 }
 
-void Stat::SetStat_Serra()
+void Stat::SetStat_Warrior()
+{
+}
+
+void Stat::SetStat_Cleric()
 {
 	// Cleric
 	MainStatValue.HP = 16;
@@ -182,7 +190,7 @@ void Stat::SetStat_Serra()
 	GrowthRates_Resistance = 50;
 }
 
-void Stat::SetStat_Erk()
+void Stat::SetStat_Mage()
 {
 	// Mage
 	MainStatValue.HP = 16;
@@ -206,7 +214,7 @@ void Stat::SetStat_Erk()
 	GrowthRates_Resistance = 30;
 }
 
-void Stat::SetStat_Rath()
+void Stat::SetStat_Nomad()
 {
 	// Nomad
 	MainStatValue.HP = 16;
@@ -230,7 +238,7 @@ void Stat::SetStat_Rath()
 	GrowthRates_Resistance = 15;
 }
 
-void Stat::SetStat_Matthew()
+void Stat::SetStat_Thief()
 {
 	// Thief
 	MainStatValue.HP = 16;
@@ -254,7 +262,11 @@ void Stat::SetStat_Matthew()
 	GrowthRates_Resistance = 20;
 }
 
-void Stat::SetStat_Ninian()
+void Stat::SetStat_Assassin()
+{
+}
+
+void Stat::SetStat_Dancer()
 {
 	// Dancer
 	MainStatValue.HP = 14;
@@ -278,7 +290,7 @@ void Stat::SetStat_Ninian()
 	GrowthRates_Resistance = 13;
 }
 
-void Stat::SetStat_Lucius()
+void Stat::SetStat_Monk()
 {
 	// Dancer
 	MainStatValue.HP = 18;
@@ -302,7 +314,7 @@ void Stat::SetStat_Lucius()
 	GrowthRates_Resistance = 40;
 }
 
-void Stat::SetStat_Wallace()
+void Stat::SetStat_Knight()
 {
 	// Knight
 	MainStatValue.HP = 17;
@@ -324,6 +336,10 @@ void Stat::SetStat_Wallace()
 	GrowthRates_Luck = 25;
 	GrowthRates_Defense = 28;
 	GrowthRates_Resistance = 20;
+}
+
+void Stat::SetStat_General()
+{
 }
 
 void Stat::SetStat_Brigand()
@@ -372,4 +388,8 @@ void Stat::SetStat_Soldier()
 	GrowthRates_Luck = 25;
 	GrowthRates_Defense = 12;
 	GrowthRates_Resistance = 15;
+}
+
+void Stat::SetStat_Mercenary()
+{
 }
