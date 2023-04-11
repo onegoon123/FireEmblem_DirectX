@@ -194,7 +194,7 @@ void Stat::SetStat_Warrior()
 {
 }
 
-void Stat::SetStat_Cleric()
+void Stat::SetStat_Serra()
 {
 	// Cleric
 	Level = 1;
@@ -219,7 +219,7 @@ void Stat::SetStat_Cleric()
 	GrowthRates_Resistance = 50;
 }
 
-void Stat::SetStat_Mage()
+void Stat::SetStat_Erk()
 {
 	// Mage
 	Level = 1;
@@ -244,7 +244,7 @@ void Stat::SetStat_Mage()
 	GrowthRates_Resistance = 30;
 }
 
-void Stat::SetStat_Nomad()
+void Stat::SetStat_Rath()
 {
 	// Nomad
 	Level = 7;
@@ -269,7 +269,7 @@ void Stat::SetStat_Nomad()
 	GrowthRates_Resistance = 15;
 }
 
-void Stat::SetStat_Thief()
+void Stat::SetStat_Matthew()
 {
 	// Thief
 	Level = 2;
@@ -298,7 +298,7 @@ void Stat::SetStat_Assassin()
 {
 }
 
-void Stat::SetStat_Dancer()
+void Stat::SetStat_Ninian()
 {
 	// Dancer
 	Level = 1;
@@ -323,7 +323,7 @@ void Stat::SetStat_Dancer()
 	GrowthRates_Resistance = 13;
 }
 
-void Stat::SetStat_Monk()
+void Stat::SetStat_Lucius()
 {
 	// Dancer
 	Level = 3;
@@ -348,7 +348,7 @@ void Stat::SetStat_Monk()
 	GrowthRates_Resistance = 40;
 }
 
-void Stat::SetStat_Knight()
+void Stat::SetStat_Wallace()
 {
 	// Knight
 	Level = 12;

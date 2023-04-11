@@ -13,13 +13,12 @@ GameEngineRenderer::~GameEngineRenderer()
 }
 
 
-void GameEngineRenderer::Render(float _DeltaTime)
+void GameEngineRenderer::Render(float _Delta)
 {
 	// 여기서 랜더링 할수 있겠지만 랜더러 못받는다.
 	//여기서 하고 싶다 모든 구조를 이해하고 다 직접
 	//여기를 쓴다는 ???????
 
-	HDC Dc = GameEngineWindow::GetWindowBackBufferHdc();
 
 	const int VertexCount = 24;
 
@@ -89,9 +88,17 @@ void GameEngineRenderer::Render(float _DeltaTime)
 
 	// GetTransform().SetViewPort(GetLevel()->GetMainCamera()->GetViewPort());
 
+	//  버텍스 쉐이더 단계
 	for (size_t i = 0; i < VertexCount; i++)
 	{
+		// 버텍스 쉐이더
 		ArrVertex[i] = ArrVertex[i] * GetTransform()->GetWorldViewProjectionMatrixRef();
+	}
+
+	// 레스터라이저 단계
+	for (size_t i = 0; i < VertexCount; i++)
+	{
+		// w나누기는 레스터 라이저가하기로 약속함
 		// 투영행렬의 핵심
 		ArrVertex[i] /= ArrVertex[i].w;
 
@@ -102,6 +109,11 @@ void GameEngineRenderer::Render(float _DeltaTime)
 
 		ArrPoint[i] = ArrVertex[i].ToWindowPOINT();
 	}
+
+	// 색깔정하기
+	// 픽셀쉐이더
+
+	HDC Dc = GameEngineWindow::GetWindowBackBufferHdc();
 
 	for (size_t i = 0; i < 6; i++)
 	{

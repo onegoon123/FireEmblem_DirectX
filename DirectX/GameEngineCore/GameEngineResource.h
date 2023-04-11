@@ -55,7 +55,7 @@ public:
 			return nullptr;
 		}
 
-		return NamedResources[_Name];
+		return NamedResources[UpperName];
 	}
 
 

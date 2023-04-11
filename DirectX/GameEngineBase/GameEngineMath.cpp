@@ -2,6 +2,8 @@
 #include "GameEngineMath.h"
 #include "GameEngineString.h"
 
+// 변수명은 숫자가 앞에올수가 없습니다.
+
 const float GameEngineMath::PIE = 3.141592653589793238462643383279502884197169399375105820974944f;
 const float GameEngineMath::PIE2 = PIE * 2.0f;
 const float GameEngineMath::DegToRad = GameEngineMath::PIE / 180;
@@ -18,6 +20,7 @@ const float4 float4::One = { 1.0f, 1.0f, 1.0f, 1.0f };
 const float4 float4::Zero = { 0.0f, 0.0f, 0.0f, 1.0f };
 const float4 float4::Null = { 0.0f, 0.0f, 0.0f, 0.0f };
 
+const float4 float4::Red = { 1.0f, 0.0f, 0.0f, 1.0f };
 
 void float4::RotaitonXRad(float _Rad)
 {

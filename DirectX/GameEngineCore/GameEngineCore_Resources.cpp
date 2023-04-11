@@ -11,6 +11,7 @@
 #include "GameEngineTexture.h"
 #include "GameEngineRenderTarget.h"
 #include "GameEngineVertexBuffer.h"
+#include "GameEngineRenderingPipeLine.h"
 
 void GameEngineCore::CoreResourcesInit()
 {
@@ -18,10 +19,10 @@ void GameEngineCore::CoreResourcesInit()
 		std::vector<GameEngineVertex> ArrVertex;
 		ArrVertex.resize(4);
 		// ¾Õ¸é
-		ArrVertex[0] = { { -0.5f, -0.5f, 0.0f } };
-		ArrVertex[1] = { { 0.5f, -0.5f,0.0f } };
-		ArrVertex[2] = { { 0.5f, 0.5f,0.0f } };
-		ArrVertex[3] = { { -0.5f, 0.5f,0.0f } };
+		ArrVertex[0] = { { -0.5f, -0.5f, 0.0f }, float4::Red };
+		ArrVertex[1] = { { 0.5f, -0.5f,0.0f }, float4::Red };
+		ArrVertex[2] = { { 0.5f, 0.5f,0.0f }, float4::Red };
+		ArrVertex[3] = { { -0.5f, 0.5f,0.0f }, float4::Red };
 
 		GameEngineVertexBuffer::Create("Rect", ArrVertex);
 
@@ -68,6 +69,14 @@ void GameEngineCore::CoreResourcesInit()
 		ArrVertex[22] = ArrVertex[2].RotaitonXDegReturn(-90.0f);
 		ArrVertex[23] = ArrVertex[3].RotaitonXDegReturn(-90.0f);
 
+	}
+
+	{
+		{
+			std::shared_ptr<GameEngineRenderingPipeLine> Pipe = GameEngineRenderingPipeLine::Create("2DRect");
+
+			Pipe->SetVertexBuffer("Rect");
+		}
 	}
 
 }

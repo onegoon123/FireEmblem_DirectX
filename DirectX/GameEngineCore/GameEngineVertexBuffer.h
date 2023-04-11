@@ -21,14 +21,17 @@ public:
 	{
 		std::shared_ptr<GameEngineVertexBuffer> Res = GameEngineResource::Create(_Name);
 
-		Res->Create(&_Vertexs[0], sizeof(VertexType), _Vertexs.size());
+		Res->Create(&_Vertexs[0], sizeof(VertexType), static_cast<UINT>(_Vertexs.size()));
 	}
+
+	void Setting();
 
 protected:
 
 private:
 	void Create(const void* _Data, UINT _VertexSize, UINT _VertexCount);
 
+	UINT Offset;
 	UINT VertexSize;
 	UINT VertexCount;
 };
