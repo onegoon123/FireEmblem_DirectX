@@ -67,21 +67,22 @@ public:
 
 
 private:
-	void SetStat_Lord();
+	void SetStat_Lyn();
 	void SetStat_BladeLord();
-	void SetStat_Cavalier();
-	void SetStat_PegasusKnight();
-	void SetStat_Archer();
-	void SetStat_Fighter();
+	void SetStat_Sain();
+	void SetStat_Kent();
+	void SetStat_Florina();
+	void SetStat_Wil();
+	void SetStat_Dorcas();
 	void SetStat_Warrior();
-	void SetStat_Cleric();
-	void SetStat_Mage();
-	void SetStat_Nomad();
-	void SetStat_Thief();
+	void SetStat_Serra();
+	void SetStat_Erk();
+	void SetStat_Rath();
+	void SetStat_Matthew();
 	void SetStat_Assassin();
-	void SetStat_Dancer();
-	void SetStat_Monk();
-	void SetStat_Knight();
+	void SetStat_Ninian();
+	void SetStat_Lucius();
+	void SetStat_Wallace();
 	void SetStat_General();
 	void SetStat_Brigand();
 	void SetStat_Soldier();

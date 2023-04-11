@@ -36,14 +36,15 @@ MainStat Stat::LevelUp()
 	return UpValue;
 }
 
-void Stat::SetStat_Lord()
+void Stat::SetStat_Lyn()
 {
+	Level = 1;
 	MainStatValue.HP = 16;
 	MainStatValue.Strength = 4;
 	MainStatValue.Magic = 4;
 	MainStatValue.Dexterity = 7;
 	MainStatValue.Speed = 9;
-	MainStatValue.Luck = 0;
+	MainStatValue.Luck = 5;
 	MainStatValue.Defense = 2;
 	MainStatValue.Resistance = 0;
 	MainStatValue.Constitution = 5;
@@ -63,15 +64,16 @@ void Stat::SetStat_BladeLord()
 {
 }
 
-void Stat::SetStat_Cavalier()
+void Stat::SetStat_Sain()
 {
 	// male cavalier
-	MainStatValue.HP = 20;
-	MainStatValue.Strength = 5;
+	Level = 1;
+	MainStatValue.HP = 19;
+	MainStatValue.Strength = 8;
 	MainStatValue.Magic = 1;
-	MainStatValue.Dexterity = 2;
-	MainStatValue.Speed = 5;
-	MainStatValue.Luck = 0;
+	MainStatValue.Dexterity = 4;
+	MainStatValue.Speed = 6;
+	MainStatValue.Luck = 4;
 	MainStatValue.Defense = 6;
 	MainStatValue.Resistance = 0;
 	MainStatValue.Constitution = 9;
@@ -87,16 +89,42 @@ void Stat::SetStat_Cavalier()
 	GrowthRates_Resistance = 15;
 }
 
+void Stat::SetStat_Kent()
+{
+	// male cavalier
+	Level = 1;
+	MainStatValue.HP = 20;
+	MainStatValue.Strength = 6;
+	MainStatValue.Magic = 2;
+	MainStatValue.Dexterity = 6;
+	MainStatValue.Speed = 7;
+	MainStatValue.Luck = 2;
+	MainStatValue.Defense = 5;
+	MainStatValue.Resistance = 1;
+	MainStatValue.Constitution = 9;
+	ClassValue = BattleClass::Cavalier;
+	Movement = 7;
+	GrowthRates_HP = 75;
+	GrowthRates_Strength = 35;
+	GrowthRates_Magic = 25;
+	GrowthRates_Dexterity = 40;
+	GrowthRates_Speed = 28;
+	GrowthRates_Luck = 30;
+	GrowthRates_Defense = 15;
+	GrowthRates_Resistance = 15;
+}
 
-void Stat::SetStat_PegasusKnight()
+
+void Stat::SetStat_Florina()
 {
 	// Pegasus Knight
-	MainStatValue.HP = 14;
-	MainStatValue.Strength = 4;
+	Level = 1;
+	MainStatValue.HP = 17;
+	MainStatValue.Strength = 5;
 	MainStatValue.Magic = 3;
-	MainStatValue.Dexterity = 5;
-	MainStatValue.Speed = 5;
-	MainStatValue.Luck = 0;
+	MainStatValue.Dexterity = 7;
+	MainStatValue.Speed = 9;
+	MainStatValue.Luck = 7;
 	MainStatValue.Defense = 3;
 	MainStatValue.Resistance = 2;
 	MainStatValue.Constitution = 5;
@@ -112,18 +140,19 @@ void Stat::SetStat_PegasusKnight()
 	GrowthRates_Resistance = 35;
 }
 
-void Stat::SetStat_Archer()
+void Stat::SetStat_Wil()
 {
 	// Archer
-	MainStatValue.HP = 18;
-	MainStatValue.Strength = 4;
-	MainStatValue.Magic = 4;
-	MainStatValue.Dexterity = 3;
-	MainStatValue.Speed = 3;
-	MainStatValue.Luck = 0;
-	MainStatValue.Defense = 3;
+	Level = 2;
+	MainStatValue.HP = 20;
+	MainStatValue.Strength = 6;
+	MainStatValue.Magic = 5;
+	MainStatValue.Dexterity = 35;
+	MainStatValue.Speed = 5;
+	MainStatValue.Luck = 6;
+	MainStatValue.Defense = 5;
 	MainStatValue.Resistance = 0;
-	MainStatValue.Constitution = 7;
+	MainStatValue.Constitution = 6;
 	ClassValue = BattleClass::Archer;
 	Movement = 5;
 	GrowthRates_HP = 70;
@@ -136,18 +165,19 @@ void Stat::SetStat_Archer()
 	GrowthRates_Resistance = 15;
 }
 
-void Stat::SetStat_Fighter()
+void Stat::SetStat_Dorcas()
 {
 	// Fighter
-	MainStatValue.HP = 20;
-	MainStatValue.Strength = 5;
+	Level = 3;
+	MainStatValue.HP = 30;
+	MainStatValue.Strength = 7;
 	MainStatValue.Magic = 2;
-	MainStatValue.Dexterity = 2;
-	MainStatValue.Speed = 4;
-	MainStatValue.Luck = 0;
-	MainStatValue.Defense = 2;
+	MainStatValue.Dexterity = 7;
+	MainStatValue.Speed = 6;
+	MainStatValue.Luck = 3;
+	MainStatValue.Defense = 3;
 	MainStatValue.Resistance = 0;
-	MainStatValue.Constitution = 11;
+	MainStatValue.Constitution = 14;
 	ClassValue = BattleClass::Fighter;
 	Movement = 5;
 	GrowthRates_HP = 85;
@@ -167,14 +197,15 @@ void Stat::SetStat_Warrior()
 void Stat::SetStat_Cleric()
 {
 	// Cleric
-	MainStatValue.HP = 16;
-	MainStatValue.Strength = 1;
-	MainStatValue.Magic = 2;
-	MainStatValue.Dexterity = 2;
-	MainStatValue.Speed = 2;
-	MainStatValue.Luck = 0;
-	MainStatValue.Defense = 0;
-	MainStatValue.Resistance = 6;
+	Level = 1;
+	MainStatValue.HP = 17;
+	MainStatValue.Strength = 2;
+	MainStatValue.Magic = 3;
+	MainStatValue.Dexterity = 5;
+	MainStatValue.Speed = 8;
+	MainStatValue.Luck = 6;
+	MainStatValue.Defense = 2;
+	MainStatValue.Resistance = 5;
 	MainStatValue.Constitution = 4;
 	ClassValue = BattleClass::Cleric;
 	Movement = 5;
@@ -191,15 +222,16 @@ void Stat::SetStat_Cleric()
 void Stat::SetStat_Mage()
 {
 	// Mage
-	MainStatValue.HP = 16;
-	MainStatValue.Strength = 1;
-	MainStatValue.Magic = 4;
-	MainStatValue.Dexterity = 2;
-	MainStatValue.Speed = 3;
-	MainStatValue.Luck = 0;
-	MainStatValue.Defense = 3;
-	MainStatValue.Resistance = 3;
-	MainStatValue.Constitution = 6;
+	Level = 1;
+	MainStatValue.HP = 17;
+	MainStatValue.Strength = 2;
+	MainStatValue.Magic = 5;
+	MainStatValue.Dexterity = 6;
+	MainStatValue.Speed = 7;
+	MainStatValue.Luck = 3;
+	MainStatValue.Defense = 2;
+	MainStatValue.Resistance = 4;
+	MainStatValue.Constitution = 5;
 	ClassValue = BattleClass::Mage;
 	Movement = 5;
 	GrowthRates_HP = 55;
@@ -215,15 +247,16 @@ void Stat::SetStat_Mage()
 void Stat::SetStat_Nomad()
 {
 	// Nomad
-	MainStatValue.HP = 16;
-	MainStatValue.Strength = 5;
+	Level = 7;
+	MainStatValue.HP = 25;
+	MainStatValue.Strength = 8;
 	MainStatValue.Magic = 3;
-	MainStatValue.Dexterity = 4;
-	MainStatValue.Speed = 5;
-	MainStatValue.Luck = 0;
-	MainStatValue.Defense = 4;
-	MainStatValue.Resistance = 0;
-	MainStatValue.Constitution = 7;
+	MainStatValue.Dexterity = 9;
+	MainStatValue.Speed = 10;
+	MainStatValue.Luck = 5;
+	MainStatValue.Defense = 7;
+	MainStatValue.Resistance = 2;
+	MainStatValue.Constitution = 8;
 	ClassValue = BattleClass::Nomad;
 	Movement = 7;
 	GrowthRates_HP = 65;
@@ -239,17 +272,18 @@ void Stat::SetStat_Nomad()
 void Stat::SetStat_Thief()
 {
 	// Thief
-	MainStatValue.HP = 16;
-	MainStatValue.Strength = 3;
+	Level = 2;
+	MainStatValue.HP = 18;
+	MainStatValue.Strength = 4;
 	MainStatValue.Magic = 1;
-	MainStatValue.Dexterity = 1;
-	MainStatValue.Speed = 9;
-	MainStatValue.Luck = 0;
-	MainStatValue.Defense = 2;
+	MainStatValue.Dexterity = 4;
+	MainStatValue.Speed = 11;
+	MainStatValue.Luck = 2;
+	MainStatValue.Defense = 3;
 	MainStatValue.Resistance = 0;
-	MainStatValue.Constitution = 6;
+	MainStatValue.Constitution = 7;
 	ClassValue = BattleClass::Thief;
-	Movement = 5;
+	Movement = 6;
 	GrowthRates_HP = 50;
 	GrowthRates_Strength = 5;
 	GrowthRates_Magic = 5;
@@ -267,15 +301,16 @@ void Stat::SetStat_Assassin()
 void Stat::SetStat_Dancer()
 {
 	// Dancer
+	Level = 1;
 	MainStatValue.HP = 14;
-	MainStatValue.Strength = 1;
-	MainStatValue.Magic = 1;
-	MainStatValue.Dexterity = 2;
-	MainStatValue.Speed = 7;
-	MainStatValue.Luck = 0;
-	MainStatValue.Defense = 0;
-	MainStatValue.Resistance = 1;
-	MainStatValue.Constitution = 4;
+	MainStatValue.Strength = 0;
+	MainStatValue.Magic = 0;
+	MainStatValue.Dexterity = 0;
+	MainStatValue.Speed = 12;
+	MainStatValue.Luck = 10;
+	MainStatValue.Defense = 5;
+	MainStatValue.Resistance = 4;
+	MainStatValue.Constitution = 3;
 	ClassValue = BattleClass::Dancer;
 	Movement = 5;
 	GrowthRates_HP = 45;
@@ -291,14 +326,15 @@ void Stat::SetStat_Dancer()
 void Stat::SetStat_Monk()
 {
 	// Dancer
+	Level = 3;
 	MainStatValue.HP = 18;
 	MainStatValue.Strength = 1;
-	MainStatValue.Magic = 3;
-	MainStatValue.Dexterity = 1;
-	MainStatValue.Speed = 2;
-	MainStatValue.Luck = 0;
+	MainStatValue.Magic = 7;
+	MainStatValue.Dexterity = 6;
+	MainStatValue.Speed = 10;
+	MainStatValue.Luck = 2;
 	MainStatValue.Defense = 1;
-	MainStatValue.Resistance = 5;
+	MainStatValue.Resistance = 6;
 	MainStatValue.Constitution = 6;
 	ClassValue = BattleClass::Monk;
 	Movement = 5;
@@ -315,6 +351,31 @@ void Stat::SetStat_Monk()
 void Stat::SetStat_Knight()
 {
 	// Knight
+	Level = 12;
+	MainStatValue.HP = 30;
+	MainStatValue.Strength = 13;
+	MainStatValue.Magic = 1;
+	MainStatValue.Dexterity = 7;
+	MainStatValue.Speed = 5;
+	MainStatValue.Luck = 10;
+	MainStatValue.Defense = 15;
+	MainStatValue.Resistance = 2;
+	MainStatValue.Constitution = 13;
+	ClassValue = BattleClass::Monk;
+	Movement = 4;
+	GrowthRates_HP = 80;
+	GrowthRates_Strength = 40;
+	GrowthRates_Magic = 30;
+	GrowthRates_Dexterity = 30;
+	GrowthRates_Speed = 15;
+	GrowthRates_Luck = 25;
+	GrowthRates_Defense = 28;
+	GrowthRates_Resistance = 20;
+}
+
+void Stat::SetStat_General()
+{
+	// General
 	MainStatValue.HP = 17;
 	MainStatValue.Strength = 5;
 	MainStatValue.Magic = 1;
@@ -334,10 +395,6 @@ void Stat::SetStat_Knight()
 	GrowthRates_Luck = 25;
 	GrowthRates_Defense = 28;
 	GrowthRates_Resistance = 20;
-}
-
-void Stat::SetStat_General()
-{
 }
 
 void Stat::SetStat_Brigand()
