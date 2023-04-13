@@ -19,14 +19,14 @@ public:
 	{
 		std::shared_ptr<GameEngineRenderTarget> NewRenderTarget = GameEngineResource::Create(_Name);
 
-		NewRenderTarget->Create(_Texture, _Color);
+		NewRenderTarget->ResCreate(_Texture, _Color);
 
 		return NewRenderTarget;
 	}
 
 	void Clear();
 
-
+	void Setting() override;
 
 protected:
 
@@ -35,7 +35,7 @@ private:
 
 	std::shared_ptr<GameEngineTexture> Texture;
 
-	void Create(std::shared_ptr<GameEngineTexture> _Texture, float4 _Color);
+	void ResCreate(std::shared_ptr<GameEngineTexture> _Texture, float4 _Color);
 
 };
 

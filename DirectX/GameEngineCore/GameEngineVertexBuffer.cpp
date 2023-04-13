@@ -10,7 +10,7 @@ GameEngineVertexBuffer::~GameEngineVertexBuffer()
 }
 
 
-void GameEngineVertexBuffer::Create(const void* _Data, UINT _VertexSize, UINT _VertexCount)
+void GameEngineVertexBuffer::ResCreate(const void* _Data, UINT _VertexSize, UINT _VertexCount)
 {
 	VertexSize = _VertexSize;
 	VertexCount = _VertexCount;

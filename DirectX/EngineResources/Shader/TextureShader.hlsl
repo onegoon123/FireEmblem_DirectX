@@ -3,11 +3,11 @@
 // 어떤 정보가 들어올지 구조체로 만들어야 합니다.
 // 어디가 포지션이고 어디가 컬이고
 // 이름 마음대로
-struct Input 
+struct Input
 {
 	// 시맨틱      어떤역할을 가졌는지 
-	float4 Pos   : POSITION0;
-	float4 Color : COLOR;
+    float4 Pos : POSITION;
+    float4 Color : COLOR;
 };
 
 struct OutPut
@@ -20,7 +20,7 @@ struct OutPut
 
 OutPut Texture_VS(Input _Value)
 {
-    OutPut OutPutValue = (OutPut)0;
+    OutPut OutPutValue = (OutPut) 0;
 	
     OutPutValue.Pos = _Value.Pos;
     OutPutValue.Color = _Value.Color;
@@ -29,4 +29,17 @@ OutPut Texture_VS(Input _Value)
     // _Value.Pos *= 월드뷰프로젝션;
 
     return OutPutValue;
+}
+
+struct OutColor
+{
+    // 깔아놓은 도화지중 0번째 도화지에 출력해라.
+    float4 Color : SV_Target0;
+};
+
+OutColor Texture_PS(OutPut _Value)
+{
+    OutColor ReturnColor = (OutColor) 0;
+    ReturnColor.Color = _Value.Color;
+    return ReturnColor;
 }

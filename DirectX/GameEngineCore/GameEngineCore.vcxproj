@@ -206,6 +206,14 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="GameEnginePixelShader.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="GameEngineRasterizer.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="GameEngineRenderer.cpp">
       <SubType>
       </SubType>
@@ -297,6 +305,14 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="GameEngineObjectBase.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="GameEnginePixelShader.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="GameEngineRasterizer.h">
       <SubType>
       </SubType>
     </ClInclude>
