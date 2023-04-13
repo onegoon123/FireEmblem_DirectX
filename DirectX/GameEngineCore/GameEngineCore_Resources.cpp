@@ -11,7 +11,11 @@
 #include "GameEngineTexture.h"
 #include "GameEngineRenderTarget.h"
 #include "GameEngineVertexBuffer.h"
+#include "GameEngineIndexBuffer.h"
 #include "GameEngineRenderingPipeLine.h"
+
+#include "GameEngineVertexShader.h"
+
 
 void GameEngineCore::CoreResourcesInit()
 {
@@ -19,16 +23,16 @@ void GameEngineCore::CoreResourcesInit()
 		std::vector<GameEngineVertex> ArrVertex;
 		ArrVertex.resize(4);
 		// 앞면
-		ArrVertex[0] = { { -0.5f, -0.5f, 0.0f }, float4::Red };
-		ArrVertex[1] = { { 0.5f, -0.5f,0.0f }, float4::Red };
-		ArrVertex[2] = { { 0.5f, 0.5f,0.0f }, float4::Red };
-		ArrVertex[3] = { { -0.5f, 0.5f,0.0f }, float4::Red };
+		ArrVertex[0] = { { -0.5f, 0.5f, 0.0f }, float4::Red };
+		ArrVertex[1] = { { 0.5f, 0.5f,0.0f }, float4::Red };
+		ArrVertex[2] = { { 0.5f, -0.5f,0.0f }, float4::Red };
+		ArrVertex[3] = { { -0.5f, -0.5f,0.0f }, float4::Red };
+
+		std::vector<UINT> ArrIndex = { 0, 1, 2, 0, 3, 2 };
 
 		GameEngineVertexBuffer::Create("Rect", ArrVertex);
+		GameEngineIndexBuffer::Create("Rect", ArrIndex);
 
-		// GameEngineMesh::Create("Rect", ArrVertex);
-		// GameEngineMesh::Create("Rect");
-		//GameEngineMesh::Create("Box");
 	}
 
 	{
@@ -71,11 +75,31 @@ void GameEngineCore::CoreResourcesInit()
 
 	}
 
+	// 버텍스 쉐이더 컴파일
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("EngineResources");
+		NewDir.Move("EngineResources");
+		NewDir.Move("Shader");
+
+		std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".hlsl", ".fx" });
+
+		GameEngineVertexShader::Load(Files[0].GetFullPath(), "Texture_VS");
+
+
+		//for (size_t i = 0; i < Files.size(); i++)
+		//{
+		//}
+
+	}
+
 	{
 		{
-			std::shared_ptr<GameEngineRenderingPipeLine> Pipe = GameEngineRenderingPipeLine::Create("2DRect");
+			std::shared_ptr<GameEngineRenderingPipeLine> Pipe = GameEngineRenderingPipeLine::Create("2DTexture");
 
 			Pipe->SetVertexBuffer("Rect");
+			Pipe->SetIndexBuffer("Rect");
+			Pipe->SetVertexShader("TextureShader.hlsl");
 		}
 	}
 
@@ -83,6 +107,7 @@ void GameEngineCore::CoreResourcesInit()
 
 void GameEngineCore::CoreResourcesEnd()
 {
+	GameEngineResource<GameEngineVertexShader>::ResourcesClear();
 	GameEngineResource<GameEngineVertexBuffer>::ResourcesClear();
 	GameEngineResource<GameEngineMesh>::ResourcesClear();
 	GameEngineResource<GameEngineTexture>::ResourcesClear();

@@ -15,10 +15,13 @@ public:
 	GameEngineRenderer& operator=(const GameEngineRenderer& _Other) = delete;
 	GameEngineRenderer& operator=(GameEngineRenderer&& _Other) noexcept = delete;
 
+	void SetPipeLine(const std::string_view& _Name);
+
 protected:
-	void Render(float _DeltaTime) override;
+	void Render(float _Delta) override;
 
 private:
+	std::shared_ptr<class GameEngineRenderingPipeLine > Pipe;
 
 };
 

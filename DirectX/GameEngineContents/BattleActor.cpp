@@ -46,6 +46,9 @@ void BattleActor::Start()
 	Render0 = CreateComponent<GameEngineRenderer>();
 	Render1 = CreateComponent<GameEngineRenderer>();
 	Render2 = CreateComponent<GameEngineRenderer>();
+	Render0->SetPipeLine("2DTexture");
+	Render1->SetPipeLine("2DTexture");
+	Render2->SetPipeLine("2DTexture");
 
 	Render1->GetTransform()->DebugOn();
 
