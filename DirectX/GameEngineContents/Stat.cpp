@@ -60,10 +60,6 @@ void Stat::SetStat_Lyn()
 	GrowthRates_Resistance = 20;
 }
 
-void Stat::SetStat_BladeLord()
-{
-}
-
 void Stat::SetStat_Sain()
 {
 	// male cavalier
@@ -190,10 +186,6 @@ void Stat::SetStat_Dorcas()
 	GrowthRates_Resistance = 15;
 }
 
-void Stat::SetStat_Warrior()
-{
-}
-
 void Stat::SetStat_Serra()
 {
 	// Cleric
@@ -294,10 +286,6 @@ void Stat::SetStat_Matthew()
 	GrowthRates_Resistance = 20;
 }
 
-void Stat::SetStat_Assassin()
-{
-}
-
 void Stat::SetStat_Ninian()
 {
 	// Dancer
@@ -373,29 +361,6 @@ void Stat::SetStat_Wallace()
 	GrowthRates_Resistance = 20;
 }
 
-void Stat::SetStat_General()
-{
-	// General
-	MainStatValue.HP = 17;
-	MainStatValue.Strength = 5;
-	MainStatValue.Magic = 1;
-	MainStatValue.Dexterity = 2;
-	MainStatValue.Speed = 0;
-	MainStatValue.Luck = 0;
-	MainStatValue.Defense = 9;
-	MainStatValue.Resistance = 0;
-	MainStatValue.Constitution = 13;
-	ClassValue = BattleClass::Monk;
-	Movement = 4;
-	GrowthRates_HP = 80;
-	GrowthRates_Strength = 40;
-	GrowthRates_Magic = 30;
-	GrowthRates_Dexterity = 30;
-	GrowthRates_Speed = 15;
-	GrowthRates_Luck = 25;
-	GrowthRates_Defense = 28;
-	GrowthRates_Resistance = 20;
-}
 
 void Stat::SetStat_Brigand()
 {
@@ -446,5 +411,50 @@ void Stat::SetStat_Soldier()
 }
 
 void Stat::SetStat_Mercenary()
+{
+	// Mercenary
+	MainStatValue.HP = 18;
+	MainStatValue.Strength = 4;
+	MainStatValue.Magic = 2;
+	MainStatValue.Dexterity = 8;
+	MainStatValue.Speed = 8;
+	MainStatValue.Luck = 0;
+	MainStatValue.Defense = 4;
+	MainStatValue.Resistance = 0;
+	MainStatValue.Constitution = 9;
+	ClassValue = BattleClass::Soldier;
+	Movement = 5;
+	GrowthRates_HP = 80;
+	GrowthRates_Strength = 50;
+	GrowthRates_Magic = 40;
+	GrowthRates_Dexterity = 30;
+	GrowthRates_Speed = 20;
+	GrowthRates_Luck = 25;
+	GrowthRates_Defense = 12;
+	GrowthRates_Resistance = 15;
+}
+
+void Stat::ClassChange_BladeLord()
+{
+	MainStatValue.HP += 3;
+	MainStatValue.Strength += 2;
+	MainStatValue.Magic += 1;
+	MainStatValue.Dexterity += 8;
+	MainStatValue.Speed = 8;
+	MainStatValue.Luck = 0;
+	MainStatValue.Defense = 4;
+	MainStatValue.Resistance = 0;
+	MainStatValue.Constitution = 9;
+}
+
+void Stat::ClassChange_Warrior()
+{
+}
+
+void Stat::ClassChange_Assassin()
+{
+}
+
+void Stat::ClassChange_General()
 {
 }

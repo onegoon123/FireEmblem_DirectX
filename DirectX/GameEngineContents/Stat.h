@@ -68,25 +68,25 @@ public:
 
 private:
 	void SetStat_Lyn();
-	void SetStat_BladeLord();
 	void SetStat_Sain();
 	void SetStat_Kent();
 	void SetStat_Florina();
 	void SetStat_Wil();
 	void SetStat_Dorcas();
-	void SetStat_Warrior();
 	void SetStat_Serra();
 	void SetStat_Erk();
 	void SetStat_Rath();
 	void SetStat_Matthew();
-	void SetStat_Assassin();
 	void SetStat_Ninian();
 	void SetStat_Lucius();
 	void SetStat_Wallace();
-	void SetStat_General();
 	void SetStat_Brigand();
 	void SetStat_Soldier();
 	void SetStat_Mercenary();
 
+	void ClassChange_BladeLord();
+	void ClassChange_Warrior();
+	void ClassChange_Assassin();
+	void ClassChange_General();
 
 };
