@@ -21,6 +21,7 @@
 
 void GameEngineCore::CoreResourcesInit()
 {
+	// 버텍스 버퍼의 내용과 인풋 레이아웃의 내용이 더 중요하다.
 	GameEngineVertex::LayOut.AddInputLayOut("POSITION", DXGI_FORMAT_R32G32B32A32_FLOAT);
 	GameEngineVertex::LayOut.AddInputLayOut("COLOR", DXGI_FORMAT_R32G32B32A32_FLOAT);
 
@@ -47,11 +48,11 @@ void GameEngineCore::CoreResourcesInit()
 		ArrVertex.resize(4);
 		// 앞면
 		ArrVertex[0] = { { -0.5f, 0.5f, 0.0f }, float4::Red };
-		ArrVertex[1] = { { 0.5f, 0.5f,0.0f }, float4::Red };
-		ArrVertex[2] = { { 0.5f, -0.5f,0.0f }, float4::Red };
-		ArrVertex[3] = { { -0.5f, -0.5f,0.0f }, float4::Red };
+		ArrVertex[1] = { { 0.5f, 0.5f, 0.0f }, float4::Green };
+		ArrVertex[2] = { { 0.5f, -0.5f, 0.0f }, float4::Black };
+		ArrVertex[3] = { { -0.5f, -0.5f, 0.0f }, float4::White };
 
-		std::vector<UINT> ArrIndex = { 0, 1, 2, 0, 3, 2 };
+		std::vector<UINT> ArrIndex = { 0, 1, 2, 0, 2, 3 };
 
 		GameEngineVertexBuffer::Create("Rect", ArrVertex);
 		GameEngineIndexBuffer::Create("Rect", ArrIndex);
@@ -155,7 +156,7 @@ void GameEngineCore::CoreResourcesInit()
 		// 와이어 프레임은 선으로 표현하는 겁니다. 
 		Desc.FillMode = D3D11_FILL_MODE::D3D11_FILL_WIREFRAME;
 		Desc.CullMode = D3D11_CULL_MODE::D3D11_CULL_BACK;
-		Desc.FrontCounterClockwise = TRUE;
+		Desc.FrontCounterClockwise = FALSE;
 
 		std::shared_ptr<GameEngineRasterizer> Res = GameEngineRasterizer::Create("EngineBase", Desc);
 	}
@@ -170,6 +171,7 @@ void GameEngineCore::CoreResourcesInit()
 			Pipe->SetVertexShader("TextureShader.hlsl");
 			Pipe->SetRasterizer("EngineBase");
 			Pipe->SetPixelShader("TextureShader.hlsl");
+			// Pipe->SetFILL_MODE(D3D11_FILL_WIREFRAME);
 		}
 	}
 }

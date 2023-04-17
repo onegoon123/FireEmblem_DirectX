@@ -6,9 +6,11 @@
 #include "GameEngineVertexShader.h"
 #include "GameEngineRasterizer.h"
 #include "GameEnginePixelShader.h"
+#include "GameEngineInputLayOut.h"
 
 GameEngineRenderingPipeLine::GameEngineRenderingPipeLine()
 {
+	InputLayOutPtr = std::make_shared<GameEngineInputLayOut>();
 }
 
 GameEngineRenderingPipeLine::~GameEngineRenderingPipeLine()
@@ -20,6 +22,14 @@ GameEngineRenderingPipeLine::~GameEngineRenderingPipeLine()
 // 점에 대한 정보를 준비하고
 void GameEngineRenderingPipeLine::InputAssembler1()
 {
+	if (nullptr == InputLayOutPtr)
+	{
+		MsgAssert("인풋 레이아웃이 존재하지 않아서 인풋어셈블러1 과정을 실행할 수 없습니다.");
+		return;
+	}
+
+	InputLayOutPtr->Setting();
+
 	if (nullptr == VertexBufferPtr)
 	{
 		MsgAssert("버텍스 버퍼가 존재하지 않아서 인풋어셈블러1 과정을 실행할 수 없습니다.");
@@ -45,7 +55,6 @@ void GameEngineRenderingPipeLine::VertexShader()
 	}
 
 	VertexShaderPtr->Setting();
-	// GameEngineDevice::GetContext()->VSSetShader
 }
 
 // 점의 정보를 토대로 어떤 순서로 그릴지 정하고
@@ -128,6 +137,13 @@ void GameEngineRenderingPipeLine::SetVertexBuffer(const std::string_view& _Value
 	{
 		MsgAssert("존재하지 않는 버텍스 버퍼를 사용하려고 했습니다.");
 	}
+
+	if (nullptr == VertexShaderPtr)
+	{
+		return;
+	}
+
+	InputLayOutPtr->ResCreate(VertexBufferPtr, VertexShaderPtr);
 }
 
 
@@ -152,6 +168,13 @@ void GameEngineRenderingPipeLine::SetVertexShader(const std::string_view& _Value
 	{
 		MsgAssert("존재하지 않는 버텍스 쉐이더를 사용하려고 했습니다.");
 	}
+
+	if (nullptr == VertexBufferPtr)
+	{
+		return;
+	}
+
+	InputLayOutPtr->ResCreate(VertexBufferPtr, VertexShaderPtr);
 }
 
 
@@ -192,8 +215,10 @@ void GameEngineRenderingPipeLine::Render()
 	PixelShader();
 	OutputMerger();
 
-	// 인덱스 버퍼가 세팅되었을때만 이걸 사용해서 그릴건데.
-	GameEngineDevice::GetContext()->DrawIndexed(IndexBufferPtr->GetIndexCount(), 0, 0);
+	// GameEngineDevice::GetContext()->VSSetConstantBuffers()
+
+	UINT IndexCount = IndexBufferPtr->GetIndexCount();
+	GameEngineDevice::GetContext()->DrawIndexed(IndexCount, 0, 0);
 
 	// 다 끝났다면
 

@@ -5,10 +5,19 @@
 
 // D3D11_INPUT_ELEMENT_DESC
 
-class GameEngineInputLayOut
+class GameEngineInputLayOutInfo
 {
+public:
+	static UINT FormatSize(DXGI_FORMAT _Format);
+
+	inline const std::vector<D3D11_INPUT_ELEMENT_DESC>& GetDescs()
+	{
+		return Descs;
+	}
+
 private:
 	std::vector<D3D11_INPUT_ELEMENT_DESC> Descs;
+	int Offset = 0;
 
 public:
 	void AddInputLayOut(
@@ -27,7 +36,7 @@ public:
 class GameEngineVertex
 {
 public:
-	static GameEngineInputLayOut LayOut;
+	static GameEngineInputLayOutInfo LayOut;
 
 public:
 	float4 POSITION; // 0 16
