@@ -3,6 +3,7 @@
 
 GameEngineVertexShader::GameEngineVertexShader()
 {
+	Type = ShaderType::Vertex;
 }
 
 GameEngineVertexShader::~GameEngineVertexShader()
@@ -67,6 +68,8 @@ void GameEngineVertexShader::ShaderLoad(const std::string_view& _Path
 	{
 		MsgAssert("버텍스 쉐이더 핸들 생성에 실패했습니다");
 	}
+
+	ShaderResCheck();
 }
 
 void GameEngineVertexShader::Setting()
