@@ -22,6 +22,11 @@ public:
 	// 어떤 샘플러 어떤 상수버퍼를 사용했는지를 알아야 한다.
 	void SetPipeLine(const std::string_view& _Name);
 
+	inline GameEngineShaderResHelper& GetShaderResHelper()
+	{
+		return ShaderResHelper;
+	}
+
 protected:
 	void Render(float _Delta) override;
 

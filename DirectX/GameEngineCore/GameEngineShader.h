@@ -27,6 +27,11 @@ public:
 		return ResHelper;
 	}
 
+	inline ShaderType GetType()
+	{
+		return Type;
+	}
+
 protected:
 	// Hlsl 사람들이 점점 아예 니가쳐
 	// 쉐이더 코드를 2진데이터로 변형했을때 그걸 그래픽카드가 내부에 숨기고

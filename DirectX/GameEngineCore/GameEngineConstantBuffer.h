@@ -5,6 +5,8 @@
 // Ό³Έν :
 class GameEngineConstantBuffer : public GameEngineResource<GameEngineConstantBuffer>, public GameEngineDirectBuffer
 {
+	friend class GameEngineConstantBufferSetter;
+
 public:
 
 	// constrcuter destructer
@@ -34,19 +36,24 @@ public:
 
 
 		std::shared_ptr<GameEngineConstantBuffer> Buffer = CreateUnNamed();
+		Buffer->SetName(UpperName);
 		ConstantBufferRes[_Byte][UpperName] = Buffer;
 		Buffer->ResCreate(_BufferDesc);
 
 		return Buffer;
 	}
 
+	void ChangeData(const void* _Data, UINT _Size);
+
 	static void ResourcesClear();
 
 protected:
-
 	void ResCreate(const D3D11_SHADER_BUFFER_DESC& _BufferDesc);
 
 private:
 	static std::map<int, std::map<std::string, std::shared_ptr<GameEngineConstantBuffer>>> ConstantBufferRes;
+
+	void VSSetting(UINT _Slot);
+	void PSSetting(UINT _Slot);
 };
 

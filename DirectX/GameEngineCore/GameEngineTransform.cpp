@@ -4,6 +4,7 @@
 
 GameEngineTransform::GameEngineTransform()
 {
+	TransformUpdate();
 }
 
 GameEngineTransform::~GameEngineTransform()
@@ -39,6 +40,8 @@ void GameEngineTransform::SetParent(GameEngineTransform* _Parent)
 	// 내가 이미 다른 부모가 있다면
 
 	Parent->Child.push_back(this);
+
+	TransformUpdate();
 }
 
 

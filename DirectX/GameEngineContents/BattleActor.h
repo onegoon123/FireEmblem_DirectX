@@ -21,8 +21,7 @@ protected:
 private:
 	float Angle = 0.0f;
 	std::shared_ptr<class GameEngineRenderer> Render0;
-	std::shared_ptr<class GameEngineRenderer> Render1;
-	std::shared_ptr<class GameEngineRenderer> Render2;
 
+	float4 TestColor = { 0.0f, 0.0f, 0.0f, 0.0f };
 };
 
