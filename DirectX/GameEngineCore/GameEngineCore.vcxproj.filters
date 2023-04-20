@@ -173,6 +173,9 @@
       <Filter>Object\Rendering\Component</Filter>
     </ClInclude>
     <ClInclude Include="GameEngineEnum.h" />
+    <ClInclude Include="ThirdParty\DirectXTex\inc\DirectXTex.h">
+      <Filter>ThirdParty\DirectXTex\Header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Resources">
@@ -205,5 +208,27 @@
     <Filter Include="Resources\Texture">
       <UniqueIdentifier>{af0466cf-2082-4199-ab1d-fd4e6cbb9158}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ThirdParty">
+      <UniqueIdentifier>{117a083a-e023-46e8-9aae-a4f1542426e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\DirectXTex">
+      <UniqueIdentifier>{b8814f4c-8050-47f2-9bf7-fddf9086b721}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\DirectXTex\bin">
+      <UniqueIdentifier>{be40553d-7ba0-498e-af62-48cd765603be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\DirectXTex\Header">
+      <UniqueIdentifier>{44175785-5c76-4432-bda3-465e02c17f31}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="ThirdParty\DirectXTex\lib\x64\DirectXTex.lib">
+      <Filter>ThirdParty\DirectXTex\bin</Filter>
+    </Library>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ThirdParty\DirectXTex\inc\DirectXTex.inl">
+      <Filter>ThirdParty\DirectXTex\Header</Filter>
+    </None>
   </ItemGroup>
 </Project>

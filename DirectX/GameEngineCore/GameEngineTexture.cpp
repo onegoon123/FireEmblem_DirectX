@@ -47,3 +47,10 @@ void GameEngineTexture::CreateRenderTargetView()
 	}
 
 }
+
+
+void GameEngineTexture::ResLoad(const std::string_view& _Path)
+{
+	// GameEnginePath NewPath = 
+
+}
