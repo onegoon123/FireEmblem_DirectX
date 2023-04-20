@@ -37,7 +37,7 @@ void GameEngineConstantBuffer::ChangeData(const void* _Data, UINT _Size)
 
 	D3D11_MAPPED_SUBRESOURCE SettingResources = { 0, };
 
-	// 그래픽카드야 너한테 보낼께있어 잠깐 멈춰봐 
+	// 그래픽카드에게 보낼께있으니 잠시 멈춰라 
 	// D3D11_MAP_WRITE_DISCARD 최대한 빠르게 처리하는 
 	GameEngineDevice::GetContext()->Map(Buffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &SettingResources);
 

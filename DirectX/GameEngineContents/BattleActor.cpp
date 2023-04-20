@@ -54,6 +54,7 @@ void BattleActor::Start()
 
 void BattleActor::Update(float _DeltaTime)
 {
+
 	float RotSpeed = 180.0f;
 
 	float Speed = 200.0f;
@@ -118,12 +119,10 @@ void BattleActor::Update(float _DeltaTime)
 
 	if (true == GameEngineInput::IsPress("PlayerScaleY+"))
 	{
-		TestColor.x += _DeltaTime;
 		GetTransform()->AddLocalScale({ 0.0f, ScaleSpeed * _DeltaTime, 0.0f });
 	}
 	if (true == GameEngineInput::IsPress("PlayerScaleY-"))
 	{
-		TestColor.x -= _DeltaTime;
 		GetTransform()->AddLocalScale({ 0.0f, -ScaleSpeed * _DeltaTime, 0.0f });
 	}
 	if (true == GameEngineInput::IsPress("PlayerScaleZ+"))
@@ -142,7 +141,6 @@ void BattleActor::Update(float _DeltaTime)
 	{
 		GetTransform()->AddLocalScale({ -ScaleSpeed * _DeltaTime, 0.0f, 0.0f });
 	}
-
 }
 
 void BattleActor::Render(float _DeltaTime)

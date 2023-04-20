@@ -1,5 +1,5 @@
 #pragma once
-
+#include "Weapon.h"
 // 메인 스탯
 // 레벨업시 성장할 능력치들
 struct MainStat
@@ -43,19 +43,20 @@ enum class BattleClass
 class Stat
 {
 private:
-	int Level;			// 레벨
 	BattleClass ClassValue;
+	Weapon EquipWeapon;		// 장비한 무기
 	MainStat MainStatValue;
-	int Movement;				// 이동력
+	int Level = 0;			// 레벨
+	int Movement = 0;				// 이동력
 	int Experience = 0;			// 경험치
-	int GrowthRates_HP;			// 체력 성장률
-	int GrowthRates_Strength;	// 힘   성장률
-	int GrowthRates_Magic;		// 마력 성장률
-	int GrowthRates_Dexterity;	// 기술 성장률
-	int GrowthRates_Speed;		// 속도 성장률
-	int GrowthRates_Defense;	// 수비 성장률
-	int GrowthRates_Resistance;	// 마방 성장률
-	int GrowthRates_Luck;		// 행운 성장률
+	int GrowthRates_HP = 0;			// 체력 성장률
+	int GrowthRates_Strength = 0;	// 힘   성장률
+	int GrowthRates_Magic = 0;		// 마력 성장률
+	int GrowthRates_Dexterity = 0;	// 기술 성장률
+	int GrowthRates_Speed = 0;		// 속도 성장률
+	int GrowthRates_Defense = 0;	// 수비 성장률
+	int GrowthRates_Resistance = 0;	// 마방 성장률
+	int GrowthRates_Luck = 0;		// 행운 성장률
 
 public:
 	// 기초 스텟 지정
@@ -64,7 +65,6 @@ public:
 	bool AddExperience(int _Experience);
 	// 레벨 업 (경험치 증가 후 직접 실행, 증가한 능력치를 반환)
 	MainStat LevelUp();
-
 
 private:
 	void SetStat_Lyn();
@@ -88,5 +88,15 @@ private:
 	void ClassChange_Warrior();
 	void ClassChange_Assassin();
 	void ClassChange_General();
+
+
+
+	int GetAttackPoint();
+	int GetMagicAttackPoint();
+	int GetHitPoint();
+	int GetCriticalPoint();
+	int GetAttackSpeedPoint();
+	int GetDodgePoint();
+	int GetCriticalDodgePoint();
 
 };

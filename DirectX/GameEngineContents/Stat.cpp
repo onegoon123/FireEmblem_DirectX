@@ -439,22 +439,75 @@ void Stat::ClassChange_BladeLord()
 	MainStatValue.HP += 3;
 	MainStatValue.Strength += 2;
 	MainStatValue.Magic += 1;
-	MainStatValue.Dexterity += 8;
-	MainStatValue.Speed = 8;
-	MainStatValue.Luck = 0;
-	MainStatValue.Defense = 4;
-	MainStatValue.Resistance = 0;
-	MainStatValue.Constitution = 9;
+	MainStatValue.Dexterity += 2;
+	MainStatValue.Defense += 3;
+	MainStatValue.Resistance += 5;
+	Movement += 1;
+	MainStatValue.Constitution += 1;
 }
 
 void Stat::ClassChange_Warrior()
 {
+	MainStatValue.HP += 3;
+	MainStatValue.Strength += 1;
+	MainStatValue.Dexterity += 2;
+	MainStatValue.Defense += 3;
+	MainStatValue.Resistance += 3;
+	Movement += 1;
+	MainStatValue.Constitution += 2;
 }
 
 void Stat::ClassChange_Assassin()
 {
+	MainStatValue.HP += 3;
+	MainStatValue.Strength += 1;
+	MainStatValue.Defense += 2;
+	MainStatValue.Resistance += 2;
 }
 
 void Stat::ClassChange_General()
 {
+	MainStatValue.HP += 4;
+	MainStatValue.Strength += 2;
+	MainStatValue.Dexterity += 2;
+	MainStatValue.Speed += 3;
+	MainStatValue.Defense += 2;
+	MainStatValue.Resistance += 3;
+	Movement += 1;
+	MainStatValue.Constitution += 2;
+}
+
+int Stat::GetAttackPoint()
+{
+	return MainStatValue.Strength + EquipWeapon.Damage * 1;
+}
+
+int Stat::GetMagicAttackPoint()
+{
+	return MainStatValue.Magic + EquipWeapon.Damage * 1;
+}
+
+int Stat::GetHitPoint()
+{
+	return MainStatValue.Dexterity * 2 + MainStatValue.Luck / 2 + EquipWeapon.Hit;
+}
+
+int Stat::GetCriticalPoint()
+{
+	return 0;
+}
+
+int Stat::GetAttackSpeedPoint()
+{
+	return 0;
+}
+
+int Stat::GetDodgePoint()
+{
+	return 0;
+}
+
+int Stat::GetCriticalDodgePoint()
+{
+	return 0;
 }

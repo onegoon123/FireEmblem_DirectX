@@ -168,6 +168,14 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="FECore.cpp" />
+    <ClCompile Include="Int2.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="PlayLevel.cpp" />
     <ClCompile Include="PrecompileHeader.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -178,6 +186,10 @@
     <ClCompile Include="Stat.cpp" />
     <ClCompile Include="TitleLevel.cpp" />
     <ClCompile Include="Unit.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Weapon.cpp">
       <SubType>
       </SubType>
     </ClCompile>
@@ -192,11 +204,23 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="Int2.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Item.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="PlayLevel.h" />
     <ClInclude Include="PrecompileHeader.h" />
     <ClInclude Include="Stat.h" />
     <ClInclude Include="TitleLevel.h" />
     <ClInclude Include="Unit.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Weapon.h">
       <SubType>
       </SubType>
     </ClInclude>

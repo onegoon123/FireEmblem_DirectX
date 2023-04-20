@@ -172,7 +172,7 @@
     <ClInclude Include="GameEngineShaderResHelper.h">
       <Filter>Object\Rendering\Component</Filter>
     </ClInclude>
-    <ClInclude Include="EngineEnum.h" />
+    <ClInclude Include="GameEngineEnum.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Resources">

@@ -14,22 +14,21 @@ GameEngineTransform::~GameEngineTransform()
 
 void GameEngineTransform::TransformUpdate()
 {
-	LocalScaleMatrix.Scale(LocalScale);
+	TransData.LocalScaleMatrix.Scale(TransData.LocalScale);
 
-	LocalRotation.w = 0.0f;
-	LocalQuaternion = LocalRotation.EulerDegToQuaternion();
-	LocalRotationMatrix = LocalQuaternion.QuaternionToRotationMatrix();
-	LocalPositionMatrix.Pos(LocalPosition);
-
-	LocalWorldMatrix = LocalScaleMatrix * LocalRotationMatrix * LocalPositionMatrix;
+	TransData.LocalRotation.w = 0.0f;
+	TransData.LocalQuaternion = TransData.LocalRotation.EulerDegToQuaternion();
+	TransData.LocalRotationMatrix = TransData.LocalQuaternion.QuaternionToRotationMatrix();
+	TransData.LocalPositionMatrix.Pos(TransData.LocalPosition);
+	TransData.LocalWorldMatrix = TransData.LocalScaleMatrix * TransData.LocalRotationMatrix * TransData.LocalPositionMatrix;
 
 	if (nullptr == Parent)
 	{
-		WorldMatrix = LocalWorldMatrix;
+		TransData.WorldMatrix = TransData.LocalWorldMatrix;
 	}
 	else
 	{
-		WorldMatrix = LocalWorldMatrix * Parent->GetWorldMatrixRef();
+		TransData.WorldMatrix = TransData.LocalWorldMatrix * Parent->GetWorldMatrixRef();
 	}
 }
 
