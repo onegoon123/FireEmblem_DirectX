@@ -222,13 +222,13 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <Library Include="ThirdParty\DirectXTex\lib\x64\DirectXTex.lib">
-      <Filter>ThirdParty\DirectXTex\bin</Filter>
-    </Library>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="ThirdParty\DirectXTex\inc\DirectXTex.inl">
       <Filter>ThirdParty\DirectXTex\Header</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="ThirdParty\DirectXTex\lib\x64\DirectXTex.lib">
+      <Filter>ThirdParty\DirectXTex\bin</Filter>
+    </CopyFileToFolders>
   </ItemGroup>
 </Project>

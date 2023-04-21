@@ -389,7 +389,9 @@
     <ClInclude Include="ThirdParty\DirectXTex\inc\DirectXTex.h" />
   </ItemGroup>
   <ItemGroup>
-    <Library Include="ThirdParty\DirectXTex\lib\x64\DirectXTex.lib" />
+    <CopyFileToFolders Include="ThirdParty\DirectXTex\lib\x64\DirectXTex.lib">
+      <FileType>Document</FileType>
+    </CopyFileToFolders>
   </ItemGroup>
   <ItemGroup>
     <None Include="ThirdParty\DirectXTex\inc\DirectXTex.inl" />
