@@ -29,7 +29,7 @@ struct Input
 {
 	// 시맨틱      어떤역할을 가졌는지 
     float4 Pos : POSITION;
-    float4 Color : COLOR;
+    float4 UV : TEXCOORD;
 };
 
 struct OutPut
@@ -37,7 +37,7 @@ struct OutPut
     // 레스터라이저에게 보냄
     // w나눈 다음  뷰포트 곱하고 픽셀 건져낼때 쓸포지션 정보
     float4 Pos : SV_Position;
-    float4 Color : COLOR;
+    float4 UV : TEXCOORD;
 };
 
 
@@ -50,7 +50,7 @@ OutPut Texture_VS(Input _Value)
     _Value.Pos.w = 1.0f;
     OutPutValue.Pos = mul(_Value.Pos, WorldViewProjectionMatrix);
     // OutPutValue.Pos = _Value.Pos;
-    OutPutValue.Color = _Value.Color;
+    OutPutValue.UV = _Value.UV;
 	
 	// 다음단계에서 사용할 정보들.
     // OutPutValue.Pos *= 월드뷰프로젝션;
@@ -63,9 +63,12 @@ cbuffer OutPixelColor : register(b0)
 {
     float4 OutColor;
 }
-
+Texture2D DiffuseTex : register(t0);
+SamplerState CLAMPSAMPLER : register(s0);
 
 float4 Texture_PS(OutPut _Value) : SV_Target0
 {
-    return OutColor;
+    float4 Color = DiffuseTex.Sample(CLAMPSAMPLER, _Value.UV.xy);
+    
+    return Color;
 }

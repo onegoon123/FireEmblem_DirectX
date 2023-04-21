@@ -29,7 +29,17 @@ void GameEngineVertexShader::ShaderLoad(const std::string_view& _Path
 	Flag = D3D10_SHADER_DEBUG;
 #endif
 
-	// 상수버퍼 할때 이옵션이 관련이 있습니다.
+	// 상수버퍼에 float4x4 크기의 데이터를 넣으면 
+	// 전치된 느낌으로 들어간다.
+	// 행렬을 넣을때.
+
+	// 내가 1 2 3 4
+
+	// 쉐이더 1 
+	//        2
+	//         3
+	//         4
+
 	Flag |= D3DCOMPILE_PACK_MATRIX_ROW_MAJOR;
 
 	ID3DBlob* Error;

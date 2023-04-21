@@ -1,6 +1,7 @@
 #pragma once
 #include "GameEngineConstantBuffer.h"
 #include "GameEngineTexture.h"
+#include "GameEngineSampler.h"
 
 // 모든 텍스처건 상수버퍼건 
 class GameEngineShaderResources
@@ -28,26 +29,48 @@ class GameEngineTextureSetter : public GameEngineShaderResources
 {
 public:
 	std::shared_ptr<GameEngineTexture> Res;
+	void Setting() override;
+};
+
+class GameEngineSamplerSetter : public GameEngineShaderResources
+{
+public:
+	std::shared_ptr<GameEngineSampler> Res;
+	void Setting() override;
 };
 
 class GameEngineShaderResHelper
 {
 private:
-	std::multimap<std::string, GameEngineConstantBufferSetter> ConstantBuffer;
+	std::multimap<std::string, GameEngineConstantBufferSetter> ConstantBufferSetters;
+	std::multimap<std::string, GameEngineTextureSetter> TextureSetters;
+	std::multimap<std::string, GameEngineSamplerSetter> SamplerSetters;
 
 public:
-	void CreateConstantBufferSetter(const GameEngineConstantBufferSetter& _Buffer)
+	void CreateTextureSetter(const GameEngineTextureSetter& _Setter)
 	{
-		ConstantBuffer.insert(std::make_pair(_Buffer.Name, _Buffer));
+		TextureSetters.insert(std::make_pair(_Setter.Name, _Setter));
+	}
+
+	void CreateSamplerSetter(const GameEngineSamplerSetter& _Setter)
+	{
+		SamplerSetters.insert(std::make_pair(_Setter.Name, _Setter));
+	}
+
+
+
+	void CreateConstantBufferSetter(const GameEngineConstantBufferSetter& _Setter)
+	{
+		ConstantBufferSetters.insert(std::make_pair(_Setter.Name, _Setter));
 	}
 
 	bool IsConstantBuffer(const std::string_view& _Name)
 	{
 		std::string UpperName = GameEngineString::ToUpper(_Name);
 
-		std::multimap<std::string, GameEngineConstantBufferSetter>::iterator FindIter = ConstantBuffer.find(UpperName);
+		std::multimap<std::string, GameEngineConstantBufferSetter>::iterator FindIter = ConstantBufferSetters.find(UpperName);
 
-		if (ConstantBuffer.end() == FindIter)
+		if (ConstantBufferSetters.end() == FindIter)
 		{
 			return false;
 		}

@@ -21,7 +21,7 @@ void GameEngineFile::SaveBin(const GameEngineSerializer& _Data)
 {
 	FILE* FilePtr = nullptr;
 
-	std::string PathString = Path.GetPathToString();
+	std::string PathString = Path.GetFullPath();
 	std::string Text = "wb";
 
 	fopen_s(&FilePtr, PathString.c_str(), Text.c_str());
@@ -43,7 +43,7 @@ void GameEngineFile::SaveBin(const GameEngineSerializer& _Data)
 void GameEngineFile::SaveText(const std::string_view& _View)
 {
 	FILE* FilePtr = nullptr;
-	std::string PathString = Path.GetPathToString();
+	std::string PathString = Path.GetFullPath();
 	std::string Text = "wt";
 
 	fopen_s(&FilePtr, PathString.c_str(), Text.c_str());
@@ -66,7 +66,7 @@ void GameEngineFile::LoadBin(GameEngineSerializer& _Data)
 {
 	FILE* FilePtr = nullptr;
 
-	std::string PathString = Path.GetPathToString();
+	std::string PathString = Path.GetFullPath();
 	std::string Text = "rb";
 
 	fopen_s(&FilePtr, PathString.c_str(), Text.c_str());

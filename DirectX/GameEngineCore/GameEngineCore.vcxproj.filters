@@ -87,6 +87,9 @@
     <ClCompile Include="GameEngineCore_Resources.cpp">
       <Filter>Resources</Filter>
     </ClCompile>
+    <ClCompile Include="GameEngineSampler.cpp">
+      <Filter>Resources\Texture</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngineCore.h" />
@@ -176,6 +179,9 @@
     <ClInclude Include="ThirdParty\DirectXTex\inc\DirectXTex.h">
       <Filter>ThirdParty\DirectXTex\Header</Filter>
     </ClInclude>
+    <ClInclude Include="GameEngineSampler.h">
+      <Filter>Resources\Texture</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Resources">
@@ -220,15 +226,22 @@
     <Filter Include="ThirdParty\DirectXTex\Header">
       <UniqueIdentifier>{44175785-5c76-4432-bda3-465e02c17f31}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ThirdParty\DirectXTex\bin\Debug">
+      <UniqueIdentifier>{30ee415e-86eb-4b96-8097-460707810593}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\DirectXTex\bin\Release">
+      <UniqueIdentifier>{57fb17e6-72c0-4f3c-a2f7-9779f536d7b1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ThirdParty\DirectXTex\inc\DirectXTex.inl">
       <Filter>ThirdParty\DirectXTex\Header</Filter>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <CopyFileToFolders Include="ThirdParty\DirectXTex\lib\x64\DirectXTex.lib">
-      <Filter>ThirdParty\DirectXTex\bin</Filter>
-    </CopyFileToFolders>
+    <None Include="ThirdParty\DirectXTex\lib\x64\Release\DirectXTex.lib">
+      <Filter>ThirdParty\DirectXTex\bin\Release</Filter>
+    </None>
+    <None Include="ThirdParty\DirectXTex\lib\x64\Debug\DirectXTex.lib">
+      <Filter>ThirdParty\DirectXTex\bin\Debug</Filter>
+    </None>
   </ItemGroup>
 </Project>
