@@ -27,6 +27,12 @@
     <ClCompile Include="Weapon.cpp">
       <Filter>Battle\Item</Filter>
     </ClCompile>
+    <ClCompile Include="MapUnit.cpp">
+      <Filter>Map</Filter>
+    </ClCompile>
+    <ClCompile Include="BattleUnit.cpp">
+      <Filter>Map</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FECore.h" />
@@ -58,6 +64,12 @@
     <ClInclude Include="Weapon.h">
       <Filter>Battle\Item</Filter>
     </ClInclude>
+    <ClInclude Include="MapUnit.h">
+      <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="BattleUnit.h">
+      <Filter>Map</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Object">
@@ -77,6 +89,9 @@
     </Filter>
     <Filter Include="Battle\Item">
       <UniqueIdentifier>{27f345ca-ff3a-4d6d-990f-5b57973a6e96}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Map">
+      <UniqueIdentifier>{2580ba1d-6e95-41a8-87a5-27b34d8b68fb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

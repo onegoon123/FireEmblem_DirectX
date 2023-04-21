@@ -1,6 +1,7 @@
 #include "PrecompileHeader.h"
 #include "PlayLevel.h"
 #include "BattleActor.h"
+#include "BattleUnit.h"
 #include <GameEngineCore/GameEngineCamera.h>
 #include <GameEngineCore/GameEngineTexture.h>
 
@@ -40,6 +41,7 @@ void PlayLevel::Start()
 
 
 	std::shared_ptr<BattleActor> NewPlayer = CreateActor<BattleActor>("Player");
+	CreateActor<BattleUnit>("BattleUnit");
 
 
 }
