@@ -7,6 +7,11 @@ GameEngineSampler::GameEngineSampler()
 
 GameEngineSampler::~GameEngineSampler()
 {
+	if (nullptr != State)
+	{
+		State->Release();
+		State = nullptr;
+	}
 }
 
 
