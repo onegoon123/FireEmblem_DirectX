@@ -28,6 +28,8 @@ void GameEngineRenderingPipeLine::InputAssembler1()
 		return;
 	}
 
+	// 랜더링을 위해서는 점으로 면을 만드는게 기본이다.
+	// 그래픽카드는 점이 어떠한 구성을 가지고 있는지 알지 못한다.
 	InputLayOutPtr->Setting();
 
 	if (nullptr == VertexBufferPtr)
@@ -60,15 +62,18 @@ void GameEngineRenderingPipeLine::VertexShader()
 // 점의 정보를 토대로 어떤 순서로 그릴지 정하고
 void GameEngineRenderingPipeLine::InputAssembler2()
 {
-	GameEngineDevice::GetContext()->IASetPrimitiveTopology(TOPOLOGY);
-
+	// 그리는 순서에 대한 데이터를 넣어준다.
 	if (nullptr == IndexBufferPtr)
 	{
 		MsgAssert("인덱스 버퍼가 존재하지 않아서 인풋 어셈블러2 과정을 실행할 수 없습니다.");
 		return;
 	}
 
+	// 012023
 	IndexBufferPtr->Setting();
+
+	// 012 023 <=3개씩 끊어서 면으로 만들어라는 여기서 처리가 되었다.
+	GameEngineDevice::GetContext()->IASetPrimitiveTopology(TOPOLOGY);
 }
 
 // 여기서부터
@@ -200,8 +205,7 @@ void GameEngineRenderingPipeLine::SetRasterizer(const std::string_view& _Value)
 	}
 }
 
-// 매쉬 + 머티리얼
-void GameEngineRenderingPipeLine::Render()
+void GameEngineRenderingPipeLine::RenderingPipeLineSetting()
 {
 	// 랜더라고 하는 부분은 랜더링 파이프라인을 한바뀌 돌리는 것.
 	InputAssembler1();
@@ -214,18 +218,10 @@ void GameEngineRenderingPipeLine::Render()
 	Rasterizer();
 	PixelShader();
 	OutputMerger();
+}
 
-	// GameEngineDevice::GetContext()->VSSetConstantBuffers()
-
+void GameEngineRenderingPipeLine::Render()
+{
 	UINT IndexCount = IndexBufferPtr->GetIndexCount();
 	GameEngineDevice::GetContext()->DrawIndexed(IndexCount, 0, 0);
-
-	// 다 끝났다면
-
-	// 메쉬 <= 외형이 어떻게 보일것인가.
-	//         픽셀건져내기할 범위를 지정하는 Rasterizer
-	//         w나누기를 하고 뷰포트를 곱해서
-
-	// 머티리얼 <= 색깔이 어떻게 나올것인가?
-	//             레스터라이저 + 픽셀쉐이더 + 버텍스 쉐이더
 }

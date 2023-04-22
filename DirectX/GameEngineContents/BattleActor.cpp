@@ -42,12 +42,12 @@ void BattleActor::Start()
 	}
 
 
-	Render0 = CreateComponent<GameEngineRenderer>();
-	Render0->SetPipeLine("2DTexture");
-	//Render0->GetShaderResHelper().SetConstantBufferLink("OutPixelColor", TestColor);
+	//Render0 = CreateComponent<GameEngineRenderer>();
+	//Render0->SetPipeLine("2DTexture");
+	////Render0->GetShaderResHelper().SetConstantBufferLink("OutPixelColor", TestColor);
 
-	Render0->GetTransform()->SetLocalScale({ 960.0f, 640.0f , 100.0f });
-	Render0->GetTransform()->SetWorldPosition({ -960.0f,0,0 });
+	//Render0->GetTransform()->SetLocalScale({ 960.0f, 640.0f , 100.0f });
+	//Render0->GetTransform()->SetWorldPosition({ -960.0f,0,0 });
 	// Render0->GetShaderResHelper().SetConstantBufferLink("TransformData", TestColor);
 
 	TestColor = { 0.0f, 0.0f, 0.0f, 1.0f };

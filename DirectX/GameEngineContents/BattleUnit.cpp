@@ -15,6 +15,7 @@ void BattleUnit::Start()
 {
 	SpriteRender = CreateComponent<GameEngineRenderer>();
 	SpriteRender->SetPipeLine("2DTexture");
+	SpriteRender->GetShaderResHelper().SetTexture("DiffuseTex", "TestCursor.png");
 	SpriteRender->GetTransform()->SetWorldScale({ 104,104 });
 
 	SetMapPos({ 0,0 });

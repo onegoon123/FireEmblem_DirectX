@@ -70,5 +70,10 @@ float4 Texture_PS(OutPut _Value) : SV_Target0
 {
     float4 Color = DiffuseTex.Sample(CLAMPSAMPLER, _Value.UV.xy);
     
+    if (Color.a == 0)
+    {
+        clip(-1);
+    }
+    
     return Color;
 }

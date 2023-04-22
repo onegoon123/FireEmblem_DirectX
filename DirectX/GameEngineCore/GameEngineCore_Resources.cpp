@@ -4,6 +4,7 @@
 #include <GameEnginePlatform\GameEngineWindow.h>
 #include <GameEnginePlatform\GameEngineSound.h>
 #include "GameEngineResource.h"
+#include "GameEngineShaderResHelper.h"
 
 #include "GameEngineVertex.h"
 
@@ -40,6 +41,7 @@ void GameEngineCore::CoreResourcesInit()
 	// 버텍스 버퍼의 내용과 인풋 레이아웃의 내용이 더 중요하다.
 	GameEngineVertex::LayOut.AddInputLayOut("POSITION", DXGI_FORMAT_R32G32B32A32_FLOAT);
 	GameEngineVertex::LayOut.AddInputLayOut("TEXCOORD", DXGI_FORMAT_R32G32B32A32_FLOAT);
+	GameEngineVertex::LayOut.AddInputLayOut("NORMAL", DXGI_FORMAT_R32G32B32A32_FLOAT);
 
 	//typedef struct D3D11_INPUT_ELEMENT_DESC
 	//{
@@ -79,6 +81,25 @@ void GameEngineCore::CoreResourcesInit()
 	}
 
 	{
+		D3D11_SAMPLER_DESC SamperData = {};
+
+		// 
+
+		SamperData.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+		SamperData.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+		SamperData.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+		// 텍스처가 멀리있을때 뭉갤꺼냐
+		// 안뭉갠다.
+		SamperData.MipLODBias = 0.0f;
+		SamperData.MaxAnisotropy = 1;
+		SamperData.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
+		SamperData.MinLOD = -FLT_MAX;
+		SamperData.MaxLOD = FLT_MAX;
+
+		GameEngineSampler::Create("WRAPSAMPLER", SamperData);
+	}
+
+	{
 		std::vector<GameEngineVertex> ArrVertex;
 		ArrVertex.resize(4);
 
@@ -97,45 +118,6 @@ void GameEngineCore::CoreResourcesInit()
 
 	}
 
-	{
-		// 최초의 버텍스의 위치를 로컬공간이라고 부릅니다.
-		std::vector<float4> ArrVertex;
-		ArrVertex.resize(24);
-		// 앞면
-		ArrVertex[0] = { -0.5f, -0.5f, 0.5f };
-		ArrVertex[1] = { 0.5f, -0.5f,0.5f };
-		ArrVertex[2] = { 0.5f, 0.5f,0.5f };
-		ArrVertex[3] = { -0.5f, 0.5f,0.5f };
-
-		// 뒷면
-		ArrVertex[4] = ArrVertex[0].RotaitonXDegReturn(180.0f);
-		ArrVertex[5] = ArrVertex[1].RotaitonXDegReturn(180.0f);
-		ArrVertex[6] = ArrVertex[2].RotaitonXDegReturn(180.0f);
-		ArrVertex[7] = ArrVertex[3].RotaitonXDegReturn(180.0f);
-
-		// 왼쪽면
-		ArrVertex[8] = ArrVertex[0].RotaitonYDegReturn(90.0f);
-		ArrVertex[9] = ArrVertex[1].RotaitonYDegReturn(90.0f);
-		ArrVertex[10] = ArrVertex[2].RotaitonYDegReturn(90.0f);
-		ArrVertex[11] = ArrVertex[3].RotaitonYDegReturn(90.0f);
-
-		// 오른쪽
-		ArrVertex[12] = ArrVertex[0].RotaitonYDegReturn(-90.0f);
-		ArrVertex[13] = ArrVertex[1].RotaitonYDegReturn(-90.0f);
-		ArrVertex[14] = ArrVertex[2].RotaitonYDegReturn(-90.0f);
-		ArrVertex[15] = ArrVertex[3].RotaitonYDegReturn(-90.0f);
-
-		ArrVertex[16] = ArrVertex[0].RotaitonXDegReturn(90.0f);
-		ArrVertex[17] = ArrVertex[1].RotaitonXDegReturn(90.0f);
-		ArrVertex[18] = ArrVertex[2].RotaitonXDegReturn(90.0f);
-		ArrVertex[19] = ArrVertex[3].RotaitonXDegReturn(90.0f);
-
-		ArrVertex[20] = ArrVertex[0].RotaitonXDegReturn(-90.0f);
-		ArrVertex[21] = ArrVertex[1].RotaitonXDegReturn(-90.0f);
-		ArrVertex[22] = ArrVertex[2].RotaitonXDegReturn(-90.0f);
-		ArrVertex[23] = ArrVertex[3].RotaitonXDegReturn(-90.0f);
-
-	}
 
 	// 버텍스 쉐이더 컴파일
 	{
@@ -146,7 +128,9 @@ void GameEngineCore::CoreResourcesInit()
 
 		std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".hlsl", ".fx" });
 
-		GameEngineVertexShader::Load(Files[0].GetFullPath(), "Texture_VS");
+		std::shared_ptr<GameEngineVertexShader> VertexShader = GameEngineVertexShader::Load(Files[0].GetFullPath(), "Texture_VS");
+
+
 		GameEnginePixelShader::Load(Files[0].GetFullPath(), "Texture_PS");
 
 		//for (size_t i = 0; i < Files.size(); i++)
@@ -192,7 +176,7 @@ void GameEngineCore::CoreResourcesInit()
 		// FALSE 인 경우에만 적용됩니다 . 이 멤버에 대한 자세한 내용은 비고를 참조하세요.
 
 		// 와이어 프레임은 선으로 표현하는 겁니다. 
-		Desc.FillMode = D3D11_FILL_MODE::D3D11_FILL_WIREFRAME;
+		// Desc.FillMode = D3D11_FILL_MODE::D3D11_FILL_WIREFRAME;
 		Desc.CullMode = D3D11_CULL_MODE::D3D11_CULL_BACK;
 		Desc.FrontCounterClockwise = FALSE;
 
@@ -209,7 +193,6 @@ void GameEngineCore::CoreResourcesInit()
 			Pipe->SetVertexShader("TextureShader.hlsl");
 			Pipe->SetRasterizer("EngineBase");
 			Pipe->SetPixelShader("TextureShader.hlsl");
-			// Pipe->SetFILL_MODE(D3D11_FILL_WIREFRAME);
 		}
 	}
 }

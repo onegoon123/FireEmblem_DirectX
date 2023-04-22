@@ -16,6 +16,8 @@ void FECore::GameStart()
 {
 	new int();
 
+
+
 	GameEngineCore::CreateLevel<TitleLevel>();
 	GameEngineCore::CreateLevel<PlayLevel>();
 	GameEngineCore::ChangeLevel("PlayLevel");
