@@ -42,6 +42,7 @@ enum class BattleClass
 // 유닛이 지닐 스탯을 관리하는 클래스
 class Stat
 {
+	friend class BattleUnit;
 private:
 	BattleClass ClassValue;
 	Weapon EquipWeapon;		// 장비한 무기
@@ -59,6 +60,8 @@ private:
 	int GrowthRates_Luck = 0;		// 행운 성장률
 
 public:
+	Stat();
+	~Stat();
 	// 기초 스텟 지정
 	void SetIdentity(int _IdentityCode);
 	// 경험치 증가 (레벨업 시 true)

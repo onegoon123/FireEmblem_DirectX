@@ -4,22 +4,39 @@
 // Ό³Έν :
 class MapUnit : public GameEngineActor
 {
+	friend class BattleLevel;
 public:
 	// constrcuter destructer
 	MapUnit();
 	~MapUnit();
-
-	void SetMapPos(int2 _Value);
-	void MoveMapPos(int2 _Value);
-
 	// delete Function
 	MapUnit(const MapUnit& _Other) = delete;
 	MapUnit(MapUnit&& _Other) noexcept = delete;
 	MapUnit& operator=(const MapUnit& _Other) = delete;
 	MapUnit& operator=(MapUnit&& _Other) noexcept = delete;
 
+	void SetMapPos(int2 _Value);
+	void MoveMapPos(int2 _Value);
+	inline int2 GetMapPos()
+	{
+		return MapPos;
+	}
+
+	void SetMapPosLerp(int2 _Value);
+	void MoveMapPosLerp(int2 _Value);
+
+	bool GetIsMove() {
+		return IsMove;
+	}
+
 protected:
+	void Update(float _DeltaTime) override;
 private:
 	int2 MapPos = { 0 };
+	const float MoveSpeed = 15.0f;
+	bool IsMove = false;
+	float MoveTimer = 0;
+	float4 StartPos;
+	float4 EndPos;
 };
 

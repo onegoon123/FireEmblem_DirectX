@@ -1,14 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="PlayLevel.cpp">
-      <Filter>Levels</Filter>
-    </ClCompile>
     <ClCompile Include="TitleLevel.cpp">
       <Filter>Levels</Filter>
-    </ClCompile>
-    <ClCompile Include="BattleActor.cpp">
-      <Filter>Battle</Filter>
     </ClCompile>
     <ClCompile Include="Unit.cpp">
       <Filter>Battle\Unit</Filter>
@@ -28,22 +22,44 @@
       <Filter>Battle\Item</Filter>
     </ClCompile>
     <ClCompile Include="MapUnit.cpp">
-      <Filter>Map</Filter>
+      <Filter>Battle\Map</Filter>
     </ClCompile>
     <ClCompile Include="BattleUnit.cpp">
-      <Filter>Map</Filter>
+      <Filter>Battle\Unit</Filter>
     </ClCompile>
+    <ClCompile Include="BattleMap.cpp">
+      <Filter>Battle\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="BattleLevel.cpp">
+      <Filter>Battle\System</Filter>
+    </ClCompile>
+    <ClCompile Include="BattleLevel_Map.cpp">
+      <Filter>Battle\System</Filter>
+    </ClCompile>
+    <ClCompile Include="BattleLevel_FSM.cpp">
+      <Filter>Battle\System</Filter>
+    </ClCompile>
+    <ClCompile Include="MapCursor.cpp">
+      <Filter>Battle\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="ArrowRender.cpp">
+      <Filter>Battle\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="SelectUI.cpp">
+      <Filter>Battle\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UnitCommandUI.cpp">
+      <Filter>Battle\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="TileRender.cpp">
+      <Filter>Battle\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="FERandom.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FECore.h" />
-    <ClInclude Include="PlayLevel.h">
-      <Filter>Levels</Filter>
-    </ClInclude>
     <ClInclude Include="TitleLevel.h">
       <Filter>Levels</Filter>
-    </ClInclude>
-    <ClInclude Include="BattleActor.h">
-      <Filter>Battle</Filter>
     </ClInclude>
     <ClInclude Include="Unit.h">
       <Filter>Battle\Unit</Filter>
@@ -65,10 +81,32 @@
       <Filter>Battle\Item</Filter>
     </ClInclude>
     <ClInclude Include="MapUnit.h">
-      <Filter>Map</Filter>
+      <Filter>Battle\Map</Filter>
     </ClInclude>
+    <ClInclude Include="ContentsEnum.h" />
     <ClInclude Include="BattleUnit.h">
-      <Filter>Map</Filter>
+      <Filter>Battle\Unit</Filter>
+    </ClInclude>
+    <ClInclude Include="BattleMap.h">
+      <Filter>Battle\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="BattleLevel.h">
+      <Filter>Battle\System</Filter>
+    </ClInclude>
+    <ClInclude Include="MapCursor.h">
+      <Filter>Battle\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="ArrowRender.h">
+      <Filter>Battle\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="SelectUI.h">
+      <Filter>Battle\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UnitCommandUI.h">
+      <Filter>Battle\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="TileRender.h">
+      <Filter>Battle\Map</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -90,8 +128,14 @@
     <Filter Include="Battle\Item">
       <UniqueIdentifier>{27f345ca-ff3a-4d6d-990f-5b57973a6e96}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Map">
+    <Filter Include="Battle\Map">
       <UniqueIdentifier>{2580ba1d-6e95-41a8-87a5-27b34d8b68fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\System">
+      <UniqueIdentifier>{15d64664-2792-4bb8-b633-3a6616ba2da7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\UI">
+      <UniqueIdentifier>{3d975fc3-8cbd-491e-80f8-12502945f5bc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

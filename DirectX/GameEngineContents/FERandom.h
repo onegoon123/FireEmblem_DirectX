@@ -4,12 +4,9 @@ static const int Seed = 0;
 class FERandom
 {
 public:
-	// constructer destructer
-	FERandom()
-	{
-		GameEngineRandom::MainRandom.SetSeed(Seed);
-	}
-	~FERandom() {}
+
+	FERandom();
+	~FERandom();
 
 	// 0~99 반환 명중 수치가 반환값 보다 높으면 명중입니다.
 	static int RandomInt()
@@ -43,5 +40,6 @@ protected:
 
 private:
 	static int RandomCount;	// 랜덤을 실행한 횟수
+	// constructer destructer
 };
 

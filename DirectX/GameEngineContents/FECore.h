@@ -1,5 +1,4 @@
 #pragma once
-
 // Ό³Έν :
 class FECore
 {
@@ -20,6 +19,5 @@ public:
 protected:
 
 private:
-
 };
 

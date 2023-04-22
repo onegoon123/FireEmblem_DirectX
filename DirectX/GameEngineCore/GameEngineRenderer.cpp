@@ -21,6 +21,7 @@ GameEngineRenderer::~GameEngineRenderer()
 
 void GameEngineRenderer::Render(float _Delta)
 {
+	if (false == ActiveValue) { return; }
 	std::shared_ptr<GameEngineCamera> MainCamera = GetLevel()->GetMainCamera();
 
 	if (nullptr == MainCamera)

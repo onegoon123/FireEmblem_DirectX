@@ -56,8 +56,8 @@ public:
 
 protected:
 
-private:
 	bool ActiveValue = true; // 켜졌다 꺼졌다
+private:
 	bool DeathValue = false; // 죽었다 살았다
 	bool DebugValue = false;
 	int Order = 0;

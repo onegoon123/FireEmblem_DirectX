@@ -1,8 +1,8 @@
 #include "PrecompileHeader.h"
 #include "FECore.h"
 #include <GameEngineCore\GameEngineCore.h>
-#include "PlayLevel.h"
 #include "TitleLevel.h"
+#include "BattleLevel.h"
 
 FECore::FECore()
 {
@@ -19,8 +19,8 @@ void FECore::GameStart()
 
 
 	GameEngineCore::CreateLevel<TitleLevel>();
-	GameEngineCore::CreateLevel<PlayLevel>();
-	GameEngineCore::ChangeLevel("PlayLevel");
+	GameEngineCore::CreateLevel<BattleLevel>();
+	GameEngineCore::ChangeLevel("TitleLevel");
 }
 
 void FECore::GameEnd()
