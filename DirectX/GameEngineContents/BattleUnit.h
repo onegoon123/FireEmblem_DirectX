@@ -34,5 +34,13 @@ private:
 	int UnitCode = 0;
 	Stat UnitStat;
 	bool IsTurnEnd = false;
+
+	struct EffectData
+	{
+		bool IsGrayScale;
+		float4 FlashColor;
+		float t;
+	};
+	EffectData RenderEffect;
 };
 

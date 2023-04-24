@@ -42,7 +42,7 @@ void MapUnit::Update(float _DeltaTime)
 	MoveTimer += MoveSpeed * _DeltaTime;
 	GetTransform()->SetLocalPosition(float4::LerpClamp(StartPos, EndPos, MoveTimer));
 	
-	if (1 <= MoveTimer)
+	if (1 < MoveTimer)
 	{
 		IsMove = false;
 	}

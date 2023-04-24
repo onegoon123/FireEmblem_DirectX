@@ -1,7 +1,6 @@
 #include "PrecompileHeader.h"
 #include "SelectUI.h"
 #include <GameEnginePlatform/GameEngineInput.h>
-#include <GameEnginePlatform/GameEngineWindow.h>
 #include <GameEngineCore/GameEngineRenderer.h>
 #include "ContentsEnum.h"
 SelectUI::SelectUI()
@@ -72,32 +71,28 @@ void SelectUI::UIOff()
 
 void SelectUI::Start()
 {
-	return;
-
 	Goal.Render = CreateComponent<GameEngineRenderer>();
 	Goal.Render->SetPipeLine("2DTexture");
-	// "ClearGoal.bmp", RenderOrder::UI
+	Goal.Render->GetShaderResHelper().SetTexture("DiffuseTex", "ClearGoal.png"); 
 	Goal.Render->GetTransform()->SetWorldScale({ 344, 100 });
-	Goal.BenchmarkHidePos = { 178, -64 };
-	Goal.BenchmarkShowPos = { 178, 64 };
+	Goal.BenchmarkHidePos = { -300, 370 };
+	Goal.BenchmarkShowPos = { -300, 254 };
 	Goal.ChangeDir(UIDir::None);
 
 	Terrain.Render = CreateComponent<GameEngineRenderer>();
 	Terrain.Render->SetPipeLine("2DTexture");
-	//"terrainUI.bmp", RenderOrder::UI
+	Terrain.Render->GetShaderResHelper().SetTexture("DiffuseTex", "terrainUI.png");
 	Terrain.Render->GetTransform()->SetWorldScale({ 192, 212 });
-	//Terrain.Render->SetPosition({ 864, 532 });
-	Terrain.BenchmarkHidePos = { -96, 108 };
-	Terrain.BenchmarkShowPos = { 96, 108 };
+	Terrain.BenchmarkHidePos = { -576, 214 };
+	Terrain.BenchmarkShowPos = { -384, 214 };
 	Terrain.ChangeDir(UIDir::None);
 
 	UnitData.Render = CreateComponent<GameEngineRenderer>();
 	UnitData.Render->SetPipeLine("2DTexture");
-	//"ActorUI.bmp", RenderOrder::UI
+	UnitData.Render->GetShaderResHelper().SetTexture("DiffuseTex", "ActorUI.png");
 	UnitData.Render->GetTransform()->SetWorldScale({ 344, 152 });
-	//UnitData.Render->SetPosition({ 192, 542 });
-	UnitData.BenchmarkHidePos = { -172, 98 };
-	UnitData.BenchmarkShowPos = { 192, 98 };
+	UnitData.BenchmarkHidePos = { -636, 228 };
+	UnitData.BenchmarkShowPos = { -292, 228 };
 	UnitData.ChangeDir(UIDir::None);
 
 	CursorDir = UIDir::None;
@@ -106,8 +101,6 @@ void SelectUI::Start()
 
 void SelectUI::Update(float _DeltaTiime)
 {
-	return;
-
 	Goal.Update(_DeltaTiime);
 	Terrain.Update(_DeltaTiime);
 	UnitData.Update(_DeltaTiime);
@@ -126,7 +119,7 @@ void SelectUIObject::Update(float _DeltaTime)
 		return;
 	}
 	Timer += _DeltaTime * AnimSpeed;
-	Render->GetTransform()->SetWorldPosition(float4::LerpClamp(StartPos, TargetPos, Timer));
+	Render->GetTransform()->SetLocalPosition(float4::LerpClamp(StartPos, TargetPos, Timer));
 }
 
 void SelectUIObject::ChangeDir(UIDir _Dir)
@@ -154,16 +147,16 @@ void SelectUIObject::ChangeDir(UIDir _Dir)
 			TargetPos = BenchmarkHidePos;
 			break;
 		case UIDir::LeftDown:
-			StartPos = { BenchmarkShowPos.x , GameEngineWindow::GetScreenSize().y - BenchmarkShowPos.y };
-			TargetPos = { BenchmarkHidePos.x , GameEngineWindow::GetScreenSize().y - BenchmarkHidePos.y };
+			StartPos = { BenchmarkShowPos.x , -BenchmarkShowPos.y };
+			TargetPos = { BenchmarkHidePos.x , -BenchmarkHidePos.y };
 			break;
 		case UIDir::RightUp:
-			StartPos = { GameEngineWindow::GetScreenSize().x - BenchmarkShowPos.x , BenchmarkShowPos.y };
-			TargetPos = { GameEngineWindow::GetScreenSize().x - BenchmarkHidePos.x , BenchmarkHidePos.y };
+			StartPos = { -BenchmarkShowPos.x , BenchmarkShowPos.y };
+			TargetPos = { -BenchmarkHidePos.x , BenchmarkHidePos.y };
 			break;
 		case UIDir::RightDown:
-			StartPos = GameEngineWindow::GetScreenSize() - BenchmarkShowPos;
-			TargetPos = GameEngineWindow::GetScreenSize() - BenchmarkHidePos;
+			StartPos = -BenchmarkShowPos;
+			TargetPos = -BenchmarkHidePos;
 			break;
 		default:
 			break;
@@ -184,16 +177,16 @@ void SelectUIObject::ChangeDir(UIDir _Dir)
 		TargetPos = BenchmarkShowPos;
 		break;
 	case UIDir::LeftDown:
-		StartPos = { BenchmarkHidePos.x , GameEngineWindow::GetScreenSize().y - BenchmarkHidePos.y };
-		TargetPos = { BenchmarkShowPos.x , GameEngineWindow::GetScreenSize().y - BenchmarkShowPos.y };
+		StartPos = { BenchmarkHidePos.x ,  -BenchmarkHidePos.y };
+		TargetPos = { BenchmarkShowPos.x , -BenchmarkShowPos.y };
 		break;
 	case UIDir::RightUp:
-		StartPos = { GameEngineWindow::GetScreenSize().x - BenchmarkHidePos.x , BenchmarkHidePos.y };
-		TargetPos = { GameEngineWindow::GetScreenSize().x - BenchmarkShowPos.x , BenchmarkShowPos.y };
+		StartPos = {-BenchmarkHidePos.x , BenchmarkHidePos.y };
+		TargetPos = {-BenchmarkShowPos.x , BenchmarkShowPos.y };
 		break;
 	case UIDir::RightDown:
-		StartPos = GameEngineWindow::GetScreenSize() - BenchmarkHidePos;
-		TargetPos = GameEngineWindow::GetScreenSize() - BenchmarkShowPos;
+		StartPos = -BenchmarkHidePos;
+		TargetPos = -BenchmarkShowPos;
 		break;
 	default:
 		break;

@@ -4,15 +4,10 @@ struct OutPut
     float4 UV : TEXCOORD;
 };
 
-
-cbuffer OutPixelColor : register(b0)
-{
-    float4 OutColor;
-}
 Texture2D DiffuseTex : register(t0);
 SamplerState CLAMPSAMPLER : register(s0);
 
-float4 Texture_PS(OutPut _Value) : SV_Target0
+float4 TextureGray_PS(OutPut _Value) : SV_Target0
 {
     float4 Color = DiffuseTex.Sample(CLAMPSAMPLER, _Value.UV.xy);
     

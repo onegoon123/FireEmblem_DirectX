@@ -38,11 +38,6 @@ void BattleLevel::Start()
 	Arrows = CreateActor<ArrowRender>();
 	Arrows->Create(MainMap->MapScaleInt2);
 
-	// UI 持失
-	UI_Select = CreateActor<SelectUI>();
-	UI_UnitCommand = CreateActor<UnitCommandUI>();
-	UI_UnitCommand->Off();
-
 	MainCursor = CreateActor<MapCursor>();
 	MainCursor->SetMapPos({ 0,0 });
 
@@ -79,6 +74,11 @@ void BattleLevel::Start()
 		IsAttack[i].resize(MainMap->MapScaleInt2.x);
 	}
 
+	// UI 持失
+	UI_Select = CreateActor<SelectUI>();
+	UI_UnitCommand = CreateActor<UnitCommandUI>();
+	UI_UnitCommand->Off();
+	UI_Select->GetTransform()->SetWorldPosition({448, 288});
 
 	CursorDirCheck();
 }

@@ -156,7 +156,7 @@ void BattleLevel::CursorDirCheck()
 	if (CursorPos.ix() < ScreenSize.hix())
 	{
 		// 왼쪽
-		if (CursorPos.iy() < ScreenSize.hiy())
+		if (CursorPos.iy() > ScreenSize.hiy())
 		{
 			// 위
 			CursorDir = UIDir::LeftUp;
@@ -170,7 +170,7 @@ void BattleLevel::CursorDirCheck()
 	else
 	{
 		// 오른쪽
-		if (CursorPos.iy() < ScreenSize.hiy())
+		if (CursorPos.iy() > ScreenSize.hiy())
 		{
 			// 위
 			CursorDir = UIDir::RightUp;
