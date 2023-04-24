@@ -579,9 +579,6 @@ void BattleLevel::MoveCalculation()
 	int2 StartPos = SelectUnit->GetMapPos();
 	int2 TargetPos = MainCursor->GetMapPos();
 
-	StartPos.y = -StartPos.y;
-	TargetPos.y = -TargetPos.y;
-
 	if (true == IsMapOut(TargetPos))
 	{
 		return;
@@ -598,7 +595,7 @@ void BattleLevel::MoveCalculation()
 
 	CalData NewData = CalData();
 	NewData.Pos = StartPos;
-	NewData.MoveStat = 5/*SelectUnit->GetMoveStat()*/;
+	NewData.MoveStat = SelectUnit->GetMoveStat();
 
 	std::queue<CalData> Queue;
 	Queue.push(NewData);

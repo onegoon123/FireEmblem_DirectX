@@ -16,7 +16,7 @@ public:
 	BattleUnit& operator=(const BattleUnit& _Other) = delete;
 	BattleUnit& operator=(BattleUnit&& _Other) noexcept = delete;
 
-	void SetIsTurnEnd(bool _Value) { IsTurnEnd = _Value; }
+	void SetIsTurnEnd(bool _Value);
 	bool GetIsTurnEnd() { return IsTurnEnd; }
 
 	void SetUnitCode(int _Code);
@@ -27,10 +27,12 @@ public:
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
+
+	std::shared_ptr<class GameEngineRenderer> SpriteRender = nullptr;
+	std::string_view ImageName = "";
 private:
 	int UnitCode = 0;
 	Stat UnitStat;
-	std::shared_ptr<class GameEngineRenderer> SpriteRender = nullptr;
 	bool IsTurnEnd = false;
 };
 

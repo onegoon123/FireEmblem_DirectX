@@ -19,5 +19,7 @@ public:
 protected:
 
 private:
+
+	static void CreatePipeLine();
 };
 

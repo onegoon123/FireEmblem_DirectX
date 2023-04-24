@@ -87,7 +87,7 @@ void BattleLevel::ChangeState(BattleState _State)
 
 void BattleLevel::PlayerPhaseStart()
 {
-	for (std::shared_ptr<BattleUnit> _Actor : PlayerActors)
+	for (std::shared_ptr<BattleUnit> _Actor : EnemyActors)
 	{
 		_Actor->SetIsTurnEnd(false);
 	}
@@ -326,7 +326,7 @@ void BattleLevel::BattleEnd()
 
 void BattleLevel::EnemyPhaseStart()
 {
-	for (std::shared_ptr<BattleUnit> _Actor : EnemyActors)
+	for (std::shared_ptr<BattleUnit> _Actor : PlayerActors)
 	{
 		_Actor->SetIsTurnEnd(false);
 	}
@@ -350,7 +350,6 @@ void BattleLevel::EnemySelectStart()
 		if (false == _Enemy->GetIsTurnEnd())
 		{
 			SelectUnit = _Enemy;
-			_Enemy->SetIsTurnEnd(true);
 			ChangeState(BattleState::EnemyMove);
 
 			return;
@@ -458,6 +457,7 @@ void BattleLevel::EnemyBattleUpdate(float _DeltaTime)
 
 void BattleLevel::EnemyBattleEnd()
 {
+	SelectUnit->SetIsTurnEnd(true);
 }
 
 void BattleLevel::GameOverStart()

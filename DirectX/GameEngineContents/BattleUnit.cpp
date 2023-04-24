@@ -11,6 +11,23 @@ BattleUnit::~BattleUnit()
 {
 }
 
+void BattleUnit::SetIsTurnEnd(bool _Value)
+{
+	IsTurnEnd = _Value;
+
+	if (_Value == true)
+	{
+		SpriteRender->SetPipeLine("2DTextureGray");
+		SpriteRender->GetShaderResHelper().SetTexture("DiffuseTex", ImageName);
+	}
+	else
+	{
+		SpriteRender->SetPipeLine("2DTexture");
+		SpriteRender->GetShaderResHelper().SetTexture("DiffuseTex", ImageName);
+	}
+}
+
+
 void BattleUnit::SetUnitCode(int _Code)
 {
 	UnitCode = _Code;
@@ -19,7 +36,12 @@ void BattleUnit::SetUnitCode(int _Code)
 
 	if (2 <= UnitCode)
 	{
-		SpriteRender->GetShaderResHelper().SetTexture("DiffuseTex", "Map_EnemyBrigandTest.png");
+		ImageName = "Map_EnemyBrigandTest.png";
+		SpriteRender->GetShaderResHelper().SetTexture("DiffuseTex", ImageName);
+	}
+	else
+	{
+		ImageName = "Map_LynTest.png";
 	}
 }
 
@@ -27,7 +49,8 @@ void BattleUnit::Start()
 {
 	SpriteRender = CreateComponent<GameEngineRenderer>();
 	SpriteRender->SetPipeLine("2DTexture");
-	SpriteRender->GetShaderResHelper().SetTexture("DiffuseTex", "Map_LynTest.png");
+	ImageName = "Map_LynTest.png";
+	SpriteRender->GetShaderResHelper().SetTexture("DiffuseTex", ImageName);
 	SpriteRender->GetTransform()->SetWorldScale({ 128,128 });
 	SetMapPos({ 0,0 });
 }
