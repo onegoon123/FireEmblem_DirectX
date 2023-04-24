@@ -1,10 +1,12 @@
 #pragma once
 #include "MapUnit.h"
+#include "Stat.h"
 #include "Unit.h"
 // Ό³Έν :
 class GameEngineRender;
 class BattleUnit : public MapUnit
 {
+	friend class UnitCommand;
 public:
 	// constrcuter destructer
 	BattleUnit();
@@ -17,12 +19,12 @@ public:
 	BattleUnit& operator=(BattleUnit&& _Other) noexcept = delete;
 
 	void SetIsTurnEnd(bool _Value);
-	bool GetIsTurnEnd() { return IsTurnEnd; }
+	bool GetIsTurnEnd();
 
 	void SetUnitCode(int _Code);
-	int GetUnitCode() { return UnitCode; }
+	int GetUnitCode();
 
-	int GetMoveStat() { return UnitStat.Movement; }
+	int GetMoveStat();
 
 protected:
 	void Start() override;
@@ -31,16 +33,6 @@ protected:
 	std::shared_ptr<class GameEngineRenderer> SpriteRender = nullptr;
 	std::string_view ImageName = "";
 private:
-	int UnitCode = 0;
-	Stat UnitStat;
-	bool IsTurnEnd = false;
-
-	struct EffectData
-	{
-		bool IsGrayScale;
-		float4 FlashColor;
-		float t;
-	};
-	EffectData RenderEffect;
+	Unit UnitData;
 };
 

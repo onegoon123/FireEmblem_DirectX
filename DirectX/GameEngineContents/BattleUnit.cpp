@@ -2,7 +2,8 @@
 #include "BattleUnit.h"
 #include <GameEngineCore/GameEngineRenderer.h>
 #include <GameEnginePlatform/GameEngineInput.h>
-
+#include "Stat.h"
+#include "Weapon.h"
 BattleUnit::BattleUnit() 
 {
 }
@@ -13,7 +14,7 @@ BattleUnit::~BattleUnit()
 
 void BattleUnit::SetIsTurnEnd(bool _Value)
 {
-	IsTurnEnd = _Value;
+	UnitData.IsTurnEnd = _Value;
 
 	if (_Value == true)
 	{
@@ -27,14 +28,19 @@ void BattleUnit::SetIsTurnEnd(bool _Value)
 	}
 }
 
+bool BattleUnit::GetIsTurnEnd()
+{
+	return UnitData.IsTurnEnd;
+}
+
 
 void BattleUnit::SetUnitCode(int _Code)
 {
-	UnitCode = _Code;
-	UnitStat.SetStat_Lyn();
+	UnitData.UnitCode = _Code;
+	UnitData.UnitStat.SetStat_Lyn();
 	SetName("린");
 
-	if (2 <= UnitCode)
+	if (2 <= UnitData.UnitCode)
 	{
 		ImageName = "Map_EnemyBrigandTest.png";
 		SpriteRender->GetShaderResHelper().SetTexture("DiffuseTex", ImageName);
@@ -43,6 +49,25 @@ void BattleUnit::SetUnitCode(int _Code)
 	{
 		ImageName = "Map_LynTest.png";
 	}
+
+	UnitData.UnitStat.EquipWeapon.Damage = 5;	// 공격력
+	UnitData.UnitStat.EquipWeapon.Hit = 90;		// 명중률
+	UnitData.UnitStat.EquipWeapon.Critical = 5;	// 치명타
+	UnitData.UnitStat.EquipWeapon.Weight = 5;		// 무게
+	UnitData.UnitStat.EquipWeapon.Range = 1;		// 사거리
+	UnitData.UnitStat.EquipWeapon.Uses = 30;		// 내구도
+
+	UnitData.CurrentHP = UnitData.UnitStat.MainStatValue.HP;
+}
+
+int BattleUnit::GetUnitCode()
+{
+	return UnitData.UnitCode;
+}
+
+int BattleUnit::GetMoveStat()
+{
+	return UnitData.UnitStat.Movement;
 }
 
 void BattleUnit::Start()

@@ -6,9 +6,9 @@ struct OutPut
 
 cbuffer EffectData : register(b10)
 {
-    bool IsGrayScale;
     float4 FlashColor;
     float t;
+    bool IsGrayScale;
 }
 
 Texture2D DiffuseTex : register(t0);

@@ -11,6 +11,9 @@ public:
 	MapCursor();
 	~MapCursor();
 
+	void On();
+	void Off();
+
 	// delete Function
 	MapCursor(const MapCursor& _Other) = delete;
 	MapCursor(MapCursor&& _Other) noexcept = delete;

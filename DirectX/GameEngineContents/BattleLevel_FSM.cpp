@@ -7,6 +7,7 @@
 #include "TileRender.h"
 #include "SelectUI.h"
 #include "UnitCommandUI.h"
+#include "UnitCommand.h"
 void BattleLevel::ChangeState(BattleState _State)
 {
 
@@ -93,6 +94,10 @@ void BattleLevel::PlayerPhaseStart()
 	}
 
 	MainCursor->On();
+
+
+	//
+	UnitCommand::Attack(PlayerActors.front(), EnemyActors.front());
 	ChangeState(BattleState::Select);
 }
 
@@ -123,7 +128,7 @@ void BattleLevel::SelectStart()
 	}
 
 	MainCursor->On();
-	//UI_Select->UIOn();
+	UI_Select->UIOn();
 	CursorDirCheck();
 }
 
@@ -167,7 +172,7 @@ void BattleLevel::SelectUpdate(float _DeltaTime)
 
 void BattleLevel::SelectEnd()
 {
-	//UI_Select->UIOff();
+	UI_Select->UIOff();
 }
 
 void BattleLevel::MoveStart()
@@ -185,6 +190,8 @@ void BattleLevel::MoveStart()
 	Tiles->SetTile(IsMove);
 	Tiles->SetTileAttack(IsAttack);
 	AddArrow(MainCursor->GetMapPos());
+
+	MainCursor->On();
 }
 
 void BattleLevel::MoveUpdate(float _DeltaTime)
@@ -374,19 +381,19 @@ void BattleLevel::EnemyMoveStart()
 
 	MoveSearchForEnemy();
 
-	std::shared_ptr<BattleUnit> TargetPlayer = nullptr;
+	TargetUnit = nullptr;
 
 	for (std::shared_ptr<BattleUnit> _Player : PlayerActors)
 	{
 		int2 PlayerPos = _Player->GetMapPos();
 		if (true == IsAttack[PlayerPos.y][PlayerPos.x])
 		{
-			TargetPlayer = _Player;
+			TargetUnit = _Player;
 			break;
 		}
 	}
 
-	if (TargetPlayer == nullptr)
+	if (TargetUnit == nullptr)
 	{
 		// 공격범위 내의 적이 없음
 		// 최대한 적과 가까워질 방법을 찾는다
@@ -421,7 +428,7 @@ void BattleLevel::EnemyMoveStart()
 	}
 
 	// 공격범위내 적 포착
-	MainCursor->SetMapPos(TargetPlayer->GetMapPos());
+	MainCursor->SetMapPos(TargetUnit->GetMapPos());
 	ArrowPos.clear();
 	MoveCalculationForEnemy();
 
@@ -448,6 +455,10 @@ void BattleLevel::EnemyMoveEnd()
 
 void BattleLevel::EnemyBattleStart()
 {
+	if (nullptr != TargetUnit)
+	{
+		UnitCommand::Attack(SelectUnit, TargetUnit);
+	}
 	ChangeState(BattleState::EnemySelect);
 }
 

@@ -1,27 +1,31 @@
 #pragma once
-#include <string>
 #include "Stat.h"
-// 유닛 클래스
-// 배틀 시 화면에 나타날 플레이어, 적, 기타 오브젝트의 부모 클래스
 class Unit
 {
+	friend class BattleUnit;
+	friend class UnitCommand;
 public:
-	// constructer destructer
+	// constrcuter destructer
 	Unit();
 	~Unit();
 
-	
-
-	// delete Function
-	Unit(const Unit& _Other) = delete;
-	Unit(Unit&& _Other) = delete;
-	Unit& operator=(const Unit& _Other) = delete;
-	Unit& operator=(Unit&& _Other) = delete;
-
-protected:
+	Unit(const Unit& _Other)
+	{
+		UnitCode = _Other.UnitCode;
+		UnitStat = _Other.UnitStat;
+		CurrentHP = _Other.CurrentHP;
+		UnitStat.EquipWeapon.SetWeaponStat(_Other.UnitStat.EquipWeapon.GetWeaponeStat());
+		IsTurnEnd = _Other.IsTurnEnd;
+	}
 
 private:
+	static int UnitNum;
 
+	int UnitCode = 0;
 	Stat UnitStat;
+	int CurrentHP = 0;
+	int TerrainDeffence = 0;
+	int TerrainDodge = 0;
+	bool IsTurnEnd = false;
 };
 

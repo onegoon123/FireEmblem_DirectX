@@ -14,8 +14,8 @@
 #include "UnitCommandUI.h"
 BattleLevel::BattleLevel()
 {
-	StateUpdate = &BattleLevel::SelectUpdate;
-	StateEnd = &BattleLevel::SelectEnd;
+	StateUpdate = &BattleLevel::PlayerPhaseUpdate;
+	StateEnd = &BattleLevel::PlayerPhaseEnd;
 
 	ArrowPos.reserve(8);
 }
@@ -81,6 +81,7 @@ void BattleLevel::Start()
 	UI_Select->GetTransform()->SetWorldPosition({448, 288});
 
 	CursorDirCheck();
+	ChangeState(BattleState::PlayerPhase);
 }
 
 void BattleLevel::Update(float _DeltaTime)

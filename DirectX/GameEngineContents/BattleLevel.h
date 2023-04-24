@@ -47,9 +47,9 @@ private:
 
 		GameOver,			// 게임 오버
 	};
-	BattleState CurState = BattleState::Select;	// 스태이트
-	void (BattleLevel::* StateUpdate)(float) = &BattleLevel::SelectUpdate;		// 스테이트 업데이트
-	void (BattleLevel::* StateEnd)() = &BattleLevel::SelectEnd;		// 스테이트 엔드
+	BattleState CurState = BattleState::PlayerPhase;	// 스태이트
+	void (BattleLevel::* StateUpdate)(float) = &BattleLevel::PlayerPhaseUpdate;		// 스테이트 업데이트
+	void (BattleLevel::* StateEnd)() = &BattleLevel::PlayerPhaseEnd;		// 스테이트 엔드
 
 	// Actor
 	std::shared_ptr<BattleMap> MainMap = nullptr;
@@ -57,6 +57,7 @@ private:
 	std::list<std::shared_ptr <BattleUnit>> PlayerActors = std::list< std::shared_ptr <BattleUnit>>();
 	std::list< std::shared_ptr <BattleUnit>> EnemyActors = std::list< std::shared_ptr <BattleUnit>>();
 	std::shared_ptr <BattleUnit> SelectUnit = nullptr;
+	std::shared_ptr <BattleUnit> TargetUnit = nullptr;
 
 	// Map 관련
 	std::shared_ptr <TileRender> Tiles = nullptr;

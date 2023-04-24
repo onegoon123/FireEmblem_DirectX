@@ -43,8 +43,10 @@ enum class BattleClass
 class Stat
 {
 	friend class BattleUnit;
+	friend class Unit;
+	friend class UnitCommand;
 private:
-	BattleClass ClassValue;
+	BattleClass ClassValue = BattleClass::Lord;
 	Weapon EquipWeapon;		// 장비한 무기
 	MainStat MainStatValue;
 	int Level = 0;			// 레벨
@@ -68,6 +70,26 @@ public:
 	bool AddExperience(int _Experience);
 	// 레벨 업 (경험치 증가 후 직접 실행, 증가한 능력치를 반환)
 	MainStat LevelUp();
+
+
+	Stat(const Stat& _Other)
+	{
+		ClassValue = _Other.ClassValue;
+		EquipWeapon = _Other.EquipWeapon.GetWeaponeStat(); // 장비한 무기
+		MainStatValue = _Other.MainStatValue;
+		Level = _Other.Level;			// 레벨
+		Movement = _Other.Movement;				// 이동력
+		Experience = _Other.Experience;			// 경험치
+		GrowthRates_HP = _Other.GrowthRates_HP;			// 체력 성장률
+		GrowthRates_Strength = _Other.GrowthRates_Strength;	// 힘   성장률
+		GrowthRates_Magic = _Other.GrowthRates_Magic;		// 마력 성장률
+		GrowthRates_Dexterity = _Other.GrowthRates_Dexterity;	// 기술 성장률
+		GrowthRates_Speed = _Other.GrowthRates_Speed;		// 속도 성장률
+		GrowthRates_Defense = _Other.GrowthRates_Defense;	// 수비 성장률
+		GrowthRates_Resistance = _Other.GrowthRates_Resistance;	// 마방 성장률
+		GrowthRates_Luck = _Other.GrowthRates_Luck;		// 행운 성장률
+	}
+
 
 private:
 	void SetStat_Lyn();

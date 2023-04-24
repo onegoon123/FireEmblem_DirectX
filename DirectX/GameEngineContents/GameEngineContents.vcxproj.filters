@@ -4,9 +4,6 @@
     <ClCompile Include="TitleLevel.cpp">
       <Filter>Levels</Filter>
     </ClCompile>
-    <ClCompile Include="Unit.cpp">
-      <Filter>Battle\Unit</Filter>
-    </ClCompile>
     <ClCompile Include="Stat.cpp">
       <Filter>Battle\Unit</Filter>
     </ClCompile>
@@ -55,14 +52,17 @@
       <Filter>Battle\Map</Filter>
     </ClCompile>
     <ClCompile Include="FERandom.cpp" />
+    <ClCompile Include="UnitCommand.cpp">
+      <Filter>Battle\Unit</Filter>
+    </ClCompile>
+    <ClCompile Include="Unit.cpp">
+      <Filter>Battle\Unit</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FECore.h" />
     <ClInclude Include="TitleLevel.h">
       <Filter>Levels</Filter>
-    </ClInclude>
-    <ClInclude Include="Unit.h">
-      <Filter>Battle\Unit</Filter>
     </ClInclude>
     <ClInclude Include="FERandom.h">
       <Filter>Battle</Filter>
@@ -107,6 +107,12 @@
     </ClInclude>
     <ClInclude Include="TileRender.h">
       <Filter>Battle\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="UnitCommand.h">
+      <Filter>Battle\Unit</Filter>
+    </ClInclude>
+    <ClInclude Include="Unit.h">
+      <Filter>Battle\Unit</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

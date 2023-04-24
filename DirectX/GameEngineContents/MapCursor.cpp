@@ -19,6 +19,16 @@ MapCursor::~MapCursor()
 {
 }
 
+void MapCursor::On()
+{
+	AnimationRender->On();
+}
+
+void MapCursor::Off()
+{
+	AnimationRender->Off();
+}
+
 void MapCursor::Start()
 {
 	AnimationRender = CreateComponent<GameEngineRenderer>();
