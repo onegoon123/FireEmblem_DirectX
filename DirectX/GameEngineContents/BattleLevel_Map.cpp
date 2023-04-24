@@ -109,18 +109,18 @@ void BattleLevel::CursorAndArrowMove()
 	{
 
 		// 커서가 이동중이 아니며 이동할 곳이 맵 밖이 아니라면
-		if (false == MainCursor->GetIsMove() && false == IsMapOut(CursorPos + MoveValue + int2::Down))
+		if (false == MainCursor->GetIsMove() && false == IsMapOut(CursorPos + MoveValue + int2::Up))
 		{
-			MoveValue += int2::Down;
+			MoveValue += int2::Up;
 		}
 
 	}
 	if (GameEngineInput::IsDown("DownMove") || (GameEngineInput::IsPress("DownMove") && PressOK))
 	{
 		// 커서가 이동중이 아니며 이동할 곳이 맵 밖이 아니라면
-		if (false == MainCursor->GetIsMove() && false == IsMapOut(CursorPos + MoveValue + int2::Up))
+		if (false == MainCursor->GetIsMove() && false == IsMapOut(CursorPos + MoveValue + int2::Down))
 		{
-			MoveValue += int2::Up;
+			MoveValue += int2::Down;
 		}
 	}
 	if (GameEngineInput::IsDown("LeftMove") || (GameEngineInput::IsPress("LeftMove") && PressOK))
@@ -142,7 +142,6 @@ void BattleLevel::CursorAndArrowMove()
 
 	if (MoveValue != int2{ 0 })
 	{
-		MoveValue.y = -MoveValue.y;
 		MainCursor->MoveMapPosLerp(MoveValue);
 		AddArrow(MainCursor->GetMapPos());
 	}
