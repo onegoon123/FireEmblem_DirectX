@@ -44,20 +44,26 @@ void BattleUnit::SetUnitCode(int _Code)
 		ImageName = "Map_EnemyBrigandTest.png";
 		SpriteRender->GetShaderResHelper().SetTexture("DiffuseTex", ImageName);
 		UnitData.UnitStat.SetStat_Brigand();
+		UnitData.UnitStat.EquipWeapon.Damage = 8;	// 공격력
+		UnitData.UnitStat.EquipWeapon.Hit = 50;		// 명중률
+		UnitData.UnitStat.EquipWeapon.Critical = 0;	// 치명타
+		UnitData.UnitStat.EquipWeapon.Weight = 10;		// 무게
+		UnitData.UnitStat.EquipWeapon.Range = 1;		// 사거리
+		UnitData.UnitStat.EquipWeapon.Uses = 45;		// 내구도
 	}
 	else
 	{
 		SetName("플레이어");
 		ImageName = "Map_LynTest.png";
 		UnitData.UnitStat.SetStat_Lyn();
-	}
-
 	UnitData.UnitStat.EquipWeapon.Damage = 5;	// 공격력
 	UnitData.UnitStat.EquipWeapon.Hit = 90;		// 명중률
-	UnitData.UnitStat.EquipWeapon.Critical = 5;	// 치명타
+	UnitData.UnitStat.EquipWeapon.Critical = 0;	// 치명타
 	UnitData.UnitStat.EquipWeapon.Weight = 5;		// 무게
 	UnitData.UnitStat.EquipWeapon.Range = 1;		// 사거리
-	UnitData.UnitStat.EquipWeapon.Uses = 30;		// 내구도
+	UnitData.UnitStat.EquipWeapon.Uses = 46;		// 내구도
+	}
+
 
 	UnitData.CurrentHP = UnitData.UnitStat.MainStatValue.HP;
 }
