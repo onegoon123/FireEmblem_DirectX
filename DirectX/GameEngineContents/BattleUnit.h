@@ -6,12 +6,12 @@
 class BattleUnit : public MapUnit
 {
 	friend class UnitCommand;
+	friend class BattleLevel;
 public:
 	// constrcuter destructer
 	BattleUnit();
 	~BattleUnit();
 
-	// delete Function
 	BattleUnit(const BattleUnit& _Other) = delete;
 	BattleUnit(BattleUnit&& _Other) noexcept = delete;
 	BattleUnit& operator=(const BattleUnit& _Other) = delete;
@@ -19,11 +19,17 @@ public:
 
 	void SetIsTurnEnd(bool _Value);
 	bool GetIsTurnEnd();
+	bool GetIsDie()
+	{
+		return UnitData.IsDie;
+	}
 
 	void SetUnitCode(int _Code);
 	int GetUnitCode();
 
 	int GetMoveStat();
+
+
 
 protected:
 	void Start() override;

@@ -1,40 +1,50 @@
 #pragma once
 #include "BattleUnit.h"
 
+	enum class CommandType
+	{
+		Attack,
+		Item,
+		Wait,
+	};
 
 struct AttackCommand
 {
+	Unit SubjectUnit = Unit();
 	Unit TargetUnit = Unit();
 	bool IsCritical = false;
-	bool IsDodge = false;
+	bool IsHit = false;
 };
 class UnitCommand
 {
+	friend class BattleLevel;
 public:
 	// constrcuter destructer
 	UnitCommand();
 	~UnitCommand();
 
-	// delete Function
-	UnitCommand(const UnitCommand& _Other) = delete;
-	UnitCommand(UnitCommand&& _Other) noexcept = delete;
-	UnitCommand& operator=(const UnitCommand& _Other) = delete;
-	UnitCommand& operator=(UnitCommand&& _Other) noexcept = delete;
 
 	static std::list<AttackCommand> Attack(std::shared_ptr<BattleUnit> _SubjectUnit, std::shared_ptr<BattleUnit> _TargetUnit);
+	static void Wait(std::shared_ptr<BattleUnit> _SubjectUnit);
 	static void ItemUse() {}
 
-
+	static std::list<UnitCommand> GetCommandList() { return CommandList; }
+	static void ResetCommandList()
+	{
+		CommandList.clear();
+	}
 
 protected:
 
 private:
 	static std::list<UnitCommand> CommandList;
-
-	BattleUnit BeforeSubjectUnit = BattleUnit();
-	BattleUnit BeforeTargetUnit = BattleUnit();
-	BattleUnit AfterSubjectUnit = BattleUnit();
-	BattleUnit AfterTargetUnit = BattleUnit();
+	CommandType TypeValue = CommandType::Wait;
+	Unit BeforeSubjectUnit = Unit();
+	Unit BeforeTargetUnit = Unit();
+	Unit AfterSubjectUnit = Unit();
+	Unit AfterTargetUnit = Unit();
+	int2 BeforeSubjectUnitPos = int2();
+	int2 AfterSubjectUnitPos = int2();
 	int RandomNum = 0;
 	std::string Record = "";
 };

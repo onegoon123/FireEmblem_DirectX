@@ -14,37 +14,139 @@ UnitCommand::~UnitCommand()
 std::list<AttackCommand> UnitCommand::Attack(std::shared_ptr<BattleUnit> _SubjectUnit, std::shared_ptr<BattleUnit> _TargetUnit)
 {
 	std::list<AttackCommand> AttackList;
+	UnitCommand CommandRecord;
+	Unit SubjectUnit = Unit(_SubjectUnit->UnitData);
+	Unit TargetUnit = Unit(_TargetUnit->UnitData);
 
-	AttackCommand NewAttack;
+	CommandRecord.TypeValue = CommandType::Attack;
+	CommandRecord.BeforeSubjectUnit = Unit(SubjectUnit);
+	CommandRecord.BeforeTargetUnit = Unit(TargetUnit);
+	CommandRecord.BeforeSubjectUnitPos = _SubjectUnit->GetBeforeMapPos();
+	CommandRecord.AfterSubjectUnitPos = _SubjectUnit->GetMapPos();
 
-	Unit SubjectUnit = _SubjectUnit->UnitData;
-	Unit TargetUnit = _TargetUnit->UnitData;
-
-	int UnitHit = SubjectUnit.UnitStat.GetHitPoint();
-	int TargetDodge = TargetUnit.UnitStat.GetDodgePoint();
-	int TerrainDodge = TargetUnit.TerrainDodge;
-
-	int HitPercentage = UnitHit - (TargetDodge + TerrainDodge);
-	int CriticalPercentage = SubjectUnit.UnitStat.GetCriticalPoint() - TargetUnit.UnitStat.GetCriticalDodgePoint();
-
-	NewAttack.IsDodge = FERandom::RandomInt() < HitPercentage;
-	NewAttack.IsCritical = FERandom::RandomInt() < CriticalPercentage;
-
-	int Damage = (SubjectUnit.UnitStat.GetAttackPoint() * (NewAttack.IsCritical ? 3 : 1));
-
-	if (true == NewAttack.IsDodge)
 	{
-		TargetUnit.CurrentHP = std::max<int>(0, TargetUnit.CurrentHP - Damage);
+		AttackCommand NewAttack;
+		int UnitHit = SubjectUnit.UnitStat.GetHitPoint();
+		int TargetDodge = TargetUnit.UnitStat.GetDodgePoint();
+		int TerrainDodge = TargetUnit.TerrainDodge;
+
+		int HitPercentage = UnitHit - (TargetDodge + TerrainDodge);
+		int CriticalPercentage = SubjectUnit.UnitStat.GetCriticalPoint() - TargetUnit.UnitStat.GetCriticalDodgePoint();
+
+		NewAttack.IsHit = FERandom::RandomInt() < HitPercentage;
+		NewAttack.IsCritical = FERandom::RandomInt() < CriticalPercentage;
+		CommandRecord.RandomNum += 2;
+
+		int Damage = (SubjectUnit.UnitStat.GetAttackPoint() * (NewAttack.IsCritical ? 3 : 1));
+
+		if (true == NewAttack.IsHit)
+		{
+			TargetUnit.CurrentHP = std::max<int>(0, TargetUnit.CurrentHP - Damage);
+			SubjectUnit.UnitStat.EquipWeapon.Uses--;
+
+			if (0 == TargetUnit.CurrentHP)
+			{
+				TargetUnit.IsDie = true;
+			}
+		}
+		
+		NewAttack.TargetUnit = TargetUnit;
+		NewAttack.SubjectUnit = SubjectUnit;
+
+		AttackList.push_back(NewAttack);
 	}
 
-	NewAttack.TargetUnit = TargetUnit;
+	if (true == TargetUnit.IsDie)
+	{
+		CommandRecord.AfterSubjectUnit = SubjectUnit;
+		CommandRecord.AfterTargetUnit = TargetUnit;
+		CommandList.push_back(CommandRecord);
+		return AttackList;
+	}
 
+	{
+		AttackCommand NewAttack;
+		int UnitHit = TargetUnit.UnitStat.GetHitPoint();
+		int TargetDodge = SubjectUnit.UnitStat.GetDodgePoint();
+		int TerrainDodge = SubjectUnit.TerrainDodge;
 
+		int HitPercentage = UnitHit - (TargetDodge + TerrainDodge);
+		int CriticalPercentage = TargetUnit.UnitStat.GetCriticalPoint() - SubjectUnit.UnitStat.GetCriticalDodgePoint();
 
+		NewAttack.IsHit = FERandom::RandomInt() < HitPercentage;
+		NewAttack.IsCritical = FERandom::RandomInt() < CriticalPercentage;
+		CommandRecord.RandomNum += 2;
 
-	AttackList.push_back(NewAttack);
+		int Damage = (TargetUnit.UnitStat.GetAttackPoint() * (NewAttack.IsCritical ? 3 : 1));
 
-	
+		if (true == NewAttack.IsHit)
+		{
+			SubjectUnit.CurrentHP = std::max<int>(0, SubjectUnit.CurrentHP - Damage);
+			TargetUnit.UnitStat.EquipWeapon.Uses--;
+			if (0 == SubjectUnit.CurrentHP)
+			{
+				SubjectUnit.IsDie = true;
+			}
+		}
 
+		NewAttack.TargetUnit = TargetUnit;
+		NewAttack.SubjectUnit = SubjectUnit;
+		AttackList.push_back(NewAttack);
+	}
+
+	if (true == TargetUnit.IsDie)
+	{
+		CommandRecord.AfterSubjectUnit = SubjectUnit;
+		CommandRecord.AfterTargetUnit = TargetUnit;
+		CommandList.push_back(CommandRecord);
+		return AttackList;
+	}
+
+	if (TargetUnit.UnitStat.GetAttackSpeedPoint() + 4 <= SubjectUnit.UnitStat.GetAttackSpeedPoint())
+	{
+		AttackCommand NewAttack;
+		int UnitHit = SubjectUnit.UnitStat.GetHitPoint();
+		int TargetDodge = TargetUnit.UnitStat.GetDodgePoint();
+		int TerrainDodge = TargetUnit.TerrainDodge;
+
+		int HitPercentage = UnitHit - (TargetDodge + TerrainDodge);
+		int CriticalPercentage = SubjectUnit.UnitStat.GetCriticalPoint() - TargetUnit.UnitStat.GetCriticalDodgePoint();
+
+		NewAttack.IsHit = FERandom::RandomInt() < HitPercentage;
+		NewAttack.IsCritical = FERandom::RandomInt() < CriticalPercentage;
+		CommandRecord.RandomNum += 2;
+
+		int Damage = (SubjectUnit.UnitStat.GetAttackPoint() * (NewAttack.IsCritical ? 3 : 1));
+
+		if (true == NewAttack.IsHit)
+		{
+			TargetUnit.CurrentHP = std::max<int>(0, TargetUnit.CurrentHP - Damage);
+			SubjectUnit.UnitStat.EquipWeapon.Uses--;
+			if (0 == TargetUnit.CurrentHP)
+			{
+				TargetUnit.IsDie = true;
+			}
+		}
+
+		NewAttack.TargetUnit = TargetUnit;
+		NewAttack.SubjectUnit = SubjectUnit;
+		AttackList.push_back(NewAttack);
+	}
+
+	CommandRecord.AfterSubjectUnit = SubjectUnit;
+	CommandRecord.AfterTargetUnit = TargetUnit;
+	CommandRecord.Record = std::string(_TargetUnit->GetName()) + "에게 " + std::to_string(CommandRecord.BeforeTargetUnit.CurrentHP - CommandRecord.AfterTargetUnit.CurrentHP) + "의 대미지";
+	CommandList.push_back(CommandRecord);
 	return AttackList;
+}
+
+void UnitCommand::Wait(std::shared_ptr<BattleUnit> _SubjectUnit)
+{
+	UnitCommand CommandRecord;
+	CommandRecord.TypeValue = CommandType::Wait;
+	CommandRecord.BeforeSubjectUnit = Unit(_SubjectUnit->UnitData);
+	CommandRecord.BeforeSubjectUnitPos = _SubjectUnit->GetBeforeMapPos();
+	CommandRecord.AfterSubjectUnitPos = _SubjectUnit->GetMapPos();
+
+	CommandList.push_back(CommandRecord);
 }

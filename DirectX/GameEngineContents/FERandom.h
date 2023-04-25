@@ -1,6 +1,7 @@
 #pragma once
 #include <GameEngineBase/GameEngineRandom.h>
-static const int Seed = 0;
+
+
 class FERandom
 {
 public:
@@ -12,7 +13,8 @@ public:
 	static int RandomInt()
 	{
 		RandomCount++;
-		return GameEngineRandom::MainRandom.RandomInt(0, 99);
+		int result = GameEngineRandom::MainRandom.RandomInt(0, 99);
+		return result;
 	}
 	// 난수를 _Count번째 난수로 세팅합니다
 	static void SetRandomCount(int _Count)
@@ -24,10 +26,20 @@ public:
 			RandomInt();
 		}
 	}
+	static void AddRandomCount(int _Count)
+	{
+		SetRandomCount(RandomCount + _Count);
+	}
 	// 현재 몇번째 난수인지 반환합니다
 	static int GetRandomCount()
 	{
 		return RandomCount;
+	}
+
+	static void SetSeed(int _Seed)
+	{
+		Seed = _Seed;
+		GameEngineRandom::MainRandom.SetSeed(Seed);
 	}
 
 	// delete Function
@@ -40,6 +52,8 @@ protected:
 
 private:
 	static int RandomCount;	// 랜덤을 실행한 횟수
+	static int Seed;
+
 	// constructer destructer
 };
 

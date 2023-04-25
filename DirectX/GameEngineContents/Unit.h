@@ -4,6 +4,7 @@ class Unit
 {
 	friend class BattleUnit;
 	friend class UnitCommand;
+	friend class BattleLevel;
 public:
 	// constrcuter destructer
 	Unit();
@@ -12,20 +13,23 @@ public:
 	Unit(const Unit& _Other)
 	{
 		UnitCode = _Other.UnitCode;
-		UnitStat = _Other.UnitStat;
+		UnitStat = Stat(_Other.UnitStat);
 		CurrentHP = _Other.CurrentHP;
-		UnitStat.EquipWeapon.SetWeaponStat(_Other.UnitStat.EquipWeapon.GetWeaponeStat());
+		TerrainDeffence = _Other.TerrainDeffence;
+		TerrainDodge = _Other.TerrainDodge;
 		IsTurnEnd = _Other.IsTurnEnd;
+		IsDie = _Other.IsDie;
 	}
 
-private:
-	static int UnitNum;
 
+
+private:
 	int UnitCode = 0;
 	Stat UnitStat;
 	int CurrentHP = 0;
 	int TerrainDeffence = 0;
 	int TerrainDodge = 0;
 	bool IsTurnEnd = false;
+	bool IsDie = false;
 };
 

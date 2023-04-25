@@ -31,33 +31,6 @@ public:
 		Range = _Other.Range;
 		Uses = _Other.Uses;
 	}
-	Weapon operator=(const Weapon& _Other)
-	{
-		Weapon NewWeapon(_Other);
-		//NewWeapon.Damage = _Other.Damage;
-		//NewWeapon.Hit = _Other.Hit;
-		//NewWeapon.Critical = _Other.Critical;
-		//NewWeapon.Weight = _Other.Weight;
-		//NewWeapon.Range = _Other.Range;
-		//NewWeapon.Uses = _Other.Uses;
-
-		return NewWeapon;
-	}
-
-	void SetWeaponStat(Weapon _Other)
-	{
-		Damage = _Other.Damage;
-		Hit = _Other.Hit;
-		Critical = _Other.Critical;
-		Weight = _Other.Weight;
-		Range = _Other.Range;
-		Uses = _Other.Uses;
-	}
-
-	Weapon GetWeaponeStat() const
-	{
-		return *this;
-	}
 
 	int Damage = 0;		// 공격력
 	int Hit = 0;		// 명중률

@@ -75,7 +75,7 @@ public:
 	Stat(const Stat& _Other)
 	{
 		ClassValue = _Other.ClassValue;
-		EquipWeapon = _Other.EquipWeapon.GetWeaponeStat(); // 장비한 무기
+		EquipWeapon = Weapon(_Other.EquipWeapon);
 		MainStatValue = _Other.MainStatValue;
 		Level = _Other.Level;			// 레벨
 		Movement = _Other.Movement;				// 이동력

@@ -17,7 +17,7 @@ public:
 
 	void SetMapPos(int2 _Value);
 	void MoveMapPos(int2 _Value);
-	inline int2 GetMapPos()
+	int2 GetMapPos()
 	{
 		return MapPos;
 	}
@@ -29,10 +29,17 @@ public:
 		return IsMove;
 	}
 
+	int2 GetBeforeMapPos()
+	{
+		return BeforeMapPos;
+	}
+
+
 protected:
 	void Update(float _DeltaTime) override;
 private:
 	int2 MapPos = { 0 };
+	int2 BeforeMapPos = { 0 };
 	const float MoveSpeed = 15.0f;
 	bool IsMove = false;
 	float MoveTimer = 0;

@@ -6,6 +6,7 @@
 #include <GameEngineCore/GameEnginePixelShader.h>
 #include "TitleLevel.h"
 #include "BattleLevel.h"
+#include "FERandom.h"
 FECore::FECore()
 {
 }
@@ -19,7 +20,7 @@ void FECore::GameStart()
 	new int();
 
 	ResourcesCreate();
-
+	FERandom::SetSeed(0);
 	GameEngineCore::CreateLevel<TitleLevel>();
 	GameEngineCore::CreateLevel<BattleLevel>();
 	GameEngineCore::ChangeLevel("TitleLevel");

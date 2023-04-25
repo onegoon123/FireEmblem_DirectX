@@ -13,6 +13,7 @@ static const float TileScale = 64.0f;
 
 void MapUnit::SetMapPos(int2 _Value)
 {
+	BeforeMapPos = MapPos;
 	MapPos = _Value;
 
 	GetTransform()->SetLocalPosition(MapPos * TileScale);
