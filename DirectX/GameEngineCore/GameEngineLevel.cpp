@@ -20,7 +20,7 @@ void GameEngineLevel::Start()
 
 }
 
-void GameEngineLevel::Update(float _DeltaTime)
+void GameEngineLevel::ActorUpdate(float _DeltaTime)
 {
 	if (true == MainCamera->IsFreeCamera())
 	{
@@ -42,7 +42,7 @@ void GameEngineLevel::Update(float _DeltaTime)
 	}
 }
 
-void GameEngineLevel::Render(float _DeltaTime)
+void GameEngineLevel::ActorRender(float _DeltaTime)
 {
 	GetMainCamera()->Setting();
 
@@ -61,7 +61,16 @@ void GameEngineLevel::Render(float _DeltaTime)
 	}
 }
 
-void GameEngineLevel::ActorInit(std::shared_ptr<GameEngineActor> _Actor, int _Order, GameEngineLevel* _Parent)
+void GameEngineLevel::Update(float _DeltaTime)
+{
+
+}
+
+void GameEngineLevel::Render(float _DeltaTime)
+{
+}
+
+void GameEngineLevel::ActorInit(std::shared_ptr<GameEngineActor> _Actor, int _Order, GameEngineLevel* _Level)
 {
 	_Actor->Level = this;
 	_Actor->SetOrder(_Order);

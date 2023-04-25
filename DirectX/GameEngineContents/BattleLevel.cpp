@@ -86,7 +86,6 @@ void BattleLevel::Start()
 
 void BattleLevel::Update(float _DeltaTime)
 {
-	GameEngineLevel::Update(_DeltaTime);
 	(this->*StateUpdate)(_DeltaTime);
 }
 
