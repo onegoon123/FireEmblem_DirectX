@@ -57,7 +57,7 @@ void BattleUnit::SetUnitCode(int _Code)
 		ImageName = "Map_LynTest.png";
 		UnitData.UnitStat.SetStat_Lyn();
 	UnitData.UnitStat.EquipWeapon.Damage = 5;	// 공격력
-	UnitData.UnitStat.EquipWeapon.Hit = 90;		// 명중률
+	UnitData.UnitStat.EquipWeapon.Hit = 105;		// 명중률
 	UnitData.UnitStat.EquipWeapon.Critical = 0;	// 치명타
 	UnitData.UnitStat.EquipWeapon.Weight = 5;		// 무게
 	UnitData.UnitStat.EquipWeapon.Range = 1;		// 사거리

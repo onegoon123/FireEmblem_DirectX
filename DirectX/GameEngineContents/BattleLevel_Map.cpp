@@ -251,6 +251,7 @@ void BattleLevel::MoveSearch()
 			bool Check = false;
 			for (std::shared_ptr<BattleUnit> _Unit : EnemyActors)
 			{
+				if (true == _Unit->GetIsDie()) { continue; }
 				if (NextMove.Pos == _Unit->GetMapPos())
 				{
 					Check = true;
@@ -418,6 +419,7 @@ void BattleLevel::MoveSearchForEnemy()
 			bool Check = false;
 			for (std::shared_ptr<BattleUnit> _Unit : PlayerActors)
 			{
+				if (true == _Unit->GetIsDie()) { continue; }
 				if (NextMove.Pos == _Unit->GetMapPos())
 				{
 					Check = true;
@@ -431,6 +433,7 @@ void BattleLevel::MoveSearchForEnemy()
 			Check = false;
 			for (std::shared_ptr<BattleUnit> _Actor : EnemyActors)
 			{
+				if (true == _Actor->GetIsDie()) { continue; }
 				if (NextMove.Pos == _Actor->GetMapPos())
 				{
 					Check = true;
@@ -700,6 +703,7 @@ void BattleLevel::UnitMove()
 	{
 		for (std::shared_ptr<BattleUnit> _Actor : PlayerActors)
 		{
+			if (true == _Actor->GetIsDie()) { continue; }
 			if (_Actor->GetMapPos() == MainCursor->GetMapPos())
 			{
 				// 임시) 클래스 번호가 다르면 다른 유닛이므로 이동이 불가능함
