@@ -2,8 +2,7 @@
 #include "MapUnit.h"
 #include "Stat.h"
 #include "Unit.h"
-// Ό³Έν :
-class GameEngineRender;
+
 class BattleUnit : public MapUnit
 {
 	friend class UnitCommand;

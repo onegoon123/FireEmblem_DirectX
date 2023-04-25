@@ -9,16 +9,17 @@
 #include "GameEngineVertex.h"
 
 #include "GameEngineMesh.h"
+#include "GameEngineBlend.h"
 #include "GameEngineTexture.h"
-#include "GameEngineRenderTarget.h"
-#include "GameEngineVertexBuffer.h"
-#include "GameEngineIndexBuffer.h"
-#include "GameEngineRenderingPipeLine.h"
 #include "GameEngineRasterizer.h"
+#include "GameEngineIndexBuffer.h"
 #include "GameEnginePixelShader.h"
-#include "GameEngineConstantBuffer.h"
-
 #include "GameEngineVertexShader.h"
+#include "GameEngineVertexBuffer.h"
+#include "GameEngineRenderTarget.h"
+#include "GameEngineConstantBuffer.h"
+#include "GameEngineRenderingPipeLine.h"
+
 
 
 void GameEngineCore::CoreResourcesInit()
@@ -118,6 +119,70 @@ void GameEngineCore::CoreResourcesInit()
 
 	}
 
+	{
+		// 블랜드
+		D3D11_BLEND_DESC Desc = { 0, };
+
+		// 자동으로 알파부분을 제거해서 출력해주는 건데
+		// 졸라느립니다.
+		Desc.AlphaToCoverageEnable = false;
+		// 블랜드를 여러개 넣을거냐
+		// TRUE면 블랜드를 여러개 넣습니다.
+		// false면 몇개의 랜더타겟이 있건 0번에 세팅된 걸로 전부다 블랜드.
+		Desc.IndependentBlendEnable = false;
+
+		Desc.RenderTarget[0].BlendEnable = true;
+		Desc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+		Desc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
+		Desc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
+		Desc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
+
+		Desc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+		Desc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_SRC_ALPHA;
+		Desc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_INV_SRC_ALPHA;
+
+		GameEngineBlend::Create("AlphaBlend", Desc);
+	}
+
+	{
+		// 최초의 버텍스의 위치를 로컬공간이라고 부릅니다.
+		std::vector<float4> ArrVertex;
+		ArrVertex.resize(24);
+		// 앞면
+		ArrVertex[0] = { -0.5f, -0.5f, 0.5f };
+		ArrVertex[1] = { 0.5f, -0.5f,0.5f };
+		ArrVertex[2] = { 0.5f, 0.5f,0.5f };
+		ArrVertex[3] = { -0.5f, 0.5f,0.5f };
+
+		// 뒷면
+		ArrVertex[4] = ArrVertex[0].RotaitonXDegReturn(180.0f);
+		ArrVertex[5] = ArrVertex[1].RotaitonXDegReturn(180.0f);
+		ArrVertex[6] = ArrVertex[2].RotaitonXDegReturn(180.0f);
+		ArrVertex[7] = ArrVertex[3].RotaitonXDegReturn(180.0f);
+
+		// 왼쪽면
+		ArrVertex[8] = ArrVertex[0].RotaitonYDegReturn(90.0f);
+		ArrVertex[9] = ArrVertex[1].RotaitonYDegReturn(90.0f);
+		ArrVertex[10] = ArrVertex[2].RotaitonYDegReturn(90.0f);
+		ArrVertex[11] = ArrVertex[3].RotaitonYDegReturn(90.0f);
+
+		// 오른쪽
+		ArrVertex[12] = ArrVertex[0].RotaitonYDegReturn(-90.0f);
+		ArrVertex[13] = ArrVertex[1].RotaitonYDegReturn(-90.0f);
+		ArrVertex[14] = ArrVertex[2].RotaitonYDegReturn(-90.0f);
+		ArrVertex[15] = ArrVertex[3].RotaitonYDegReturn(-90.0f);
+
+		ArrVertex[16] = ArrVertex[0].RotaitonXDegReturn(90.0f);
+		ArrVertex[17] = ArrVertex[1].RotaitonXDegReturn(90.0f);
+		ArrVertex[18] = ArrVertex[2].RotaitonXDegReturn(90.0f);
+		ArrVertex[19] = ArrVertex[3].RotaitonXDegReturn(90.0f);
+
+		ArrVertex[20] = ArrVertex[0].RotaitonXDegReturn(-90.0f);
+		ArrVertex[21] = ArrVertex[1].RotaitonXDegReturn(-90.0f);
+		ArrVertex[22] = ArrVertex[2].RotaitonXDegReturn(-90.0f);
+		ArrVertex[23] = ArrVertex[3].RotaitonXDegReturn(-90.0f);
+
+	}
 
 	// 버텍스 쉐이더 컴파일
 	{
@@ -180,7 +245,7 @@ void GameEngineCore::CoreResourcesInit()
 		Desc.CullMode = D3D11_CULL_MODE::D3D11_CULL_NONE;
 		Desc.FrontCounterClockwise = FALSE;
 
-		std::shared_ptr<GameEngineRasterizer> Res = GameEngineRasterizer::Create("EngineBase", Desc);
+		std::shared_ptr<GameEngineRasterizer> Res = GameEngineRasterizer::Create("Engine2DBase", Desc);
 	}
 
 
@@ -191,21 +256,24 @@ void GameEngineCore::CoreResourcesInit()
 			Pipe->SetVertexBuffer("Rect");
 			Pipe->SetIndexBuffer("Rect");
 			Pipe->SetVertexShader("TextureShader.hlsl");
-			Pipe->SetRasterizer("EngineBase");
+			Pipe->SetRasterizer("Engine2DBase");
 			Pipe->SetPixelShader("TextureShader.hlsl");
+			Pipe->SetBlend("AlphaBlend");
 		}
 	}
 }
 
 void GameEngineCore::CoreResourcesEnd()
 {
-	GameEngineConstantBuffer::ResourcesClear();
-	GameEnginePixelShader::ResourcesClear();
-	GameEngineRasterizer::ResourcesClear();
-	GameEngineVertexShader::ResourcesClear();
-	GameEngineIndexBuffer::ResourcesClear();
-	GameEngineVertexBuffer::ResourcesClear();
 	GameEngineMesh::ResourcesClear();
+	GameEngineBlend::ResourcesClear();
 	GameEngineTexture::ResourcesClear();
+	GameEngineRasterizer::ResourcesClear();
+	GameEngineIndexBuffer::ResourcesClear();
+	GameEnginePixelShader::ResourcesClear();
+	GameEngineVertexShader::ResourcesClear();
+	GameEngineVertexBuffer::ResourcesClear();
 	GameEngineRenderTarget::ResourcesClear();
+	GameEngineConstantBuffer::ResourcesClear();
+	GameEngineRenderingPipeLine::ResourcesClear();
 }

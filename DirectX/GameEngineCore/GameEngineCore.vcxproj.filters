@@ -90,6 +90,12 @@
     <ClCompile Include="GameEngineSampler.cpp">
       <Filter>Resources\Texture</Filter>
     </ClCompile>
+    <ClCompile Include="GameEngineBlend.cpp">
+      <Filter>Resources\RenderingSetting</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineSpriteRenderer.cpp">
+      <Filter>Object\Rendering\Component\2D</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngineCore.h" />
@@ -182,6 +188,12 @@
     <ClInclude Include="GameEngineSampler.h">
       <Filter>Resources\Texture</Filter>
     </ClInclude>
+    <ClInclude Include="GameEngineBlend.h">
+      <Filter>Resources\RenderingSetting</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineSpriteRenderer.h">
+      <Filter>Object\Rendering\Component\2D</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Resources">
@@ -231,6 +243,9 @@
     </Filter>
     <Filter Include="ThirdParty\DirectXTex\bin\Release">
       <UniqueIdentifier>{57fb17e6-72c0-4f3c-a2f7-9779f536d7b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Rendering\Component\2D">
+      <UniqueIdentifier>{4cce38b6-0725-4481-8550-4d033442844a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -18,7 +18,7 @@ void FECore::GameStart()
 {
 	new int();
 
-	CreatePipeLine();
+	ResourcesCreate();
 
 	GameEngineCore::CreateLevel<TitleLevel>();
 	GameEngineCore::CreateLevel<BattleLevel>();
@@ -30,7 +30,7 @@ void FECore::GameEnd()
 
 }
 
-void FECore::CreatePipeLine()
+void FECore::ResourcesCreate()
 {
 	GameEngineDirectory NewDir;
 	NewDir.MoveParentToDirectory("ContentResources");
@@ -42,8 +42,9 @@ void FECore::CreatePipeLine()
 	Pipe->SetVertexBuffer("Rect");
 	Pipe->SetIndexBuffer("Rect");
 	Pipe->SetVertexShader("TextureShader.hlsl");
-	Pipe->SetRasterizer("EngineBase");
+	Pipe->SetRasterizer("Engine2DBase");
 	Pipe->SetPixelShader("TextureShaderGrayScale.hlsl");
+	Pipe->SetBlend("AlphaBlend");
 
 	GameEnginePixelShader::Load(NewDir.GetPlusFileName("EffectPixelShader.hlsl").GetFullPath(), "Texture_PS");
 	Pipe = GameEngineRenderingPipeLine::Create("2DTextureEffect");
@@ -51,6 +52,7 @@ void FECore::CreatePipeLine()
 	Pipe->SetVertexBuffer("Rect");
 	Pipe->SetIndexBuffer("Rect");
 	Pipe->SetVertexShader("TextureShader.hlsl");
-	Pipe->SetRasterizer("EngineBase");
+	Pipe->SetRasterizer("Engine2DBase");
 	Pipe->SetPixelShader("EffectPixelShader.hlsl");
+	Pipe->SetBlend("AlphaBlend");
 }

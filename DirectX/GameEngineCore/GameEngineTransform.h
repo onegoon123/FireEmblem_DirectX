@@ -359,6 +359,35 @@ public:
 		TransData = _Data;
 	}
 
+	void SetLocalFlipScaleX()
+	{
+		TransData.LocalScale.x = -TransData.LocalScale.x;
+		SetLocalScale(TransData.LocalScale);
+	}
+
+	void SetLocalNegativeScaleX()
+	{
+		if (0 < TransData.LocalScale.x)
+		{
+			SetLocalFlipScaleX();
+			return;
+		}
+
+		return;
+	}
+
+	void SetLocalPositiveScaleX()
+	{
+		if (0 > TransData.LocalScale.x)
+		{
+			SetLocalFlipScaleX();
+			return;
+		}
+
+		return;
+	}
+
+
 protected:
 
 private:

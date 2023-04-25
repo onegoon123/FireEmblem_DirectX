@@ -167,6 +167,10 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="GameEngineBlend.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="GameEngineCamera.cpp">
       <SubType>
       </SubType>
@@ -250,6 +254,10 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="GameEngineSpriteRenderer.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="GameEngineTexture.cpp">
       <SubType>
       </SubType>
@@ -282,6 +290,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GameEngineBlend.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="GameEngineEnum.h" />
     <ClInclude Include="GameEngineActor.h">
       <SubType>
@@ -366,6 +378,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="GameEngineShaderResHelper.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="GameEngineSpriteRenderer.h">
       <SubType>
       </SubType>
     </ClInclude>

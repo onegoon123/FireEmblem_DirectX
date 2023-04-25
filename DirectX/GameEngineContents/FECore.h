@@ -20,6 +20,6 @@ protected:
 
 private:
 
-	static void CreatePipeLine();
+	static void ResourcesCreate();
 };
 
