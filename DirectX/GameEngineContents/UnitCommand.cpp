@@ -54,6 +54,9 @@ std::list<AttackCommand> UnitCommand::Attack(std::shared_ptr<BattleUnit> _Subjec
 		NewAttack.SubjectUnit = SubjectUnit;
 
 		AttackList.push_back(NewAttack);
+
+		MessageBoxA(nullptr, SubjectUnit.ToString().c_str(), (std::string(_SubjectUnit->GetName()) + "(이)가 공격").c_str(), MB_OK);
+		MessageBoxA(nullptr, TargetUnit.ToString().c_str(), (std::string(_TargetUnit->GetName()) + "(이)가 대미지").c_str(), MB_OK);
 	}
 
 	if (true == TargetUnit.IsDie)
@@ -92,6 +95,8 @@ std::list<AttackCommand> UnitCommand::Attack(std::shared_ptr<BattleUnit> _Subjec
 		NewAttack.TargetUnit = TargetUnit;
 		NewAttack.SubjectUnit = SubjectUnit;
 		AttackList.push_back(NewAttack);
+		MessageBoxA(nullptr, TargetUnit.ToString().c_str(), (std::string(_TargetUnit->GetName()) + "(이)가 공격").c_str(), MB_OK);
+		MessageBoxA(nullptr, SubjectUnit.ToString().c_str(), (std::string(_SubjectUnit->GetName()) + "(이)가 대미지").c_str(), MB_OK);
 	}
 
 	if (true == TargetUnit.IsDie)
@@ -131,6 +136,8 @@ std::list<AttackCommand> UnitCommand::Attack(std::shared_ptr<BattleUnit> _Subjec
 		NewAttack.TargetUnit = TargetUnit;
 		NewAttack.SubjectUnit = SubjectUnit;
 		AttackList.push_back(NewAttack);
+		MessageBoxA(nullptr, SubjectUnit.ToString().c_str(), (std::string(_SubjectUnit->GetName()) + "(이)가 공격").c_str(), MB_OK);
+		MessageBoxA(nullptr, TargetUnit.ToString().c_str(), (std::string(_TargetUnit->GetName()) + "(이)가 대미지").c_str(), MB_OK);
 	}
 
 	CommandRecord.AfterSubjectUnit = SubjectUnit;

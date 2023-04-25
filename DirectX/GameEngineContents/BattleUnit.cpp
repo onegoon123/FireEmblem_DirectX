@@ -37,17 +37,19 @@ bool BattleUnit::GetIsTurnEnd()
 void BattleUnit::SetUnitCode(int _Code)
 {
 	UnitData.UnitCode = _Code;
-	UnitData.UnitStat.SetStat_Lyn();
-	SetName("린");
-
+	
 	if (2 <= UnitData.UnitCode)
 	{
+		SetName("적");
 		ImageName = "Map_EnemyBrigandTest.png";
 		SpriteRender->GetShaderResHelper().SetTexture("DiffuseTex", ImageName);
+		UnitData.UnitStat.SetStat_Brigand();
 	}
 	else
 	{
+		SetName("플레이어");
 		ImageName = "Map_LynTest.png";
+		UnitData.UnitStat.SetStat_Lyn();
 	}
 
 	UnitData.UnitStat.EquipWeapon.Damage = 5;	// 공격력

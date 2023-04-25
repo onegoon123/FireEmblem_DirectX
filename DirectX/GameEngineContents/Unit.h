@@ -21,7 +21,14 @@ public:
 		IsDie = _Other.IsDie;
 	}
 
+	std::string ToString()
+	{
+		std::string Str;
+		Str += "체력 : " + std::to_string(CurrentHP) + " / " + std::to_string(UnitStat.MainStatValue.HP) + '\n';
+		Str += "공격력 : " + std::to_string(UnitStat.GetAttackPoint());
 
+		return Str;
+	}
 
 private:
 	int UnitCode = 0;
