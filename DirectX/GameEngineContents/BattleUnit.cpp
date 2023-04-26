@@ -1,9 +1,9 @@
 #include "PrecompileHeader.h"
 #include "BattleUnit.h"
-#include <GameEngineCore/GameEngineRenderer.h>
 #include <GameEnginePlatform/GameEngineInput.h>
 #include "Stat.h"
 #include "Weapon.h"
+#include "UnitRenderer.h"
 BattleUnit::BattleUnit() 
 {
 }
@@ -18,13 +18,15 @@ void BattleUnit::SetIsTurnEnd(bool _Value)
 
 	if (_Value == true)
 	{
-		SpriteRender->SetPipeLine("2DTextureGray");
-		SpriteRender->GetShaderResHelper().SetTexture("DiffuseTex", ImageName);
+		SpriteRender->SetGrayScale(true);
+		//SpriteRender->SetPipeLine("2DTextureGray");
+		//SpriteRender->GetShaderResHelper().SetTexture("DiffuseTex", ImageName);
 	}
 	else
 	{
-		SpriteRender->SetPipeLine("2DTexture");
-		SpriteRender->GetShaderResHelper().SetTexture("DiffuseTex", ImageName);
+		SpriteRender->SetGrayScale(false);
+		//SpriteRender->SetPipeLine("2DTexture");
+		//SpriteRender->GetShaderResHelper().SetTexture("DiffuseTex", ImageName);
 	}
 }
 
@@ -36,54 +38,70 @@ bool BattleUnit::GetIsTurnEnd()
 
 void BattleUnit::SetUnitCode(int _Code)
 {
-	UnitData.UnitCode = _Code;
-	
-	if (2 <= UnitData.UnitCode)
-	{
-		SetName("적");
-		ImageName = "Map_EnemyBrigandTest.png";
-		SpriteRender->GetShaderResHelper().SetTexture("DiffuseTex", ImageName);
-		UnitData.UnitStat.SetStat_Brigand();
-		UnitData.UnitStat.EquipWeapon.Damage = 8;	// 공격력
-		UnitData.UnitStat.EquipWeapon.Hit = 50;		// 명중률
-		UnitData.UnitStat.EquipWeapon.Critical = 0;	// 치명타
-		UnitData.UnitStat.EquipWeapon.Weight = 10;		// 무게
-		UnitData.UnitStat.EquipWeapon.Range = 1;		// 사거리
-		UnitData.UnitStat.EquipWeapon.Uses = 45;		// 내구도
-	}
-	else
-	{
-		SetName("플레이어");
-		ImageName = "Map_LynTest.png";
-		UnitData.UnitStat.SetStat_Lyn();
-	UnitData.UnitStat.EquipWeapon.Damage = 5;	// 공격력
-	UnitData.UnitStat.EquipWeapon.Hit = 105;		// 명중률
-	UnitData.UnitStat.EquipWeapon.Critical = 0;	// 치명타
-	UnitData.UnitStat.EquipWeapon.Weight = 5;		// 무게
-	UnitData.UnitStat.EquipWeapon.Range = 1;		// 사거리
-	UnitData.UnitStat.EquipWeapon.Uses = 46;		// 내구도
-	}
+	SetUnitCode(static_cast<UnitIdentityCode>(_Code));
+}
 
+void BattleUnit::SetUnitCode(UnitIdentityCode _Code)
+{
 
+	UnitData.UnitStat.SetIdentity(_Code);
 	UnitData.CurrentHP = UnitData.UnitStat.MainStatValue.HP;
-}
 
-int BattleUnit::GetUnitCode()
-{
-	return UnitData.UnitCode;
-}
-
-int BattleUnit::GetMoveStat()
-{
-	return UnitData.UnitStat.Movement;
+	switch (_Code)
+	{
+	case UnitIdentityCode::Lyn:
+		SetName("린");
+		ImageName = "Map_LynTest.png";
+		break;
+	case UnitIdentityCode::Sain:
+		break;
+	case UnitIdentityCode::Kent:
+		break;
+	case UnitIdentityCode::Florina:
+		break;
+	case UnitIdentityCode::Wil:
+		break;
+	case UnitIdentityCode::Dorcas:
+		break;
+	case UnitIdentityCode::Serra:
+		break;
+	case UnitIdentityCode::Erk:
+		break;
+	case UnitIdentityCode::Rath:
+		break;
+	case UnitIdentityCode::Matthew:
+		break;
+	case UnitIdentityCode::Ninian:
+		break;
+	case UnitIdentityCode::Lucius:
+		break;
+	case UnitIdentityCode::Wallace:
+		break;
+	case UnitIdentityCode::Brigand:
+		SetName("산적");
+		ImageName = "Map_EnemyBrigandTest.png";
+		break;
+	case UnitIdentityCode::Soldier:
+		break;
+	case UnitIdentityCode::Mercenary:
+		break;
+	case UnitIdentityCode::Archer:
+		break;
+	case UnitIdentityCode::Knight:
+		break;
+	case UnitIdentityCode::Mage:
+		break;
+	default:
+		break;
+	}
+	SpriteRender->SetTexture(ImageName);
 }
 
 void BattleUnit::Start()
 {
-	SpriteRender = CreateComponent<GameEngineRenderer>();
-	SpriteRender->SetPipeLine("2DTexture");
+	SpriteRender = CreateComponent<UnitRenderer>();
 	ImageName = "Map_LynTest.png";
-	SpriteRender->GetShaderResHelper().SetTexture("DiffuseTex", ImageName);
+	SpriteRender->SetTexture(ImageName);
 	SpriteRender->GetTransform()->SetWorldScale({ 128,128 });
 	SetMapPos({ 0,0 });
 }

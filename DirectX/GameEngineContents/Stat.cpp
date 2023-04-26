@@ -9,6 +9,72 @@ Stat::~Stat()
 }
 void Stat::SetIdentity(int _IdentityCode)
 {
+	SetIdentity(static_cast<UnitIdentityCode>(_IdentityCode));
+}
+
+void Stat::SetIdentity(UnitIdentityCode _IdentityCode)
+{
+	switch (_IdentityCode)
+	{
+	case UnitIdentityCode::Lyn:
+		SetStat_Lyn();
+		break;
+	case UnitIdentityCode::Sain:
+		SetStat_Sain();
+		break;
+	case UnitIdentityCode::Kent:
+		SetStat_Kent();
+		break;
+	case UnitIdentityCode::Florina:
+		SetStat_Florina();
+		break;
+	case UnitIdentityCode::Wil:
+		SetStat_Wil();
+		break;
+	case UnitIdentityCode::Dorcas:
+		SetStat_Dorcas();
+		break;
+	case UnitIdentityCode::Serra:
+		SetStat_Serra();
+		break;
+	case UnitIdentityCode::Erk:
+		SetStat_Erk();
+		break;
+	case UnitIdentityCode::Rath:
+		SetStat_Rath();
+		break;
+	case UnitIdentityCode::Matthew:
+		SetStat_Matthew();
+		break;
+	case UnitIdentityCode::Ninian:
+		SetStat_Ninian();
+		break;
+	case UnitIdentityCode::Lucius:
+		SetStat_Lucius();
+		break;
+	case UnitIdentityCode::Wallace:
+		SetStat_Wallace();
+		break;
+	case UnitIdentityCode::Brigand:
+		SetStat_Brigand();
+		break;
+	case UnitIdentityCode::Soldier:
+		SetStat_Soldier();
+		break;
+	case UnitIdentityCode::Mercenary:
+		SetStat_Mercenary();
+		break;
+	case UnitIdentityCode::Archer:
+		SetStat_Archer();
+		break;
+	case UnitIdentityCode::Knight:
+		SetStat_Knight();
+		break;
+	case UnitIdentityCode::Mage:
+		SetStat_Mage();
+		break;
+	}
+
 }
 
 const int NeedExperience = 100;		// 레벨업시 필요한 경험치
@@ -150,7 +216,7 @@ void Stat::SetStat_Wil()
 	MainStatValue.HP = 20;
 	MainStatValue.Strength = 6;
 	MainStatValue.Magic = 5;
-	MainStatValue.Dexterity = 35;
+	MainStatValue.Dexterity = 5;
 	MainStatValue.Speed = 5;
 	MainStatValue.Luck = 6;
 	MainStatValue.Defense = 5;
@@ -356,7 +422,7 @@ void Stat::SetStat_Wallace()
 	MainStatValue.Defense = 15;
 	MainStatValue.Resistance = 2;
 	MainStatValue.Constitution = 13;
-	ClassValue = BattleClass::Monk;
+	ClassValue = BattleClass::Knight;
 	Movement = 4;
 	GrowthRates_HP = 80;
 	GrowthRates_Strength = 40;
@@ -369,9 +435,99 @@ void Stat::SetStat_Wallace()
 }
 
 
+
+void Stat::ClassChange_BladeLord()
+{
+	ClassValue = BattleClass::BladeLord;
+	MainStatValue.HP += 3;
+	MainStatValue.Strength += 2;
+	MainStatValue.Magic += 1;
+	MainStatValue.Dexterity += 2;
+	MainStatValue.Defense += 3;
+	MainStatValue.Resistance += 5;
+	Movement += 1;
+	MainStatValue.Constitution += 1;
+}
+
+void Stat::ClassChange_Warrior()
+{
+	ClassValue = BattleClass::Warrior;
+	MainStatValue.HP += 3;
+	MainStatValue.Strength += 1;
+	MainStatValue.Dexterity += 2;
+	MainStatValue.Defense += 3;
+	MainStatValue.Resistance += 3;
+	Movement += 1;
+	MainStatValue.Constitution += 2;
+}
+
+void Stat::ClassChange_Assassin()
+{
+	ClassValue = BattleClass::Assassin;
+	MainStatValue.HP += 3;
+	MainStatValue.Strength += 1;
+	MainStatValue.Defense += 2;
+	MainStatValue.Resistance += 2;
+}
+
+void Stat::ClassChange_General()
+{
+	ClassValue = BattleClass::General;
+	MainStatValue.HP += 4;
+	MainStatValue.Strength += 2;
+	MainStatValue.Dexterity += 2;
+	MainStatValue.Speed += 3;
+	MainStatValue.Defense += 2;
+	MainStatValue.Resistance += 3;
+	Movement += 1;
+	MainStatValue.Constitution += 2;
+}
+
+int Stat::GetAttackPoint()
+{
+	int Result = MainStatValue.Strength + EquipWeapon->Damage;
+	return Result;
+}
+
+int Stat::GetMagicAttackPoint()
+{
+	int Result = MainStatValue.Magic + EquipWeapon->Damage;
+	return Result;
+}
+
+int Stat::GetHitPoint()
+{
+	int Result = (MainStatValue.Dexterity * 2) + (MainStatValue.Luck / 2) + EquipWeapon->Hit;
+	return Result;
+}
+
+int Stat::GetCriticalPoint()
+{
+	int Result = MainStatValue.Dexterity / 2 + EquipWeapon->Critical;
+	return Result;
+}
+
+int Stat::GetAttackSpeedPoint()
+{
+	int Result = MainStatValue.Speed - std::max<int>(0, EquipWeapon->Weight - MainStatValue.Constitution);
+	return Result;
+}
+
+int Stat::GetDodgePoint()
+{
+	int Result = 2 * GetAttackSpeedPoint() + MainStatValue.Luck / 2;
+	return Result;
+}
+
+int Stat::GetCriticalDodgePoint()
+{
+	return MainStatValue.Luck;
+}
+
 void Stat::SetStat_Brigand()
 {
 	// Brigand
+	Level = 1;
 	MainStatValue.HP = 20;
 	MainStatValue.Strength = 5;
 	MainStatValue.Magic = 2;
@@ -396,6 +552,7 @@ void Stat::SetStat_Brigand()
 void Stat::SetStat_Soldier()
 {
 	// Soldier
+	Level = 1;
 	MainStatValue.HP = 20;
 	MainStatValue.Strength = 3;
 	MainStatValue.Magic = 2;
@@ -420,6 +577,7 @@ void Stat::SetStat_Soldier()
 void Stat::SetStat_Mercenary()
 {
 	// Mercenary
+	Level = 1;
 	MainStatValue.HP = 18;
 	MainStatValue.Strength = 4;
 	MainStatValue.Magic = 2;
@@ -429,7 +587,7 @@ void Stat::SetStat_Mercenary()
 	MainStatValue.Defense = 4;
 	MainStatValue.Resistance = 0;
 	MainStatValue.Constitution = 9;
-	ClassValue = BattleClass::Soldier;
+	ClassValue = BattleClass::Mercenary;
 	Movement = 5;
 	GrowthRates_HP = 80;
 	GrowthRates_Strength = 50;
@@ -441,86 +599,75 @@ void Stat::SetStat_Mercenary()
 	GrowthRates_Resistance = 15;
 }
 
-void Stat::ClassChange_BladeLord()
+void Stat::SetStat_Archer()
 {
-	MainStatValue.HP += 3;
-	MainStatValue.Strength += 2;
-	MainStatValue.Magic += 1;
-	MainStatValue.Dexterity += 2;
-	MainStatValue.Defense += 3;
-	MainStatValue.Resistance += 5;
-	Movement += 1;
-	MainStatValue.Constitution += 1;
+	Level = 1;
+	MainStatValue.HP = 18;
+	MainStatValue.Strength = 4;
+	MainStatValue.Magic = 3;
+	MainStatValue.Dexterity = 3;
+	MainStatValue.Speed = 3;
+	MainStatValue.Luck = 0;
+	MainStatValue.Defense = 3;
+	MainStatValue.Resistance = 0;
+	MainStatValue.Constitution = 7;
+	ClassValue = BattleClass::Archer;
+	Movement = 5;
+	GrowthRates_HP = 70;
+	GrowthRates_Strength = 35;
+	GrowthRates_Magic = 25;
+	GrowthRates_Dexterity = 40;
+	GrowthRates_Speed = 32;
+	GrowthRates_Luck = 35;
+	GrowthRates_Defense = 15;
+	GrowthRates_Resistance = 15;
 }
 
-void Stat::ClassChange_Warrior()
+void Stat::SetStat_Knight()
 {
-	MainStatValue.HP += 3;
-	MainStatValue.Strength += 1;
-	MainStatValue.Dexterity += 2;
-	MainStatValue.Defense += 3;
-	MainStatValue.Resistance += 3;
-	Movement += 1;
-	MainStatValue.Constitution += 2;
+	Level = 1;
+	MainStatValue.HP = 23;
+	MainStatValue.Strength = 5;
+	MainStatValue.Magic = 2;
+	MainStatValue.Dexterity = 2;
+	MainStatValue.Speed = 2;
+	MainStatValue.Luck = 0;
+	MainStatValue.Defense = 10;
+	MainStatValue.Resistance = 2;
+	MainStatValue.Constitution = 7;
+	ClassValue = BattleClass::Knight;
+	Movement = 4;
+	GrowthRates_HP = 70;
+	GrowthRates_Strength = 35;
+	GrowthRates_Magic = 25;
+	GrowthRates_Dexterity = 40;
+	GrowthRates_Speed = 32;
+	GrowthRates_Luck = 35;
+	GrowthRates_Defense = 35;
+	GrowthRates_Resistance = 15;
 }
 
-void Stat::ClassChange_Assassin()
+void Stat::SetStat_Mage()
 {
-	MainStatValue.HP += 3;
-	MainStatValue.Strength += 1;
-	MainStatValue.Defense += 2;
-	MainStatValue.Resistance += 2;
-}
-
-void Stat::ClassChange_General()
-{
-	MainStatValue.HP += 4;
-	MainStatValue.Strength += 2;
-	MainStatValue.Dexterity += 2;
-	MainStatValue.Speed += 3;
-	MainStatValue.Defense += 2;
-	MainStatValue.Resistance += 3;
-	Movement += 1;
-	MainStatValue.Constitution += 2;
-}
-
-int Stat::GetAttackPoint()
-{
-	int Result = MainStatValue.Strength + EquipWeapon.Damage;
-	return Result;
-}
-
-int Stat::GetMagicAttackPoint()
-{
-	int Result = MainStatValue.Magic + EquipWeapon.Damage;
-	return Result;
-}
-
-int Stat::GetHitPoint()
-{
-	int Result = (MainStatValue.Dexterity * 2) + (MainStatValue.Luck / 2) + EquipWeapon.Hit;
-	return Result;
-}
-
-int Stat::GetCriticalPoint()
-{
-	int Result = MainStatValue.Dexterity / 2 + EquipWeapon.Critical;
-	return Result;
-}
-
-int Stat::GetAttackSpeedPoint()
-{
-	int Result = MainStatValue.Speed - std::max<int>(0, EquipWeapon.Weight - MainStatValue.Constitution);
-	return Result;
-}
-
-int Stat::GetDodgePoint()
-{
-	int Result = 2 * GetAttackSpeedPoint() + MainStatValue.Luck / 2;
-	return Result;
-}
-
-int Stat::GetCriticalDodgePoint()
-{
-	return MainStatValue.Luck;
+	// Mage
+	Level = 1;
+	MainStatValue.HP = 17;
+	MainStatValue.Strength = 2;
+	MainStatValue.Magic = 5;
+	MainStatValue.Dexterity = 4;
+	MainStatValue.Speed = 5;
+	MainStatValue.Luck = 3;
+	MainStatValue.Defense = 1;
+	MainStatValue.Resistance = 4;
+	MainStatValue.Constitution = 5;
+	ClassValue = BattleClass::Mage;
+	Movement = 5;
+	GrowthRates_HP = 55;
+	GrowthRates_Strength = 10;
+	GrowthRates_Magic = 55;
+	GrowthRates_Dexterity = 40;
+	GrowthRates_Speed = 35;
+	GrowthRates_Luck = 20;
+	GrowthRates_Defense = 5;
+	GrowthRates_Resistance = 30;
 }

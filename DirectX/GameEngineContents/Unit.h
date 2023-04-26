@@ -1,15 +1,13 @@
 #pragma once
 #include "Stat.h"
+#include "Weapon.h"
+#include "ContentsEnum.h"
 class Unit
 {
-	friend class BattleUnit;
-	friend class UnitCommand;
-	friend class BattleLevel;
 public:
-	// constrcuter destructer
+
 	Unit();
 	~Unit();
-
 	Unit(const Unit& _Other)
 	{
 		UnitCode = _Other.UnitCode;
@@ -20,7 +18,16 @@ public:
 		IsTurnEnd = _Other.IsTurnEnd;
 		IsDie = _Other.IsDie;
 	}
-
+	void operator=(const Unit& _Other)
+	{
+		UnitCode = _Other.UnitCode;
+		UnitStat = Stat(_Other.UnitStat);
+		CurrentHP = _Other.CurrentHP;
+		TerrainDeffence = _Other.TerrainDeffence;
+		TerrainDodge = _Other.TerrainDodge;
+		IsTurnEnd = _Other.IsTurnEnd;
+		IsDie = _Other.IsDie;
+	}
 	std::string ToString()
 	{
 		std::string Str;
@@ -30,13 +37,21 @@ public:
 		return Str;
 	}
 
-private:
 	int UnitCode = 0;
-	Stat UnitStat;
 	int CurrentHP = 0;
 	int TerrainDeffence = 0;
 	int TerrainDodge = 0;
 	bool IsTurnEnd = false;
 	bool IsDie = false;
+
+	Stat UnitStat;
+
+	void NewItem(ItemCode _Code);
+	
+
+private:
+
+	std::list<std::shared_ptr<Item>> Items = std::list<std::shared_ptr<Item>>();
+	
 };
 

@@ -150,7 +150,7 @@ void BattleLevel::CursorAndArrowMove()
 void BattleLevel::CursorDirCheck()
 {
 	float4 CursorPos = MainCursor->EndPos;
-	float4 ScreenSize = GameEngineWindow::GetScreenSize();
+	float4 ScreenSize = GameEngineWindow::GetScreenSize() - float4(0, TileScale);
 	UIDir CursorDir = UIDir::None;
 
 	if (CursorPos.ix() < ScreenSize.hix())
@@ -394,7 +394,7 @@ void BattleLevel::MoveSearchForEnemy()
 {
 
 	std::queue<SearchData> Queue;
-	SearchData StartData = { SelectUnit->GetMapPos(), SelectUnit->GetMoveStat() };
+	SearchData StartData = { SelectUnit->GetMapPos(), SelectUnit->GetMoveStat()};
 	Queue.push(StartData);
 
 	for (int i = 0; i < IsMove.size(); i++)
@@ -419,7 +419,7 @@ void BattleLevel::MoveSearchForEnemy()
 			bool Check = false;
 			for (std::shared_ptr<BattleUnit> _Unit : PlayerActors)
 			{
-				if (true == _Unit->GetIsDie()) { continue; }
+				if (true == _Unit->GetUnitData().IsDie) { continue; }
 				if (NextMove.Pos == _Unit->GetMapPos())
 				{
 					Check = true;
@@ -433,7 +433,7 @@ void BattleLevel::MoveSearchForEnemy()
 			Check = false;
 			for (std::shared_ptr<BattleUnit> _Actor : EnemyActors)
 			{
-				if (true == _Actor->GetIsDie()) { continue; }
+				if (true == _Actor->GetUnitData().IsDie) { continue; }
 				if (NextMove.Pos == _Actor->GetMapPos())
 				{
 					Check = true;

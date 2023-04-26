@@ -4,10 +4,12 @@ struct OutPut
     float4 UV : TEXCOORD;
 };
 
-cbuffer EffectData : register(b10)
+cbuffer EffectData : register(b1)
 {
     float4 FlashColor;
     float t;
+    float a;
+    float b;
     bool IsGrayScale;
 }
 
@@ -29,6 +31,5 @@ float4 Texture_PS(OutPut _Value) : SV_Target0
     {
         Color = lerp(Color, FlashColor, t);
     }
-    
     return Color;
 }

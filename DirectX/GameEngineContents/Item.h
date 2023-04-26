@@ -1,6 +1,7 @@
 #pragma once
-
-enum class ItemType
+#include <GameEngineCore/GameEngineNameObject.h>
+#include "ContentsEnum.h"
+enum class ItemType 
 {
 	None,
 	Weapon,
@@ -9,12 +10,19 @@ enum class ItemType
 };
 
 // Ό³Έν :
-class Item
+class Item : public GameEngineNameObject
 {
 public:
 	// constrcuter destructer
 	Item();
-	~Item();
+	virtual ~Item();
+
+	static std::shared_ptr<Item> CreateItem(ItemCode _Code);
+
+	ItemType GetItemType()
+	{
+		return TypeValue;
+	}
 
 protected:
 

@@ -60,6 +60,9 @@
     <ClCompile Include="FERandom.cpp">
       <Filter>Battle\System</Filter>
     </ClCompile>
+    <ClCompile Include="UnitRenderer.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FECore.h" />
@@ -116,6 +119,9 @@
     <ClInclude Include="FERandom.h">
       <Filter>Battle\System</Filter>
     </ClInclude>
+    <ClInclude Include="UnitRenderer.h">
+      <Filter>Component</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Object">
@@ -147,6 +153,9 @@
     </Filter>
     <Filter Include="Shader">
       <UniqueIdentifier>{8e923454-0fde-4bd2-b03a-267b15adf6a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component">
+      <UniqueIdentifier>{7d8beef9-bf1d-4335-9f1c-8b9602da55f6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

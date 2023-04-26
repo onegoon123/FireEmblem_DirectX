@@ -42,25 +42,15 @@ void BattleLevel::Start()
 	MainCursor->SetMapPos({ 0,0 });
 
 	std::shared_ptr<BattleUnit> NewActor = CreateActor<BattleUnit>();
-	NewActor->SetUnitCode(0);
-	NewActor->SetMapPos({ 3, 4 });
-	//NewActor->SetClass(0);
-	PlayerActors.push_back(NewActor);
-
-	NewActor = CreateActor<BattleUnit>();
-	NewActor->SetUnitCode(1);
+	NewActor->SetUnitCode(UnitIdentityCode::Lyn);
 	NewActor->SetMapPos({ 4, 5 });
-	//NewActor->SetRangeStat(2);
+	NewActor->NewWeapon(ItemCode::IronSword);
 	PlayerActors.push_back(NewActor);
 
 	NewActor = CreateActor<BattleUnit>();
-	NewActor->SetUnitCode(2);
+	NewActor->SetUnitCode(UnitIdentityCode::Brigand);
+	NewActor->NewWeapon(ItemCode::IronAxe);
 	NewActor->SetMapPos({ 8, 8 });
-	EnemyActors.push_back(NewActor);
-
-	NewActor = CreateActor<BattleUnit>();
-	NewActor->SetUnitCode(3);
-	NewActor->SetMapPos({ 10, 3 });
 	EnemyActors.push_back(NewActor);
 
 	IsMove.resize(MainMap->MapScaleInt2.y);

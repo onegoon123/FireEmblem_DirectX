@@ -15,8 +15,8 @@ std::list<AttackCommand> UnitCommand::Attack(std::shared_ptr<BattleUnit> _Subjec
 {
 	std::list<AttackCommand> AttackList;
 	UnitCommand CommandRecord;
-	Unit SubjectUnit = Unit(_SubjectUnit->UnitData);
-	Unit TargetUnit = Unit(_TargetUnit->UnitData);
+	Unit SubjectUnit = Unit(_SubjectUnit->GetUnitData());
+	Unit TargetUnit = Unit(_TargetUnit->GetUnitData());
 
 	CommandRecord.TypeValue = CommandType::Attack;
 	CommandRecord.BeforeSubjectUnit = Unit(SubjectUnit);
@@ -42,7 +42,7 @@ std::list<AttackCommand> UnitCommand::Attack(std::shared_ptr<BattleUnit> _Subjec
 		if (true == NewAttack.IsHit)
 		{
 			TargetUnit.CurrentHP = std::max<int>(0, TargetUnit.CurrentHP - Damage);
-			SubjectUnit.UnitStat.EquipWeapon.Uses--;
+			SubjectUnit.UnitStat.EquipWeapon->Uses--;
 
 			if (0 == TargetUnit.CurrentHP)
 			{
@@ -85,7 +85,7 @@ std::list<AttackCommand> UnitCommand::Attack(std::shared_ptr<BattleUnit> _Subjec
 		if (true == NewAttack.IsHit)
 		{
 			SubjectUnit.CurrentHP = std::max<int>(0, SubjectUnit.CurrentHP - Damage);
-			TargetUnit.UnitStat.EquipWeapon.Uses--;
+			TargetUnit.UnitStat.EquipWeapon->Uses--;
 			if (0 == SubjectUnit.CurrentHP)
 			{
 				SubjectUnit.IsDie = true;
@@ -126,7 +126,7 @@ std::list<AttackCommand> UnitCommand::Attack(std::shared_ptr<BattleUnit> _Subjec
 		if (true == NewAttack.IsHit)
 		{
 			TargetUnit.CurrentHP = std::max<int>(0, TargetUnit.CurrentHP - Damage);
-			SubjectUnit.UnitStat.EquipWeapon.Uses--;
+			SubjectUnit.UnitStat.EquipWeapon->Uses--;
 			if (0 == TargetUnit.CurrentHP)
 			{
 				TargetUnit.IsDie = true;
@@ -158,7 +158,7 @@ std::list<AttackCommand> UnitCommand::Attack(std::shared_ptr<BattleUnit> _Subjec
 		if (true == NewAttack.IsHit)
 		{
 			SubjectUnit.CurrentHP = std::max<int>(0, SubjectUnit.CurrentHP - Damage);
-			TargetUnit.UnitStat.EquipWeapon.Uses--;
+			TargetUnit.UnitStat.EquipWeapon->Uses--;
 			if (0 == SubjectUnit.CurrentHP)
 			{
 				SubjectUnit.IsDie = true;
@@ -183,7 +183,7 @@ void UnitCommand::Wait(std::shared_ptr<BattleUnit> _SubjectUnit)
 {
 	UnitCommand CommandRecord;
 	CommandRecord.TypeValue = CommandType::Wait;
-	CommandRecord.BeforeSubjectUnit = Unit(_SubjectUnit->UnitData);
+	CommandRecord.BeforeSubjectUnit = Unit(_SubjectUnit->GetUnitData());
 	CommandRecord.BeforeSubjectUnitPos = _SubjectUnit->GetBeforeMapPos();
 	CommandRecord.AfterSubjectUnitPos = _SubjectUnit->GetMapPos();
 

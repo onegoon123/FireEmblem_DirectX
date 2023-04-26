@@ -2,13 +2,11 @@
 #include "MapUnit.h"
 #include "Stat.h"
 #include "Unit.h"
-
+#include "ContentsEnum.h"
 class BattleUnit : public MapUnit
 {
-	friend class UnitCommand;
-	friend class BattleLevel;
 public:
-	// constrcuter destructer
+
 	BattleUnit();
 	~BattleUnit();
 
@@ -23,19 +21,37 @@ public:
 	{
 		return UnitData.IsDie;
 	}
-
 	void SetUnitCode(int _Code);
-	int GetUnitCode();
+	void SetUnitCode(UnitIdentityCode _Code);
+	int GetUnitCode()
+	{
+		return UnitData.UnitCode;
+	}
+	int GetMoveStat()
+	{
+		return UnitData.UnitStat.Movement;
+	}
 
-	int GetMoveStat();
+	void SetUnitData(Unit _Value)
+	{
+		UnitData = _Value;
+	}
 
+	const Unit& GetUnitData()
+	{
+		return UnitData;
+	}
 
+	void NewWeapon(ItemCode _Code)
+	{
+		UnitData.NewItem(_Code);
+	}
 
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
 
-	std::shared_ptr<class GameEngineRenderer> SpriteRender = nullptr;
+	std::shared_ptr<class UnitRenderer> SpriteRender = nullptr;
 	std::string_view ImageName = "";
 private:
 	Unit UnitData;

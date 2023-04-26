@@ -1,36 +1,53 @@
 #pragma once
 
 #include "Item.h"
-
+#include "ContentsEnum.h"
 enum class WeaponType
 {
+	None,
 	Sword,		// 검
 	Lance,		// 창
 	Axe,		// 도끼
 	Bow,		// 활
 	Stave,		// 지팡이
 	AnimaTome,	// 속성마법
+	DarkTome,	// 흑마법
 	LightTome,	// 빛마법
 };
 
 // 설명 :
 class Weapon : public Item
 {
-	friend class Stat;
+	//friend class Stat;
 public:
 	// constrcuter destructer
 	Weapon();
+	Weapon(ItemCode _Code);
 	~Weapon();
 
 	Weapon(const Weapon& _Other)
 	{
+		SetName(_Other.GetName());
 		Damage = _Other.Damage;
 		Hit = _Other.Hit;
 		Critical = _Other.Critical;
 		Weight = _Other.Weight;
 		Range = _Other.Range;
 		Uses = _Other.Uses;
+		WeaponTypeValue = _Other.WeaponTypeValue;
+		ValidArmour = _Other.ValidArmour;
+		ValidHorse = _Other.ValidHorse;
+		IsReaver = _Other.IsReaver;
 	}
+
+	Weapon operator=(const Weapon& _Other)
+	{
+		return Weapon(_Other);
+	}
+
+	static std::shared_ptr<Weapon> CreateWeapon(ItemCode _Code);
+
+	WeaponType WeaponTypeValue = WeaponType::None;
 
 	int Damage = 0;		// 공격력
 	int Hit = 0;		// 명중률
@@ -38,8 +55,45 @@ public:
 	int Weight = 0;		// 무게
 	int Range = 0;		// 사거리
 	int Uses = 0;		// 내구도
+
+	bool ValidArmour = false;
+	bool ValidHorse = false;
+	bool IsReaver = false;
+
 protected:
 
 private:
+
+	void SetWeapon_SlimSword();
+	void SetWeapon_IronSword();
+	void SetWeapon_SteelSword();
+	void SetWeapon_Lancereaver();
+	void SetWeapon_Armourslayer();
+	void SetWeapon_KillingSword();
+	void SetWeapon_ManiKatti();
+
+	void SetWeapon_SlimLance();
+	void SetWeapon_IronLance();
+	void SetWeapon_SteelLance();
+	void SetWeapon_SilverLance();
+	void SetWeapon_KillerLance();
+	void SetWeapon_Axereaver();
+	void SetWeapon_Horseslayer();
+
+	void SetWeapon_HandAxe();
+	void SetWeapon_IronAxe();
+	void SetWeapon_Swordreaver();
+	void SetWeapon_Hammer();
+
+	void SetWeapon_ShortBow();
+	void SetWeapon_IronBow();
+	void SetWeapon_Ballista();
+
+
+	void SetWeapon_Fire();
+	void SetWeapon_Flux();
+	void SetWeapon_Lightning();
+
+
 };
 
