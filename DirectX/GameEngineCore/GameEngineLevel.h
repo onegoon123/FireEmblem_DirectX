@@ -56,6 +56,10 @@ public:
 	}
 
 protected:
+	// 레벨이 바뀌어서 시작할때
+	virtual void LevelChangeStart();
+	virtual void LevelChangeEnd();
+
 	virtual void Start() = 0;
 	void Update(float _DeltaTime);
 	void Render(float _DeltaTime);

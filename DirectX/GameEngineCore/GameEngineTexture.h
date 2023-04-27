@@ -45,19 +45,43 @@ public:
 		return NewTexture;
 	}
 
+	static std::shared_ptr<GameEngineTexture> Create(const D3D11_TEXTURE2D_DESC& _Value)
+	{
+		std::shared_ptr<GameEngineTexture> NewTexture = GameEngineResource::CreateUnNamed();
+		NewTexture->ResCreate(_Value);
+		return NewTexture;
+	}
+
+
 	ID3D11RenderTargetView* GetRTV()
 	{
 		return RTV;
 	}
 
+	ID3D11DepthStencilView* GetDSV()
+	{
+		return DSV;
+	}
 
+	unsigned int GetWidth()
+	{
+		return Desc.Width;
+	}
+
+	unsigned int GetHeight()
+	{
+		return Desc.Height;
+	}
 
 protected:
 
 private:
 	ID3D11Texture2D* Texture2D = nullptr;
 	ID3D11RenderTargetView* RTV = nullptr;
+	ID3D11DepthStencilView* DSV = nullptr;
 	ID3D11ShaderResourceView* SRV = nullptr;
+
+	D3D11_TEXTURE2D_DESC Desc;
 
 	DirectX::TexMetadata Data;
 	DirectX::ScratchImage Image;
@@ -66,7 +90,10 @@ private:
 
 	void ResCreate(ID3D11Texture2D* _Value);
 
+	void ResCreate(const D3D11_TEXTURE2D_DESC& _Value);
+
 	void CreateRenderTargetView();
+	void CreateDepthStencilView();
 
 	void VSSetting(UINT _Slot);
 	void PSSetting(UINT _Slot);

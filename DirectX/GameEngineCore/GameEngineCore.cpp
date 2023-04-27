@@ -40,7 +40,20 @@ void GameEngineCore::EngineUpdate()
 {
 	if (nullptr != NextLevel)
 	{
+		if (nullptr != MainLevel)
+		{
+			MainLevel->LevelChangeEnd();
+		}
+
 		MainLevel = NextLevel;
+
+		if (nullptr != MainLevel)
+		{
+			MainLevel->LevelChangeStart();
+		}
+
+		NextLevel = nullptr;
+		GameEngineTime::GlobalTime.Reset();
 	}
 
 	if (nullptr == MainLevel)
@@ -50,6 +63,13 @@ void GameEngineCore::EngineUpdate()
 	}
 
 	float TimeDeltaTime = GameEngineTime::GlobalTime.TimeCheck();
+
+	// 별로 좋은건 아닙니다.
+	if (TimeDeltaTime > 1 / 30.0f)
+	{
+		TimeDeltaTime = 1 / 30.0f;
+	}
+
 	GameEngineInput::Update(TimeDeltaTime);
 	GameEngineSound::SoundUpdate();
 

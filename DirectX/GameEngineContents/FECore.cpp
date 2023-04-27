@@ -45,7 +45,8 @@ void FECore::ResourcesCreate()
 	Pipe->SetVertexShader("TextureShader.hlsl");
 	Pipe->SetRasterizer("Engine2DBase");
 	Pipe->SetPixelShader("TextureShaderGrayScale.hlsl");
-	Pipe->SetBlend("AlphaBlend");
+	Pipe->SetBlendState("AlphaBlend");
+	Pipe->SetDepthState("EngineDepth");
 
 	GameEnginePixelShader::Load(NewDir.GetPlusFileName("EffectPixelShader.hlsl").GetFullPath(), "Texture_PS");
 	Pipe = GameEngineRenderingPipeLine::Create("2DTextureEffect");
@@ -55,5 +56,6 @@ void FECore::ResourcesCreate()
 	Pipe->SetVertexShader("TextureShader.hlsl");
 	Pipe->SetRasterizer("Engine2DBase");
 	Pipe->SetPixelShader("EffectPixelShader.hlsl");
-	Pipe->SetBlend("AlphaBlend");
+	Pipe->SetBlendState("AlphaBlend");
+	Pipe->SetDepthState("EngineDepth");
 }
