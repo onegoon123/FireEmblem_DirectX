@@ -1,7 +1,7 @@
 #include "PrecompileHeader.h"
 #include "TileRender.h"
 #include "ContentsEnum.h"
-#include <GameEngineCore/GameEngineRenderer.h>
+#include <GameEngineCore/GameEngineSpriteRenderer.h>
 TileRender::TileRender()
 {
 }
@@ -18,11 +18,10 @@ void TileRender::Create(int2 _Scale)
 		Renders[y].resize(_Scale.x);
 		for (int x = 0; x < _Scale.x; x++)
 		{
-			Renders[y][x] = CreateComponent<GameEngineRenderer>();
+			Renders[y][x] = CreateComponent<GameEngineSpriteRenderer>();
 			Renders[y][x]->GetTransform()->SetLocalScale({ 64,64 });
 			Renders[y][x]->GetTransform()->SetLocalPosition(float4(x * 64.f, y * 64.f));
-			Renders[y][x]->SetPipeLine("2DTexture");
-			Renders[y][x]->GetShaderResHelper().SetTexture("DiffuseTex", "MoveTile.png");
+			Renders[y][x]->SetTexture("MoveTile.png");
 			Renders[y][x]->Off();
 		}
 	}
@@ -48,7 +47,7 @@ void TileRender::SetTile(const std::vector<std::vector<bool>>& _Value)
 			if (true == _Value[y][x])
 			{
 				Renders[y][x]->On();
-				Renders[y][x]->GetShaderResHelper().SetTexture("DiffuseTex", "MoveTile.png");
+				Renders[y][x]->SetTexture("MoveTile.png");
 			}
 			else
 			{
@@ -67,7 +66,7 @@ void TileRender::SetTileAttack(const std::vector<std::vector<bool>>& _Value)
 			if (true == _Value[y][x])
 			{
 				Renders[y][x]->On();
-				Renders[y][x]->GetShaderResHelper().SetTexture("DiffuseTex", "AttackTile.png");
+				Renders[y][x]->SetTexture("AttackTile.png");
 			}
 		}
 	}

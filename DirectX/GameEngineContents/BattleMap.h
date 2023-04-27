@@ -41,7 +41,7 @@ public:
 
 	std::shared_ptr<UnitRenderer> GetRenderer()
 	{
-		return MapRender;
+		return Renderer;
 	}
 
 protected:
@@ -52,7 +52,7 @@ protected:
 	// 이미지 이름
 	std::string_view ImageName;
 private:
-	std::shared_ptr<UnitRenderer> MapRender = nullptr;
+	std::shared_ptr<UnitRenderer> Renderer = nullptr;
 
 };
 

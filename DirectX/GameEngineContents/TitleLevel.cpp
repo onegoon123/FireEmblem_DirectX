@@ -2,7 +2,7 @@
 #include "TitleLevel.h"
 #include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEngineCore/GameEngineTexture.h>
-#include <GameEngineCore/GameEngineRenderer.h>
+#include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include <GameEngineCore/GameEngineCamera.h>
 #include <GameEngineCore/GameEngineCore.h>
 TitleLevel::TitleLevel()
@@ -39,6 +39,9 @@ void TitleLevel::Start()
 		GameEngineInput::CreateKey("RightMove", VK_RIGHT);
 		GameEngineInput::CreateKey("OK", 'Z');
 		GameEngineInput::CreateKey("Cancel", 'X');
+		GameEngineInput::CreateKey("Next", 'A');
+		GameEngineInput::CreateKey("Select", 'S');
+		GameEngineInput::CreateKey("Start", VK_END);
 	}
 	
 	// 카메라 세팅
@@ -48,9 +51,8 @@ void TitleLevel::Start()
 
 	// 타이틀 이미지
 	std::shared_ptr<GameEngineActor> TitleActor = CreateActor<GameEngineActor>("TitleActor");
-	std::shared_ptr<GameEngineRenderer> TitleRender = TitleActor->CreateComponent<GameEngineRenderer>();
-	TitleRender->SetPipeLine("2DTexture");
-	TitleRender->GetShaderResHelper().SetTexture("DiffuseTex", "TitleImage.png");
+	std::shared_ptr<GameEngineSpriteRenderer> TitleRender = TitleActor->CreateComponent<GameEngineSpriteRenderer>();
+	TitleRender->SetTexture("TitleImage.png");
 	TitleRender->GetTransform()->SetWorldScale({ 960, 640 });
 }
 

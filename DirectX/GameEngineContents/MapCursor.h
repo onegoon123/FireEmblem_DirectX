@@ -3,7 +3,7 @@
 #include "MapUnit.h"
 
 // 설명 : 커서 엑터
-class GameEngineRenderer;
+class GameEngineSpriteRenderer;
 class MapCursor : public MapUnit
 {
 public:
@@ -24,7 +24,7 @@ protected:
 	void Start() override;
 
 private:
-	std::shared_ptr<GameEngineRenderer> AnimationRender = nullptr;
+	std::shared_ptr<GameEngineSpriteRenderer> AnimationRender = nullptr;
 
 };
 

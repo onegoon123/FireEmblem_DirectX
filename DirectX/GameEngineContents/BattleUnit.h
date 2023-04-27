@@ -49,7 +49,7 @@ public:
 
 	std::shared_ptr<class UnitRenderer> GetRenderer()
 	{
-		return SpriteRender;
+		return Renderer;
 	}
 
 
@@ -57,7 +57,7 @@ protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
 
-	std::shared_ptr<class UnitRenderer> SpriteRender = nullptr;
+	std::shared_ptr<class UnitRenderer> Renderer = nullptr;
 	std::string_view ImageName = "";
 private:
 	Unit UnitData;

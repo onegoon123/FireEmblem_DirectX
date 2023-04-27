@@ -15,8 +15,10 @@
 void BattleLevel::ChangeState(BattleState _State)
 {
 
-	(this->*StateEnd)();
-
+	if (CurState != BattleState::None)
+	{
+		(this->*StateEnd)();
+	}
 	CurState = _State;
 
 	switch (_State)
@@ -82,27 +84,23 @@ void BattleLevel::ChangeState(BattleState _State)
 		GameOverStart();
 		break;
 	default:
-		//StateUpdate = &BattleLevel::Update;
-		//StateEnd = &BattleLevel::End;
-		//Start();
+	{
+		MsgAssert("아직 지정하지 않은 State 입니다");
 		break;
+	}
 	}
 
 }
 
 void BattleLevel::PlayerPhaseStart()
 {
-	for (std::shared_ptr<BattleUnit> _Actor : EnemyActors)
+	// 모든 적 유닛 턴 복구
+	for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
 	{
-		if (true == _Actor->GetIsDie()) { continue; }
-		_Actor->SetIsTurnEnd(false);
+		if (true == _Unit->GetIsDie()) { continue; }
+		_Unit->SetIsTurnEnd(false);
 	}
 
-	MainCursor->On();
-
-
-	//
-	//UnitCommand::Attack(PlayerActors.front(), EnemyActors.front());
 	ChangeState(BattleState::Select);
 }
 
@@ -116,24 +114,30 @@ void BattleLevel::PlayerPhaseEnd()
 
 void BattleLevel::SelectStart()
 {
+	// Select 상태가 시작될때 마다 모든 유닛의 행동이 끝났는지 체크
 	bool IsTurnEnd = true;	// 턴이 끝났는가?
-	for (std::shared_ptr<BattleUnit> _Actor : PlayerActors)
+	for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
 	{
-		if (true == _Actor->GetIsDie()) { continue; }
+		if (true == _Unit->GetIsDie()) { continue; }
 
-		if (false == _Actor->GetIsTurnEnd())
+		if (false == _Unit->GetIsTurnEnd())
 		{
 			// 아직 턴이 안끝난 유닛이 있다
 			IsTurnEnd = false;
 			break;
 		}
 	}
+	// 모든 유닛의 턴이 끝났다면
 	if (true == IsTurnEnd)
 	{
-		ChangeState(BattleState::EnemyPhase);
+		ChangeState(BattleState::EnemyPhase);	// 적 턴으로
 		return;
 	}
 
+	// 선택 유닛 초기화
+	SelectUnit = nullptr;
+
+	// Select 상태시 필요한 UI 켜기
 	MainCursor->On();
 	UI_Select->UIOn();
 	CursorDirCheck();
@@ -141,30 +145,9 @@ void BattleLevel::SelectStart()
 
 void BattleLevel::SelectUpdate(float _DeltaTime)
 {
-	CursorMove();
+	CursorMove();	// 커서 이동
+	UnitSelect();
 
-	if (GameEngineInput::IsDown("OK"))
-	{
-
-		for (std::shared_ptr<BattleUnit> CurActor : PlayerActors)
-		{
-			if (true == CurActor->GetIsDie()) { continue; }
-			if (MainCursor->GetMapPos() == CurActor->GetMapPos())
-			{
-				if (true == CurActor->GetIsTurnEnd())
-				{
-					// 턴이 종료된 유닛
-					break;
-				}
-				SelectUnit = CurActor;
-				ChangeState(BattleState::Move);
-				return;
-			}
-		}
-
-		ChangeState(BattleState::FieldCommand);
-		return;
-	}
 }
 
 void BattleLevel::SelectEnd()
@@ -177,7 +160,7 @@ void BattleLevel::MoveStart()
 
 	if (nullptr == SelectUnit)
 	{
-		MsgAssert("Actor가 선택되지 않은 채 State가 변경되었습니다.");
+		MsgAssert("유닛 선택되지 않은 채 State가 변경되었습니다.");
 	}
 	BeforePos = SelectUnit->GetMapPos();
 	ArrowPos.clear();
@@ -257,7 +240,7 @@ void BattleLevel::UnitCommandStart()
 	Tiles->SetTileAttack(IsAttack);
 
 
-	for (std::shared_ptr<BattleUnit> _Enemy : EnemyActors)
+	for (std::shared_ptr<BattleUnit> _Enemy : EnemyUnits)
 	{
 		if (true == _Enemy->GetIsDie()) { continue; }
 		int2 EnemyPos = _Enemy->GetMapPos();
@@ -332,10 +315,10 @@ void BattleLevel::BattleEnd()
 
 void BattleLevel::EnemyPhaseStart()
 {
-	for (std::shared_ptr<BattleUnit> _Actor : PlayerActors)
+	for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
 	{
-		if (true == _Actor->GetIsDie()) { continue; }
-		_Actor->SetIsTurnEnd(false);
+		if (true == _Unit->GetIsDie()) { continue; }
+		_Unit->SetIsTurnEnd(false);
 	}
 	MainCursor->Off();
 	ChangeState(BattleState::EnemySelect);
@@ -352,7 +335,7 @@ void BattleLevel::EnemyPhaseEnd()
 void BattleLevel::EnemySelectStart()
 {
 
-	for (std::shared_ptr<BattleUnit> _Enemy : EnemyActors)
+	for (std::shared_ptr<BattleUnit> _Enemy : EnemyUnits)
 	{
 		if (true == _Enemy->GetIsDie()) { continue; }
 		if (false == _Enemy->GetIsTurnEnd())
@@ -384,7 +367,7 @@ void BattleLevel::EnemyMoveStart()
 
 	TargetUnit = nullptr;
 
-	for (std::shared_ptr<BattleUnit> _Player : PlayerActors)
+	for (std::shared_ptr<BattleUnit> _Player : PlayerUnits)
 	{
 		if (true == _Player->GetIsDie()) { continue; }
 		int2 PlayerPos = _Player->GetMapPos();
@@ -411,7 +394,7 @@ void BattleLevel::EnemyMoveStart()
 					continue;
 				}
 				int2 Pos = { x, y };
-				for (std::shared_ptr<BattleUnit> _Player : PlayerActors)
+				for (std::shared_ptr<BattleUnit> _Player : PlayerUnits)
 				{
 					if (true == _Player->GetIsDie()) { continue; }
 					int Distance = Pos.GetDistance(_Player->GetMapPos());
@@ -471,8 +454,14 @@ void BattleLevel::EnemyBattleStart()
 		return;
 	}
 	//ChangeState(BattleState::EnemySelect);
-	SelectUnit->GetRenderer()->SetIsBlur(true);
-	TargetUnit->GetRenderer()->SetIsBlur(true);
+	for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
+	{
+		_Unit->GetRenderer()->SetIsBlur(true);
+	}
+	for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
+	{
+		_Unit->GetRenderer()->SetIsBlur(true);
+	}
 	MainMap->GetRenderer()->SetIsBlur(true);
 }
 
@@ -488,9 +477,9 @@ void BattleLevel::EnemyBattleUpdate(float _DeltaTime)
 			TargetUnit = nullptr;
 
 			bool IsAliveUnit = false;
-			for (std::shared_ptr<BattleUnit> _Actor : PlayerActors)
+			for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
 			{
-				if (false == _Actor->GetIsDie())
+				if (false == _Unit->GetIsDie())
 				{
 					IsAliveUnit = true;
 				}
@@ -505,8 +494,14 @@ void BattleLevel::EnemyBattleUpdate(float _DeltaTime)
 		return;
 	}
 	
-	SelectUnit->GetRenderer()->SetBlurLevel(CloseUpTimer * 50);
-	TargetUnit->GetRenderer()->SetBlurLevel(CloseUpTimer * 50);
+	for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
+	{
+		_Unit->GetRenderer()->SetBlurLevel(CloseUpTimer * 50);
+	}
+	for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
+	{
+		_Unit->GetRenderer()->SetBlurLevel(CloseUpTimer * 50);
+	}
 	MainMap->GetRenderer()->SetBlurLevel(CloseUpTimer * 50);
 	GetMainCamera()->GetTransform()->SetWorldPosition(float4::LerpClamp(GetMainCamera()->GetTransform()->GetWorldPosition(), TargetUnit->GetTransform()->GetWorldPosition(), CloseUpTimer));
 }
@@ -514,8 +509,14 @@ void BattleLevel::EnemyBattleUpdate(float _DeltaTime)
 void BattleLevel::EnemyBattleEnd()
 {
 	GetMainCamera()->GetTransform()->SetWorldPosition({ 448, 288, -554.0f });
-	SelectUnit->GetRenderer()->SetIsBlur(false);
-	TargetUnit->GetRenderer()->SetIsBlur(false);
+	for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
+	{
+		_Unit->GetRenderer()->SetIsBlur(false);
+	}
+	for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
+	{
+		_Unit->GetRenderer()->SetIsBlur(false);
+	}
 	MainMap->GetRenderer()->SetIsBlur(false);
 	SelectUnit->SetIsTurnEnd(true);
 	if (SelectUnit->GetIsDie())
@@ -550,34 +551,34 @@ void BattleLevel::GameOverUpdate(float _DeltaTime)
 			{
 			case CommandType::Attack:
 			{
-				for (std::shared_ptr<BattleUnit> _Actor : PlayerActors)
+				for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
 				{
-					if ((*RIter).BeforeSubjectUnit.UnitCode == _Actor->GetUnitData().UnitCode)
+					if ((*RIter).BeforeSubjectUnit.UnitCode == _Unit->GetUnitData().UnitCode)
 					{
-						_Actor->SetUnitData((*RIter).BeforeSubjectUnit);
-						_Actor->SetMapPos((*RIter).BeforeSubjectUnitPos);
+						_Unit->SetUnitData((*RIter).BeforeSubjectUnit);
+						_Unit->SetMapPos((*RIter).BeforeSubjectUnitPos);
 					}
 				}
-				for (std::shared_ptr<BattleUnit> _Actor : EnemyActors)
+				for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
 				{
-					if ((*RIter).BeforeSubjectUnit.UnitCode == _Actor->GetUnitData().UnitCode)
+					if ((*RIter).BeforeSubjectUnit.UnitCode == _Unit->GetUnitData().UnitCode)
 					{
-						_Actor->SetUnitData((*RIter).BeforeSubjectUnit);
-						_Actor->SetMapPos((*RIter).BeforeSubjectUnitPos);
+						_Unit->SetUnitData((*RIter).BeforeSubjectUnit);
+						_Unit->SetMapPos((*RIter).BeforeSubjectUnitPos);
 					}
 				}
-				for (std::shared_ptr<BattleUnit> _Actor : PlayerActors)
+				for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
 				{
-					if ((*RIter).BeforeTargetUnit.UnitCode == _Actor->GetUnitData().UnitCode)
+					if ((*RIter).BeforeTargetUnit.UnitCode == _Unit->GetUnitData().UnitCode)
 					{
-						_Actor->SetUnitData((*RIter).BeforeTargetUnit);
+						_Unit->SetUnitData((*RIter).BeforeTargetUnit);
 					}
 				}
-				for (std::shared_ptr<BattleUnit> _Actor : EnemyActors)
+				for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
 				{
-					if ((*RIter).BeforeTargetUnit.UnitCode == _Actor->GetUnitData().UnitCode)
+					if ((*RIter).BeforeTargetUnit.UnitCode == _Unit->GetUnitData().UnitCode)
 					{
-						_Actor->SetUnitData((*RIter).BeforeTargetUnit);
+						_Unit->SetUnitData((*RIter).BeforeTargetUnit);
 					}
 				}
 			}
@@ -586,20 +587,20 @@ void BattleLevel::GameOverUpdate(float _DeltaTime)
 				break;
 			case CommandType::Wait:
 			{
-				for (std::shared_ptr<BattleUnit> _Actor : PlayerActors)
+				for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
 				{
-					if ((*RIter).BeforeSubjectUnit.UnitCode == _Actor->GetUnitData().UnitCode)
+					if ((*RIter).BeforeSubjectUnit.UnitCode == _Unit->GetUnitData().UnitCode)
 					{
-						_Actor->SetUnitData((*RIter).BeforeSubjectUnit);
-						_Actor->SetMapPos((*RIter).BeforeSubjectUnitPos);
+						_Unit->SetUnitData((*RIter).BeforeSubjectUnit);
+						_Unit->SetMapPos((*RIter).BeforeSubjectUnitPos);
 					}
 				}
-				for (std::shared_ptr<BattleUnit> _Actor : EnemyActors)
+				for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
 				{
-					if ((*RIter).BeforeSubjectUnit.UnitCode == _Actor->GetUnitData().UnitCode)
+					if ((*RIter).BeforeSubjectUnit.UnitCode == _Unit->GetUnitData().UnitCode)
 					{
-						_Actor->SetUnitData((*RIter).BeforeSubjectUnit);
-						_Actor->SetMapPos((*RIter).BeforeSubjectUnitPos);
+						_Unit->SetUnitData((*RIter).BeforeSubjectUnit);
+						_Unit->SetMapPos((*RIter).BeforeSubjectUnitPos);
 					}
 				}
 			}

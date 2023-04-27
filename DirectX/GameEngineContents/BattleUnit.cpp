@@ -18,15 +18,11 @@ void BattleUnit::SetIsTurnEnd(bool _Value)
 
 	if (_Value == true)
 	{
-		SpriteRender->SetGrayScale(true);
-		//SpriteRender->SetPipeLine("2DTextureGray");
-		//SpriteRender->GetShaderResHelper().SetTexture("DiffuseTex", ImageName);
+		Renderer->SetGrayScale(true);
 	}
 	else
 	{
-		SpriteRender->SetGrayScale(false);
-		//SpriteRender->SetPipeLine("2DTexture");
-		//SpriteRender->GetShaderResHelper().SetTexture("DiffuseTex", ImageName);
+		Renderer->SetGrayScale(false);
 	}
 }
 
@@ -41,6 +37,7 @@ void BattleUnit::SetUnitCode(int _Code)
 	SetUnitCode(static_cast<UnitIdentityCode>(_Code));
 }
 
+static int EnemyNum = 0;
 void BattleUnit::SetUnitCode(UnitIdentityCode _Code)
 {
 	UnitData.UnitCode = static_cast<int>(_Code);
@@ -78,6 +75,7 @@ void BattleUnit::SetUnitCode(UnitIdentityCode _Code)
 	case UnitIdentityCode::Wallace:
 		break;
 	case UnitIdentityCode::Brigand:
+		UnitData.UnitCode += EnemyNum++;
 		SetName("»êÀû");
 		ImageName = "Map_EnemyBrigandTest.png";
 		break;
@@ -94,30 +92,19 @@ void BattleUnit::SetUnitCode(UnitIdentityCode _Code)
 	default:
 		break;
 	}
-	SpriteRender->SetTexture(ImageName);
+	Renderer->SetTexture(ImageName);
 }
 
 void BattleUnit::Start()
 {
-	SpriteRender = CreateComponent<UnitRenderer>();
+	Renderer = CreateComponent<UnitRenderer>();
 	ImageName = "Map_LynTest.png";
-	SpriteRender->SetTexture(ImageName);
-	SpriteRender->SetWorldScale({ 128,128 });
-	SpriteRender->SetGrayScale(true);
-	SpriteRender->SetFlashColor(float4::White);
+	Renderer->SetTexture(ImageName);
+	Renderer->SetWorldScale({ 128,128 });
 	SetMapPos({ 0,0 });
 }
 
 void BattleUnit::Update(float _DeltaTime)
 {
-	static float Timer = 0;
-	Timer += _DeltaTime;
-	if (1 < Timer)
-	{
-		Timer = 0;
-	}
-	SpriteRender->SetFlashLevel(Timer);
-	SpriteRender->SetIsBlur(true);
-	SpriteRender->SetBlurLevel(2.0f);	
 }
 

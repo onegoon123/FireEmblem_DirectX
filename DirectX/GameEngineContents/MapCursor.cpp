@@ -4,7 +4,7 @@
 
 #include <GameEnginePlatform/GameEngineWindow.h>
 #include <GameEnginePlatform/GameEngineInput.h>
-#include <GameEngineCore/GameEngineRenderer.h>
+#include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include <GameEngineCore/GameEngineLevel.h>
 #include <GameEngineBase/GameEngineMath.h>
 #include <math.h>
@@ -31,9 +31,8 @@ void MapCursor::Off()
 
 void MapCursor::Start()
 {
-	AnimationRender = CreateComponent<GameEngineRenderer>();
-	AnimationRender->SetPipeLine("2DTexture");
-	AnimationRender->GetShaderResHelper().SetTexture("DiffuseTex", "TestCursor.png");
+	AnimationRender = CreateComponent<GameEngineSpriteRenderer>();
+	AnimationRender->SetTexture("TestCursor.png");
 	AnimationRender->GetTransform()->SetWorldScale({ 104, 104 });
 	SetMapPos({ 1, 1 });
 }

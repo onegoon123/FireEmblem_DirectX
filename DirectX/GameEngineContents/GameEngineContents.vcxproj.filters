@@ -63,6 +63,9 @@
     <ClCompile Include="UnitRenderer.cpp">
       <Filter>Component</Filter>
     </ClCompile>
+    <ClCompile Include="BattleLevel_Select.cpp">
+      <Filter>Battle\System</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FECore.h" />

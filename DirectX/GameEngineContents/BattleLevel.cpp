@@ -45,13 +45,25 @@ void BattleLevel::Start()
 	NewActor->SetUnitCode(UnitIdentityCode::Lyn);
 	NewActor->SetMapPos({ 4, 5 });
 	NewActor->NewWeapon(ItemCode::IronSword);
-	PlayerActors.push_back(NewActor);
+	PlayerUnits.push_back(NewActor);
+
+	NewActor = CreateActor<BattleUnit>();
+	NewActor->SetUnitCode(UnitIdentityCode::Dorcas);
+	NewActor->SetMapPos({ 3, 2 });
+	NewActor->NewWeapon(ItemCode::IronSword);
+	PlayerUnits.push_back(NewActor);
 
 	NewActor = CreateActor<BattleUnit>();
 	NewActor->SetUnitCode(UnitIdentityCode::Brigand);
 	NewActor->NewWeapon(ItemCode::IronAxe);
 	NewActor->SetMapPos({ 8, 8 });
-	EnemyActors.push_back(NewActor);
+	EnemyUnits.push_back(NewActor);
+
+	NewActor = CreateActor<BattleUnit>();
+	NewActor->SetUnitCode(UnitIdentityCode::Brigand);
+	NewActor->NewWeapon(ItemCode::IronAxe);
+	NewActor->SetMapPos({ 9, 8 });
+	EnemyUnits.push_back(NewActor);
 
 	IsMove.resize(MainMap->MapScaleInt2.y);
 	for (int i = 0; i < IsMove.size(); i++)

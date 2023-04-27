@@ -32,6 +32,7 @@ private:
 	// State
 	enum class BattleState
 	{
+		None,
 		PlayerPhase,	// 플레이어 턴 시작
 		Select,		// 커서로 유닛을 선택하는 단계
 		Move,		// 선택한 유닛으로 이동할 위치를 정하는 단계
@@ -47,15 +48,15 @@ private:
 
 		GameOver,			// 게임 오버
 	};
-	BattleState CurState = BattleState::PlayerPhase;	// 스태이트
-	void (BattleLevel::* StateUpdate)(float) = &BattleLevel::PlayerPhaseUpdate;		// 스테이트 업데이트
-	void (BattleLevel::* StateEnd)() = &BattleLevel::PlayerPhaseEnd;		// 스테이트 엔드
+	BattleState CurState = BattleState::None;	// 스태이트
+	void (BattleLevel::* StateUpdate)(float) = nullptr;		// 스테이트 업데이트
+	void (BattleLevel::* StateEnd)() = nullptr;		// 스테이트 엔드
 
 	// Actor
 	std::shared_ptr<BattleMap> MainMap = nullptr;
 	std::shared_ptr <MapCursor> MainCursor = nullptr;
-	std::list<std::shared_ptr <BattleUnit>> PlayerActors = std::list< std::shared_ptr <BattleUnit>>();
-	std::list< std::shared_ptr <BattleUnit>> EnemyActors = std::list< std::shared_ptr <BattleUnit>>();
+	std::list<std::shared_ptr <BattleUnit>> PlayerUnits = std::list< std::shared_ptr <BattleUnit>>();
+	std::list< std::shared_ptr <BattleUnit>> EnemyUnits = std::list< std::shared_ptr <BattleUnit>>();
 	std::shared_ptr <BattleUnit> SelectUnit = nullptr;
 	std::shared_ptr <BattleUnit> TargetUnit = nullptr;
 
@@ -155,12 +156,22 @@ private:
 
 	// 지상유닛기준 지형에 대한 이동 코스트를 계산. 이동 불가능 지형은 99가 반환
 	int GetTerrainCostFoot(int2 _Pos);
+	int GetTerrainDodge(int2 _Pos);
+	int GetTerrainDef(int2 _Pos);
+
+
+	bool UnitMoveAnim();
+#pragma endregion
+
+#pragma region Select
+
 
 	void CursorMove();
 	void CursorAndArrowMove();
 	void CursorDirCheck();
 
-	bool UnitMoveAnim();
+	void UnitSelect();
+
 #pragma endregion
 
 };

@@ -2,7 +2,7 @@
 #include <GameEngineCore/GameEngineActor.h>
 #include "Int2.h"
 // Ό³Έν :
-class GameEngineRenderer;
+class GameEngineSpriteRenderer;
 class TileRender : public GameEngineActor
 {
 public:
@@ -23,6 +23,6 @@ public:
 
 protected:
 private:
-	std::vector <std::vector<std::shared_ptr<GameEngineRenderer>>> Renders;
+	std::vector <std::vector<std::shared_ptr<GameEngineSpriteRenderer>>> Renders;
 };
 

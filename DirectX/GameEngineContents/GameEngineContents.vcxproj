@@ -179,6 +179,7 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="BattleLevel_Select.cpp" />
     <ClCompile Include="BattleMap.cpp">
       <SubType>
       </SubType>

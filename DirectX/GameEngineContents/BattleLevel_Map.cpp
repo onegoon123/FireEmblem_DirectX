@@ -8,182 +8,6 @@
 #include "BattleUnit.h"
 #include "TileRender.h"
 #include "BattleMap.h"
-#include "SelectUI.h"
-const float PreesTime = 0.2f;
-bool PressOK = false;
-void BattleLevel::CursorMove()
-{
-
-	if (
-		PreesTime < GameEngineInput::GetPressTime("UpMove") ||
-		PreesTime < GameEngineInput::GetPressTime("DownMove") ||
-		PreesTime < GameEngineInput::GetPressTime("LeftMove") ||
-		PreesTime < GameEngineInput::GetPressTime("RightMove")
-		)
-	{
-		PressOK = true;
-	}
-	else if (
-		GameEngineInput::IsFree("UpMove") &&
-		GameEngineInput::IsFree("DownMove") &&
-		GameEngineInput::IsFree("LeftMove") &&
-		GameEngineInput::IsFree("RightMove")
-		)
-	{
-		PressOK = false;
-	}
-
-
-	int2 CursorPos = MainCursor->GetMapPos();
-	int2 MoveValue = { 0 };
-
-	if (GameEngineInput::IsDown("UpMove") || (GameEngineInput::IsPress("UpMove") && PressOK))
-	{
-
-		// 커서가 이동중이 아니며 이동할 곳이 맵 밖이 아니라면
-		if (false == MainCursor->GetIsMove() && false == IsMapOut(CursorPos + MoveValue + int2::Up))
-		{
-			MoveValue += int2::Up;
-		}
-
-	}
-	if (GameEngineInput::IsDown("DownMove") || (GameEngineInput::IsPress("DownMove") && PressOK))
-	{
-		// 커서가 이동중이 아니며 이동할 곳이 맵 밖이 아니라면
-		if (false == MainCursor->GetIsMove() && false == IsMapOut(CursorPos + MoveValue + int2::Down))
-		{
-			MoveValue += int2::Down;
-		}
-	}
-	if (GameEngineInput::IsDown("LeftMove") || (GameEngineInput::IsPress("LeftMove") && PressOK))
-	{
-		// 커서가 이동중이 아니며 이동할 곳이 맵 밖이 아니라면
-		if (false == MainCursor->GetIsMove() && false == IsMapOut(CursorPos + MoveValue + int2::Left))
-		{
-			MoveValue += int2::Left;
-		}
-	}
-	if (GameEngineInput::IsDown("RightMove") || (GameEngineInput::IsPress("RightMove") && PressOK))
-	{
-		// 커서가 이동중이 아니며 이동할 곳이 맵 밖이 아니라면
-		if (false == MainCursor->GetIsMove() && false == IsMapOut(CursorPos + MoveValue + int2::Right))
-		{
-			MoveValue += int2::Right;
-		}
-	}
-
-	if (MoveValue != int2{ 0 })
-	{
-		MainCursor->MoveMapPosLerp(MoveValue);
-		CursorDirCheck();	// 커서의 방향(정중앙 기준) 체크
-	}
-}
-
-void BattleLevel::CursorAndArrowMove()
-{
-
-	if (
-		PreesTime < GameEngineInput::GetPressTime("UpMove") ||
-		PreesTime < GameEngineInput::GetPressTime("DownMove") ||
-		PreesTime < GameEngineInput::GetPressTime("LeftMove") ||
-		PreesTime < GameEngineInput::GetPressTime("RightMove")
-		)
-	{
-		PressOK = true;
-	}
-	else if (
-		GameEngineInput::IsFree("UpMove") &&
-		GameEngineInput::IsFree("DownMove") &&
-		GameEngineInput::IsFree("LeftMove") &&
-		GameEngineInput::IsFree("RightMove")
-		)
-	{
-		PressOK = false;
-	}
-
-
-	int2 CursorPos = MainCursor->GetMapPos();
-	int2 MoveValue = { 0 };
-
-	if (GameEngineInput::IsDown("UpMove") || (GameEngineInput::IsPress("UpMove") && PressOK))
-	{
-
-		// 커서가 이동중이 아니며 이동할 곳이 맵 밖이 아니라면
-		if (false == MainCursor->GetIsMove() && false == IsMapOut(CursorPos + MoveValue + int2::Up))
-		{
-			MoveValue += int2::Up;
-		}
-
-	}
-	if (GameEngineInput::IsDown("DownMove") || (GameEngineInput::IsPress("DownMove") && PressOK))
-	{
-		// 커서가 이동중이 아니며 이동할 곳이 맵 밖이 아니라면
-		if (false == MainCursor->GetIsMove() && false == IsMapOut(CursorPos + MoveValue + int2::Down))
-		{
-			MoveValue += int2::Down;
-		}
-	}
-	if (GameEngineInput::IsDown("LeftMove") || (GameEngineInput::IsPress("LeftMove") && PressOK))
-	{
-		// 커서가 이동중이 아니며 이동할 곳이 맵 밖이 아니라면
-		if (false == MainCursor->GetIsMove() && false == IsMapOut(CursorPos + MoveValue + int2::Left))
-		{
-			MoveValue += int2::Left;
-		}
-	}
-	if (GameEngineInput::IsDown("RightMove") || (GameEngineInput::IsPress("RightMove") && PressOK))
-	{
-		// 커서가 이동중이 아니며 이동할 곳이 맵 밖이 아니라면
-		if (false == MainCursor->GetIsMove() && false == IsMapOut(CursorPos + MoveValue + int2::Right))
-		{
-			MoveValue += int2::Right;
-		}
-	}
-
-	if (MoveValue != int2{ 0 })
-	{
-		MainCursor->MoveMapPosLerp(MoveValue);
-		AddArrow(MainCursor->GetMapPos());
-	}
-}
-
-void BattleLevel::CursorDirCheck()
-{
-	float4 CursorPos = MainCursor->EndPos;
-	float4 ScreenSize = GameEngineWindow::GetScreenSize() - float4(0, TileScale);
-	UIDir CursorDir = UIDir::None;
-
-	if (CursorPos.ix() < ScreenSize.hix())
-	{
-		// 왼쪽
-		if (CursorPos.iy() > ScreenSize.hiy())
-		{
-			// 위
-			CursorDir = UIDir::LeftUp;
-		}
-		else
-		{
-			// 아래
-			CursorDir = UIDir::LeftDown;
-		}
-	}
-	else
-	{
-		// 오른쪽
-		if (CursorPos.iy() > ScreenSize.hiy())
-		{
-			// 위
-			CursorDir = UIDir::RightUp;
-		}
-		else
-		{
-			// 아래
-			CursorDir = UIDir::RightDown;
-		}
-	}
-
-	UI_Select->SetCursorDir(CursorDir);
-}
 
 bool BattleLevel::UnitMoveAnim()
 {
@@ -249,7 +73,7 @@ void BattleLevel::MoveSearch()
 			}
 
 			bool Check = false;
-			for (std::shared_ptr<BattleUnit> _Unit : EnemyActors)
+			for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
 			{
 				if (true == _Unit->GetIsDie()) { continue; }
 				if (NextMove.Pos == _Unit->GetMapPos())
@@ -417,7 +241,7 @@ void BattleLevel::MoveSearchForEnemy()
 			}
 
 			bool Check = false;
-			for (std::shared_ptr<BattleUnit> _Unit : PlayerActors)
+			for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
 			{
 				if (true == _Unit->GetUnitData().IsDie) { continue; }
 				if (NextMove.Pos == _Unit->GetMapPos())
@@ -431,7 +255,7 @@ void BattleLevel::MoveSearchForEnemy()
 				continue;
 			}
 			Check = false;
-			for (std::shared_ptr<BattleUnit> _Actor : EnemyActors)
+			for (std::shared_ptr<BattleUnit> _Actor : EnemyUnits)
 			{
 				if (true == _Actor->GetUnitData().IsDie) { continue; }
 				if (NextMove.Pos == _Actor->GetMapPos())
@@ -701,7 +525,7 @@ void BattleLevel::UnitMove()
 {
 	if (true == IsMove[MainCursor->GetMapPos().y][MainCursor->GetMapPos().x])
 	{
-		for (std::shared_ptr<BattleUnit> _Actor : PlayerActors)
+		for (std::shared_ptr<BattleUnit> _Actor : PlayerUnits)
 		{
 			if (true == _Actor->GetIsDie()) { continue; }
 			if (_Actor->GetMapPos() == MainCursor->GetMapPos())
@@ -774,4 +598,57 @@ int BattleLevel::GetTerrainCostFoot(int2 _Pos)
 	}
 }
 
+int BattleLevel::GetTerrainDodge(int2 _Pos)
+{
+	Terrain TerrainData = MainMap->TerrainData[_Pos.y][_Pos.x];
+	switch (TerrainData)
+	{
+	case Terrain::Plain:
+	case Terrain::None:
+	case Terrain::Cliff:
+	case Terrain::Door:
+	case Terrain::Bridge:
+	case Terrain::Wall:
+		return 0;
+	case Terrain::House:
+	case Terrain::Sea:
+	case Terrain::River:
+		return 10;
+	case Terrain::Gate:
+	case Terrain::Forest:
+		return 20;
+	case Terrain::Mountain:
+		return 30;
+	case Terrain::Peak:
+		return 40;
+	default:
+		return 0;
+	}
+}
 
+int BattleLevel::GetTerrainDef(int2 _Pos)
+{
+	Terrain TerrainData = MainMap->TerrainData[_Pos.y][_Pos.x];
+	switch (TerrainData)
+	{
+	case Terrain::Plain:
+	case Terrain::None:
+	case Terrain::Cliff:
+	case Terrain::Door:
+	case Terrain::Bridge:
+	case Terrain::River:
+	case Terrain::Wall:
+	case Terrain::House:
+	case Terrain::Sea:
+		return 0;
+	case Terrain::Forest:
+	case Terrain::Mountain:
+		return 1;
+	case Terrain::Peak:
+		return 2;
+	case Terrain::Gate:
+		return 3;
+	default:
+		return 0;
+	}
+}
