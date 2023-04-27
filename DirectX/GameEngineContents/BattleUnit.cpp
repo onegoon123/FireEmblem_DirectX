@@ -103,10 +103,21 @@ void BattleUnit::Start()
 	ImageName = "Map_LynTest.png";
 	SpriteRender->SetTexture(ImageName);
 	SpriteRender->SetWorldScale({ 128,128 });
+	SpriteRender->SetGrayScale(true);
+	SpriteRender->SetFlashColor(float4::White);
 	SetMapPos({ 0,0 });
 }
 
 void BattleUnit::Update(float _DeltaTime)
 {
+	static float Timer = 0;
+	Timer += _DeltaTime;
+	if (1 < Timer)
+	{
+		Timer = 0;
+	}
+	SpriteRender->SetFlashLevel(Timer);
+	SpriteRender->SetIsBlur(true);
+	SpriteRender->SetBlurLevel(2.0f);	
 }
 

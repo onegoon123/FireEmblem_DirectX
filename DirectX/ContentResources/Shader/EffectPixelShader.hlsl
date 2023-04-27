@@ -29,6 +29,7 @@ static const float Total = 6.2108;
 float4 Texture_PS(OutPut _Value) : SV_Target0
 {
     float4 Out = 0;
+    
     if (true == IsBlur)
     {
         {
@@ -63,14 +64,19 @@ float4 Texture_PS(OutPut _Value) : SV_Target0
     else
     {
         Out = DiffuseTex.Sample(CLAMPSAMPLER, _Value.UV.xy);
-        if (true == IsGrayScale)
+    }
+    if (true == IsGrayScale)
+    {
+        float GrayValue = 0.299f * Out.r + 0.587f * Out.g + 0.114f * Out.b;
+        Out.rgb = float3(GrayValue, GrayValue, GrayValue);
+    }
+    if (FlashColor.a != 0)
+    {
+        if (0 < Out.a)
         {
-            float GrayValue = 0.299f * Out.r + 0.587f * Out.g + 0.114f * Out.b;
-            Out.rgb = float3(GrayValue, GrayValue, GrayValue);
-        }
-        if (FlashColor.a != 0)
-        {
-            Out = lerp(Out, FlashColor, t);
+            float4 ChangeColor = FlashColor;
+            ChangeColor.a = Out.a;
+            Out = lerp(Out, ChangeColor, t);
         }
     }
     return Out;

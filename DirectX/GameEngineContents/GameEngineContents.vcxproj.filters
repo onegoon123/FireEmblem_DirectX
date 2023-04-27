@@ -159,9 +159,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="..\ContentResources\Shader\TextureShaderGrayScale.hlsl">
-      <Filter>Shader</Filter>
-    </FxCompile>
     <FxCompile Include="..\ContentResources\Shader\EffectPixelShader.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>

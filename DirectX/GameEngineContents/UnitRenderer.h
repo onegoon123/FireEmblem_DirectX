@@ -26,6 +26,20 @@ public:
 	{
 		EffectDataValue.BlurLevel = _Value;
 	}
+	void SetFlashColor(float4 _Color)
+	{
+		EffectDataValue.FlashColor = _Color;
+	}
+	void OffFlashColor()
+	{
+		EffectDataValue.FlashColor = float4::Null;
+		EffectDataValue.t = 0;
+	}
+	void SetFlashLevel(float _Value)
+	{
+		EffectDataValue.t = _Value;
+	}
+
 	void SetLocalScale(float4 _Scale)
 	{
 		GetTransform()->SetLocalScale(_Scale);
