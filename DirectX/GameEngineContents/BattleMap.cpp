@@ -13,7 +13,7 @@ void BattleMap::Start()
 {
 	MapRender = CreateComponent<UnitRenderer>();
 	MapRender->SetTexture("Stage0.png");
-	MapRender->GetTransform()->SetWorldScale(MapScaleFloat4);
+	MapRender->SetWorldScale(MapScaleFloat4);
 	
 	//GetTransform()->SetWorldPosition({ 448, 288});
 	GetTransform()->SetWorldPosition({ MapScaleFloat4.hx() - 32, MapScaleFloat4.hy() - 32 });

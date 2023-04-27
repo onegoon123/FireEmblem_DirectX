@@ -39,6 +39,10 @@ public:
 	float4 MapScaleFloat4 = { 960, 640 };
 	int2 MapScaleInt2 = { 15, 10 };
 
+	std::shared_ptr<UnitRenderer> GetRenderer()
+	{
+		return MapRender;
+	}
 
 protected:
 	void Start() override;

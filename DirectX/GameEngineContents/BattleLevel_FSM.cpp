@@ -9,6 +9,9 @@
 #include "UnitCommandUI.h"
 #include "UnitCommand.h"
 #include "FERandom.h"
+#include <GameEngineCore/GameEngineCamera.h>
+#include "UnitRenderer.h"
+#include "BattleMap.h"
 void BattleLevel::ChangeState(BattleState _State)
 {
 
@@ -460,11 +463,26 @@ void BattleLevel::EnemyBattleStart()
 		std::list<AttackCommand> AttackDetail = UnitCommand::Attack(SelectUnit, TargetUnit);
 		SelectUnit->SetUnitData(Unit(AttackDetail.back().SubjectUnit));
 		TargetUnit->SetUnitData(Unit(AttackDetail.back().TargetUnit));
+	}
+	else
+	{
+		UnitCommand::Wait(SelectUnit);
+		ChangeState(BattleState::EnemySelect);
+		return;
+	}
+	//ChangeState(BattleState::EnemySelect);
+	SelectUnit->GetRenderer()->SetIsBlur(true);
+	TargetUnit->GetRenderer()->SetIsBlur(true);
+	MainMap->GetRenderer()->SetIsBlur(true);
+}
 
-		if (SelectUnit->GetIsDie())
-		{
-			SelectUnit = nullptr;
-		}
+void BattleLevel::EnemyBattleUpdate(float _DeltaTime)
+{
+	static float CloseUpTimer = 0;
+	CloseUpTimer += _DeltaTime * 0.05f;
+	if (0.04f < CloseUpTimer)
+	{
+		CloseUpTimer = 0;
 		if (TargetUnit->GetIsDie())
 		{
 			TargetUnit = nullptr;
@@ -483,25 +501,29 @@ void BattleLevel::EnemyBattleStart()
 				return;
 			}
 		}
+		ChangeState(BattleState::EnemySelect);
+		return;
 	}
-	else
-	{
-		UnitCommand::Wait(SelectUnit);
-	}
-	ChangeState(BattleState::EnemySelect);
-}
-
-void BattleLevel::EnemyBattleUpdate(float _DeltaTime)
-{
+	
+	SelectUnit->GetRenderer()->SetBlurLevel(CloseUpTimer * 50);
+	TargetUnit->GetRenderer()->SetBlurLevel(CloseUpTimer * 50);
+	MainMap->GetRenderer()->SetBlurLevel(CloseUpTimer * 50);
+	GetMainCamera()->GetTransform()->SetWorldPosition(float4::LerpClamp(GetMainCamera()->GetTransform()->GetWorldPosition(), TargetUnit->GetTransform()->GetWorldPosition(), CloseUpTimer));
 }
 
 void BattleLevel::EnemyBattleEnd()
 {
-	if (nullptr != SelectUnit)
+	GetMainCamera()->GetTransform()->SetWorldPosition({ 448, 288, -554.0f });
+	SelectUnit->GetRenderer()->SetIsBlur(false);
+	TargetUnit->GetRenderer()->SetIsBlur(false);
+	MainMap->GetRenderer()->SetIsBlur(false);
+	SelectUnit->SetIsTurnEnd(true);
+	if (SelectUnit->GetIsDie())
 	{
-		SelectUnit->SetIsTurnEnd(true);
+		SelectUnit = nullptr;
 	}
 }
+
 static std::list<UnitCommand> Command;
 static std::list<UnitCommand>::reverse_iterator RIter;
 static std::list<UnitCommand>::reverse_iterator RIterEnd;

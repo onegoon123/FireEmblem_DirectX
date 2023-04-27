@@ -16,7 +16,7 @@ void MapUnit::SetMapPos(int2 _Value)
 	BeforeMapPos = MapPos;
 	MapPos = _Value;
 
-	GetTransform()->SetLocalPosition(MapPos * TileScale);
+	GetTransform()->SetWorldPosition(MapPos * TileScale);
 }
 
 void MapUnit::MoveMapPos(int2 _Value)

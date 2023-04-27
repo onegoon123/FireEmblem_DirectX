@@ -22,7 +22,20 @@ public:
 	{
 		EffectDataValue.IsBlur = _Value;
 	}
-
+	void SetBlurLevel(float _Value)
+	{
+		EffectDataValue.BlurLevel = _Value;
+	}
+	void SetLocalScale(float4 _Scale)
+	{
+		GetTransform()->SetLocalScale(_Scale);
+		EffectDataValue.Scale = _Scale;
+	}
+	void SetWorldScale(float4 _Scale)
+	{
+		GetTransform()->SetWorldScale(_Scale);
+		EffectDataValue.Scale = _Scale;
+	}
 protected:
 	void Start() override;
 private:
@@ -33,6 +46,7 @@ private:
 		float BlurLevel = 0;
 		int IsBlur = false;
 		int IsGrayScale = false;
+		float4 Scale;
 	};
 	EffectData EffectDataValue;
 };

@@ -14,13 +14,12 @@ cbuffer EffectData : register(b0)
     float BlurLevel;
     bool IsBlur;
     bool IsGrayScale;
+    float4 Scale;
 }
 
 Texture2D DiffuseTex : register(t0);
 SamplerState CLAMPSAMPLER : register(s0);
 
-static const float width = 128.0f;
-static const float height = 128.0f;
 static const float Weight[13] =
 {
     0.0561, 0.1353, 0.278, 0.4868, 0.7261, 0.9231, 1, 0.9231, 0.7261, 0.4868, 0.278, 0.1353, 0.0561
@@ -36,7 +35,7 @@ float4 Texture_PS(OutPut _Value) : SV_Target0
             float4 t = _Value.UV;
             float4 uv = 0;
     
-            float tv = BlurLevel / 128;
+            float tv = BlurLevel / Scale.y;
             for (int i = -6; i < 6; i++)
             {
                 uv.xy = t.xy + float2(0, tv * i);
@@ -49,7 +48,7 @@ float4 Texture_PS(OutPut _Value) : SV_Target0
             float4 t = _Value.UV;
             float4 uv = 0;
     
-            float tu = BlurLevel / 128;
+            float tu = BlurLevel / Scale.x;
             for (int i = -6; i < 6; i++)
             {
                 uv.xy = t.xy + float2(tu * i, 0);

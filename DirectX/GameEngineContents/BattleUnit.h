@@ -47,6 +47,12 @@ public:
 		UnitData.NewItem(_Code);
 	}
 
+	std::shared_ptr<class UnitRenderer> GetRenderer()
+	{
+		return SpriteRender;
+	}
+
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;

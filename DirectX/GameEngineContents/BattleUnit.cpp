@@ -102,7 +102,7 @@ void BattleUnit::Start()
 	SpriteRender = CreateComponent<UnitRenderer>();
 	ImageName = "Map_LynTest.png";
 	SpriteRender->SetTexture(ImageName);
-	SpriteRender->GetTransform()->SetWorldScale({ 128,128 });
+	SpriteRender->SetWorldScale({ 128,128 });
 	SetMapPos({ 0,0 });
 }
 

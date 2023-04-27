@@ -27,7 +27,7 @@ BattleLevel::~BattleLevel()
 void BattleLevel::Start()
 {
 	// 카메라 세팅
-	GetMainCamera()->SetProjectionType(CameraType::Orthogonal);
+	GetMainCamera()->SetProjectionType(CameraType::Perspective);
 	GetMainCamera()->GetTransform()->SetWorldPosition({ 448, 288, -554.0f });
 	// 맵을 생성
 	MainMap = CreateActor<BattleMap>();
@@ -44,12 +44,12 @@ void BattleLevel::Start()
 	std::shared_ptr<BattleUnit> NewActor = CreateActor<BattleUnit>();
 	NewActor->SetUnitCode(UnitIdentityCode::Lyn);
 	NewActor->SetMapPos({ 4, 5 });
-	NewActor->NewWeapon(ItemCode::IronAxe);
+	NewActor->NewWeapon(ItemCode::IronSword);
 	PlayerActors.push_back(NewActor);
 
 	NewActor = CreateActor<BattleUnit>();
 	NewActor->SetUnitCode(UnitIdentityCode::Brigand);
-	NewActor->NewWeapon(ItemCode::IronSword);
+	NewActor->NewWeapon(ItemCode::IronAxe);
 	NewActor->SetMapPos({ 8, 8 });
 	EnemyActors.push_back(NewActor);
 
