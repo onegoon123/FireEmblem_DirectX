@@ -1,7 +1,7 @@
 #include "PrecompileHeader.h"
 #include "SelectUI.h"
 #include <GameEnginePlatform/GameEngineInput.h>
-#include <GameEngineCore/GameEngineRenderer.h>
+#include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include "ContentsEnum.h"
 SelectUI::SelectUI()
 {
@@ -71,25 +71,23 @@ void SelectUI::UIOff()
 
 void SelectUI::Start()
 {
-	Goal.Render = CreateComponent<GameEngineRenderer>();
-	Goal.Render->SetPipeLine("2DTexture");
-	Goal.Render->GetShaderResHelper().SetTexture("DiffuseTex", "ClearGoal.png"); 
+	Goal.Render = CreateComponent<GameEngineSpriteRenderer>();
+	Goal.Render->SetTexture("ClearGoal.png"); 
 	Goal.Render->GetTransform()->SetWorldScale({ 344, 100 });
 	Goal.BenchmarkHidePos = { -300, 370 };
 	Goal.BenchmarkShowPos = { -300, 254 };
 	Goal.ChangeDir(UIDir::None);
 
-	Terrain.Render = CreateComponent<GameEngineRenderer>();
-	Terrain.Render->SetPipeLine("2DTexture");
-	Terrain.Render->GetShaderResHelper().SetTexture("DiffuseTex", "terrainUI.png");
+	Terrain.Render = CreateComponent<GameEngineSpriteRenderer>();
+	Terrain.Render->SetTexture("terrainUI.png");
 	Terrain.Render->GetTransform()->SetWorldScale({ 192, 212 });
+	Terrain.Render->GetTransform()->SetWorldRotation({ 0,0 });
 	Terrain.BenchmarkHidePos = { -576, 214 };
 	Terrain.BenchmarkShowPos = { -384, 214 };
 	Terrain.ChangeDir(UIDir::None);
 
-	UnitData.Render = CreateComponent<GameEngineRenderer>();
-	UnitData.Render->SetPipeLine("2DTexture");
-	UnitData.Render->GetShaderResHelper().SetTexture("DiffuseTex", "ActorUI.png");
+	UnitData.Render = CreateComponent<GameEngineSpriteRenderer>();
+	UnitData.Render->SetTexture("ActorUI.png");
 	UnitData.Render->GetTransform()->SetWorldScale({ 344, 152 });
 	UnitData.BenchmarkHidePos = { -636, 228 };
 	UnitData.BenchmarkShowPos = { -292, 228 };
@@ -131,7 +129,7 @@ void SelectUIObject::ChangeDir(UIDir _Dir)
 	if (_Dir == UIDir::None)
 	{
 		Timer = 1;
-		Render->GetTransform()->SetWorldPosition(BenchmarkHidePos);
+		Render->GetTransform()->SetLocalPosition(BenchmarkHidePos);
 		CurDir = UIDir::None;
 		return;
 	}

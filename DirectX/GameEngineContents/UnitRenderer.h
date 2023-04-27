@@ -18,7 +18,10 @@ public:
 	{
 		EffectDataValue.IsGrayScale = _Value;
 	}
-
+	void SetIsBlur(bool _Value)
+	{
+		EffectDataValue.IsBlur = _Value;
+	}
 
 protected:
 	void Start() override;
@@ -27,8 +30,8 @@ private:
 	{
 		float4 FlashColor = float4::Zero;
 		float t = 0;
-		float a = 0;
-		float b = 0;
+		float BlurLevel = 0;
+		int IsBlur = false;
 		int IsGrayScale = false;
 	};
 	EffectData EffectDataValue;

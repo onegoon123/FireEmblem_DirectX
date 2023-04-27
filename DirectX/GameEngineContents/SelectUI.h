@@ -10,14 +10,14 @@ enum class UIDir
 	RightDown
 };
 
-class GameEngineRenderer;
+class GameEngineSpriteRenderer;
 class SelectUIObject
 {
 public:
 	SelectUIObject() {}
 	~SelectUIObject() {}
 
-	std::shared_ptr<GameEngineRenderer> Render = nullptr;
+	std::shared_ptr<GameEngineSpriteRenderer> Render = nullptr;
 	UIDir CurDir = UIDir::None;
 	UIDir NextDir = UIDir::None;
 

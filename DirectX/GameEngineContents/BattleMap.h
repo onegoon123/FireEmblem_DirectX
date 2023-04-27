@@ -21,7 +21,7 @@ enum class Terrain
 	Wall,		//벽
 };
 
-class GameEngineRenderer;
+class UnitRenderer;
 class BattleMap : public GameEngineActor
 {
 public:
@@ -48,7 +48,7 @@ protected:
 	// 이미지 이름
 	std::string_view ImageName;
 private:
-	std::shared_ptr<GameEngineRenderer> MapRender = nullptr;
+	std::shared_ptr<UnitRenderer> MapRender = nullptr;
 
 };
 

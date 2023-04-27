@@ -41,7 +41,9 @@ std::shared_ptr<Item> Item::CreateItem(ItemCode _Code)
 	case ItemCode::Flux:
 	case ItemCode::Lightning:
 	{
-
+		//std::shared_ptr<Weapon> NewWeapon = std::make_shared<Weapon>(new Weapon(_Code));
+		//ReturnItem = std::make_shared<Item>(dynamic_cast<Item*>(_Code)));
+		break;
 	}
 
 	case ItemCode::Heal:

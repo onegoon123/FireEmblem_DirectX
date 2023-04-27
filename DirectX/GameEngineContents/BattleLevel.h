@@ -68,8 +68,8 @@ private:
 	bool IsArrowOut = false;
 
 	// UI
-	std::shared_ptr < SelectUI> UI_Select = nullptr;
-	std::shared_ptr < UnitCommandUI> UI_UnitCommand = nullptr;
+	std::shared_ptr <SelectUI> UI_Select = nullptr;
+	std::shared_ptr <UnitCommandUI> UI_UnitCommand = nullptr;
 
 	const float MoveSpeed = 10;
 	float MoveTimer = 0;

@@ -43,7 +43,7 @@ void BattleUnit::SetUnitCode(int _Code)
 
 void BattleUnit::SetUnitCode(UnitIdentityCode _Code)
 {
-
+	UnitData.UnitCode = static_cast<int>(_Code);
 	UnitData.UnitStat.SetIdentity(_Code);
 	UnitData.CurrentHP = UnitData.UnitStat.MainStatValue.HP;
 

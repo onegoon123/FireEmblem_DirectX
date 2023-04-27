@@ -44,12 +44,12 @@ void BattleLevel::Start()
 	std::shared_ptr<BattleUnit> NewActor = CreateActor<BattleUnit>();
 	NewActor->SetUnitCode(UnitIdentityCode::Lyn);
 	NewActor->SetMapPos({ 4, 5 });
-	NewActor->NewWeapon(ItemCode::IronSword);
+	NewActor->NewWeapon(ItemCode::IronAxe);
 	PlayerActors.push_back(NewActor);
 
 	NewActor = CreateActor<BattleUnit>();
 	NewActor->SetUnitCode(UnitIdentityCode::Brigand);
-	NewActor->NewWeapon(ItemCode::IronAxe);
+	NewActor->NewWeapon(ItemCode::IronSword);
 	NewActor->SetMapPos({ 8, 8 });
 	EnemyActors.push_back(NewActor);
 

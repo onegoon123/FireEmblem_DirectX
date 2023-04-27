@@ -1,6 +1,6 @@
 #include "PrecompileHeader.h"
 #include "BattleMap.h"
-#include <GameEngineCore/GameEngineRenderer.h>
+#include "UnitRenderer.h"
 BattleMap::BattleMap()
 {
 }
@@ -11,9 +11,8 @@ BattleMap::~BattleMap()
 
 void BattleMap::Start()
 {
-	MapRender = CreateComponent<GameEngineRenderer>();
-	MapRender->SetPipeLine("2DTexture");
-	MapRender->GetShaderResHelper().SetTexture("DiffuseTex", "Stage0.png");
+	MapRender = CreateComponent<UnitRenderer>();
+	MapRender->SetTexture("Stage0.png");
 	MapRender->GetTransform()->SetWorldScale(MapScaleFloat4);
 	
 	//GetTransform()->SetWorldPosition({ 448, 288});

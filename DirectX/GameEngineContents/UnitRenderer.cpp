@@ -13,4 +13,3 @@ void UnitRenderer::Start()
 	SetPipeLine("2DTextureEffect");
 	GetShaderResHelper().SetConstantBufferLink("EffectData", EffectDataValue);
 }
-

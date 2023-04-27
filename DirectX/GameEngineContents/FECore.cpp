@@ -37,19 +37,9 @@ void FECore::ResourcesCreate()
 	NewDir.MoveParentToDirectory("ContentResources");
 	NewDir.Move("ContentResources");
 	NewDir.Move("Shader");
-	GameEnginePixelShader::Load(NewDir.GetPlusFileName("TextureShaderGrayScale.hlsl").GetFullPath(), "TextureGray_PS");
-	std::shared_ptr<GameEngineRenderingPipeLine> Pipe = GameEngineRenderingPipeLine::Create("2DTextureGray");
-	
-	Pipe->SetVertexBuffer("Rect");
-	Pipe->SetIndexBuffer("Rect");
-	Pipe->SetVertexShader("TextureShader.hlsl");
-	Pipe->SetRasterizer("Engine2DBase");
-	Pipe->SetPixelShader("TextureShaderGrayScale.hlsl");
-	Pipe->SetBlendState("AlphaBlend");
-	Pipe->SetDepthState("EngineDepth");
 
-	GameEnginePixelShader::Load(NewDir.GetPlusFileName("EffectPixelShader.hlsl").GetFullPath(), "Texture_PS");
-	Pipe = GameEngineRenderingPipeLine::Create("2DTextureEffect");
+	std::shared_ptr<GameEnginePixelShader> Shader = GameEnginePixelShader::Load(NewDir.GetPlusFileName("EffectPixelShader.hlsl").GetFullPath(), "Texture_PS");
+ 	std::shared_ptr<GameEngineRenderingPipeLine> Pipe = GameEngineRenderingPipeLine::Create("2DTextureEffect");
 
 	Pipe->SetVertexBuffer("Rect");
 	Pipe->SetIndexBuffer("Rect");
