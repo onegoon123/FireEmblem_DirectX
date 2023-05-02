@@ -2,7 +2,7 @@
 #include "Stat.h"
 #include "Weapon.h"
 #include "ContentsEnum.h"
-class Unit
+class Unit : public GameEngineNameObject
 {
 public:
 

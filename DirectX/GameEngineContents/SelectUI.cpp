@@ -3,6 +3,7 @@
 #include <GameEnginePlatform/GameEngineInput.h>
 #include "SpriteRenderer.h"
 #include "ContentsEnum.h"
+#include "BattleUnit.h"
 SelectUI::SelectUI()
 {
 }
@@ -60,6 +61,7 @@ void SelectUI::UIOn()
 	Terrain.Render->On();
 	UnitData.Render->On();
 	HPBarRender->On();
+	PortraitRender->On();
 }
 
 void SelectUI::UIOff()
@@ -69,9 +71,16 @@ void SelectUI::UIOff()
 	Terrain.Render->Off();
 	UnitData.Render->Off();
 	HPBarRender->Off();
+	PortraitRender->Off();
 }
 
-void SelectUI::SetHP(float _Value)
+void SelectUI::SetHPBar(float _Value)
+{
+	HPBarRender->GetTransform()->SetWorldScale({ 168 * _Value, 8 });
+	HPBarRender->GetTransform()->SetLocalPosition({ -20 + (84 * _Value), -48});
+}
+
+void SelectUI::SetUnitData(std::shared_ptr<BattleUnit> _Unit)
 {
 	switch (CursorDir)
 	{
@@ -93,8 +102,21 @@ void SelectUI::SetHP(float _Value)
 		break;
 	}
 
-	HPBarRender->GetTransform()->SetWorldScale({ 168 * _Value, 8 });
-	HPBarRender->GetTransform()->SetLocalPosition({ -20 + (84 * _Value), -48});
+	if (true == _Unit->GetIsPlayer())
+	{
+		UnitData.Render->SetTexture("ActorUI.png");
+	}
+	else
+	{
+		UnitData.Render->SetTexture("EnemyActorUI.png");
+	}
+
+	std::string TextureName = "Portrait_";
+	TextureName += _Unit->GetUnitData().GetName().data();
+	TextureName += ".png";
+	PortraitRender->SetTexture(TextureName);
+
+	SetHPBar(_Unit->GetUnitData().CurrentHP / (float)_Unit->GetUnitData().UnitStat.MainStatValue.HP);
 }
 
 void SelectUI::UnitUIOff()
@@ -135,6 +157,12 @@ void SelectUI::Start()
 	HPBarRender->GetTransform()->SetWorldScale({ 168, 8 });
 	HPBarRender->GetTransform()->SetLocalPosition({ 64, -48 });
 
+	
+	PortraitRender = CreateComponent<SpriteRenderer>();
+	PortraitRender->SetTexture("Portrait_Lyn.png");
+	PortraitRender->GetTransform()->SetParent(UnitData.Render->GetTransform());
+	PortraitRender->GetTransform()->SetWorldScale({ 128, 128 });
+	PortraitRender->GetTransform()->SetLocalPosition({ -96, 0 });
 	CursorDir = UIDir::None;
 
 }
@@ -144,6 +172,8 @@ void SelectUI::Update(float _DeltaTiime)
 	Goal.Update(_DeltaTiime);
 	Terrain.Update(_DeltaTiime);
 	UnitData.Update(_DeltaTiime);
+
+
 }
 
 

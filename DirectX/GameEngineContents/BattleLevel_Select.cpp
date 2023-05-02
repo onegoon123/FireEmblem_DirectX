@@ -12,7 +12,6 @@ const float PreesTime = 0.2f;
 bool PressOK = false;
 void BattleLevel::CursorMove()
 {
-
 	if (
 		PreesTime < GameEngineInput::GetPressTime("Up") ||
 		PreesTime < GameEngineInput::GetPressTime("Down") ||
@@ -341,7 +340,6 @@ void BattleLevel::UnitSelect()
 
 void BattleLevel::SetUI_UnitData()
 {
-	int a = SelectUnit->GetUnitData().CurrentHP;
-	UI_Select->SetHP(SelectUnit->GetUnitData().CurrentHP / (float)SelectUnit->GetUnitData().UnitStat.MainStatValue.HP);
+	UI_Select->SetUnitData(SelectUnit);
 }
 

@@ -11,6 +11,7 @@ enum class UIDir
 };
 
 class SpriteRenderer;
+class BattleUnit;
 class SelectUIObject
 {
 public:
@@ -51,7 +52,8 @@ public:
 	void UIOn();
 	void UIOff();
 
-	void SetHP(float _Value);
+	void SetHPBar(float _Value);
+	void SetUnitData(std::shared_ptr<BattleUnit> _Unit);
 	void UnitUIOff();
 
 protected:
@@ -64,6 +66,7 @@ private:
 	SelectUIObject UnitData;	// À¯´Ö Ç¥½ÃUI
 
 	std::shared_ptr<SpriteRenderer> HPBarRender = nullptr;
+	std::shared_ptr<SpriteRenderer> PortraitRender = nullptr;
 	bool UnitDataOn = false;
 	UIDir CursorDir = UIDir::LeftUp;
 };

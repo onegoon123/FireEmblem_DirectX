@@ -1,21 +1,23 @@
-	
-	if (GameEngineInput::IsDown("Down"))
+	static bool Fast = false;
+	Fast = GameEngineInput::IsPress("ButtonB");
+
+	if (GameEngineInput::IsDown("Down") || (GameEngineInput::IsPress("Down") && Fast))
 	{
-		HPBarRender->GetTransform()->AddLocalPosition(float4::Down);
+		PortraitRender->GetTransform()->AddLocalPosition(float4::Down);
 	}
-	if (GameEngineInput::IsDown("Right"))
+	if (GameEngineInput::IsDown("Right") || (GameEngineInput::IsPress("Right") && Fast))
 	{
-		HPBarRender->GetTransform()->AddLocalPosition(float4::Right);
+		PortraitRender->GetTransform()->AddLocalPosition(float4::Right);
 	}
-	if (GameEngineInput::IsDown("Left"))
+	if (GameEngineInput::IsDown("Left") || (GameEngineInput::IsPress("Left") && Fast))
 	{
-		HPBarRender->GetTransform()->AddLocalPosition(float4::Left);
+		PortraitRender->GetTransform()->AddLocalPosition(float4::Left);
 	}
-	if (GameEngineInput::IsDown("Up"))
+	if (GameEngineInput::IsDown("Up") || (GameEngineInput::IsPress("Up") && Fast))
 	{
-		HPBarRender->GetTransform()->AddLocalPosition(float4::Up);
+		PortraitRender->GetTransform()->AddLocalPosition(float4::Up);
 	}
 	if (GameEngineInput::IsDown("ButtonR"))
 	{
-		MsgTextBox(HPBarRender->GetTransform()->GetLocalPosition().ToString());
+		MsgTextBox(PortraitRender->GetTransform()->GetLocalPosition().ToString());
 	}
