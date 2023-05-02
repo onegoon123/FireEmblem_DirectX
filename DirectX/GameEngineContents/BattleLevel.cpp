@@ -59,11 +59,11 @@ void BattleLevel::Start()
 	NewActor->SetMapPos({ 8, 8 });
 	EnemyUnits.push_back(NewActor);
 
-	NewActor = CreateActor<BattleUnit>();
-	NewActor->SetUnitCode(UnitIdentityCode::Brigand);
-	NewActor->NewWeapon(ItemCode::IronAxe);
-	NewActor->SetMapPos({ 9, 8 });
-	EnemyUnits.push_back(NewActor);
+	//NewActor = CreateActor<BattleUnit>();
+	//NewActor->SetUnitCode(UnitIdentityCode::Brigand);
+	//NewActor->NewWeapon(ItemCode::IronAxe);
+	//NewActor->SetMapPos({ 9, 8 });
+	//EnemyUnits.push_back(NewActor);
 
 	//NewActor = CreateActor<BattleUnit>();
 	//NewActor->SetUnitCode(UnitIdentityCode::Brigand);

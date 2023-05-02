@@ -84,6 +84,7 @@ void BattleLevel::CursorMove()
 			if (MainCursor->GetMapPos() == _Unit->GetMapPos())
 			{
 				SelectUnit = _Unit;
+				SetUI_UnitData();	// 유닛 정보 UI로 띄우기
 				MoveSearch();	// 이동범위 탐색, 자동으로 공격범위도 탐색
 				Tiles->SetTile(IsMove, IsAttack);
 				return;
@@ -95,13 +96,14 @@ void BattleLevel::CursorMove()
 			if (MainCursor->GetMapPos() == _Unit->GetMapPos())
 			{
 				SelectUnit = _Unit;
+				SetUI_UnitData();	// 유닛 정보 UI로 띄우기
 				MoveSearchForEnemy();	// 이동범위 탐색, 자동으로 공격범위도 탐색
 				Tiles->SetTile(IsMove, IsAttack);
 				return;
 			}
 		}
 		Tiles->Clear();
-
+		UI_Select->UnitUIOff();
 	}
 }
 
@@ -230,6 +232,12 @@ void BattleLevel::UnitSelect()
 			if (false == SelectUnit->GetIsTurnEnd())
 			{
 				ChangeState(BattleState::Move);
+				return;
+			}
+			else
+			{
+				ChangeState(BattleState::FieldCommand);
+				return;
 			}
 		}
 		else
@@ -256,6 +264,7 @@ void BattleLevel::UnitSelect()
 				if (_Unit->GetIsTurnEnd()) { continue; }
 				SelectUnit = _Unit;
 				MainCursor->SetMapPos(SelectUnit->GetMapPos());
+				SetUI_UnitData();
 				return;
 			}
 		}
@@ -276,6 +285,7 @@ void BattleLevel::UnitSelect()
 
 						SelectUnit = *Start;
 						MainCursor->SetMapPos(SelectUnit->GetMapPos());
+						SetUI_UnitData();
 						return;
 					}
 					for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
@@ -285,6 +295,7 @@ void BattleLevel::UnitSelect()
 						if (_Unit->GetUnitCode() == SelectUnit->GetUnitCode()) { continue; }
 						SelectUnit = _Unit;
 						MainCursor->SetMapPos(SelectUnit->GetMapPos());
+						SetUI_UnitData();
 						return;
 					}
 					return;
@@ -326,5 +337,11 @@ void BattleLevel::UnitSelect()
 		if (nullptr == SelectUnit) { return; }
 		MsgTextBox(SelectUnit->ToString());
 	}
+}
+
+void BattleLevel::SetUI_UnitData()
+{
+	int a = SelectUnit->GetUnitData().CurrentHP;
+	UI_Select->SetHP(SelectUnit->GetUnitData().CurrentHP / (float)SelectUnit->GetUnitData().UnitStat.MainStatValue.HP);
 }
 

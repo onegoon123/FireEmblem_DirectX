@@ -532,7 +532,7 @@ void Stat::SetStat_Brigand()
 	MainStatValue.Strength = 5;
 	MainStatValue.Magic = 2;
 	MainStatValue.Dexterity = 1;
-	MainStatValue.Speed = 5;
+	MainStatValue.Speed = 2;
 	MainStatValue.Luck = 0;
 	MainStatValue.Defense = 3;
 	MainStatValue.Resistance = 0;

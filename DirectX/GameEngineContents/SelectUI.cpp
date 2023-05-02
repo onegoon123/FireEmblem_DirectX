@@ -1,7 +1,7 @@
 #include "PrecompileHeader.h"
 #include "SelectUI.h"
 #include <GameEnginePlatform/GameEngineInput.h>
-#include <GameEngineCore/GameEngineSpriteRenderer.h>
+#include "SpriteRenderer.h"
 #include "ContentsEnum.h"
 SelectUI::SelectUI()
 {
@@ -18,36 +18,39 @@ void SelectUI::SetCursorDir(UIDir _Dir)
 	{
 		return;
 	}
+	CursorDir = _Dir;
 
-	switch (_Dir)
+	switch (CursorDir)
 	{
 	case UIDir::None:
+		Goal.ChangeDir(UIDir::None);
+		Terrain.ChangeDir(UIDir::None);
+		UnitData.ChangeDir(UIDir::None);
 		break;
 	case UIDir::LeftUp:
 		Goal.ChangeDir(UIDir::RightUp);
 		Terrain.ChangeDir(UIDir::RightDown);
-		UnitData.ChangeDir(UIDir::LeftDown);
+		//UnitData.ChangeDir(UIDir::LeftDown);
 		break;
 	case UIDir::LeftDown:
 		Goal.ChangeDir(UIDir::RightUp);
 		Terrain.ChangeDir(UIDir::RightDown);
-		UnitData.ChangeDir(UIDir::LeftUp);
+		//UnitData.ChangeDir(UIDir::LeftUp);
 		break;
 	case UIDir::RightUp:
 		Goal.ChangeDir(UIDir::RightDown);
 		Terrain.ChangeDir(UIDir::LeftDown);
-		UnitData.ChangeDir(UIDir::LeftUp);
+		//UnitData.ChangeDir(UIDir::LeftUp);
 		break;
 	case UIDir::RightDown:
 		Goal.ChangeDir(UIDir::RightUp);
 		Terrain.ChangeDir(UIDir::LeftDown);
-		UnitData.ChangeDir(UIDir::LeftUp);
+		//UnitData.ChangeDir(UIDir::LeftUp);
 		break;
 	default:
 		break;
 	}
 
-	CursorDir = _Dir;
 
 }
 
@@ -56,47 +59,86 @@ void SelectUI::UIOn()
 	Goal.Render->On();
 	Terrain.Render->On();
 	UnitData.Render->On();
+	HPBarRender->On();
 }
 
 void SelectUI::UIOff()
 {
-	Goal.ChangeDir(UIDir::None);
-	Terrain.ChangeDir(UIDir::None);
-	UnitData.ChangeDir(UIDir::None);
 	CursorDir = UIDir::None;
 	Goal.Render->Off();
 	Terrain.Render->Off();
 	UnitData.Render->Off();
+	HPBarRender->Off();
+}
+
+void SelectUI::SetHP(float _Value)
+{
+	switch (CursorDir)
+	{
+	case UIDir::None:
+		break;
+	case UIDir::LeftUp:
+		UnitData.ChangeDir(UIDir::LeftDown);
+		break;
+	case UIDir::LeftDown:
+		UnitData.ChangeDir(UIDir::LeftUp);
+		break;
+	case UIDir::RightUp:
+		UnitData.ChangeDir(UIDir::LeftUp);
+		break;
+	case UIDir::RightDown:
+		UnitData.ChangeDir(UIDir::LeftUp);
+		break;
+	default:
+		break;
+	}
+
+	HPBarRender->GetTransform()->SetWorldScale({ 168 * _Value, 8 });
+	HPBarRender->GetTransform()->SetLocalPosition({ -20 + (84 * _Value), -48});
+}
+
+void SelectUI::UnitUIOff()
+{
+	UnitDataOn = true;
+	UnitData.ChangeDir(UIDir::None);
 }
 
 void SelectUI::Start()
 {
-	Goal.Render = CreateComponent<GameEngineSpriteRenderer>();
+	Goal.Render = CreateComponent<SpriteRenderer>();
 	Goal.Render->SetTexture("ClearGoal.png"); 
 	Goal.Render->GetTransform()->SetWorldScale({ 344, 100 });
 	Goal.BenchmarkHidePos = { -300, 370 };
 	Goal.BenchmarkShowPos = { -300, 254 };
-	Goal.ChangeDir(UIDir::None);
+	Goal.CurDir = UIDir::None;
+	Goal.NextDir = UIDir::None;
 
-	Terrain.Render = CreateComponent<GameEngineSpriteRenderer>();
+	Terrain.Render = CreateComponent<SpriteRenderer>();
 	Terrain.Render->SetTexture("terrainUI.png");
 	Terrain.Render->GetTransform()->SetWorldScale({ 192, 212 });
 	Terrain.Render->GetTransform()->SetWorldRotation({ 0,0 });
 	Terrain.BenchmarkHidePos = { -576, 214 };
 	Terrain.BenchmarkShowPos = { -384, 214 };
-	Terrain.ChangeDir(UIDir::None);
+	Terrain.CurDir = UIDir::None;
+	Terrain.NextDir = UIDir::None;
 
-	UnitData.Render = CreateComponent<GameEngineSpriteRenderer>();
+	UnitData.Render = CreateComponent<SpriteRenderer>();
 	UnitData.Render->SetTexture("ActorUI.png");
 	UnitData.Render->GetTransform()->SetWorldScale({ 344, 152 });
-	UnitData.BenchmarkHidePos = { -636, 228 };
+	UnitData.BenchmarkHidePos = { -652, 228 };
 	UnitData.BenchmarkShowPos = { -292, 228 };
 	UnitData.ChangeDir(UIDir::None);
+
+	HPBarRender = CreateComponent<SpriteRenderer>();
+	HPBarRender->SetTexture("HPBar.png");
+	HPBarRender->GetTransform()->SetParent(UnitData.Render->GetTransform());
+	HPBarRender->GetTransform()->SetWorldScale({ 168, 8 });
+	HPBarRender->GetTransform()->SetLocalPosition({ 64, -48 });
 
 	CursorDir = UIDir::None;
 
 }
-
+static float Timer = 0;
 void SelectUI::Update(float _DeltaTiime)
 {
 	Goal.Update(_DeltaTiime);
@@ -122,15 +164,41 @@ void SelectUIObject::Update(float _DeltaTime)
 
 void SelectUIObject::ChangeDir(UIDir _Dir)
 {
-	if (CurDir == _Dir)
-	{
-		return;
-	}
 	if (_Dir == UIDir::None)
 	{
-		Timer = 1;
-		Render->GetTransform()->SetLocalPosition(BenchmarkHidePos);
+		switch (CurDir)
+		{
+		case UIDir::None:
+			StartPos = BenchmarkHidePos;
+			TargetPos = BenchmarkHidePos;
+			break;
+		case UIDir::LeftUp:
+			StartPos = BenchmarkShowPos;
+			TargetPos = BenchmarkHidePos;
+			break;
+		case UIDir::LeftDown:
+			StartPos = { BenchmarkShowPos.x , -BenchmarkShowPos.y };
+			TargetPos = { BenchmarkHidePos.x , -BenchmarkHidePos.y };
+			break;
+		case UIDir::RightUp:
+			StartPos = { -BenchmarkShowPos.x , BenchmarkShowPos.y };
+			TargetPos = { -BenchmarkHidePos.x , BenchmarkHidePos.y };
+			break;
+		case UIDir::RightDown:
+			StartPos = -BenchmarkShowPos;
+			TargetPos = -BenchmarkHidePos;
+			break;
+		default:
+			break;
+		}
 		CurDir = UIDir::None;
+		NextDir = _Dir;
+		Timer = 0;
+		return;
+	}
+
+	if (CurDir == _Dir)
+	{
 		return;
 	}
 

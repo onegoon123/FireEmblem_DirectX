@@ -168,14 +168,14 @@ private:
 #pragma endregion
 
 #pragma region Select
-
-
+	
 	void CursorMove();
 	void CursorAndArrowMove();
 	void CursorDirCheck();
 
 	void UnitSelect();
 
+	void SetUI_UnitData();
 
 #pragma endregion
 

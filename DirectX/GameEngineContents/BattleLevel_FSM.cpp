@@ -110,6 +110,17 @@ void BattleLevel::PlayerPhaseUpdate(float _DeltaTime)
 
 void BattleLevel::PlayerPhaseEnd()
 {
+	for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
+	{
+		if (_Unit->GetIsDie()) { continue; }
+		SelectUnit = _Unit;
+		MainCursor->SetMapPos(SelectUnit->GetMapPos());
+		UI_Select->UIOn();
+		CursorDirCheck();
+		SetUI_UnitData();
+		break;
+	}
+
 }
 
 void BattleLevel::SelectStart()
@@ -135,12 +146,16 @@ void BattleLevel::SelectStart()
 	}
 
 	// 선택 유닛 초기화
-	SelectUnit = nullptr;
+	//SelectUnit = nullptr;
 
 	// Select 상태시 필요한 UI 켜기
 	MainCursor->On();
 	UI_Select->UIOn();
 	CursorDirCheck();
+	if (nullptr != SelectUnit)
+	{
+		SetUI_UnitData();
+	}
 	EnemyTileCheck();
 }
 
@@ -296,7 +311,7 @@ void BattleLevel::FieldCommandUpdate(float _DeltaTime)
 	}
 	if (GameEngineInput::IsDown("ButtonB"))
 	{
-		ChangeState(BattleState::PlayerPhase);
+		ChangeState(BattleState::Select);
 		return;
 	}
 }

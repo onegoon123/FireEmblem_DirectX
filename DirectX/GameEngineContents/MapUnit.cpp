@@ -15,7 +15,7 @@ void MapUnit::SetMapPos(int2 _Value)
 {
 	BeforeMapPos = MapPos;
 	MapPos = _Value;
-
+	EndPos = MapPos * TileScale;
 	GetTransform()->SetWorldPosition(MapPos * TileScale);
 }
 

@@ -10,14 +10,14 @@ enum class UIDir
 	RightDown
 };
 
-class GameEngineSpriteRenderer;
+class SpriteRenderer;
 class SelectUIObject
 {
 public:
 	SelectUIObject() {}
 	~SelectUIObject() {}
 
-	std::shared_ptr<GameEngineSpriteRenderer> Render = nullptr;
+	std::shared_ptr<SpriteRenderer> Render = nullptr;
 	UIDir CurDir = UIDir::None;
 	UIDir NextDir = UIDir::None;
 
@@ -51,6 +51,8 @@ public:
 	void UIOn();
 	void UIOff();
 
+	void SetHP(float _Value);
+	void UnitUIOff();
 
 protected:
 	void Start() override;
@@ -61,7 +63,8 @@ private:
 	SelectUIObject Terrain;	// 지형 표시UI
 	SelectUIObject UnitData;	// 유닛 표시UI
 
-
+	std::shared_ptr<SpriteRenderer> HPBarRender = nullptr;
+	bool UnitDataOn = false;
 	UIDir CursorDir = UIDir::LeftUp;
 };
 

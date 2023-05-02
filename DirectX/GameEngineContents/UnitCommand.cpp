@@ -38,6 +38,7 @@ std::list<AttackCommand> UnitCommand::Attack(std::shared_ptr<BattleUnit> _Subjec
 		CommandRecord.RandomNum += 2;
 
 		int Damage = (SubjectUnit.UnitStat.GetAttackPoint() * (NewAttack.IsCritical ? 3 : 1));
+		Damage -= TargetUnit.UnitStat.MainStatValue.Defense;
 
 		if (true == NewAttack.IsHit)
 		{
@@ -81,7 +82,7 @@ std::list<AttackCommand> UnitCommand::Attack(std::shared_ptr<BattleUnit> _Subjec
 		CommandRecord.RandomNum += 2;
 
 		int Damage = (TargetUnit.UnitStat.GetAttackPoint() * (NewAttack.IsCritical ? 3 : 1));
-
+		Damage -= SubjectUnit.UnitStat.MainStatValue.Defense;
 		if (true == NewAttack.IsHit)
 		{
 			SubjectUnit.CurrentHP = std::max<int>(0, SubjectUnit.CurrentHP - Damage);
@@ -122,6 +123,7 @@ std::list<AttackCommand> UnitCommand::Attack(std::shared_ptr<BattleUnit> _Subjec
 		CommandRecord.RandomNum += 2;
 
 		int Damage = (SubjectUnit.UnitStat.GetAttackPoint() * (NewAttack.IsCritical ? 3 : 1));
+		Damage -= TargetUnit.UnitStat.MainStatValue.Defense;
 
 		if (true == NewAttack.IsHit)
 		{

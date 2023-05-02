@@ -1,0 +1,21 @@
+	
+	if (GameEngineInput::IsDown("Down"))
+	{
+		HPBarRender->GetTransform()->AddLocalPosition(float4::Down);
+	}
+	if (GameEngineInput::IsDown("Right"))
+	{
+		HPBarRender->GetTransform()->AddLocalPosition(float4::Right);
+	}
+	if (GameEngineInput::IsDown("Left"))
+	{
+		HPBarRender->GetTransform()->AddLocalPosition(float4::Left);
+	}
+	if (GameEngineInput::IsDown("Up"))
+	{
+		HPBarRender->GetTransform()->AddLocalPosition(float4::Up);
+	}
+	if (GameEngineInput::IsDown("ButtonR"))
+	{
+		MsgTextBox(HPBarRender->GetTransform()->GetLocalPosition().ToString());
+	}
