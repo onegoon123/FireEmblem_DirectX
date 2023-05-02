@@ -38,7 +38,7 @@ void TileRender::Clear()
 	}
 }
 
-void TileRender::SetTile(const std::vector<std::vector<bool>>& _Value)
+void TileRender::SetTileMove(const std::vector<std::vector<bool>>& _Value)
 {
 	for (int y = 0; y < Renders.size(); y++)
 	{
@@ -67,6 +67,30 @@ void TileRender::SetTileAttack(const std::vector<std::vector<bool>>& _Value)
 			{
 				Renders[y][x]->On();
 				Renders[y][x]->SetTexture("AttackTile.png");
+			}
+		}
+	}
+}
+
+void TileRender::SetTile(const std::vector<std::vector<bool>>& _Move, const std::vector<std::vector<bool>>& _Attack)
+{
+	for (int y = 0; y < Renders.size(); y++)
+	{
+		for (int x = 0; x < Renders[y].size(); x++)
+		{
+			if (true == _Move[y][x])
+			{
+				Renders[y][x]->On();
+				Renders[y][x]->SetTexture("MoveTile.png");
+			}
+			else if (_Attack[y][x])
+			{
+				Renders[y][x]->On();
+				Renders[y][x]->SetTexture("AttackTile.png");
+			}
+			else
+			{
+				Renders[y][x]->Off();
 			}
 		}
 	}

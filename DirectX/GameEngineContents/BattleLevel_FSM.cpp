@@ -147,7 +147,6 @@ void BattleLevel::SelectUpdate(float _DeltaTime)
 {
 	CursorMove();	// 커서 이동
 	UnitSelect();
-
 }
 
 void BattleLevel::SelectEnd()
@@ -167,8 +166,7 @@ void BattleLevel::MoveStart()
 	ArrowPos.push_back(SelectUnit->GetMapPos());	// 엑터 위치에서부터 화살표 시작
 	MoveSearch();	// 이동범위 탐색, 자동으로 공격범위도 탐색
 
-	Tiles->SetTile(IsMove);
-	Tiles->SetTileAttack(IsAttack);
+	Tiles->SetTile(IsMove, IsAttack);
 	AddArrow(MainCursor->GetMapPos());
 
 	MainCursor->On();
@@ -468,12 +466,13 @@ void BattleLevel::EnemyBattleStart()
 void BattleLevel::EnemyBattleUpdate(float _DeltaTime)
 {
 	static float CloseUpTimer = 0;
-	CloseUpTimer += _DeltaTime * 0.05f;
-	if (0.04f < CloseUpTimer)
+	CloseUpTimer += _DeltaTime;
+	if (0.5f < CloseUpTimer)
 	{
 		CloseUpTimer = 0;
 		if (TargetUnit->GetIsDie())
 		{
+			TargetUnit->Off();
 			TargetUnit = nullptr;
 
 			bool IsAliveUnit = false;
@@ -496,14 +495,14 @@ void BattleLevel::EnemyBattleUpdate(float _DeltaTime)
 	
 	for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
 	{
-		_Unit->GetRenderer()->SetBlurLevel(CloseUpTimer * 50);
+		_Unit->GetRenderer()->SetBlurLevel(CloseUpTimer * 5);
 	}
 	for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
 	{
-		_Unit->GetRenderer()->SetBlurLevel(CloseUpTimer * 50);
+		_Unit->GetRenderer()->SetBlurLevel(CloseUpTimer * 5);
 	}
-	MainMap->GetRenderer()->SetBlurLevel(CloseUpTimer * 50);
-	GetMainCamera()->GetTransform()->SetWorldPosition(float4::LerpClamp(GetMainCamera()->GetTransform()->GetWorldPosition(), TargetUnit->GetTransform()->GetWorldPosition(), CloseUpTimer));
+	MainMap->GetRenderer()->SetBlurLevel(CloseUpTimer * 5);
+	GetMainCamera()->GetTransform()->SetWorldPosition(float4::LerpClamp(GetMainCamera()->GetTransform()->GetWorldPosition(), TargetUnit->GetTransform()->GetWorldPosition(), _DeltaTime * 5));
 }
 
 void BattleLevel::EnemyBattleEnd()
@@ -521,8 +520,10 @@ void BattleLevel::EnemyBattleEnd()
 	SelectUnit->SetIsTurnEnd(true);
 	if (SelectUnit->GetIsDie())
 	{
+		SelectUnit->Off();
 		SelectUnit = nullptr;
 	}
+	
 }
 
 static std::list<UnitCommand> Command;

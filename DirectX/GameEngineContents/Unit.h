@@ -28,12 +28,11 @@ public:
 		IsTurnEnd = _Other.IsTurnEnd;
 		IsDie = _Other.IsDie;
 	}
-	std::string ToString()
+	std::string ToString() const
 	{
 		std::string Str;
 		Str += "체력 : " + std::to_string(CurrentHP) + " / " + std::to_string(UnitStat.MainStatValue.HP) + '\n';
 		Str += "공격력 : " + std::to_string(UnitStat.GetAttackPoint());
-
 		return Str;
 	}
 
@@ -43,7 +42,7 @@ public:
 	int TerrainDodge = 0;
 	bool IsTurnEnd = false;
 	bool IsDie = false;
-
+	bool IsPlayer = false;
 	Stat UnitStat;
 
 	void NewItem(ItemCode _Code);

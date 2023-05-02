@@ -483,43 +483,43 @@ void Stat::ClassChange_General()
 	MainStatValue.Constitution += 2;
 }
 
-int Stat::GetAttackPoint()
+int Stat::GetAttackPoint() const
 {
 	int Result = MainStatValue.Strength + EquipWeapon->Damage;
 	return Result;
 }
 
-int Stat::GetMagicAttackPoint()
+int Stat::GetMagicAttackPoint() const
 {
 	int Result = MainStatValue.Magic + EquipWeapon->Damage;
 	return Result;
 }
 
-int Stat::GetHitPoint()
+int Stat::GetHitPoint() const
 {
 	int Result = (MainStatValue.Dexterity * 2) + (MainStatValue.Luck / 2) + EquipWeapon->Hit;
 	return Result;
 }
 
-int Stat::GetCriticalPoint()
+int Stat::GetCriticalPoint() const
 {
 	int Result = MainStatValue.Dexterity / 2 + EquipWeapon->Critical;
 	return Result;
 }
 
-int Stat::GetAttackSpeedPoint()
+int Stat::GetAttackSpeedPoint() const
 {
 	int Result = MainStatValue.Speed - std::max<int>(0, EquipWeapon->Weight - MainStatValue.Constitution);
 	return Result;
 }
 
-int Stat::GetDodgePoint()
+int Stat::GetDodgePoint() const
 {
 	int Result = 2 * GetAttackSpeedPoint() + MainStatValue.Luck / 2;
 	return Result;
 }
 
-int Stat::GetCriticalDodgePoint()
+int Stat::GetCriticalDodgePoint() const
 {
 	return MainStatValue.Luck;
 }

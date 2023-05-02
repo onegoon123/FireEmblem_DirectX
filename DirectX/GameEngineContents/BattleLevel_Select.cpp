@@ -7,7 +7,7 @@
 #include "BattleMap.h"
 #include "SelectUI.h"
 #include "BattleUnit.h"
-
+#include "TileRender.h"
 const float PreesTime = 0.2f;
 bool PressOK = false;
 void BattleLevel::CursorMove()
@@ -81,9 +81,19 @@ void BattleLevel::CursorMove()
 		for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
 		{
 			if (_Unit->GetIsDie()) { continue; }
-			if (MoveValue == _Unit->GetMapPos())
+			if (MainCursor->GetMapPos() == _Unit->GetMapPos())
 			{
 				SelectUnit = _Unit;
+				return;
+			}
+		}
+		for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
+		{
+			if (_Unit->GetIsDie()) { continue; }
+			if (MainCursor->GetMapPos() == _Unit->GetMapPos())
+			{
+				SelectUnit = _Unit;
+				return;
 			}
 		}
 	}
@@ -200,26 +210,40 @@ void BattleLevel::UnitSelect()
 	// 확인버튼 입력시에만
 	if (GameEngineInput::IsDown("OK")) {
 
-		for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
+		// 선택한 곳에 유닛이 없다면
+		if (nullptr == SelectUnit)
 		{
-			if (true == _Unit->GetIsDie()) { continue; }
-			if (MainCursor->GetMapPos() == _Unit->GetMapPos())
-			{
-				if (true == _Unit->GetIsTurnEnd())
-				{
-					// 턴이 종료된 유닛
-					break;
-				}
-				SelectUnit = _Unit;
-				ChangeState(BattleState::Move);
-				return;
-			}
+			ChangeState(BattleState::FieldCommand);
+			return;
 		}
 
-		ChangeState(BattleState::FieldCommand);
+		// 선택한 유닛이 플레이어 유닛인가?
+		if (true == SelectUnit->GetIsPlayer())
+		{
+			// 턴이 종료되지 않았다면
+			if (false == SelectUnit->GetIsTurnEnd())
+			{
+				ChangeState(BattleState::Move);
+			}
+		}
+		else
+		{
+			// 적 유닛이라면 공격 범위 탐색
+			ArrowPos.clear();
+			ArrowPos.push_back(SelectUnit->GetMapPos());
+			MoveSearchForEnemy();
+			Tiles->SetTile(IsMove, IsAttack);
+		}
 		return;
 	}
 
+	if (GameEngineInput::IsDown("Cancel"))
+	{
+		// 취소키 누를시 적 공격범위 표시 끔
+		Tiles->Clear();
+	}
+
+	// A키를 누르면 아군유닛을 자동으로 찾아주는 기능
 	if (GameEngineInput::IsDown("Next"))
 	{
 		if (true == MainCursor->GetIsMove()) { return; }
@@ -269,5 +293,12 @@ void BattleLevel::UnitSelect()
 		}
 
 
+	}
+
+	// 선택한 유닛의 정보를 표시하는 기능
+	if (GameEngineInput::IsDown("Select"))
+	{
+		if (nullptr == SelectUnit) { return; }
+		MsgTextBox(SelectUnit->ToString());
 	}
 }

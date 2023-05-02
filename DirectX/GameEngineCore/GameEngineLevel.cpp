@@ -75,6 +75,10 @@ void GameEngineLevel::ActorRender(float _DeltaTime)
 		// 추후에 적용하겠다.
 		for (std::shared_ptr<GameEngineActor> Actor : ActorList)
 		{
+			if (false == Actor->IsUpdate())
+			{
+				continue;
+			}
 			Actor->Render(_DeltaTime);
 			Actor->ComponentsRender(_DeltaTime);
 		}

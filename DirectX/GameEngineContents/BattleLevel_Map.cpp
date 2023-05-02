@@ -218,7 +218,7 @@ void BattleLevel::MoveSearchForEnemy()
 {
 
 	std::queue<SearchData> Queue;
-	SearchData StartData = { SelectUnit->GetMapPos(), SelectUnit->GetMoveStat()};
+	SearchData StartData = { SelectUnit->GetMapPos(), SelectUnit->GetMoveStat() };
 	Queue.push(StartData);
 
 	for (int i = 0; i < IsMove.size(); i++)
@@ -254,33 +254,29 @@ void BattleLevel::MoveSearchForEnemy()
 			{
 				continue;
 			}
-			Check = false;
-			for (std::shared_ptr<BattleUnit> _Actor : EnemyUnits)
-			{
-				if (true == _Actor->GetUnitData().IsDie) { continue; }
-				if (NextMove.Pos == _Actor->GetMapPos())
-				{
-					Check = true;
-					break;
-				}
-			}
-			if (true == Check)
-			{
-				//Queue.push(NextMove);
-				continue;
-			}
 
+	
 			NextMove.MoveStat -= GetTerrainCostFoot(NextMove.Pos);
 			if (NextMove.MoveStat < 0)
 			{
 				continue;
 			}
 
+			
+
 
 			IsMove[NextMove.Pos.y][NextMove.Pos.x] = true;
 
 			Queue.push(NextMove);
 		}
+	}
+
+	for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
+	{
+		if (true == _Unit->GetIsDie()) { continue; }
+		if (SelectUnit->GetUnitCode() == _Unit->GetUnitCode()) { continue; }
+		int2 Pos = _Unit->GetMapPos();
+		IsMove[Pos.y][Pos.x] = false;
 	}
 
 	// 일단 임시
@@ -499,14 +495,39 @@ void BattleLevel::MoveCalculationForEnemy()
 			{
 				if (NextMove.Pos == TargetPos)
 				{
+					
+					bool Check = false;
+					for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
+					{
+						if (true == _Unit->GetIsDie()) { continue; }
+						if (SelectUnit->GetUnitCode() == _Unit->GetUnitCode()) { continue; }
+						if (NextMove.History.back() == _Unit->GetMapPos())
+						{
+							Check = true;
+							break;
+						}
+					}
+					if (Check == true)
+					{
+						continue;
+					}
 					ArrowPos = NextMove.History;
 					return;
+				}
+				for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
+				{
+					if (true == _Unit->GetIsDie()) { continue; }
+					if (SelectUnit->GetUnitCode() == _Unit->GetUnitCode()) { continue; }
+					if (NextMove.Pos == _Unit->GetMapPos())
+					{
+						Queue.push(NextMove);
+					}
 				}
 				continue;
 			}
 			if (NextMove.Pos == TargetPos)
 			{
-				//NextMove.History.push_back(TargetPos);
+				NextMove.History.push_back(TargetPos);
 				ArrowPos = NextMove.History;
 				return;
 			}

@@ -89,13 +89,13 @@ public:
 	// 레벨 업 (경험치 증가 후 직접 실행, 증가한 능력치를 반환)
 	MainStat LevelUp();
 
-	int GetAttackPoint();
-	int GetMagicAttackPoint();
-	int GetHitPoint();
-	int GetCriticalPoint();
-	int GetAttackSpeedPoint();
-	int GetDodgePoint();
-	int GetCriticalDodgePoint();
+	int GetAttackPoint() const;
+	int GetMagicAttackPoint() const;
+	int GetHitPoint() const;
+	int GetCriticalPoint() const;
+	int GetAttackSpeedPoint() const;
+	int GetDodgePoint() const;
+	int GetCriticalDodgePoint() const;
 
 
 private:

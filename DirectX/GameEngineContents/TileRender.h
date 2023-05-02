@@ -12,8 +12,9 @@ public:
 
 	void Create(int2 _Scale);
 	void Clear();
-	void SetTile(const std::vector<std::vector<bool>>& _Value);
+	void SetTileMove(const std::vector<std::vector<bool>>& _Value);
 	void SetTileAttack(const std::vector<std::vector<bool>>& _Value);
+	void SetTile(const std::vector<std::vector<bool>>& _Move, const std::vector<std::vector<bool>>& _Attack);
 
 	// delete Function
 	TileRender(const TileRender& _Other) = delete;

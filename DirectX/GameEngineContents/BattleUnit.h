@@ -21,6 +21,10 @@ public:
 	{
 		return UnitData.IsDie;
 	}
+	bool GetIsPlayer()
+	{
+		return UnitData.IsPlayer;
+	}
 	void SetUnitCode(int _Code);
 	void SetUnitCode(UnitIdentityCode _Code);
 	int GetUnitCode()
@@ -52,6 +56,13 @@ public:
 		return Renderer;
 	}
 
+	std::string ToString() const
+	{
+		std::string Str;
+		Str += "¿Ã∏ß : " + std::string(GetName()) + '\n';
+		Str += UnitData.ToString();
+		return Str;
+	}
 
 protected:
 	void Start() override;

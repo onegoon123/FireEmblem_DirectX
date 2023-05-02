@@ -49,6 +49,7 @@ void BattleUnit::SetUnitCode(UnitIdentityCode _Code)
 	case UnitIdentityCode::Lyn:
 		SetName("린");
 		ImageName = "Map_LynTest.png";
+		UnitData.IsPlayer = true;
 		break;
 	case UnitIdentityCode::Sain:
 		break;
@@ -59,6 +60,9 @@ void BattleUnit::SetUnitCode(UnitIdentityCode _Code)
 	case UnitIdentityCode::Wil:
 		break;
 	case UnitIdentityCode::Dorcas:
+		SetName("돌카스");
+		ImageName = "Map_LynTest.png";
+		UnitData.IsPlayer = true;
 		break;
 	case UnitIdentityCode::Serra:
 		break;
@@ -73,11 +77,15 @@ void BattleUnit::SetUnitCode(UnitIdentityCode _Code)
 	case UnitIdentityCode::Lucius:
 		break;
 	case UnitIdentityCode::Wallace:
+		SetName("월레스");
+		ImageName = "Map_LynTest.png";
+		UnitData.IsPlayer = true;
 		break;
 	case UnitIdentityCode::Brigand:
 		UnitData.UnitCode += EnemyNum++;
 		SetName("산적");
 		ImageName = "Map_EnemyBrigandTest.png";
+		UnitData.IsPlayer = false;
 		break;
 	case UnitIdentityCode::Soldier:
 		break;
