@@ -1,6 +1,6 @@
 #include "PrecompileHeader.h"
 #include "BattleMap.h"
-#include "UnitRenderer.h"
+#include "SpriteRenderer.h"
 BattleMap::BattleMap()
 {
 }
@@ -11,7 +11,7 @@ BattleMap::~BattleMap()
 
 void BattleMap::Start()
 {
-	Renderer = CreateComponent<UnitRenderer>();
+	Renderer = CreateComponent<SpriteRenderer>();
 	Renderer->SetTexture("Stage0.png");
 	Renderer->SetWorldScale(MapScaleFloat4);
 	

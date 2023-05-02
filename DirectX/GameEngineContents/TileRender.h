@@ -2,7 +2,7 @@
 #include <GameEngineCore/GameEngineActor.h>
 #include "Int2.h"
 // Ό³Έν :
-class GameEngineSpriteRenderer;
+class SpriteRenderer;
 class TileRender : public GameEngineActor
 {
 public:
@@ -12,9 +12,10 @@ public:
 
 	void Create(int2 _Scale);
 	void Clear();
-	void SetTileMove(const std::vector<std::vector<bool>>& _Value);
-	void SetTileAttack(const std::vector<std::vector<bool>>& _Value);
+	void EnemyTileClear();
 	void SetTile(const std::vector<std::vector<bool>>& _Move, const std::vector<std::vector<bool>>& _Attack);
+	void SetTileAttack(const std::vector<std::vector<bool>>& _Value);
+	void SetEnemyTile(const std::vector<std::vector<bool>>& _Value);
 
 	// delete Function
 	TileRender(const TileRender& _Other) = delete;
@@ -24,6 +25,7 @@ public:
 
 protected:
 private:
-	std::vector <std::vector<std::shared_ptr<GameEngineSpriteRenderer>>> Renders;
+	std::vector <std::vector<std::shared_ptr<SpriteRenderer>>> Renders;
+	std::vector<std::vector<bool>> EnemyTileValue;
 };
 

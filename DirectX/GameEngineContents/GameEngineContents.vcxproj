@@ -234,7 +234,7 @@
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="UnitRenderer.cpp">
+    <ClCompile Include="SpriteRenderer.cpp">
       <SubType>
       </SubType>
     </ClCompile>
@@ -305,7 +305,7 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="UnitRenderer.h">
+    <ClInclude Include="SpriteRenderer.h">
       <SubType>
       </SubType>
     </ClInclude>

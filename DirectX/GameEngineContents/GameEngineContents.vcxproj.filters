@@ -60,7 +60,7 @@
     <ClCompile Include="FERandom.cpp">
       <Filter>Battle\System</Filter>
     </ClCompile>
-    <ClCompile Include="UnitRenderer.cpp">
+    <ClCompile Include="SpriteRenderer.cpp">
       <Filter>Component</Filter>
     </ClCompile>
     <ClCompile Include="BattleLevel_Select.cpp">
@@ -122,7 +122,7 @@
     <ClInclude Include="FERandom.h">
       <Filter>Battle\System</Filter>
     </ClInclude>
-    <ClInclude Include="UnitRenderer.h">
+    <ClInclude Include="SpriteRenderer.h">
       <Filter>Component</Filter>
     </ClInclude>
   </ItemGroup>

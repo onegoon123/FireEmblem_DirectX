@@ -1,14 +1,14 @@
 #include "PrecompileHeader.h"
-#include "UnitRenderer.h"
-UnitRenderer::UnitRenderer() 
+#include "SpriteRenderer.h"
+SpriteRenderer::SpriteRenderer()
 {
 }
 
-UnitRenderer::~UnitRenderer() 
+SpriteRenderer::~SpriteRenderer()
 {
 }
 
-void UnitRenderer::Start()
+void SpriteRenderer::Start()
 {
 	SetPipeLine("2DTextureEffect");
 	GetShaderResHelper().SetConstantBufferLink("EffectData", EffectDataValue);

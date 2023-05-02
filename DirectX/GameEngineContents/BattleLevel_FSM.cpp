@@ -10,7 +10,7 @@
 #include "UnitCommand.h"
 #include "FERandom.h"
 #include <GameEngineCore/GameEngineCamera.h>
-#include "UnitRenderer.h"
+#include "SpriteRenderer.h"
 #include "BattleMap.h"
 void BattleLevel::ChangeState(BattleState _State)
 {
@@ -141,6 +141,7 @@ void BattleLevel::SelectStart()
 	MainCursor->On();
 	UI_Select->UIOn();
 	CursorDirCheck();
+	EnemyTileCheck();
 }
 
 void BattleLevel::SelectUpdate(float _DeltaTime)
@@ -160,8 +161,14 @@ void BattleLevel::MoveStart()
 	if (nullptr == SelectUnit)
 	{
 		MsgAssert("유닛 선택되지 않은 채 State가 변경되었습니다.");
+	
 	}
 	BeforePos = SelectUnit->GetMapPos();
+
+	SelectUnit->SetIsDie(true);
+	EnemyTileCheck();
+	SelectUnit->SetIsDie(false);
+
 	ArrowPos.clear();
 	ArrowPos.push_back(SelectUnit->GetMapPos());	// 엑터 위치에서부터 화살표 시작
 	MoveSearch();	// 이동범위 탐색, 자동으로 공격범위도 탐색
@@ -175,12 +182,12 @@ void BattleLevel::MoveStart()
 void BattleLevel::MoveUpdate(float _DeltaTime)
 {
 	CursorAndArrowMove();
-	if (GameEngineInput::IsDown("OK"))
+	if (GameEngineInput::IsDown("ButtonA"))
 	{
 		UnitMove();
 		return;
 	}
-	if (GameEngineInput::IsDown("Cancel"))
+	if (GameEngineInput::IsDown("ButtonB"))
 	{
 		ChangeState(BattleState::Select);
 		//UnitMove();
@@ -217,6 +224,7 @@ void BattleLevel::MoveWaitEnd()
 
 void BattleLevel::UnitCommandStart()
 {
+	EnemyTileCheck();
 	UI_UnitCommand->On();
 
 	for (int y = 0; y < IsMove.size(); y++)
@@ -252,14 +260,14 @@ void BattleLevel::UnitCommandStart()
 
 void BattleLevel::UnitCommandUpdate(float _DeltaTime)
 {
-	if (GameEngineInput::IsDown("OK"))
+	if (GameEngineInput::IsDown("ButtonA"))
 	{
 		// 현재 임시로 대기 명령을 내리는 것으로 인식
 		UnitCommand::Wait(SelectUnit);
 		SelectUnit->SetIsTurnEnd(true);
 		ChangeState(BattleState::Select);
 	}
-	if (GameEngineInput::IsDown("Cancel"))
+	if (GameEngineInput::IsDown("ButtonB"))
 	{
 		SelectUnit->SetMapPos(BeforePos);
 		ChangeState(BattleState::Move);
@@ -281,12 +289,12 @@ void BattleLevel::FieldCommandStart()
 
 void BattleLevel::FieldCommandUpdate(float _DeltaTime)
 {
-	if (GameEngineInput::IsDown("OK"))
+	if (GameEngineInput::IsDown("ButtonA"))
 	{
 		ChangeState(BattleState::EnemyPhase);
 		return;
 	}
-	if (GameEngineInput::IsDown("Cancel"))
+	if (GameEngineInput::IsDown("ButtonB"))
 	{
 		ChangeState(BattleState::PlayerPhase);
 		return;
@@ -319,6 +327,7 @@ void BattleLevel::EnemyPhaseStart()
 		_Unit->SetIsTurnEnd(false);
 	}
 	MainCursor->Off();
+	Tiles->EnemyTileClear();
 	ChangeState(BattleState::EnemySelect);
 }
 
@@ -559,6 +568,10 @@ void BattleLevel::GameOverUpdate(float _DeltaTime)
 						_Unit->SetUnitData((*RIter).BeforeSubjectUnit);
 						_Unit->SetMapPos((*RIter).BeforeSubjectUnitPos);
 					}
+					else if ((*RIter).BeforeTargetUnit.UnitCode == _Unit->GetUnitData().UnitCode)
+					{
+						_Unit->SetUnitData((*RIter).BeforeTargetUnit);
+					}
 				}
 				for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
 				{
@@ -567,17 +580,7 @@ void BattleLevel::GameOverUpdate(float _DeltaTime)
 						_Unit->SetUnitData((*RIter).BeforeSubjectUnit);
 						_Unit->SetMapPos((*RIter).BeforeSubjectUnitPos);
 					}
-				}
-				for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
-				{
-					if ((*RIter).BeforeTargetUnit.UnitCode == _Unit->GetUnitData().UnitCode)
-					{
-						_Unit->SetUnitData((*RIter).BeforeTargetUnit);
-					}
-				}
-				for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
-				{
-					if ((*RIter).BeforeTargetUnit.UnitCode == _Unit->GetUnitData().UnitCode)
+					else if ((*RIter).BeforeTargetUnit.UnitCode == _Unit->GetUnitData().UnitCode)
 					{
 						_Unit->SetUnitData((*RIter).BeforeTargetUnit);
 					}

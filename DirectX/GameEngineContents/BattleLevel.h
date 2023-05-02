@@ -67,6 +67,7 @@ private:
 	std::vector<std::vector<bool>> IsMove = std::vector<std::vector<bool>>();
 	std::vector<std::vector<bool>> IsAttack = std::vector<std::vector<bool>>();
 	bool IsArrowOut = false;
+	bool IsEnemyRangeCheck = false;
 
 	// UI
 	std::shared_ptr <SelectUI> UI_Select = nullptr;
@@ -154,6 +155,9 @@ private:
 	void MoveCalculation();
 	void MoveCalculationForEnemy();
 
+	// 적의 공격 범위를 표시하는 기능
+	void EnemyTileCheck();
+
 	// 지상유닛기준 지형에 대한 이동 코스트를 계산. 이동 불가능 지형은 99가 반환
 	int GetTerrainCostFoot(int2 _Pos);
 	int GetTerrainDodge(int2 _Pos);
@@ -171,6 +175,7 @@ private:
 	void CursorDirCheck();
 
 	void UnitSelect();
+
 
 #pragma endregion
 

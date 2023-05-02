@@ -542,6 +542,21 @@ void BattleLevel::MoveCalculationForEnemy()
 	}
 }
 
+void BattleLevel::EnemyTileCheck()
+{
+	std::shared_ptr<BattleUnit> BeforeUnit = SelectUnit;
+	Tiles->EnemyTileClear();
+	for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
+	{
+		if (false == _Unit->GetIsCheckTile()) { continue; }
+		if (true == _Unit->GetIsDie()) { continue; }
+		SelectUnit = _Unit;
+		MoveSearchForEnemy();
+		Tiles->SetEnemyTile(IsAttack);
+	}
+	SelectUnit = BeforeUnit;
+}
+
 void BattleLevel::UnitMove()
 {
 	if (true == IsMove[MainCursor->GetMapPos().y][MainCursor->GetMapPos().x])

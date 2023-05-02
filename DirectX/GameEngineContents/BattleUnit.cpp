@@ -3,7 +3,7 @@
 #include <GameEnginePlatform/GameEngineInput.h>
 #include "Stat.h"
 #include "Weapon.h"
-#include "UnitRenderer.h"
+#include "SpriteRenderer.h"
 BattleUnit::BattleUnit() 
 {
 }
@@ -105,7 +105,7 @@ void BattleUnit::SetUnitCode(UnitIdentityCode _Code)
 
 void BattleUnit::Start()
 {
-	Renderer = CreateComponent<UnitRenderer>();
+	Renderer = CreateComponent<SpriteRenderer>();
 	ImageName = "Map_LynTest.png";
 	Renderer->SetTexture(ImageName);
 	Renderer->SetWorldScale({ 128,128 });

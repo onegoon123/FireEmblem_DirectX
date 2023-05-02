@@ -1,18 +1,18 @@
 #pragma once
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 // Ό³Έν :
-class UnitRenderer : public GameEngineSpriteRenderer
+class SpriteRenderer : public GameEngineSpriteRenderer
 {
 public:
 	// constrcuter destructer
-	UnitRenderer();
-	~UnitRenderer();
+	SpriteRenderer();
+	~SpriteRenderer();
 
 	// delete Function
-	UnitRenderer(const UnitRenderer& _Other) = delete;
-	UnitRenderer(UnitRenderer&& _Other) noexcept = delete;
-	UnitRenderer& operator=(const UnitRenderer& _Other) = delete;
-	UnitRenderer& operator=(UnitRenderer&& _Other) noexcept = delete;
+	SpriteRenderer(const SpriteRenderer& _Other) = delete;
+	SpriteRenderer(SpriteRenderer&& _Other) noexcept = delete;
+	SpriteRenderer& operator=(const SpriteRenderer& _Other) = delete;
+	SpriteRenderer& operator=(SpriteRenderer&& _Other) noexcept = delete;
 
 	void SetGrayScale(bool _Value)
 	{
@@ -26,18 +26,19 @@ public:
 	{
 		EffectDataValue.BlurLevel = _Value;
 	}
-	void SetFlashColor(float4 _Color)
+	void SetFlash(float4 _Color, float _t)
 	{
 		EffectDataValue.FlashColor = _Color;
+		EffectDataValue.t = _t;
 	}
 	void OffFlashColor()
 	{
 		EffectDataValue.FlashColor = float4::Null;
 		EffectDataValue.t = 0;
 	}
-	void SetFlashLevel(float _Value)
+	void SetFlashLevel(float _t)
 	{
-		EffectDataValue.t = _Value;
+		EffectDataValue.t = _t;
 	}
 
 	void SetLocalScale(float4 _Scale)

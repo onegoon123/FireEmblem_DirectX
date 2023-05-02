@@ -17,6 +17,10 @@ public:
 
 	void SetIsTurnEnd(bool _Value);
 	bool GetIsTurnEnd();
+	void SetIsDie(bool _Value)
+	{
+		UnitData.IsDie = _Value;
+	}
 	bool GetIsDie()
 	{
 		return UnitData.IsDie;
@@ -39,6 +43,10 @@ public:
 	void SetUnitData(Unit _Value)
 	{
 		UnitData = _Value;
+		if (false == UnitData.IsDie)
+		{
+			On();
+		}
 	}
 
 	const Unit& GetUnitData()
@@ -51,7 +59,7 @@ public:
 		UnitData.NewItem(_Code);
 	}
 
-	std::shared_ptr<class UnitRenderer> GetRenderer()
+	std::shared_ptr<class SpriteRenderer> GetRenderer()
 	{
 		return Renderer;
 	}
@@ -64,13 +72,18 @@ public:
 		return Str;
 	}
 
+	bool GetIsCheckTile() { return IsCheckTile; }
+	void SetIsCheckTile(bool _Value) { IsCheckTile = _Value; }
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
 
-	std::shared_ptr<class UnitRenderer> Renderer = nullptr;
+	std::shared_ptr<class SpriteRenderer> Renderer = nullptr;
 	std::string_view ImageName = "";
 private:
 	Unit UnitData;
+
+	bool IsCheckTile = false;
 };
 

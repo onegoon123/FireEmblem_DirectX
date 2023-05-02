@@ -33,14 +33,16 @@ void TitleLevel::Start()
 
 	// Å° ¼¼ÆÃ
 	{
-		GameEngineInput::CreateKey("UpMove", VK_UP);
-		GameEngineInput::CreateKey("DownMove", VK_DOWN);
-		GameEngineInput::CreateKey("LeftMove", VK_LEFT);
-		GameEngineInput::CreateKey("RightMove", VK_RIGHT);
-		GameEngineInput::CreateKey("OK", 'Z');
-		GameEngineInput::CreateKey("Cancel", 'X');
-		GameEngineInput::CreateKey("Next", 'A');
-		GameEngineInput::CreateKey("Select", 'S');
+		GameEngineInput::CreateKey("Up", VK_UP);
+		GameEngineInput::CreateKey("Down", VK_DOWN);
+		GameEngineInput::CreateKey("Left", VK_LEFT);
+		GameEngineInput::CreateKey("Right", VK_RIGHT);
+		GameEngineInput::CreateKey("ButtonA", 'Z');
+		GameEngineInput::CreateKey("ButtonB", 'X');
+		GameEngineInput::CreateKey("ButtonY", 'C');
+		GameEngineInput::CreateKey("ButtonX", 'V');
+		GameEngineInput::CreateKey("ButtonL", 'A');
+		GameEngineInput::CreateKey("ButtonR", 'S');
 		GameEngineInput::CreateKey("Start", VK_END);
 	}
 	
@@ -59,7 +61,7 @@ void TitleLevel::Start()
 void TitleLevel::Update(float _DeltaTime)
 {
 
-	if (true == GameEngineInput::IsDown("OK"))
+	if (true == GameEngineInput::IsDown("ButtonA"))
 	{
 		GameEngineCore::ChangeLevel("BattleLevel");
 	}
