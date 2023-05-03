@@ -65,14 +65,24 @@ void SelectUI::UIOn()
 	UnitData.Timer = 0;
 	HPBarRender->On();
 	PortraitRender->On();
+
+	Goal.CurDir = UIDir::None;
+	Goal.NextDir = UIDir::None;
+	Terrain.CurDir = UIDir::None;
+	Terrain.NextDir = UIDir::None;
+	UnitData.ChangeDir(UIDir::None);
+	CursorDir = UIDir::None;
 }
 
 void SelectUI::UIOff()
 {
 	CursorDir = UIDir::None;
 	Goal.Render->Off();
+	Goal.Render->GetTransform()->SetLocalPosition(Goal.BenchmarkHidePos);
 	Terrain.Render->Off();
+	Terrain.Render->GetTransform()->SetLocalPosition(Terrain.BenchmarkHidePos);
 	UnitData.Render->Off();
+	UnitData.Render->GetTransform()->SetLocalPosition(UnitData.BenchmarkHidePos);
 	HPBarRender->Off();
 	PortraitRender->Off();
 }

@@ -47,38 +47,38 @@ void BattleLevel::Start()
 	std::shared_ptr<BattleUnit> NewActor = CreateActor<BattleUnit>();
 	NewActor->SetUnitCode(UnitIdentityCode::Lyn);
 	NewActor->SetMapPos({ 4, 5 });
-	NewActor->NewWeapon(ItemCode::IronSword);
+	NewActor->NewWeapon(ItemCode::ManiKatti);
 	PlayerUnits.push_back(NewActor);
 
 	NewActor = CreateActor<BattleUnit>();
-	NewActor->SetUnitCode(UnitIdentityCode::Wallace);
+	NewActor->SetUnitCode(UnitIdentityCode::Dorcas);
 	NewActor->SetMapPos({ 5, 4 });
-	NewActor->NewWeapon(ItemCode::SlimLance);
+	NewActor->NewWeapon(ItemCode::IronAxe);
 	PlayerUnits.push_back(NewActor);
 
-	NewActor = CreateActor<BattleUnit>();
-	NewActor->SetUnitCode(UnitIdentityCode::Brigand);
-	NewActor->NewWeapon(ItemCode::IronAxe);
-	NewActor->SetMapPos({ 8, 5 });
-	EnemyUnits.push_back(NewActor);
+	//NewActor = CreateActor<BattleUnit>();
+	//NewActor->SetUnitCode(UnitIdentityCode::Brigand);
+	//NewActor->NewWeapon(ItemCode::IronAxe);
+	//NewActor->SetMapPos({ 8, 5 });
+	//EnemyUnits.push_back(NewActor);
 
-	NewActor = CreateActor<BattleUnit>();
-	NewActor->SetUnitCode(UnitIdentityCode::Brigand);
-	NewActor->NewWeapon(ItemCode::IronAxe);
-	NewActor->SetMapPos({ 9, 6 });
-	EnemyUnits.push_back(NewActor);
+	//NewActor = CreateActor<BattleUnit>();
+	//NewActor->SetUnitCode(UnitIdentityCode::Brigand);
+	//NewActor->NewWeapon(ItemCode::IronAxe);
+	//NewActor->SetMapPos({ 9, 6 });
+	//EnemyUnits.push_back(NewActor);
 
-	NewActor = CreateActor<BattleUnit>();
-	NewActor->SetUnitCode(UnitIdentityCode::Brigand);
-	NewActor->NewWeapon(ItemCode::IronAxe);
-	NewActor->SetMapPos({ 9, 4 });
-	EnemyUnits.push_back(NewActor);
+	//NewActor = CreateActor<BattleUnit>();
+	//NewActor->SetUnitCode(UnitIdentityCode::Brigand);
+	//NewActor->NewWeapon(ItemCode::IronAxe);
+	//NewActor->SetMapPos({ 9, 4 });
+	//EnemyUnits.push_back(NewActor);
 
-	NewActor = CreateActor<BattleUnit>();
-	NewActor->SetUnitCode(UnitIdentityCode::Brigand);
-	NewActor->NewWeapon(ItemCode::IronAxe);
-	NewActor->SetMapPos({ 7, 4 });
-	EnemyUnits.push_back(NewActor);
+	//NewActor = CreateActor<BattleUnit>();
+	//NewActor->SetUnitCode(UnitIdentityCode::Brigand);
+	//NewActor->NewWeapon(ItemCode::IronAxe);
+	//NewActor->SetMapPos({ 7, 4 });
+	//EnemyUnits.push_back(NewActor);
 	
 	IsMove.resize(MainMap->MapScaleInt2.y);
 	for (int i = 0; i < IsMove.size(); i++)

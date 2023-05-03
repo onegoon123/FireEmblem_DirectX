@@ -15,6 +15,7 @@ cbuffer EffectData : register(b0)
     bool IsBlur;
     bool IsGrayScale;
     float4 Scale;
+    
 }
 
 Texture2D DiffuseTex : register(t0);

@@ -21,12 +21,23 @@ public:
 
 protected:
 	void Start() override;
-	void Update(float _DeltaTiime) override;
+	void Update(float _DeltaTime) override;
 
 private:
+	enum class PhaseState
+	{
+		Start,
+		Wait,
+		End
+	};
+	PhaseState CurState = PhaseState::Start;
 
 	std::shared_ptr<SpriteRenderer> Renderer;
 	float Timer = 0;
+	bool IsEnd = false;
 
+	void StartUpdate(float _DeltaTime);
+	void WaitUpdate(float _DeltaTime);
+	void EndUpdate(float _DeltaTime);
 };
 
