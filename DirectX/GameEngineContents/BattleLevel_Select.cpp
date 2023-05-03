@@ -263,6 +263,7 @@ void BattleLevel::UnitSelect()
 				if (_Unit->GetIsTurnEnd()) { continue; }
 				SelectUnit = _Unit;
 				MainCursor->SetMapPos(SelectUnit->GetMapPos());
+				CursorDirCheck();
 				SetUI_UnitData();
 				return;
 			}
@@ -284,6 +285,7 @@ void BattleLevel::UnitSelect()
 
 						SelectUnit = *Start;
 						MainCursor->SetMapPos(SelectUnit->GetMapPos());
+						CursorDirCheck();
 						SetUI_UnitData();
 						return;
 					}
@@ -294,6 +296,7 @@ void BattleLevel::UnitSelect()
 						if (_Unit->GetUnitCode() == SelectUnit->GetUnitCode()) { continue; }
 						SelectUnit = _Unit;
 						MainCursor->SetMapPos(SelectUnit->GetMapPos());
+						CursorDirCheck();
 						SetUI_UnitData();
 						return;
 					}
@@ -309,11 +312,8 @@ void BattleLevel::UnitSelect()
 	if (GameEngineInput::IsDown("ButtonY"))
 	{
 		IsEnemyRangeCheck = !IsEnemyRangeCheck;
-		for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
-		{
-			_Unit->SetIsCheckTile(IsEnemyRangeCheck);
-			EnemyTileCheck();
-		}
+		EnemyTileCheck();
+		
 
 		// 선택한 유닛이 있다면
 		if (nullptr == SelectUnit) { return; }

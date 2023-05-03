@@ -55,9 +55,11 @@ private:
 	// Actor
 	std::shared_ptr<BattleMap> MainMap = nullptr;
 	std::shared_ptr <MapCursor> MainCursor = nullptr;
-	std::list<std::shared_ptr <BattleUnit>> PlayerUnits = std::list< std::shared_ptr <BattleUnit>>();
-	std::list< std::shared_ptr <BattleUnit>> EnemyUnits = std::list< std::shared_ptr <BattleUnit>>();
-	std::shared_ptr <BattleUnit> SelectUnit = nullptr;
+	std::list<std::shared_ptr <BattleUnit>> PlayerUnits = std::list< std::shared_ptr <BattleUnit>>();		// 플레이어 유닛 리스트
+	std::list< std::shared_ptr <BattleUnit>> EnemyUnits = std::list< std::shared_ptr <BattleUnit>>();		// 적 유닛 리스트
+	std::list< std::shared_ptr <BattleUnit>> AttackableUnits = std::list< std::shared_ptr <BattleUnit>>();	// 공격 가능한 유닛 리스트
+	std::list< std::shared_ptr <BattleUnit>> CloseUnits = std::list< std::shared_ptr <BattleUnit>>();		// 주변에 있는 유닛 리스트
+	std::shared_ptr <BattleUnit> SelectUnit = nullptr;	// 선택된 유닛
 	std::shared_ptr <BattleUnit> TargetUnit = nullptr;
 
 	// Map 관련
@@ -145,7 +147,7 @@ private:
 
 	void MoveSearchForEnemy();
 	void AttackSearchForEnemy();
-	// 유닛을 이동시키는 기능
+	// 커서의 위치에 다른 플레이어 유닛이 없다면 MoveWait State로 전환
 	void UnitMove();
 	// _Pos값이 맵을 벗어나면 true를 반환하는 함수
 	inline bool IsMapOut(int2 _Pos);
@@ -155,7 +157,7 @@ private:
 	void MoveCalculation();
 	void MoveCalculationForEnemy();
 
-	// 적의 공격 범위를 표시하는 기능
+	// 다음턴의 적이 공격 가능한 범위를 표시하는 기능 (IsCheckTile가 true인 적 한정)
 	void EnemyTileCheck();
 
 	// 지상유닛기준 지형에 대한 이동 코스트를 계산. 이동 불가능 지형은 99가 반환
@@ -163,7 +165,7 @@ private:
 	int GetTerrainDodge(int2 _Pos);
 	int GetTerrainDef(int2 _Pos);
 
-
+	// float4::Lerp 를 이용하여 이동할 위치까지 화살표를 따라 유닛을 이동시키는 기능, 목적지에 도달 시 true를 리턴합니다.
 	bool UnitMoveAnim();
 #pragma endregion
 
@@ -171,11 +173,24 @@ private:
 	
 	void CursorMove();
 	void CursorAndArrowMove();
-	void CursorDirCheck();
+	// 커서에 따른 SeledctUI위치 조절
+	void CursorDirCheck(); 
 
 	void UnitSelect();
+	// 선택된 유닛에 따른 SelectUI 내용 지정
+	void SetUI_UnitData(); 
 
-	void SetUI_UnitData();
+#pragma endregion
+
+#pragma region UnitCommand
+
+public:
+	void UnitCommand_Item();
+	void UnitCommand_Wait();
+	void UnitCommand_Attack();
+	void UnitCommand_Exchange();
+	void UnitCommand_Cancel();
+private:
 
 #pragma endregion
 

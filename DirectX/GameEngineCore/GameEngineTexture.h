@@ -33,7 +33,6 @@ public:
 
 	GameEnginePixelColor()
 	{
-
 	}
 
 	GameEnginePixelColor(char _r, char _g, char _b, char _a)

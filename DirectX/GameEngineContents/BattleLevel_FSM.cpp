@@ -110,14 +110,12 @@ void BattleLevel::PlayerPhaseUpdate(float _DeltaTime)
 
 void BattleLevel::PlayerPhaseEnd()
 {
+	// 플레이어 리스트 중 가장 앞에있는 유닛을 선택
 	for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
 	{
 		if (_Unit->GetIsDie()) { continue; }
 		SelectUnit = _Unit;
 		MainCursor->SetMapPos(SelectUnit->GetMapPos());
-		UI_Select->UIOn();
-		CursorDirCheck();
-		SetUI_UnitData();
 		break;
 	}
 
@@ -148,25 +146,28 @@ void BattleLevel::SelectStart()
 	// 선택 유닛 초기화
 	//SelectUnit = nullptr;
 
-	// Select 상태시 필요한 UI 켜기
+	// Select State시 필요한 UI
 	MainCursor->On();
 	UI_Select->UIOn();
 	CursorDirCheck();
+	// 선택된 유닛이 있다면 유닛 데이터 지정
 	if (nullptr != SelectUnit)
 	{
 		SetUI_UnitData();
 	}
+	// 적 타일 체크
 	EnemyTileCheck();
 }
 
 void BattleLevel::SelectUpdate(float _DeltaTime)
 {
 	CursorMove();	// 커서 이동
-	UnitSelect();
+	UnitSelect();	// 유닛 선택 동작들 처리
 }
 
 void BattleLevel::SelectEnd()
 {
+	// Select State 종료시 끄는 UI
 	UI_Select->UIOff();
 }
 
@@ -175,49 +176,56 @@ void BattleLevel::MoveStart()
 
 	if (nullptr == SelectUnit)
 	{
-		MsgAssert("유닛 선택되지 않은 채 State가 변경되었습니다.");
-	
+		MsgAssert("유닛 선택되지 않은 채 MoveState로 변경되었습니다.");
 	}
-	BeforePos = SelectUnit->GetMapPos();
 
+	BeforePos = SelectUnit->GetMapPos();	// 이동 전 위치
+
+	// 선택한 유닛이 없을때 기준 적 타일 체크
 	SelectUnit->SetIsDie(true);
 	EnemyTileCheck();
 	SelectUnit->SetIsDie(false);
 
+	MoveSearch();	// 이동범위 탐색, 자동으로 공격범위도 탐색
+	Tiles->SetTile(IsMove, IsAttack);	// 이동 및 공격 범위를 타일로 표시
+	// 이동 화살표 초기화
 	ArrowPos.clear();
 	ArrowPos.push_back(SelectUnit->GetMapPos());	// 엑터 위치에서부터 화살표 시작
-	MoveSearch();	// 이동범위 탐색, 자동으로 공격범위도 탐색
+	AddArrow(ArrowPos.front());
 
-	Tiles->SetTile(IsMove, IsAttack);
-	AddArrow(MainCursor->GetMapPos());
-
+	// Move State시 필요한 UI
 	MainCursor->On();
 }
 
 void BattleLevel::MoveUpdate(float _DeltaTime)
 {
-	CursorAndArrowMove();
+	CursorAndArrowMove();	// 커서 이동 및 화살표 추가
+
 	if (GameEngineInput::IsDown("ButtonA"))
 	{
+		// A버튼 (Z키) 입력시 유닛을 커서 위치로 이동
 		UnitMove();
 		return;
 	}
 	if (GameEngineInput::IsDown("ButtonB"))
 	{
+		// 커서를 선택한 유닛위치로 돌려놓은 후 Select State로 변경
+		MainCursor->SetMapPos(SelectUnit->GetMapPos());
 		ChangeState(BattleState::Select);
-		//UnitMove();
 		return;
 	}
 }
 
 void BattleLevel::MoveEnd()
 {
+	// Move State 종료시 화살표와 이동타일을 제거
 	Arrows->Clear();
 	Tiles->Clear();
 }
 
 void BattleLevel::MoveWaitStart()
 {
+	// MoveWait State가 시작시 값을 초기화
 	MainCursor->Off();
 	MoveTimer = 9999;
 	MoveIndex = -1;
@@ -228,20 +236,23 @@ void BattleLevel::MoveWaitUpdate(float _DeltaTime)
 	MoveTimer += _DeltaTime * MoveSpeed;
 	if (true == UnitMoveAnim())
 	{
+		// 이동 종료
 		ChangeState(BattleState::UnitCommand);
 	}
 }
 
 void BattleLevel::MoveWaitEnd()
 {
+	// 정확한 위치로 다시 지정
 	SelectUnit->SetMapPos(MainCursor->GetMapPos());
 }
 
 void BattleLevel::UnitCommandStart()
 {
+	// 이동한 위치 기준으로 적 타일 체크
 	EnemyTileCheck();
-	UI_UnitCommand->On();
 
+	// IsMove를 현재 위치만 true로 변경
 	for (int y = 0; y < IsMove.size(); y++)
 	{
 		for (int x = 0; x < IsMove[y].size(); x++)
@@ -250,6 +261,8 @@ void BattleLevel::UnitCommandStart()
 		}
 	}
 	IsMove[SelectUnit->GetMapPos().y][SelectUnit->GetMapPos().x] = true;
+
+	// 클래스에 따라 현재 위치에서 공격 할 수 있는 범위 표시
 	if (false/*SelectUnit->GetClass() == 1*/)
 	{
 		AttackSearchBow();
@@ -260,34 +273,75 @@ void BattleLevel::UnitCommandStart()
 	}
 	Tiles->SetTileAttack(IsAttack);
 
+	bool IsAttackable = false;
+	bool IsCloseUnit = false;
 
-	for (std::shared_ptr<BattleUnit> _Enemy : EnemyUnits)
+	// 공격 범위 이내에 적이 있는지 판단
+	AttackableUnits.clear();
+	for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
 	{
-		if (true == _Enemy->GetIsDie()) { continue; }
-		int2 EnemyPos = _Enemy->GetMapPos();
+		if (true == _Unit->GetIsDie()) { continue; }
+		int2 EnemyPos = _Unit->GetMapPos();
 		if (true == IsAttack[EnemyPos.y][EnemyPos.x])
 		{
-			// 공격 범위 내의 적을 발견
-			int a = 0;
+			// 공격 범위 내의 적을 발견 시 리스트 저장
+			AttackableUnits.push_back(_Unit);
 		}
 	}
+
+	// 공격 가능한 적이 있을때
+	if (1 <= AttackableUnits.size())
+	{
+		IsAttackable = true;
+	}
+
+	// 근처에 아군 유닛이 있는지 판단
+	CloseUnits.clear();
+	for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
+	{
+		if (true == _Unit->GetIsDie()) { continue; }
+		if (SelectUnit->GetUnitCode() == _Unit->GetUnitCode()) { continue; }
+
+		int2 UnitPos = SelectUnit->GetMapPos();
+		int2 _UnitPos = _Unit->GetMapPos();
+
+		if (_UnitPos == UnitPos + int2::Up)
+		{
+			CloseUnits.push_back(_Unit);
+			continue;
+		}
+		if (_UnitPos == UnitPos + int2::Down)
+		{
+			CloseUnits.push_back(_Unit);
+			continue;
+		}
+		if (_UnitPos == UnitPos + int2::Left)
+		{
+			CloseUnits.push_back(_Unit);
+			continue;
+		}
+		if (_UnitPos == UnitPos + int2::Right)
+		{
+			CloseUnits.push_back(_Unit);
+			continue;
+		}
+	}
+
+	// 근처에 아군 유닛이 있을때
+	if (1 <= CloseUnits.size())
+	{
+		IsCloseUnit = true;
+	}
+
+
+	// 커맨드 UI 켜기
+	UI_UnitCommand->SetCommand(IsAttackable, IsCloseUnit);
+	UI_UnitCommand->On();
 }
 
 void BattleLevel::UnitCommandUpdate(float _DeltaTime)
 {
-	if (GameEngineInput::IsDown("ButtonA"))
-	{
-		// 현재 임시로 대기 명령을 내리는 것으로 인식
-		UnitCommand::Wait(SelectUnit);
-		SelectUnit->SetIsTurnEnd(true);
-		ChangeState(BattleState::Select);
-	}
-	if (GameEngineInput::IsDown("ButtonB"))
-	{
-		SelectUnit->SetMapPos(BeforePos);
-		ChangeState(BattleState::Move);
-		return;
-	}
+
 }
 
 void BattleLevel::UnitCommandEnd()
@@ -298,7 +352,8 @@ void BattleLevel::UnitCommandEnd()
 
 void BattleLevel::FieldCommandStart()
 {
-	UI_UnitCommand->On();
+	//UI_UnitCommand->SetCommand(false, false);
+	//UI_UnitCommand->On();
 	MainCursor->Off();
 }
 

@@ -58,8 +58,11 @@ void SelectUI::SetCursorDir(UIDir _Dir)
 void SelectUI::UIOn()
 {
 	Goal.Render->On();
+	Goal.Timer = 0;
 	Terrain.Render->On();
+	Terrain.Timer = 0;
 	UnitData.Render->On();
+	UnitData.Timer = 0;
 	HPBarRender->On();
 	PortraitRender->On();
 }

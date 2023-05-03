@@ -11,18 +11,16 @@
 
 bool BattleLevel::UnitMoveAnim()
 {
-
-
-	if (1 <= MoveTimer)
+	if (1 < MoveTimer)
 	{
 		if (ArrowPos.size() == ++MoveIndex)
 		{
 			return true;
 		}
-		MoveStartPos = SelectUnit->GetTransform()->GetWorldPosition();
-		float4 _ArrowPos = ArrowPos[MoveIndex];
-		MoveEndPos = _ArrowPos * TileScale;
-		MoveTimer = 0;
+		MoveStartPos = SelectUnit->GetTransform()->GetWorldPosition();	// 현재 위치 저장
+		float4 _ArrowPos = ArrowPos[MoveIndex];	
+		MoveEndPos = _ArrowPos * TileScale; // 다음 이동위치 저장
+		MoveTimer = 0; // 타이머 리셋
 	}
 
 	SelectUnit->GetTransform()->SetLocalPosition(float4::LerpClamp(MoveStartPos, MoveEndPos, MoveTimer));
@@ -548,7 +546,7 @@ void BattleLevel::EnemyTileCheck()
 	Tiles->EnemyTileClear();
 	for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
 	{
-		if (false == _Unit->GetIsCheckTile()) { continue; }
+		if (false == _Unit->GetIsCheckTile() && false == IsEnemyRangeCheck) { continue; }
 		if (true == _Unit->GetIsDie()) { continue; }
 		SelectUnit = _Unit;
 		MoveSearchForEnemy();
@@ -563,16 +561,17 @@ void BattleLevel::UnitMove()
 	{
 		for (std::shared_ptr<BattleUnit> _Actor : PlayerUnits)
 		{
+			// 나 자신, 죽은 유닛을 제외한 유닛들 중
 			if (true == _Actor->GetIsDie()) { continue; }
+			if (_Actor->GetUnitCode() == SelectUnit->GetUnitCode()) {continue;}
+
+			// 이동할 위치에 있는 유닛이 있다면 종료
 			if (_Actor->GetMapPos() == MainCursor->GetMapPos())
 			{
-				// 임시) 클래스 번호가 다르면 다른 유닛이므로 이동이 불가능함
-				if (_Actor->GetUnitCode() != SelectUnit->GetUnitCode())
-				{
-					return;
-				}
+				return;
 			}
 		}
+		// 이동이 가능하다면 MoveWait State로 전환
 		ChangeState(BattleState::MoveWait);
 	}
 }

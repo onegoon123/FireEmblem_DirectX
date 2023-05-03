@@ -12,12 +12,14 @@
 #include "ContentsEnum.h"
 #include "SelectUI.h"
 #include "UnitCommandUI.h"
+
 BattleLevel::BattleLevel()
 {
 	StateUpdate = &BattleLevel::PlayerPhaseUpdate;
 	StateEnd = &BattleLevel::PlayerPhaseEnd;
 
 	ArrowPos.reserve(8);
+
 }
 
 BattleLevel::~BattleLevel()
@@ -48,28 +50,28 @@ void BattleLevel::Start()
 	PlayerUnits.push_back(NewActor);
 
 	NewActor = CreateActor<BattleUnit>();
-	NewActor->SetUnitCode(UnitIdentityCode::Wallace);
-	NewActor->SetMapPos({ 3, 2 });
+	NewActor->SetUnitCode(UnitIdentityCode::Dorcas);
+	NewActor->SetMapPos({ 5, 4 });
 	NewActor->NewWeapon(ItemCode::IronSword);
 	PlayerUnits.push_back(NewActor);
 
 	NewActor = CreateActor<BattleUnit>();
 	NewActor->SetUnitCode(UnitIdentityCode::Brigand);
 	NewActor->NewWeapon(ItemCode::IronAxe);
-	NewActor->SetMapPos({ 8, 8 });
+	NewActor->SetMapPos({ 8, 5 });
 	EnemyUnits.push_back(NewActor);
 
-	//NewActor = CreateActor<BattleUnit>();
-	//NewActor->SetUnitCode(UnitIdentityCode::Brigand);
-	//NewActor->NewWeapon(ItemCode::IronAxe);
-	//NewActor->SetMapPos({ 9, 8 });
-	//EnemyUnits.push_back(NewActor);
+	NewActor = CreateActor<BattleUnit>();
+	NewActor->SetUnitCode(UnitIdentityCode::Brigand);
+	NewActor->NewWeapon(ItemCode::IronAxe);
+	NewActor->SetMapPos({ 9, 6 });
+	EnemyUnits.push_back(NewActor);
 
-	//NewActor = CreateActor<BattleUnit>();
-	//NewActor->SetUnitCode(UnitIdentityCode::Brigand);
-	//NewActor->NewWeapon(ItemCode::IronAxe);
-	//NewActor->SetMapPos({ 9, 5 });
-	//EnemyUnits.push_back(NewActor);
+	NewActor = CreateActor<BattleUnit>();
+	NewActor->SetUnitCode(UnitIdentityCode::Brigand);
+	NewActor->NewWeapon(ItemCode::IronAxe);
+	NewActor->SetMapPos({ 9, 4 });
+	EnemyUnits.push_back(NewActor);
 
 	IsMove.resize(MainMap->MapScaleInt2.y);
 	for (int i = 0; i < IsMove.size(); i++)
@@ -84,9 +86,12 @@ void BattleLevel::Start()
 
 	// UI »ý¼º
 	UI_Select = CreateActor<SelectUI>();
-	UI_UnitCommand = CreateActor<UnitCommandUI>();
-	UI_UnitCommand->Off();
 	UI_Select->GetTransform()->SetWorldPosition({448, 288});
+
+	UI_UnitCommand = CreateActor<UnitCommandUI>();
+	UI_UnitCommand->GetTransform()->SetWorldPosition({ 448, 288 });
+	UI_UnitCommand->Setting(this);
+	UI_UnitCommand->Off();
 
 	CursorDirCheck();
 	ChangeState(BattleState::PlayerPhase);

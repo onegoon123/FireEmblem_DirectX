@@ -62,7 +62,8 @@ void BattleUnit::SetUnitCode(UnitIdentityCode _Code)
 		break;
 	case UnitIdentityCode::Dorcas:
 		SetName("µ¹Ä«½º");
-		UnitData.SetName("Dorcas");
+		//UnitData.SetName("Dorcas");
+		UnitData.SetName("Wallace");
 		ImageName = "Map_LynTest.png";
 		UnitData.IsPlayer = true;
 		break;

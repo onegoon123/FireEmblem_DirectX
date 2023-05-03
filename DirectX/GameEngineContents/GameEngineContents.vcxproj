@@ -180,6 +180,7 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="BattleLevel_Select.cpp" />
+    <ClCompile Include="BattleLevel_UnitCommand.cpp" />
     <ClCompile Include="BattleMap.cpp">
       <SubType>
       </SubType>
@@ -222,6 +223,10 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="TitleLevel.cpp" />
+    <ClCompile Include="UIWindow.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="Unit.cpp">
       <SubType>
       </SubType>
@@ -293,6 +298,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="TitleLevel.h" />
+    <ClInclude Include="UIWindow.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="Unit.h">
       <SubType>
       </SubType>
