@@ -37,7 +37,7 @@ void TileRender::Clear()
 		for (int x = 0; x < Renders[y].size(); x++)
 		{
 			if (true == EnemyTileValue[y][x]) { 
-				Renders[y][x]->OffFlashColor();
+				Renders[y][x]->OffLerp();
 				Renders[y][x]->SetTexture("EnemyAttackTile.png");
 				continue;
 			}
@@ -65,14 +65,14 @@ void TileRender::SetTile(const std::vector<std::vector<bool>>& _Move, const std:
 	{
 		for (int x = 0; x < Renders[y].size(); x++)
 		{
-			Renders[y][x]->OffFlashColor();
+			Renders[y][x]->OffLerp();
 			if (true == _Move[y][x])
 			{
 				Renders[y][x]->On();
 				Renders[y][x]->SetTexture("MoveTile.png");
 				if (true == EnemyTileValue[y][x])
 				{
-					Renders[y][x]->SetFlash(float4(0.3f, 0, 0.8f), 0.5f);
+					Renders[y][x]->SetLerp(float4(0.3f, 0, 0.8f), 0.5f);
 				}
 			}
 			else if (true == _Attack[y][x])
@@ -81,7 +81,7 @@ void TileRender::SetTile(const std::vector<std::vector<bool>>& _Move, const std:
 				Renders[y][x]->SetTexture("AttackTile.png");
 				if (true == EnemyTileValue[y][x])
 				{
-					Renders[y][x]->SetFlash(float4(0.3f, 0, 0.8f), 0.5f);
+					Renders[y][x]->SetLerp(float4(0.3f, 0, 0.8f), 0.5f);
 				}
 			}
 			else if (true == EnemyTileValue[y][x])
@@ -109,7 +109,7 @@ void TileRender::SetTileAttack(const std::vector<std::vector<bool>>& _Value)
 				Renders[y][x]->SetTexture("AttackTile.png");
 				if (true == EnemyTileValue[y][x])
 				{
-					Renders[y][x]->SetFlash(float4(0.3f, 0, 0.8f), 0.5f);
+					Renders[y][x]->SetLerp(float4(0.3f, 0, 0.8f), 0.5f);
 				}
 			}
 		}

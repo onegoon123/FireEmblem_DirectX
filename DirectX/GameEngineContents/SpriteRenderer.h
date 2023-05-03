@@ -26,17 +26,17 @@ public:
 	{
 		EffectDataValue.BlurLevel = _Value;
 	}
-	void SetFlash(float4 _Color, float _t)
+	void SetLerp(float4 _Color, float _t)
 	{
 		EffectDataValue.LerpColor = _Color;
 		EffectDataValue.LerpT = _t;
 	}
-	void OffFlashColor()
+	void OffLerp()
 	{
 		EffectDataValue.LerpColor = float4::Null;
 		EffectDataValue.LerpT = 0;
 	}
-	void SetFlashLevel(float _t)
+	void SetLerpT(float _t)
 	{
 		EffectDataValue.LerpT = _t;
 	}

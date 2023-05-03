@@ -8,6 +8,7 @@
 #include "SelectUI.h"
 #include "BattleUnit.h"
 #include "TileRender.h"
+#include "SpriteRenderer.h"
 const float PreesTime = 0.2f;
 bool PressOK = false;
 void BattleLevel::CursorMove()
@@ -243,6 +244,14 @@ void BattleLevel::UnitSelect()
 		{
 			// 적 유닛이라면 공격 범위 탐색
 			SelectUnit->SetIsCheckTile(!SelectUnit->GetIsCheckTile());
+			if (true == SelectUnit->GetIsCheckTile())
+			{
+				SelectUnit->GetRenderer()->SetLerp({1.0f, 0.0f, 0.5f}, 0.3f);
+			}
+			else
+			{
+				SelectUnit->GetRenderer()->OffLerp();
+			}
 			EnemyTileCheck();
 			MoveSearchForEnemy();
 			Tiles->SetTile(IsMove, IsAttack);
