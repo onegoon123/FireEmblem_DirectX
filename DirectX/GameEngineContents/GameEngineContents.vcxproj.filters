@@ -75,6 +75,9 @@
     <ClCompile Include="PhaseUI.cpp">
       <Filter>Battle\UI</Filter>
     </ClCompile>
+    <ClCompile Include="BattleAnimationLevel.cpp">
+      <Filter>Battle\System\Animation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FECore.h" />
@@ -140,6 +143,9 @@
     <ClInclude Include="PhaseUI.h">
       <Filter>Battle\UI</Filter>
     </ClInclude>
+    <ClInclude Include="BattleAnimationLevel.h">
+      <Filter>Battle\System\Animation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Object">
@@ -174,6 +180,9 @@
     </Filter>
     <Filter Include="Component">
       <UniqueIdentifier>{7d8beef9-bf1d-4335-9f1c-8b9602da55f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\System\Animation">
+      <UniqueIdentifier>{75acbddf-1fed-49e6-8ee3-3c540b8221fb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

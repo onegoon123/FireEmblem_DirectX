@@ -66,10 +66,6 @@ void GameEngineShader::ShaderResCheck()
 		{
 		case D3D_SIT_CBUFFER:
 		{
-			if (std::string("$Globals")._Equal(ResDesc.Name))
-			{
-				continue;
-			}
 			ID3D11ShaderReflectionConstantBuffer* CBufferPtr = CompileInfo->GetConstantBufferByName(ResDesc.Name);
 
 			D3D11_SHADER_BUFFER_DESC BufferDesc;

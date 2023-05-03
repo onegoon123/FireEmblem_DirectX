@@ -51,32 +51,32 @@ void BattleLevel::Start()
 	PlayerUnits.push_back(NewActor);
 
 	NewActor = CreateActor<BattleUnit>();
-	NewActor->SetUnitCode(UnitIdentityCode::Dorcas);
+	NewActor->SetUnitCode(UnitIdentityCode::Wallace);
 	NewActor->SetMapPos({ 5, 4 });
 	NewActor->NewWeapon(ItemCode::SlimLance);
 	PlayerUnits.push_back(NewActor);
 
 	NewActor = CreateActor<BattleUnit>();
 	NewActor->SetUnitCode(UnitIdentityCode::Brigand);
-	NewActor->NewWeapon(ItemCode::ManiKatti);
+	NewActor->NewWeapon(ItemCode::IronAxe);
 	NewActor->SetMapPos({ 8, 5 });
 	EnemyUnits.push_back(NewActor);
 
 	NewActor = CreateActor<BattleUnit>();
 	NewActor->SetUnitCode(UnitIdentityCode::Brigand);
-	NewActor->NewWeapon(ItemCode::ManiKatti);
+	NewActor->NewWeapon(ItemCode::IronAxe);
 	NewActor->SetMapPos({ 9, 6 });
 	EnemyUnits.push_back(NewActor);
 
 	NewActor = CreateActor<BattleUnit>();
 	NewActor->SetUnitCode(UnitIdentityCode::Brigand);
-	NewActor->NewWeapon(ItemCode::ManiKatti);
+	NewActor->NewWeapon(ItemCode::IronAxe);
 	NewActor->SetMapPos({ 9, 4 });
 	EnemyUnits.push_back(NewActor);
 
 	NewActor = CreateActor<BattleUnit>();
 	NewActor->SetUnitCode(UnitIdentityCode::Brigand);
-	NewActor->NewWeapon(ItemCode::ManiKatti);
+	NewActor->NewWeapon(ItemCode::IronAxe);
 	NewActor->SetMapPos({ 7, 4 });
 	EnemyUnits.push_back(NewActor);
 	

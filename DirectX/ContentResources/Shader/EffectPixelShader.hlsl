@@ -9,8 +9,8 @@ struct OutPut
 
 cbuffer EffectData : register(b0)
 {
-    float4 FlashColor;
-    float t;
+    float4 LerpColor;
+    float LerpT;
     float BlurLevel;
     bool IsBlur;
     bool IsGrayScale;
@@ -65,18 +65,19 @@ float4 Texture_PS(OutPut _Value) : SV_Target0
     {
         Out = DiffuseTex.Sample(CLAMPSAMPLER, _Value.UV.xy);
     }
+    
     if (true == IsGrayScale)
     {
         float GrayValue = 0.299f * Out.r + 0.587f * Out.g + 0.114f * Out.b;
         Out.rgb = float3(GrayValue, GrayValue, GrayValue);
     }
-    if (FlashColor.a != 0)
+    if (LerpColor.a != 0)
     {
         if (0 < Out.a)
         {
-            float4 ChangeColor = FlashColor;
+            float4 ChangeColor = LerpColor;
             ChangeColor.a = Out.a;
-            Out = lerp(Out, ChangeColor, t);
+            Out = lerp(Out, ChangeColor, LerpT);
         }
     }
     return Out;

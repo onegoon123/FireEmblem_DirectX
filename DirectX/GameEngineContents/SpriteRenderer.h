@@ -28,17 +28,17 @@ public:
 	}
 	void SetFlash(float4 _Color, float _t)
 	{
-		EffectDataValue.FlashColor = _Color;
-		EffectDataValue.t = _t;
+		EffectDataValue.LerpColor = _Color;
+		EffectDataValue.LerpT = _t;
 	}
 	void OffFlashColor()
 	{
-		EffectDataValue.FlashColor = float4::Null;
-		EffectDataValue.t = 0;
+		EffectDataValue.LerpColor = float4::Null;
+		EffectDataValue.LerpT = 0;
 	}
 	void SetFlashLevel(float _t)
 	{
-		EffectDataValue.t = _t;
+		EffectDataValue.LerpT = _t;
 	}
 
 	void SetLocalScale(float4 _Scale)
@@ -56,8 +56,8 @@ protected:
 private:
 	struct EffectData
 	{
-		float4 FlashColor = float4::Zero;
-		float t = 0;
+		float4 LerpColor = float4::Zero;
+		float LerpT = 0;
 		float BlurLevel = 0;
 		int IsBlur = false;
 		int IsGrayScale = false;

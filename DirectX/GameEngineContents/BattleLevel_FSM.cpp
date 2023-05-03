@@ -13,6 +13,7 @@
 #include "SpriteRenderer.h"
 #include "BattleMap.h"
 #include "PhaseUI.h"
+#include "BattleAnimationLevel.h"
 void BattleLevel::ChangeState(BattleState _State)
 {
 
@@ -385,6 +386,7 @@ void BattleLevel::BattleStart()
 {
 
 	std::list<AttackCommand> AttackDetail = UnitCommand::Attack(SelectUnit, TargetUnit);
+	BattleAnimationLevel::SetBattleData(SelectUnit, TargetUnit, AttackDetail);
 	SelectUnit->SetUnitData(Unit(AttackDetail.back().SubjectUnit));
 	TargetUnit->SetUnitData(Unit(AttackDetail.back().TargetUnit));
 
@@ -399,30 +401,6 @@ void BattleLevel::BattleStart()
 	MainMap->GetRenderer()->SetIsBlur(true);
 
 	return;
-
-	if (SelectUnit->GetIsDie())
-	{
-		bool IsAliveUnit = false;
-		for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
-		{
-			if (false == _Unit->GetIsDie())
-			{
-				IsAliveUnit = true;
-			}
-		}
-		if (false == IsAliveUnit)
-		{
-			ChangeState(BattleState::GameOver);
-			return;
-		}
-	}
-	if (AttackableUnits.front()->GetIsDie())
-	{
-		AttackableUnits.front()->Off();
-	}
-
-	ChangeState(BattleState::Select);
-	return;
 }
 
 void BattleLevel::BattleUpdate(float _DeltaTime)
@@ -432,6 +410,8 @@ void BattleLevel::BattleUpdate(float _DeltaTime)
 	if (0.5f < CloseUpTimer)
 	{
 		CloseUpTimer = 0;
+
+		SelectUnit->SetIsTurnEnd(true);
 		if (SelectUnit->GetIsDie())
 		{
 			SelectUnit->Off();
@@ -479,13 +459,12 @@ void BattleLevel::BattleEnd()
 		_Unit->GetRenderer()->SetIsBlur(false);
 	}
 	MainMap->GetRenderer()->SetIsBlur(false);
-	SelectUnit->SetIsTurnEnd(true);
-	if (SelectUnit->GetIsDie())
-	{
-		SelectUnit->Off();
-		SelectUnit = nullptr;
-	}
 
+	if (TargetUnit->GetIsDie())
+	{
+		TargetUnit->Off();
+		TargetUnit = nullptr;
+	}
 }
 
 void BattleLevel::EnemyPhaseStart()

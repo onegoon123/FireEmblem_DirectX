@@ -51,7 +51,7 @@ void PhaseUI::Start()
 
 void PhaseUI::Update(float _DeltaTiime)
 {
-	Timer += _DeltaTiime;
+	Timer += _DeltaTiime * 2;
 	Renderer->GetTransform()->SetLocalPosition(float4::LerpClamp({1316, 0}, { 0,0 }, Timer));
 }
 
