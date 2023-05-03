@@ -12,6 +12,7 @@
 #include "ContentsEnum.h"
 #include "SelectUI.h"
 #include "UnitCommandUI.h"
+#include "PhaseUI.h"
 
 BattleLevel::BattleLevel()
 {
@@ -52,27 +53,33 @@ void BattleLevel::Start()
 	NewActor = CreateActor<BattleUnit>();
 	NewActor->SetUnitCode(UnitIdentityCode::Dorcas);
 	NewActor->SetMapPos({ 5, 4 });
-	NewActor->NewWeapon(ItemCode::IronSword);
+	NewActor->NewWeapon(ItemCode::SlimLance);
 	PlayerUnits.push_back(NewActor);
 
 	NewActor = CreateActor<BattleUnit>();
 	NewActor->SetUnitCode(UnitIdentityCode::Brigand);
-	NewActor->NewWeapon(ItemCode::IronAxe);
+	NewActor->NewWeapon(ItemCode::ManiKatti);
 	NewActor->SetMapPos({ 8, 5 });
 	EnemyUnits.push_back(NewActor);
 
 	NewActor = CreateActor<BattleUnit>();
 	NewActor->SetUnitCode(UnitIdentityCode::Brigand);
-	NewActor->NewWeapon(ItemCode::IronAxe);
+	NewActor->NewWeapon(ItemCode::ManiKatti);
 	NewActor->SetMapPos({ 9, 6 });
 	EnemyUnits.push_back(NewActor);
 
 	NewActor = CreateActor<BattleUnit>();
 	NewActor->SetUnitCode(UnitIdentityCode::Brigand);
-	NewActor->NewWeapon(ItemCode::IronAxe);
+	NewActor->NewWeapon(ItemCode::ManiKatti);
 	NewActor->SetMapPos({ 9, 4 });
 	EnemyUnits.push_back(NewActor);
 
+	NewActor = CreateActor<BattleUnit>();
+	NewActor->SetUnitCode(UnitIdentityCode::Brigand);
+	NewActor->NewWeapon(ItemCode::ManiKatti);
+	NewActor->SetMapPos({ 7, 4 });
+	EnemyUnits.push_back(NewActor);
+	
 	IsMove.resize(MainMap->MapScaleInt2.y);
 	for (int i = 0; i < IsMove.size(); i++)
 	{
@@ -87,11 +94,15 @@ void BattleLevel::Start()
 	// UI »ý¼º
 	UI_Select = CreateActor<SelectUI>();
 	UI_Select->GetTransform()->SetWorldPosition({448, 288});
+	UI_Select->UIOff();
 
 	UI_UnitCommand = CreateActor<UnitCommandUI>();
 	UI_UnitCommand->GetTransform()->SetWorldPosition({ 448, 288 });
 	UI_UnitCommand->Setting(this);
 	UI_UnitCommand->Off();
+
+	UI_Phase = CreateActor<PhaseUI>();
+	UI_Phase->GetTransform()->SetWorldPosition({ 448, 288 });
 
 	CursorDirCheck();
 	ChangeState(BattleState::PlayerPhase);

@@ -10,6 +10,7 @@ class TileRender;
 class ArrowRender;
 class SelectUI;
 class UnitCommandUI;
+class PhaseUI;
 class BattleLevel : public GameEngineLevel
 {
 public:
@@ -74,6 +75,7 @@ private:
 	// UI
 	std::shared_ptr <SelectUI> UI_Select = nullptr;
 	std::shared_ptr <UnitCommandUI> UI_UnitCommand = nullptr;
+	std::shared_ptr <PhaseUI> UI_Phase = nullptr;
 
 	const float MoveSpeed = 10;
 	float MoveTimer = 0;

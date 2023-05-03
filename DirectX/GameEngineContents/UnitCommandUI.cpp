@@ -16,6 +16,7 @@ UnitCommandUI::~UnitCommandUI()
 void UnitCommandUI::Setting(BattleLevel* _Level)
 {
 	LevelPtr = _Level;
+	CancelFunction = std::bind(&BattleLevel::UnitCommand_Cancel, LevelPtr);
 }
 
 void UnitCommandUI::SetCommand(bool _IsAttackable, bool _IsCloseUnit)
@@ -83,7 +84,12 @@ void UnitCommandUI::Update(float _DeltaTime)
 		CommandFunctions.resize(0);
 		return;
 	}
-
+	if (GameEngineInput::IsDown("ButtonB"))
+	{
+		CancelFunction();
+		CommandFunctions.resize(0);
+		return;
+	}
 
 
 	if (PreesTime < GameEngineInput::GetPressTime("Up") || PreesTime < GameEngineInput::GetPressTime("Down"))

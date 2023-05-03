@@ -12,6 +12,7 @@
 #include <GameEngineCore/GameEngineCamera.h>
 #include "SpriteRenderer.h"
 #include "BattleMap.h"
+#include "PhaseUI.h"
 void BattleLevel::ChangeState(BattleState _State)
 {
 
@@ -100,12 +101,15 @@ void BattleLevel::PlayerPhaseStart()
 		if (true == _Unit->GetIsDie()) { continue; }
 		_Unit->SetIsTurnEnd(false);
 	}
-
-	ChangeState(BattleState::Select);
+	UI_Phase->PhaseOn(Faction::Player);
 }
 
 void BattleLevel::PlayerPhaseUpdate(float _DeltaTime)
 {
+	if (true == UI_Phase->PhaseUIEnd())
+	{
+		ChangeState(BattleState::Select);
+	}
 }
 
 void BattleLevel::PlayerPhaseEnd()
@@ -379,14 +383,109 @@ void BattleLevel::FieldCommandEnd()
 
 void BattleLevel::BattleStart()
 {
+
+	std::list<AttackCommand> AttackDetail = UnitCommand::Attack(SelectUnit, TargetUnit);
+	SelectUnit->SetUnitData(Unit(AttackDetail.back().SubjectUnit));
+	TargetUnit->SetUnitData(Unit(AttackDetail.back().TargetUnit));
+
+	for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
+	{
+		_Unit->GetRenderer()->SetIsBlur(true);
+	}
+	for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
+	{
+		_Unit->GetRenderer()->SetIsBlur(true);
+	}
+	MainMap->GetRenderer()->SetIsBlur(true);
+
+	return;
+
+	if (SelectUnit->GetIsDie())
+	{
+		bool IsAliveUnit = false;
+		for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
+		{
+			if (false == _Unit->GetIsDie())
+			{
+				IsAliveUnit = true;
+			}
+		}
+		if (false == IsAliveUnit)
+		{
+			ChangeState(BattleState::GameOver);
+			return;
+		}
+	}
+	if (AttackableUnits.front()->GetIsDie())
+	{
+		AttackableUnits.front()->Off();
+	}
+
+	ChangeState(BattleState::Select);
+	return;
 }
 
 void BattleLevel::BattleUpdate(float _DeltaTime)
 {
+	static float CloseUpTimer = 0;
+	CloseUpTimer += _DeltaTime;
+	if (0.5f < CloseUpTimer)
+	{
+		CloseUpTimer = 0;
+		if (SelectUnit->GetIsDie())
+		{
+			SelectUnit->Off();
+			SelectUnit = nullptr;
+
+			bool IsAliveUnit = false;
+			for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
+			{
+				if (false == _Unit->GetIsDie())
+				{
+					IsAliveUnit = true;
+				}
+			}
+			if (false == IsAliveUnit)
+			{
+				ChangeState(BattleState::GameOver);
+				return;
+			}
+		}
+		ChangeState(BattleState::Select);
+		return;
+	}
+
+	for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
+	{
+		_Unit->GetRenderer()->SetBlurLevel(CloseUpTimer * 5);
+	}
+	for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
+	{
+		_Unit->GetRenderer()->SetBlurLevel(CloseUpTimer * 5);
+	}
+	MainMap->GetRenderer()->SetBlurLevel(CloseUpTimer * 5);
+	GetMainCamera()->GetTransform()->SetWorldPosition(float4::LerpClamp(GetMainCamera()->GetTransform()->GetWorldPosition(), TargetUnit->GetTransform()->GetWorldPosition(), _DeltaTime * 5));
 }
 
 void BattleLevel::BattleEnd()
 {
+	GetMainCamera()->GetTransform()->SetWorldPosition({ 448, 288, -554.0f });
+	for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
+	{
+		_Unit->GetRenderer()->SetIsBlur(false);
+	}
+	for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
+	{
+		_Unit->GetRenderer()->SetIsBlur(false);
+	}
+	MainMap->GetRenderer()->SetIsBlur(false);
+	SelectUnit->SetIsTurnEnd(true);
+	if (SelectUnit->GetIsDie())
+	{
+		SelectUnit->Off();
+		SelectUnit = nullptr;
+	}
+
 }
 
 void BattleLevel::EnemyPhaseStart()
@@ -398,11 +497,16 @@ void BattleLevel::EnemyPhaseStart()
 	}
 	MainCursor->Off();
 	Tiles->EnemyTileClear();
-	ChangeState(BattleState::EnemySelect);
+	
+	UI_Phase->PhaseOn(Faction::Enemy);
 }
 
 void BattleLevel::EnemyPhaseUpdate(float _DeltaTime)
 {
+	if (true == UI_Phase->PhaseUIEnd())
+	{
+		ChangeState(BattleState::EnemySelect);
+	}
 }
 
 void BattleLevel::EnemyPhaseEnd()
@@ -571,7 +675,7 @@ void BattleLevel::EnemyBattleUpdate(float _DeltaTime)
 		ChangeState(BattleState::EnemySelect);
 		return;
 	}
-	
+
 	for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
 	{
 		_Unit->GetRenderer()->SetBlurLevel(CloseUpTimer * 5);
@@ -602,7 +706,7 @@ void BattleLevel::EnemyBattleEnd()
 		SelectUnit->Off();
 		SelectUnit = nullptr;
 	}
-	
+
 }
 
 static std::list<UnitCommand> Command;
@@ -624,7 +728,7 @@ void BattleLevel::GameOverUpdate(float _DeltaTime)
 	{
 		Timer = 0;
 
-		
+
 		if (RIter != RIterEnd)
 		{
 			switch (RIter->TypeValue)
@@ -656,7 +760,7 @@ void BattleLevel::GameOverUpdate(float _DeltaTime)
 					}
 				}
 			}
-				break;
+			break;
 			case CommandType::Item:
 				break;
 			case CommandType::Wait:
@@ -678,7 +782,7 @@ void BattleLevel::GameOverUpdate(float _DeltaTime)
 					}
 				}
 			}
-				break;
+			break;
 			default:
 				break;
 			}

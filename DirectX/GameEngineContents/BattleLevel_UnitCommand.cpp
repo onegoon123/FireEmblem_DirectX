@@ -18,6 +18,10 @@ void BattleLevel::UnitCommand_Wait()
 
 void BattleLevel::UnitCommand_Attack()
 {
+	TargetUnit = AttackableUnits.front();
+	ChangeState(BattleState::Battle);
+	return;
+
 	std::list<AttackCommand> AttackDetail = UnitCommand::Attack(SelectUnit, AttackableUnits.front());
 	SelectUnit->SetUnitData(Unit(AttackDetail.back().SubjectUnit));
 	AttackableUnits.front()->SetUnitData(Unit(AttackDetail.back().TargetUnit));
