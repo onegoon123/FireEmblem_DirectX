@@ -23,7 +23,7 @@ void BattleLevel::CursorMove()
 		IsMouseOn = true;
 		float4 MousePos = GameEngineInput::GetMousePosition();
 		float4 MouseLocalPos = float4(MousePos.x, 640 - MousePos.y);
-		int2 MouseMapPos = int2::Float4ToInt2(MouseLocalPos * 0.015625f);
+		int2 MouseMapPos = int2::Float4ToInt2(MouseLocalPos * 0.015625f);		// 64 나누기
 		MainCursor->SetMapPos(MouseMapPos);
 		CursorDirCheck();	// 커서의 방향(정중앙 기준) 체크
 		CursorUnitSelect();
@@ -144,8 +144,6 @@ void BattleLevel::CursorAndArrowMove()
 		float4 MouseLocalPos = float4(MousePos.x, 640 - MousePos.y);
 		int2 MouseMapPos = int2::Float4ToInt2(MouseLocalPos * 0.015625f);
 		MainCursor->SetMapPos(MouseMapPos);
-		CursorDirCheck();	// 커서의 방향(정중앙 기준) 체크
-		CursorUnitSelect();
 		return;
 	}
 
@@ -238,6 +236,7 @@ void BattleLevel::CursorMoveMouse()
 		int2 MovePos = MouseMapPos - CursorPos;
 		MainCursor->MoveMapPosLerp(MovePos.Normalize());
 		CursorUnitSelect();
+		CursorDirCheck();
 	}
 	
 
@@ -268,6 +267,7 @@ void BattleLevel::CursorAndArrowMoveMouse()
 		int2 MovePos = MouseMapPos - CursorPos;
 		MainCursor->MoveMapPosLerp(MovePos.Normalize());
 		AddArrow(MainCursor->GetMapPos());
+		CursorDirCheck();
 	}
 }
 
@@ -313,6 +313,8 @@ void BattleLevel::UnitSelect()
 {
 	// 확인버튼 입력시에만
 	if (GameEngineInput::IsDown("ButtonA") || GameEngineInput::IsUp("LeftClick")) {
+
+		if (true == IsMapOut(MainCursor->GetMapPos())) { return; }
 
 		// 선택한 곳에 유닛이 없다면
 		if (nullptr == SelectUnit)

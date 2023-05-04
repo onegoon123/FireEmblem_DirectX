@@ -1,19 +1,21 @@
 #include "PrecompileHeader.h"
 #include "BattleLevel.h"
 #include <GameEnginePlatform/GameEngineInput.h>
-#include "MapCursor.h"
+#include <GameEngineCore/GameEngineCore.h>
+#include <GameEngineCore/GameEngineCamera.h>
+#include "FERandom.h"
+#include "BattleAnimationLevel.h"
+#include "SpriteRenderer.h"
 #include "BattleUnit.h"
-#include "ArrowRender.h"
+#include "BattleMap.h"
+#include "MapCursor.h"
 #include "TileRender.h"
+#include "ArrowRender.h"
+#include "UnitCommand.h"
 #include "SelectUI.h"
 #include "UnitCommandUI.h"
-#include "UnitCommand.h"
-#include "FERandom.h"
-#include <GameEngineCore/GameEngineCamera.h>
-#include "SpriteRenderer.h"
-#include "BattleMap.h"
 #include "PhaseUI.h"
-#include "BattleAnimationLevel.h"
+
 void BattleLevel::ChangeState(BattleState _State)
 {
 
@@ -431,6 +433,7 @@ void BattleLevel::BattleUpdate(float _DeltaTime)
 	CloseUpTimer += _DeltaTime;
 	if (0.5f < CloseUpTimer)
 	{
+		GameEngineCore::ChangeLevel("BattleAnimationLevel");
 		CloseUpTimer = 0;
 
 		SelectUnit->SetIsTurnEnd(true);
@@ -653,6 +656,7 @@ void BattleLevel::EnemyBattleUpdate(float _DeltaTime)
 	CloseUpTimer += _DeltaTime;
 	if (0.5f < CloseUpTimer)
 	{
+		GameEngineCore::ChangeLevel("BattleAnimationLevel");
 		CloseUpTimer = 0;
 		if (TargetUnit->GetIsDie())
 		{

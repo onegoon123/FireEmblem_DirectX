@@ -78,6 +78,12 @@
     <ClCompile Include="BattleAnimationLevel.cpp">
       <Filter>Battle\System\Animation</Filter>
     </ClCompile>
+    <ClCompile Include="DebugWindow.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="BattleLevel_Battle.cpp">
+      <Filter>Battle\System</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FECore.h" />
@@ -146,6 +152,9 @@
     <ClInclude Include="BattleAnimationLevel.h">
       <Filter>Battle\System\Animation</Filter>
     </ClInclude>
+    <ClInclude Include="DebugWindow.h">
+      <Filter>UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Object">
@@ -183,6 +192,9 @@
     </Filter>
     <Filter Include="Battle\System\Animation">
       <UniqueIdentifier>{75acbddf-1fed-49e6-8ee3-3c540b8221fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI">
+      <UniqueIdentifier>{5390e7d9-1648-4336-8256-76abc8484a4c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

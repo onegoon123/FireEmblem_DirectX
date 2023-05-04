@@ -175,6 +175,7 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="BattleLevel_Battle.cpp" />
     <ClCompile Include="BattleLevel_FSM.cpp">
       <SubType>
       </SubType>
@@ -190,6 +191,10 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="BattleUnit.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="DebugWindow.cpp">
       <SubType>
       </SubType>
     </ClCompile>
@@ -278,6 +283,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="ContentsEnum.h" />
+    <ClInclude Include="DebugWindow.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="FECore.h" />
     <ClInclude Include="FERandom.h">
       <SubType>

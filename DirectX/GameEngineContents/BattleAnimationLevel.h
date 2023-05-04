@@ -3,6 +3,7 @@
 #include "UnitCommand.h"
 
 // Ό³Έν :
+class SpriteRenderer;
 class BattleAnimationLevel : public GameEngineLevel
 {
 public:
@@ -27,5 +28,13 @@ private:
 	static std::shared_ptr<BattleUnit> SubjectUnit;
 	static std::shared_ptr<BattleUnit> TargetUnit;
 	static std::list<AttackCommand> BattleData;
+
+	std::shared_ptr<SpriteRenderer> BackgroundRender;
+	std::shared_ptr<SpriteRenderer> TerrainLeft;
+	std::shared_ptr<SpriteRenderer> TerrainRight;
+	std::shared_ptr<SpriteRenderer> UnitLeft;
+	std::shared_ptr<SpriteRenderer> UnitRight;
+	std::shared_ptr<SpriteRenderer> UIRender;
+
 };
 

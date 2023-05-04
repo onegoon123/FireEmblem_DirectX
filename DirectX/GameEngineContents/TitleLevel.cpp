@@ -6,7 +6,7 @@
 #include <GameEngineCore/GameEngineCamera.h>
 #include <GameEngineCore/GameEngineCore.h>
 
-#include <GameEngineCore/GameEngineCoreWindow.h>
+#include "DebugWindow.h"
 TitleLevel::TitleLevel()
 {
 }
@@ -62,7 +62,7 @@ void TitleLevel::Start()
 	TitleRender->GetTransform()->SetWorldScale({ 960, 640 });
 
 
-	std::shared_ptr<GameEngineCoreWindow> Window = GameEngineGUI::FindGUIWindowConvert<GameEngineCoreWindow>("CoreWindow");
+	std::shared_ptr<DebugWindow> Window = GameEngineGUI::FindGUIWindowConvert<DebugWindow>("DebugWindow");
 	{
 		if (nullptr == Window)
 		{
@@ -75,7 +75,6 @@ void TitleLevel::Start()
 		};
 		Window->Test = Function;
 
-		// std::shared_ptr<Player> Object = CreateActor<Player>(0);
 	}
 }
 
