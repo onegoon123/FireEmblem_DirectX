@@ -4,9 +4,11 @@
 #include <GameEngineCore/GameEngineResource.h>
 #include <GameEngineCore/GameEngineRenderingPipeLine.h>
 #include <GameEngineCore/GameEnginePixelShader.h>
+#include <GameEngineCore/GameEngineCoreWindow.h>
 #include "TitleLevel.h"
 #include "BattleLevel.h"
 #include "FERandom.h"
+
 FECore::FECore()
 {
 }
@@ -18,6 +20,8 @@ FECore::~FECore()
 void FECore::GameStart()
 {
 	new int();
+
+	GameEngineGUI::GUIWindowCreate<GameEngineCoreWindow>("CoreWindow");
 
 	ResourcesCreate();
 	FERandom::SetSeed(0);

@@ -100,25 +100,31 @@
       <Filter>Resources\RenderingSetting</Filter>
     </ClCompile>
     <ClCompile Include="imgui_tables.cpp">
-      <Filter>ThirdParty\ImGui</Filter>
+      <Filter>UI\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="imgui_widgets.cpp">
-      <Filter>ThirdParty\ImGui</Filter>
+      <Filter>UI\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="imgui.cpp">
-      <Filter>ThirdParty\ImGui</Filter>
+      <Filter>UI\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="imgui_demo.cpp">
-      <Filter>ThirdParty\ImGui</Filter>
+      <Filter>UI\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="imgui_draw.cpp">
-      <Filter>ThirdParty\ImGui</Filter>
+      <Filter>UI\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="imgui_impl_dx11.cpp">
-      <Filter>ThirdParty\ImGui</Filter>
+      <Filter>UI\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="imgui_impl_win32.cpp">
-      <Filter>ThirdParty\ImGui</Filter>
+      <Filter>UI\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineGUI.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineCoreWindow.cpp">
+      <Filter>UI\SubWindow</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -222,28 +228,34 @@
       <Filter>Resources\RenderingSetting</Filter>
     </ClInclude>
     <ClInclude Include="imgui_internal.h">
-      <Filter>ThirdParty\ImGui</Filter>
+      <Filter>UI\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="imstb_rectpack.h">
-      <Filter>ThirdParty\ImGui</Filter>
+      <Filter>UI\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="imstb_textedit.h">
-      <Filter>ThirdParty\ImGui</Filter>
+      <Filter>UI\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="imstb_truetype.h">
-      <Filter>ThirdParty\ImGui</Filter>
+      <Filter>UI\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="imconfig.h">
-      <Filter>ThirdParty\ImGui</Filter>
+      <Filter>UI\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="imgui.h">
-      <Filter>ThirdParty\ImGui</Filter>
+      <Filter>UI\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="imgui_impl_dx11.h">
-      <Filter>ThirdParty\ImGui</Filter>
+      <Filter>UI\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="imgui_impl_win32.h">
-      <Filter>ThirdParty\ImGui</Filter>
+      <Filter>UI\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineGUI.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineCoreWindow.h">
+      <Filter>UI\SubWindow</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -298,8 +310,14 @@
     <Filter Include="Object\Rendering\Component\2D">
       <UniqueIdentifier>{4cce38b6-0725-4481-8550-4d033442844a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ThirdParty\ImGui">
+    <Filter Include="UI">
+      <UniqueIdentifier>{25806164-7d0f-438a-935d-2517399ea5f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\ImGui">
       <UniqueIdentifier>{ca3ba55c-a8bd-4bf4-a650-b749d6b3fbc9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\SubWindow">
+      <UniqueIdentifier>{8b0c3fc0-e94b-47fd-bfdc-688f3082b8d6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

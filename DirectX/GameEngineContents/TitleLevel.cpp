@@ -5,6 +5,8 @@
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include <GameEngineCore/GameEngineCamera.h>
 #include <GameEngineCore/GameEngineCore.h>
+
+#include <GameEngineCore/GameEngineCoreWindow.h>
 TitleLevel::TitleLevel()
 {
 }
@@ -56,6 +58,23 @@ void TitleLevel::Start()
 	std::shared_ptr<GameEngineSpriteRenderer> TitleRender = TitleActor->CreateComponent<GameEngineSpriteRenderer>();
 	TitleRender->SetTexture("TitleImage.png");
 	TitleRender->GetTransform()->SetWorldScale({ 960, 640 });
+
+
+	std::shared_ptr<GameEngineCoreWindow> Window = GameEngineGUI::FindGUIWindowConvert<GameEngineCoreWindow>("CoreWindow");
+	{
+		if (nullptr == Window)
+		{
+			MsgAssert("윈도우 테스트 코드 미작동");
+		}
+
+		std::function<void()> Function;
+		Function = []() {
+			MsgTextBox("버튼누름");
+		};
+		Window->Test = Function;
+
+		// std::shared_ptr<Player> Object = CreateActor<Player>(0);
+	}
 }
 
 void TitleLevel::Update(float _DeltaTime)

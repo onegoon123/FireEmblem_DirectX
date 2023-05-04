@@ -120,7 +120,7 @@ void GameEngineCamera::Update(float _DeltaTime)
 
 		if (true == GameEngineInput::IsPress("CamRot"))
 		{
-			float4 Dir = GameEngineInput::GetMouseDirection() * 0.1f;
+			float4 Dir = GameEngineInput::GetMouseDirectionNormal();
 
 			float4 RotMouseDir;
 			RotMouseDir.x = Dir.y;
@@ -130,6 +130,18 @@ void GameEngineCamera::Update(float _DeltaTime)
 		}
 
 	}
+
+}
+
+
+void GameEngineCamera::Setting()
+{
+	// 랜더타겟 1개1개마다 뷰포트를 세팅해줄수 있다.
+	GameEngineDevice::GetContext()->RSSetViewports(1, &ViewPortData);
+}
+
+void GameEngineCamera::Render(float _DeltaTime)
+{
 
 
 	// 뷰행렬을 만들기 위해서는 이 2개의 행렬이 필요하다.
@@ -157,11 +169,4 @@ void GameEngineCamera::Update(float _DeltaTime)
 	}
 
 	ViewPort.ViewPort(GameEngineWindow::GetScreenSize().x, GameEngineWindow::GetScreenSize().y, 0.0f, 0.0f);
-}
-
-
-void GameEngineCamera::Setting()
-{
-	// 랜더타겟 1개1개마다 뷰포트를 세팅해줄수 있다.
-	GameEngineDevice::GetContext()->RSSetViewports(1, &ViewPortData);
 }

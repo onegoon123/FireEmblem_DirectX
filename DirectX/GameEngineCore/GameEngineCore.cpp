@@ -7,6 +7,7 @@
 #include <GameEnginePlatform\GameEngineInput.h>
 #include <GameEngineBase\GameEngineTime.h>
 #include "GameEngineDevice.h"
+#include "GameEngineGUI.h"
 
 std::map<std::string, std::shared_ptr<GameEngineLevel>> GameEngineCore::LevelMap;
 std::shared_ptr<GameEngineLevel> GameEngineCore::MainLevel = nullptr;
@@ -28,6 +29,8 @@ void GameEngineCore::EngineStart(std::function<void()> _ContentsStart)
 	GameEngineDevice::Initialize();
 
 	CoreResourcesInit();
+
+	GameEngineGUI::Initialize();
 
 	if (nullptr == _ContentsStart)
 	{
@@ -92,9 +95,14 @@ void GameEngineCore::EngineEnd(std::function<void()> _ContentsEnd)
 
 	_ContentsEnd();
 
+	GameEngineGUI::Release();
+
 	LevelMap.clear();
 	CoreResourcesEnd();
+
+
 	GameEngineDevice::Release();
+	GameEngineWindow::Release();
 }
 
 void GameEngineCore::Start(HINSTANCE _instance, std::function<void()> _Start, std::function<void()> _End, float4 _Pos, float4 _Size)
