@@ -48,10 +48,13 @@ private:
 		EnemyBattle,		// 적이 공격
 
 		GameOver,			// 게임 오버
+		TimeStone,			// 시간석 사용
 	};
 	BattleState CurState = BattleState::None;	// 스태이트
-	void (BattleLevel::* StateUpdate)(float) = nullptr;		// 스테이트 업데이트
-	void (BattleLevel::* StateEnd)() = nullptr;		// 스테이트 엔드
+	std::function<void(float)> StateUpdate = nullptr;
+	std::function<void()> StateEnd = nullptr;
+	//void (BattleLevel::* StateUpdate)(float) = nullptr;		// 스테이트 업데이트
+	//void (BattleLevel::* StateEnd)() = nullptr;		// 스테이트 엔드
 
 	// Actor
 	std::shared_ptr<BattleMap> MainMap = nullptr;
@@ -138,6 +141,9 @@ private:
 	void GameOverUpdate(float _DeltaTime);
 	void GameOverEnd();
 
+	void TimeStoneStart();
+	void TimeStoneUpdate(float _DeltaTime);
+	void TimeStoneEnd();
 #pragma endregion
 
 

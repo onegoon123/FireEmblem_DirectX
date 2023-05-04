@@ -21,72 +21,76 @@ void BattleLevel::ChangeState(BattleState _State)
 
 	if (CurState != BattleState::None)
 	{
-		(this->*StateEnd)();
+		StateEnd();
 	}
 	CurState = _State;
 
 	switch (_State)
 	{
 	case BattleLevel::BattleState::PlayerPhase:
-		StateUpdate = &BattleLevel::PlayerPhaseUpdate;
-		StateEnd = &BattleLevel::PlayerPhaseEnd;
+		StateUpdate = std::bind(&BattleLevel::PlayerPhaseUpdate, this, std::placeholders::_1);
+		StateEnd = std::bind(& BattleLevel::PlayerPhaseEnd, this);
 		PlayerPhaseStart();
 		break;
 	case BattleLevel::BattleState::Select:
-		StateUpdate = &BattleLevel::SelectUpdate;
-		StateEnd = &BattleLevel::SelectEnd;
+		StateUpdate = std::bind(&BattleLevel::SelectUpdate, this, std::placeholders::_1);
+		StateEnd = std::bind(&BattleLevel::SelectEnd, this);
 		SelectStart();
 		break;
 	case BattleLevel::BattleState::Move:
-		StateUpdate = &BattleLevel::MoveUpdate;
-		StateEnd = &BattleLevel::MoveEnd;
+		StateUpdate = std::bind(&BattleLevel::MoveUpdate, this, std::placeholders::_1);
+		StateEnd = std::bind(&BattleLevel::MoveEnd, this);
 		MoveStart();
 		break;
 	case BattleLevel::BattleState::MoveWait:
-		StateUpdate = &BattleLevel::MoveWaitUpdate;
-		StateEnd = &BattleLevel::MoveWaitEnd;
+		StateUpdate = std::bind(&BattleLevel::MoveWaitUpdate, this, std::placeholders::_1);
+		StateEnd = std::bind(&BattleLevel::MoveWaitEnd, this);
 		MoveWaitStart();
 		break;
 	case BattleLevel::BattleState::UnitCommand:
-		StateUpdate = &BattleLevel::UnitCommandUpdate;
-		StateEnd = &BattleLevel::UnitCommandEnd;
+		StateUpdate = std::bind(&BattleLevel::UnitCommandUpdate, this, std::placeholders::_1);
+		StateEnd = std::bind(&BattleLevel::UnitCommandEnd, this);
 		UnitCommandStart();
 		break;
 	case BattleLevel::BattleState::FieldCommand:
-		StateUpdate = &BattleLevel::FieldCommandUpdate;
-		StateEnd = &BattleLevel::FieldCommandEnd;
+		StateUpdate = std::bind(&BattleLevel::FieldCommandUpdate, this, std::placeholders::_1);
+		StateEnd = std::bind(&BattleLevel::FieldCommandEnd, this);
 		FieldCommandStart();
 		break;
 	case BattleLevel::BattleState::Battle:
-		StateUpdate = &BattleLevel::BattleUpdate;
-		StateEnd = &BattleLevel::BattleEnd;
+		StateUpdate = std::bind(&BattleLevel::BattleUpdate, this, std::placeholders::_1);
+		StateEnd = std::bind(&BattleLevel::BattleEnd, this);
 		BattleStart();
 		break;
 	case BattleLevel::BattleState::EnemyPhase:
-		StateUpdate = &BattleLevel::EnemyPhaseUpdate;
-		StateEnd = &BattleLevel::EnemyPhaseEnd;
+		StateUpdate = std::bind(&BattleLevel::EnemyPhaseUpdate, this, std::placeholders::_1);
+		StateEnd = std::bind(&BattleLevel::EnemyPhaseEnd, this);
 		EnemyPhaseStart();
 		break;
 	case BattleLevel::BattleState::EnemySelect:
-		StateUpdate = &BattleLevel::EnemySelectUpdate;
-		StateEnd = &BattleLevel::EnemySelectEnd;
+		StateUpdate = std::bind(&BattleLevel::EnemySelectUpdate, this, std::placeholders::_1);
+		StateEnd = std::bind(&BattleLevel::EnemySelectEnd, this);
 		EnemySelectStart();
 		break;
 	case BattleLevel::BattleState::EnemyMove:
-		StateUpdate = &BattleLevel::EnemyMoveUpdate;
-		StateEnd = &BattleLevel::EnemyMoveEnd;
+		StateUpdate = std::bind(&BattleLevel::EnemyMoveUpdate, this, std::placeholders::_1);
+		StateEnd = std::bind(&BattleLevel::EnemyMoveEnd, this);
 		EnemyMoveStart();
 		break;
 	case BattleLevel::BattleState::EnemyBattle:
-		StateUpdate = &BattleLevel::EnemyBattleUpdate;
-		StateEnd = &BattleLevel::EnemyBattleEnd;
+		StateUpdate = std::bind(&BattleLevel::EnemyBattleUpdate, this, std::placeholders::_1);
+		StateEnd = std::bind(&BattleLevel::EnemyBattleEnd, this);
 		EnemyBattleStart();
 		break;
 	case BattleLevel::BattleState::GameOver:
-		StateUpdate = &BattleLevel::GameOverUpdate;
-		StateEnd = &BattleLevel::GameOverEnd;
+		StateUpdate = std::bind(&BattleLevel::GameOverUpdate, this, std::placeholders::_1);
+		StateEnd = std::bind(&BattleLevel::GameOverEnd, this);
 		GameOverStart();
 		break;
+	case BattleState::TimeStone:
+		StateUpdate = std::bind(&BattleLevel::TimeStoneUpdate, this, std::placeholders::_1);
+		StateEnd = std::bind(&BattleLevel::TimeStoneEnd, this);
+		TimeStoneStart();
 	default:
 	{
 		MsgAssert("아직 지정하지 않은 State 입니다");
@@ -828,5 +832,17 @@ void BattleLevel::GameOverUpdate(float _DeltaTime)
 }
 
 void BattleLevel::GameOverEnd()
+{
+}
+
+void BattleLevel::TimeStoneStart()
+{
+}
+
+void BattleLevel::TimeStoneUpdate(float _DeltaTime)
+{
+}
+
+void BattleLevel::TimeStoneEnd()
 {
 }

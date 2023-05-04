@@ -1,9 +1,9 @@
 #include "PrecompileHeader.h"	
+#include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEngineCore/GameEngineCore.h>
 #include <GameEngineCore/GameEngineCamera.h>
 #include "BattleAnimationLevel.h"
 #include "SpriteRenderer.h"
-
 std::shared_ptr<BattleUnit> BattleAnimationLevel::SubjectUnit = nullptr;
 std::shared_ptr<BattleUnit> BattleAnimationLevel::TargetUnit = nullptr;
 std::list<AttackCommand> BattleAnimationLevel::BattleData = std::list<AttackCommand>();
@@ -60,8 +60,13 @@ void BattleAnimationLevel::Start()
 
 void BattleAnimationLevel::Update(float _DeltaTime)
 {
+	if (GameEngineInput::IsDown("ButtonB") || GameEngineInput::IsDown("Start"))
+	{
+		GameEngineCore::ChangeLevel("BattleLevel");
+		return;
+	}
 	Timer += _DeltaTime;
-	if (1.1f < Timer)
+	if (1.5f < Timer)
 	{
 		GameEngineCore::ChangeLevel("BattleLevel");
 	}

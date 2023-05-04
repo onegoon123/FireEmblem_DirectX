@@ -16,8 +16,8 @@
 
 BattleLevel::BattleLevel()
 {
-	StateUpdate = &BattleLevel::PlayerPhaseUpdate;
-	StateEnd = &BattleLevel::PlayerPhaseEnd;
+	StateUpdate = std::bind(&BattleLevel::PlayerPhaseUpdate, this, std::placeholders::_1);
+	StateEnd = std::bind(&BattleLevel::PlayerPhaseEnd, this);
 
 	ArrowPos.reserve(8);
 
@@ -58,7 +58,7 @@ void BattleLevel::Start()
 
 	NewActor = CreateActor<BattleUnit>();
 	NewActor->SetUnitCode(UnitIdentityCode::Wallace);
-	NewActor->SetMapPos({ 4, 3 });
+	NewActor->SetMapPos({ 6, 5 });
 	NewActor->NewWeapon(ItemCode::IronLance);
 	PlayerUnits.push_back(NewActor);
 
@@ -71,20 +71,19 @@ void BattleLevel::Start()
 	NewActor = CreateActor<BattleUnit>();
 	NewActor->SetUnitCode(UnitIdentityCode::Brigand);
 	NewActor->GetUnitData().LevelUp(10);
-	NewActor->NewWeapon(ItemCode::IronAxe); 
+	NewActor->NewWeapon(ItemCode::SteelSword); 
 	NewActor->SetMapPos({ 8, 5 });
 	EnemyUnits.push_back(NewActor);
 
 	NewActor = CreateActor<BattleUnit>();
 	NewActor->SetUnitCode(UnitIdentityCode::Brigand);
 	NewActor->GetUnitData().LevelUp(10);
-	NewActor->NewWeapon(ItemCode::IronAxe);
+	NewActor->NewWeapon(ItemCode::SteelSword);
 	NewActor->SetMapPos({ 9, 6 });
 	EnemyUnits.push_back(NewActor);
 
 	NewActor = CreateActor<BattleUnit>();
 	NewActor->SetUnitCode(UnitIdentityCode::Brigand);
-	NewActor->GetUnitData().LevelUp(10);
 	NewActor->NewWeapon(ItemCode::IronAxe);
 	NewActor->SetMapPos({ 9, 4 });
 	EnemyUnits.push_back(NewActor);
@@ -120,6 +119,6 @@ void BattleLevel::Start()
 
 void BattleLevel::Update(float _DeltaTime)
 {
-	(this->*StateUpdate)(_DeltaTime);
+	StateUpdate(_DeltaTime);
 }
 
