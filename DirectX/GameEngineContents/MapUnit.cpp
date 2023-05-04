@@ -26,6 +26,11 @@ void MapUnit::MoveMapPos(int2 _Value)
 
 void MapUnit::SetMapPosLerp(int2 _Value)
 {
+	IsMove = true;
+	StartPos = GetTransform()->GetLocalPosition();
+	MapPos = _Value;
+	EndPos = MapPos * TileScale;
+	MoveTimer = 0;
 }
 
 void MapUnit::MoveMapPosLerp(int2 _Value)

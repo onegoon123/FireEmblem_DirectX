@@ -13,6 +13,23 @@ const float PreesTime = 0.2f;
 bool PressOK = false;
 void BattleLevel::CursorMove()
 {
+	if (true == MainCursor->GetIsMove())
+	{
+		return;
+	}
+
+	if (GameEngineInput::IsDown("LeftClick") || GameEngineInput::IsDown("RightClick"))
+	{
+		IsMouseOn = true;
+		float4 MousePos = GameEngineInput::GetMousePosition();
+		float4 MouseLocalPos = float4(MousePos.x, 640 - MousePos.y);
+		int2 MouseMapPos = int2::Float4ToInt2(MouseLocalPos * 0.015625f);
+		MainCursor->SetMapPos(MouseMapPos);
+		CursorDirCheck();	// 커서의 방향(정중앙 기준) 체크
+		CursorUnitSelect();
+		return;
+	}
+
 	if (
 		PreesTime < GameEngineInput::GetPressTime("Up") ||
 		PreesTime < GameEngineInput::GetPressTime("Down") ||
@@ -39,8 +56,8 @@ void BattleLevel::CursorMove()
 	if (GameEngineInput::IsDown("Up") || (GameEngineInput::IsPress("Up") && PressOK))
 	{
 
-		// 커서가 이동중이 아니며 이동할 곳이 맵 밖이 아니라면
-		if (false == MainCursor->GetIsMove() && false == IsMapOut(CursorPos + MoveValue + int2::Up))
+		// 이동할 곳이 맵 밖이 아니라면
+		if (false == IsMapOut(CursorPos + MoveValue + int2::Up))
 		{
 			MoveValue += int2::Up;
 		}
@@ -48,24 +65,24 @@ void BattleLevel::CursorMove()
 	}
 	if (GameEngineInput::IsDown("Down") || (GameEngineInput::IsPress("Down") && PressOK))
 	{
-		// 커서가 이동중이 아니며 이동할 곳이 맵 밖이 아니라면
-		if (false == MainCursor->GetIsMove() && false == IsMapOut(CursorPos + MoveValue + int2::Down))
+		// 이동할 곳이 맵 밖이 아니라면
+		if (false == IsMapOut(CursorPos + MoveValue + int2::Down))
 		{
 			MoveValue += int2::Down;
 		}
 	}
 	if (GameEngineInput::IsDown("Left") || (GameEngineInput::IsPress("Left") && PressOK))
 	{
-		// 커서가 이동중이 아니며 이동할 곳이 맵 밖이 아니라면
-		if (false == MainCursor->GetIsMove() && false == IsMapOut(CursorPos + MoveValue + int2::Left))
+		// 이동할 곳이 맵 밖이 아니라면
+		if (false == IsMapOut(CursorPos + MoveValue + int2::Left))
 		{
 			MoveValue += int2::Left;
 		}
 	}
 	if (GameEngineInput::IsDown("Right") || (GameEngineInput::IsPress("Right") && PressOK))
 	{
-		// 커서가 이동중이 아니며 이동할 곳이 맵 밖이 아니라면
-		if (false == MainCursor->GetIsMove() && false == IsMapOut(CursorPos + MoveValue + int2::Right))
+		// 이동할 곳이 맵 밖이 아니라면
+		if (false == IsMapOut(CursorPos + MoveValue + int2::Right))
 		{
 			MoveValue += int2::Right;
 		}
@@ -75,40 +92,62 @@ void BattleLevel::CursorMove()
 	{
 		MainCursor->MoveMapPosLerp(MoveValue);
 		CursorDirCheck();	// 커서의 방향(정중앙 기준) 체크
-
-		// 커서가 이동한 곳에 아군 유닛이 있는가?
-		SelectUnit = nullptr;
-		for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
-		{
-			if (_Unit->GetIsDie()) { continue; }
-			if (MainCursor->GetMapPos() == _Unit->GetMapPos())
-			{
-				SelectUnit = _Unit;
-				SetUI_UnitData();	// 유닛 정보 UI로 띄우기
-				MoveSearch();	// 이동범위 탐색, 자동으로 공격범위도 탐색
-				Tiles->SetTile(IsMove, IsAttack);
-				return;
-			}
-		}
-		for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
-		{
-			if (_Unit->GetIsDie()) { continue; }
-			if (MainCursor->GetMapPos() == _Unit->GetMapPos())
-			{
-				SelectUnit = _Unit;
-				SetUI_UnitData();	// 유닛 정보 UI로 띄우기
-				MoveSearchForEnemy();	// 이동범위 탐색, 자동으로 공격범위도 탐색
-				Tiles->SetTile(IsMove, IsAttack);
-				return;
-			}
-		}
-		Tiles->Clear();
-		UI_Select->UnitUIOff();
+		CursorUnitSelect();
+		
 	}
+}
+
+void BattleLevel::CursorUnitSelect()
+{
+	// 커서가 이동한 곳에 아군 유닛이 있는가?
+	SelectUnit = nullptr;
+	for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
+	{
+		if (_Unit->GetIsDie()) { continue; }
+		if (MainCursor->GetMapPos() == _Unit->GetMapPos())
+		{
+			SelectUnit = _Unit;
+			SetUI_UnitData();	// 유닛 정보 UI로 띄우기
+			MoveSearch();	// 이동범위 탐색, 자동으로 공격범위도 탐색
+			Tiles->SetTile(IsMove, IsAttack);
+			return;
+		}
+	}
+	for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
+	{
+		if (_Unit->GetIsDie()) { continue; }
+		if (MainCursor->GetMapPos() == _Unit->GetMapPos())
+		{
+			SelectUnit = _Unit;
+			SetUI_UnitData();	// 유닛 정보 UI로 띄우기
+			MoveSearchForEnemy();	// 이동범위 탐색, 자동으로 공격범위도 탐색
+			Tiles->SetTile(IsMove, IsAttack);
+			return;
+		}
+	}
+	Tiles->Clear();
+	UI_Select->UnitUIOff();
 }
 
 void BattleLevel::CursorAndArrowMove()
 {
+
+	if (true == MainCursor->GetIsMove())
+	{
+		return;
+	}
+
+	if (GameEngineInput::IsDown("LeftClick") || GameEngineInput::IsDown("RightClick"))
+	{
+		IsMouseOn = true;
+		float4 MousePos = GameEngineInput::GetMousePosition();
+		float4 MouseLocalPos = float4(MousePos.x, 640 - MousePos.y);
+		int2 MouseMapPos = int2::Float4ToInt2(MouseLocalPos * 0.015625f);
+		MainCursor->SetMapPos(MouseMapPos);
+		CursorDirCheck();	// 커서의 방향(정중앙 기준) 체크
+		CursorUnitSelect();
+		return;
+	}
 
 	if (
 		PreesTime < GameEngineInput::GetPressTime("Up") ||
@@ -136,8 +175,8 @@ void BattleLevel::CursorAndArrowMove()
 	if (GameEngineInput::IsDown("Up") || (GameEngineInput::IsPress("Up") && PressOK))
 	{
 
-		// 커서가 이동중이 아니며 이동할 곳이 맵 밖이 아니라면
-		if (false == MainCursor->GetIsMove() && false == IsMapOut(CursorPos + MoveValue + int2::Up))
+		// 이동할 곳이 맵 밖이 아니라면
+		if (false == IsMapOut(CursorPos + MoveValue + int2::Up))
 		{
 			MoveValue += int2::Up;
 		}
@@ -145,24 +184,24 @@ void BattleLevel::CursorAndArrowMove()
 	}
 	if (GameEngineInput::IsDown("Down") || (GameEngineInput::IsPress("Down") && PressOK))
 	{
-		// 커서가 이동중이 아니며 이동할 곳이 맵 밖이 아니라면
-		if (false == MainCursor->GetIsMove() && false == IsMapOut(CursorPos + MoveValue + int2::Down))
+		// 이동할 곳이 맵 밖이 아니라면
+		if ( false == IsMapOut(CursorPos + MoveValue + int2::Down))
 		{
 			MoveValue += int2::Down;
 		}
 	}
 	if (GameEngineInput::IsDown("Left") || (GameEngineInput::IsPress("Left") && PressOK))
 	{
-		// 커서가 이동중이 아니며 이동할 곳이 맵 밖이 아니라면
-		if (false == MainCursor->GetIsMove() && false == IsMapOut(CursorPos + MoveValue + int2::Left))
+		// 이동할 곳이 맵 밖이 아니라면
+		if (false == IsMapOut(CursorPos + MoveValue + int2::Left))
 		{
 			MoveValue += int2::Left;
 		}
 	}
 	if (GameEngineInput::IsDown("Right") || (GameEngineInput::IsPress("Right") && PressOK))
 	{
-		// 커서가 이동중이 아니며 이동할 곳이 맵 밖이 아니라면
-		if (false == MainCursor->GetIsMove() && false == IsMapOut(CursorPos + MoveValue + int2::Right))
+		// 이동할 곳이 맵 밖이 아니라면
+		if (false == IsMapOut(CursorPos + MoveValue + int2::Right))
 		{
 			MoveValue += int2::Right;
 		}
@@ -171,6 +210,63 @@ void BattleLevel::CursorAndArrowMove()
 	if (MoveValue != int2{ 0 })
 	{
 		MainCursor->MoveMapPosLerp(MoveValue);
+		AddArrow(MainCursor->GetMapPos());
+	}
+}
+
+void BattleLevel::CursorMoveMouse()
+{
+	if (
+		GameEngineInput::IsDown("Up") ||
+		GameEngineInput::IsDown("Down") ||
+		GameEngineInput::IsDown("Left") ||
+		GameEngineInput::IsDown("Right")
+		)
+	{
+		IsMouseOn = false;
+		return;
+	}
+
+	if (true == MainCursor->GetIsMove()) { return; }
+
+	int2 CursorPos = MainCursor->GetMapPos();
+	float4 MousePos = GameEngineInput::GetMousePosition();
+	float4 MouseLocalPos = float4(MousePos.x, 640 - MousePos.y);
+	int2 MouseMapPos = int2::Float4ToInt2(MouseLocalPos * 0.015625f);
+	if (1 <= CursorPos.GetDistance(MouseMapPos))
+	{
+		int2 MovePos = MouseMapPos - CursorPos;
+		MainCursor->MoveMapPosLerp(MovePos.Normalize());
+		CursorUnitSelect();
+	}
+	
+
+}
+
+void BattleLevel::CursorAndArrowMoveMouse()
+{
+	if (
+		GameEngineInput::IsDown("Up") ||
+		GameEngineInput::IsDown("Down") ||
+		GameEngineInput::IsDown("Left") ||
+		GameEngineInput::IsDown("Right")
+		)
+	{
+		IsMouseOn = false;
+		return;
+	}
+
+	if (true == MainCursor->GetIsMove()) { return; }
+
+	int2 CursorPos = MainCursor->GetMapPos();
+	float4 MousePos = GameEngineInput::GetMousePosition();
+	float4 MouseLocalPos = float4(MousePos.x, 640 - MousePos.y);
+	int2 MouseMapPos = int2::Float4ToInt2(MouseLocalPos * 0.015625f);
+
+	if (1 <= CursorPos.GetDistance(MouseMapPos))
+	{
+		int2 MovePos = MouseMapPos - CursorPos;
+		MainCursor->MoveMapPosLerp(MovePos.Normalize());
 		AddArrow(MainCursor->GetMapPos());
 	}
 }
@@ -216,7 +312,7 @@ void BattleLevel::CursorDirCheck()
 void BattleLevel::UnitSelect()
 {
 	// 확인버튼 입력시에만
-	if (GameEngineInput::IsDown("ButtonA")) {
+	if (GameEngineInput::IsDown("ButtonA") || GameEngineInput::IsUp("LeftClick")) {
 
 		// 선택한 곳에 유닛이 없다면
 		if (nullptr == SelectUnit)

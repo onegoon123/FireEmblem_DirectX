@@ -557,6 +557,7 @@ void BattleLevel::EnemyTileCheck()
 
 void BattleLevel::UnitMove()
 {
+	if (true == IsMapOut(MainCursor->GetMapPos())) { return; }
 	if (true == IsMove[MainCursor->GetMapPos().y][MainCursor->GetMapPos().x])
 	{
 		for (std::shared_ptr<BattleUnit> _Actor : PlayerUnits)

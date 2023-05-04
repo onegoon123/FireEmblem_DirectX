@@ -105,6 +105,19 @@ public:
 		return abs(_This.x - _Other.x) + abs(_This.y - _Other.y);
 	}
 
+	static int2 Float4ToInt2(const float4& _Value)
+	{
+		return int2(static_cast<int>(_Value.x), static_cast<int>(_Value.y));
+	}
+
+	int2 Normalize()
+	{
+		int2 Return = int2(x, y);
+		Return.x = std::min<int>(std::max<int>(x, -1), 1);
+		Return.y = std::min<int>(std::max<int>(y, -1), 1);
+		return Return;
+	}
+
 	std::string ToString()
 	{
 		char ArrReturn[256];

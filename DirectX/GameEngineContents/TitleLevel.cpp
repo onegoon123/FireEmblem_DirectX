@@ -45,7 +45,9 @@ void TitleLevel::Start()
 		GameEngineInput::CreateKey("ButtonX", 'V');
 		GameEngineInput::CreateKey("ButtonL", 'A');
 		GameEngineInput::CreateKey("ButtonR", 'S');
-		GameEngineInput::CreateKey("Start", VK_END);
+		GameEngineInput::CreateKey("Start", VK_RETURN);
+		GameEngineInput::CreateKey("LeftClick", VK_LBUTTON);
+		GameEngineInput::CreateKey("RightClick", VK_RBUTTON);
 	}
 	
 	// 카메라 세팅
@@ -80,7 +82,7 @@ void TitleLevel::Start()
 void TitleLevel::Update(float _DeltaTime)
 {
 
-	if (true == GameEngineInput::IsDown("ButtonA"))
+	if (true == GameEngineInput::IsDown("ButtonA") || true == GameEngineInput::IsDown("Start"))
 	{
 		GameEngineCore::ChangeLevel("BattleLevel");
 	}

@@ -78,13 +78,13 @@ void UnitCommandUI::Start()
 void UnitCommandUI::Update(float _DeltaTime)
 {
 
-	if (GameEngineInput::IsDown("ButtonA"))
+	if (GameEngineInput::IsDown("ButtonA") || GameEngineInput::IsUp("LeftClick"))
 	{
 		CommandFunctions[CurrentCursor]();
 		CommandFunctions.resize(0);
 		return;
 	}
-	if (GameEngineInput::IsDown("ButtonB"))
+	if (GameEngineInput::IsDown("ButtonB") || GameEngineInput::IsUp("RightClick"))
 	{
 		CancelFunction();
 		CommandFunctions.resize(0);

@@ -166,8 +166,16 @@ void BattleLevel::SelectStart()
 
 void BattleLevel::SelectUpdate(float _DeltaTime)
 {
-	CursorMove();	// 커서 이동
+	if (true == IsMouseOn)
+	{
+		CursorMoveMouse();
+	}
+	else
+	{
+		CursorMove();	// 커서 이동
+	}
 	UnitSelect();	// 유닛 선택 동작들 처리
+
 }
 
 void BattleLevel::SelectEnd()
@@ -204,9 +212,17 @@ void BattleLevel::MoveStart()
 
 void BattleLevel::MoveUpdate(float _DeltaTime)
 {
-	CursorAndArrowMove();	// 커서 이동 및 화살표 추가
 
-	if (GameEngineInput::IsDown("ButtonA"))
+	if (true == IsMouseOn)
+	{
+		CursorAndArrowMoveMouse();
+	}
+	else
+	{
+		CursorAndArrowMove();	// 커서 이동 및 화살표 추가
+	}
+
+	if (GameEngineInput::IsDown("ButtonA") || GameEngineInput::IsUp("LeftClick"))
 	{
 		// A버튼 (Z키) 입력시 유닛을 커서 위치로 이동
 		UnitMove();
@@ -216,6 +232,12 @@ void BattleLevel::MoveUpdate(float _DeltaTime)
 	{
 		// 커서를 선택한 유닛위치로 돌려놓은 후 Select State로 변경
 		MainCursor->SetMapPos(SelectUnit->GetMapPos());
+		ChangeState(BattleState::Select);
+		return;
+	}
+	if (GameEngineInput::IsDown("RightClick"))
+	{
+		// Select State로 변경
 		ChangeState(BattleState::Select);
 		return;
 	}
@@ -364,12 +386,12 @@ void BattleLevel::FieldCommandStart()
 
 void BattleLevel::FieldCommandUpdate(float _DeltaTime)
 {
-	if (GameEngineInput::IsDown("ButtonA"))
+	if (GameEngineInput::IsDown("ButtonA") || GameEngineInput::IsUp("LeftClick"))
 	{
 		ChangeState(BattleState::EnemyPhase);
 		return;
 	}
-	if (GameEngineInput::IsDown("ButtonB"))
+	if (GameEngineInput::IsDown("ButtonB") || GameEngineInput::IsUp("RightClick"))
 	{
 		ChangeState(BattleState::Select);
 		return;
@@ -476,7 +498,7 @@ void BattleLevel::EnemyPhaseStart()
 	}
 	MainCursor->Off();
 	Tiles->EnemyTileClear();
-	
+
 	UI_Phase->PhaseOn(Faction::Enemy);
 }
 

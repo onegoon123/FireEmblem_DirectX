@@ -71,6 +71,7 @@ private:
 	std::vector<std::vector<bool>> IsAttack = std::vector<std::vector<bool>>();
 	bool IsArrowOut = false;
 	bool IsEnemyRangeCheck = false;
+	bool IsMouseOn = false;
 
 	// UI
 	std::shared_ptr <SelectUI> UI_Select = nullptr;
@@ -174,7 +175,11 @@ private:
 #pragma region Select
 	
 	void CursorMove();
+	void CursorUnitSelect();
 	void CursorAndArrowMove();
+	void CursorMoveMouse();
+	void CursorAndArrowMoveMouse();
+
 	// 커서에 따른 SeledctUI위치 조절
 	void CursorDirCheck(); 
 
