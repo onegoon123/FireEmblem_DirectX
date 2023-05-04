@@ -63,6 +63,7 @@ std::list<AttackCommand> UnitCommand::Attack(std::shared_ptr<BattleUnit> _Subjec
 	if (true == TargetUnit.IsDie)
 	{
 		CommandRecord.AfterSubjectUnit = SubjectUnit;
+		CommandRecord.AfterSubjectUnit.IsTurnEnd = true;
 		CommandRecord.AfterTargetUnit = TargetUnit;
 		CommandList.push_back(CommandRecord);
 		return AttackList;
@@ -103,6 +104,7 @@ std::list<AttackCommand> UnitCommand::Attack(std::shared_ptr<BattleUnit> _Subjec
 	if (true == SubjectUnit.IsDie)
 	{
 		CommandRecord.AfterSubjectUnit = SubjectUnit;
+		CommandRecord.AfterSubjectUnit.IsTurnEnd = true;
 		CommandRecord.AfterTargetUnit = TargetUnit;
 		CommandList.push_back(CommandRecord);
 		return AttackList;
@@ -176,6 +178,7 @@ std::list<AttackCommand> UnitCommand::Attack(std::shared_ptr<BattleUnit> _Subjec
 	}
 
 	CommandRecord.AfterSubjectUnit = SubjectUnit;
+	CommandRecord.AfterSubjectUnit.IsTurnEnd = true;
 	CommandRecord.AfterTargetUnit = TargetUnit;
 	CommandRecord.Record = std::string(_TargetUnit->GetName()) + "에게 " + std::to_string(CommandRecord.BeforeTargetUnit.CurrentHP - CommandRecord.AfterTargetUnit.CurrentHP) + "의 대미지";
 	CommandList.push_back(CommandRecord);
@@ -187,8 +190,54 @@ void UnitCommand::Wait(std::shared_ptr<BattleUnit> _SubjectUnit)
 	UnitCommand CommandRecord;
 	CommandRecord.TypeValue = CommandType::Wait;
 	CommandRecord.BeforeSubjectUnit = Unit(_SubjectUnit->GetUnitData());
+	CommandRecord.AfterSubjectUnit = CommandRecord.BeforeSubjectUnit;
+	CommandRecord.AfterSubjectUnit.IsTurnEnd = true;
 	CommandRecord.BeforeSubjectUnitPos = _SubjectUnit->GetBeforeMapPos();
 	CommandRecord.AfterSubjectUnitPos = _SubjectUnit->GetMapPos();
 
+	CommandList.push_back(CommandRecord);
+}
+
+void UnitCommand::PhaseStart(Faction _Faction)
+{
+	UnitCommand CommandRecord;
+	switch (_Faction)
+	{
+	case Faction::None:
+	{
+		MsgAssert("Faction을 지정하지 않았습니다.");
+		break;
+	}
+	case Faction::Player:
+		CommandRecord.TypeValue = CommandType::PlayerPhaseStart;
+		break;
+	case Faction::Enemy:
+		CommandRecord.TypeValue = CommandType::EnemyPhaseStart;
+		break;
+	default:
+		break;
+	}
+	CommandList.push_back(CommandRecord);
+}
+
+void UnitCommand::PhaseEnd(Faction _Faction)
+{
+	UnitCommand CommandRecord;
+	switch (_Faction)
+	{
+	case Faction::None:
+	{
+		MsgAssert("Faction을 지정하지 않았습니다.");
+		break;
+	}
+	case Faction::Player:
+		CommandRecord.TypeValue = CommandType::PlayerPhaseEnd;
+		break;
+	case Faction::Enemy:
+		CommandRecord.TypeValue = CommandType::EnemyPhaseEnd;
+		break;
+	default:
+		break;
+	}
 	CommandList.push_back(CommandRecord);
 }

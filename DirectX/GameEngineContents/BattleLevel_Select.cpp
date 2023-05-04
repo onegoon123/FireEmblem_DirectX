@@ -450,79 +450,9 @@ void BattleLevel::UnitSelect()
 	// 시간을 되돌리는 기능 (테스트용)
 	if (GameEngineInput::IsDown("ButtonX"))
 	{
-		std::list<UnitCommand> Command;
-		std::list<UnitCommand>::reverse_iterator RIter;
-		std::list<UnitCommand>::reverse_iterator RIterEnd;
-		Command = UnitCommand::GetCommandList();
-		RIter = Command.rbegin();
-		RIterEnd = Command.rend();
-
-		if (RIter == RIterEnd)
-		{
-			return;
-		}
-		switch (RIter->TypeValue)
-		{
-		case CommandType::Attack:
-		{
-			for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
-			{
-				if ((*RIter).BeforeSubjectUnit.UnitCode == _Unit->GetUnitData().UnitCode)
-				{
-					_Unit->SetUnitData((*RIter).BeforeSubjectUnit);
-					_Unit->SetMapPos((*RIter).BeforeSubjectUnitPos);
-				}
-				else if ((*RIter).BeforeTargetUnit.UnitCode == _Unit->GetUnitData().UnitCode)
-				{
-					_Unit->SetUnitData((*RIter).BeforeTargetUnit);
-				}
-			}
-			for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
-			{
-				if ((*RIter).BeforeSubjectUnit.UnitCode == _Unit->GetUnitData().UnitCode)
-				{
-					_Unit->SetUnitData((*RIter).BeforeSubjectUnit);
-					_Unit->SetMapPos((*RIter).BeforeSubjectUnitPos);
-				}
-				else if ((*RIter).BeforeTargetUnit.UnitCode == _Unit->GetUnitData().UnitCode)
-				{
-					_Unit->SetUnitData((*RIter).BeforeTargetUnit);
-				}
-			}
-		}
-		break;
-		case CommandType::Item:
-			break;
-		case CommandType::Wait:
-		{
-			for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
-			{
-				if ((*RIter).BeforeSubjectUnit.UnitCode == _Unit->GetUnitData().UnitCode)
-				{
-					_Unit->SetUnitData((*RIter).BeforeSubjectUnit);
-					_Unit->SetMapPos((*RIter).BeforeSubjectUnitPos);
-				}
-			}
-			for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
-			{
-				if ((*RIter).BeforeSubjectUnit.UnitCode == _Unit->GetUnitData().UnitCode)
-				{
-					_Unit->SetUnitData((*RIter).BeforeSubjectUnit);
-					_Unit->SetMapPos((*RIter).BeforeSubjectUnitPos);
-				}
-			}
-		}
-		break;
-		default:
-			break;
-		}
-		FERandom::AddRandomCount(-(*RIter).RandomNum);
-		int randc = FERandom::GetRandomCount();
-
-		UnitCommand::PopCommandList();
-
-		ChangeState(BattleState::Select);
+		ChangeState(BattleState::TimeStone);
 		return;
+
 	}
 }
 

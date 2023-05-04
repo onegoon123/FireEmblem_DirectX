@@ -56,7 +56,7 @@ public:
 		}
 	}
 
-	int UnitCode = 0;
+	int UnitCode = -1;
 	int CurrentHP = 0;
 	int TerrainDeffence = 0;
 	int TerrainDodge = 0;

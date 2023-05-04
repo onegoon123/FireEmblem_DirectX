@@ -29,7 +29,7 @@ void BattleLevel::ChangeState(BattleState _State)
 	{
 	case BattleLevel::BattleState::PlayerPhase:
 		StateUpdate = std::bind(&BattleLevel::PlayerPhaseUpdate, this, std::placeholders::_1);
-		StateEnd = std::bind(& BattleLevel::PlayerPhaseEnd, this);
+		StateEnd = std::bind(&BattleLevel::PlayerPhaseEnd, this);
 		PlayerPhaseStart();
 		break;
 	case BattleLevel::BattleState::Select:
@@ -87,10 +87,11 @@ void BattleLevel::ChangeState(BattleState _State)
 		StateEnd = std::bind(&BattleLevel::GameOverEnd, this);
 		GameOverStart();
 		break;
-	case BattleState::TimeStone:
+	case BattleLevel::BattleState::TimeStone:
 		StateUpdate = std::bind(&BattleLevel::TimeStoneUpdate, this, std::placeholders::_1);
 		StateEnd = std::bind(&BattleLevel::TimeStoneEnd, this);
 		TimeStoneStart();
+		break;
 	default:
 	{
 		MsgAssert("아직 지정하지 않은 State 입니다");
@@ -102,6 +103,7 @@ void BattleLevel::ChangeState(BattleState _State)
 
 void BattleLevel::PlayerPhaseStart()
 {
+	UnitCommand::PhaseStart(Faction::Player);
 	// 모든 적 유닛 턴 복구
 	for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
 	{
@@ -164,7 +166,7 @@ void BattleLevel::SelectStart()
 	// 선택된 유닛이 있다면 유닛 데이터 지정
 	if (nullptr != SelectUnit)
 	{
-		SetUI_UnitData();
+		CursorUnitSelect();
 	}
 	// 적 타일 체크
 	EnemyTileCheck();
@@ -498,6 +500,9 @@ void BattleLevel::BattleEnd()
 
 void BattleLevel::EnemyPhaseStart()
 {
+	UnitCommand::PhaseEnd(Faction::Player);
+	UnitCommand::PhaseStart(Faction::Enemy);
+
 	IsSkip = false;
 
 	for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
@@ -548,6 +553,7 @@ void BattleLevel::EnemySelectStart()
 		}
 	}
 
+	UnitCommand::PhaseEnd(Faction::Enemy);
 	ChangeState(BattleState::PlayerPhase);
 }
 
@@ -745,6 +751,7 @@ void BattleLevel::EnemyBattleEnd()
 static std::list<UnitCommand> Command;
 static std::list<UnitCommand>::reverse_iterator RIter;
 static std::list<UnitCommand>::reverse_iterator RIterEnd;
+
 void BattleLevel::GameOverStart()
 {
 	Command = UnitCommand::GetCommandList();
@@ -835,14 +842,350 @@ void BattleLevel::GameOverEnd()
 {
 }
 
+float EffectTimer = 0;
+float MapEffectTimer = 0;
+int RewindNum = 0;
+enum TimeStoneState
+{
+	EffectIn,
+	EffectOut,
+	Control
+};
+TimeStoneState CurTimeStoneState = EffectIn;
+
 void BattleLevel::TimeStoneStart()
 {
+	EffectTimer = 0;
+	MapEffectTimer = 0;
+	CurTimeStoneState = EffectIn;
+	RewindNum = 0;
+
+	Tiles->Clear();
+	MainCursor->Off();
+
+	Command = UnitCommand::GetCommandList();
+	RIter = Command.rbegin();
+	RIterEnd = Command.rend();
+
+	for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
+	{
+		_Unit->GetRenderer()->SetIsBlur(true);
+	}
+	for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
+	{
+		_Unit->GetRenderer()->SetIsBlur(true);
+	}
+	MainMap->GetRenderer()->SetIsBlur(true);
 }
 
 void BattleLevel::TimeStoneUpdate(float _DeltaTime)
 {
+	EffectTimer += _DeltaTime;
+	MapEffectTimer += _DeltaTime * 2;
+
+	if (MapEffectTimer < 0.7f) {
+		MainMap->GetRenderer()->SetLerp({ 0.3f, 0.0f, 0.6f }, MapEffectTimer);
+		MainMap->GetRenderer()->SetBlurLevel(MapEffectTimer);
+	}
+
+	switch (CurTimeStoneState)
+	{
+	case EffectIn:
+	{
+		if (0.05 < EffectTimer)
+		{
+			CurTimeStoneState = EffectOut;
+			return;
+		}
+		for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
+		{
+			_Unit->GetRenderer()->SetBlurLevel(EffectTimer * 200);
+			_Unit->GetRenderer()->SetLerp({ 1, 1, 1 }, EffectTimer * 200);
+		}
+		for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
+		{
+			_Unit->GetRenderer()->SetBlurLevel(EffectTimer * 200);
+			_Unit->GetRenderer()->SetLerp({ 1, 1, 1 }, EffectTimer * 200);
+		}
+
+		break;
+	}
+	case EffectOut:
+	{
+		if (1.0f < EffectTimer)
+		{
+			CurTimeStoneState = Control;
+			return;
+		}
+		for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
+		{
+			_Unit->GetRenderer()->SetBlurLevel(10.f - EffectTimer * 10);
+			_Unit->GetRenderer()->SetLerp({ 1, 1, 1 }, 1.f - EffectTimer);
+		}
+		for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
+		{
+			_Unit->GetRenderer()->SetBlurLevel(10.f - EffectTimer * 10);
+			_Unit->GetRenderer()->SetLerp({ 1, 1, 1 }, 1.f - EffectTimer);
+		}
+		break;
+	}
+	case Control:
+	{
+		if (GameEngineInput::IsDown("Up"))
+		{
+			if (RIter == RIterEnd) {
+				return;
+			}
+			RewindNum++;
+			FERandom::AddRandomCount(-(*RIter).RandomNum);
+
+			switch (RIter->TypeValue)
+			{
+			case CommandType::Attack:
+			{
+				for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
+				{
+					if ((*RIter).BeforeSubjectUnit.UnitCode == _Unit->GetUnitData().UnitCode)
+					{
+						_Unit->SetUnitData((*RIter).BeforeSubjectUnit);
+						_Unit->SetMapPos((*RIter).BeforeSubjectUnitPos);
+					}
+					else if ((*RIter).BeforeTargetUnit.UnitCode == _Unit->GetUnitData().UnitCode)
+					{
+						_Unit->SetUnitData((*RIter).BeforeTargetUnit);
+					}
+				}
+				for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
+				{
+					if ((*RIter).BeforeSubjectUnit.UnitCode == _Unit->GetUnitData().UnitCode)
+					{
+						_Unit->SetUnitData((*RIter).BeforeSubjectUnit);
+						_Unit->SetMapPos((*RIter).BeforeSubjectUnitPos);
+					}
+					else if ((*RIter).BeforeTargetUnit.UnitCode == _Unit->GetUnitData().UnitCode)
+					{
+						_Unit->SetUnitData((*RIter).BeforeTargetUnit);
+					}
+				}
+				break;
+			}
+			case CommandType::Item:
+				break;
+			case CommandType::Wait:
+			{
+				for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
+				{
+					if ((*RIter).BeforeSubjectUnit.UnitCode == _Unit->GetUnitData().UnitCode)
+					{
+						_Unit->SetUnitData((*RIter).BeforeSubjectUnit);
+						_Unit->SetMapPos((*RIter).BeforeSubjectUnitPos);
+					}
+				}
+				for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
+				{
+					if ((*RIter).BeforeSubjectUnit.UnitCode == _Unit->GetUnitData().UnitCode)
+					{
+						_Unit->SetUnitData((*RIter).BeforeSubjectUnit);
+						_Unit->SetMapPos((*RIter).BeforeSubjectUnitPos);
+					}
+				}
+
+				break;
+			}
+			case CommandType::PlayerPhaseEnd:
+			{
+				static std::list<UnitCommand>::reverse_iterator NewRIter;
+				NewRIter = RIter;
+				//NewRIter++;
+				while (NewRIter != RIterEnd)
+				{
+					if ((*NewRIter).TypeValue == CommandType::PlayerPhaseStart)
+					{
+						break;
+					}
+
+					for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
+					{
+						if ((*NewRIter).BeforeSubjectUnit.UnitCode == _Unit->GetUnitCode())
+						{
+							_Unit->SetIsTurnEnd(true);
+							break;
+						}
+					}
+					NewRIter++;
+				}
+				break;
+			}
+			case CommandType::EnemyPhaseEnd:
+			{
+				static std::list<UnitCommand>::reverse_iterator NewRIter;
+				NewRIter = RIter;
+
+				//NewRIter++;
+				while (NewRIter != RIterEnd)
+				{
+					if ((*NewRIter).TypeValue == CommandType::EnemyPhaseStart)
+					{
+
+						break;
+					}
+
+					for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
+					{
+						if ((*NewRIter).BeforeSubjectUnit.UnitCode == _Unit->GetUnitCode())
+						{
+							_Unit->SetIsTurnEnd(true);
+							break;
+						}
+					}
+					NewRIter++;
+				}
+				break;
+			}
+			case CommandType::PlayerPhaseStart:
+			case CommandType::EnemyPhaseStart:
+				break;
+
+			case CommandType::None:
+			{
+				MsgAssert("커맨드 타입 오류");
+				break;
+			}
+			default:
+			{
+				RIter;
+				MsgAssert("커맨드 타입 오류");
+				break;
+			}
+			}
+			
+			RIter++;
+			
+
+			return;
+		}
+		if (GameEngineInput::IsDown("Down"))
+		{
+			if (RIter == Command.rbegin()) { 
+				return; 
+			}
+			RIter--;
+			RewindNum--;
+			FERandom::AddRandomCount((*RIter).RandomNum);
+
+			switch (RIter->TypeValue)
+			{
+			case CommandType::Attack:
+			{
+				for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
+				{
+					if ((*RIter).AfterSubjectUnit.UnitCode == _Unit->GetUnitData().UnitCode)
+					{
+						_Unit->SetUnitData((*RIter).AfterSubjectUnit);
+						_Unit->SetMapPos((*RIter).AfterSubjectUnitPos);
+					}
+					else if ((*RIter).AfterTargetUnit.UnitCode == _Unit->GetUnitData().UnitCode)
+					{
+						_Unit->SetUnitData((*RIter).AfterTargetUnit);
+					}
+				}
+				for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
+				{
+					if ((*RIter).AfterSubjectUnit.UnitCode == _Unit->GetUnitData().UnitCode)
+					{
+						_Unit->SetUnitData((*RIter).AfterSubjectUnit);
+						_Unit->SetMapPos((*RIter).AfterSubjectUnitPos);
+					}
+					else if ((*RIter).AfterTargetUnit.UnitCode == _Unit->GetUnitData().UnitCode)
+					{
+						_Unit->SetUnitData((*RIter).AfterTargetUnit);
+					}
+				}
+				break;
+			}
+			case CommandType::Item:
+				break;
+			case CommandType::Wait:
+			{
+				for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
+				{
+					if ((*RIter).AfterSubjectUnit.UnitCode == _Unit->GetUnitData().UnitCode)
+					{
+						_Unit->SetUnitData((*RIter).AfterSubjectUnit);
+						_Unit->SetMapPos((*RIter).AfterSubjectUnitPos);
+					}
+				}
+				for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
+				{
+					if ((*RIter).AfterSubjectUnit.UnitCode == _Unit->GetUnitData().UnitCode)
+					{
+						_Unit->SetUnitData((*RIter).AfterSubjectUnit);
+						_Unit->SetMapPos((*RIter).AfterSubjectUnitPos);
+					}
+				}
+				break;
+			}
+			case CommandType::PlayerPhaseStart:
+			case CommandType::EnemyPhaseStart:
+			case CommandType::PlayerPhaseEnd:
+			case CommandType::EnemyPhaseEnd:
+			{
+				for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
+				{
+					_Unit->SetIsTurnEnd(false);
+				}
+				for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
+				{
+					_Unit->SetIsTurnEnd(false);
+				}
+				break;
+			}
+			case CommandType::None:
+			{
+				MsgAssert("커맨드 타입 오류");
+				break;
+			}
+			default:
+			{
+				MsgAssert("커맨드 타입 오류");
+				break;
+			}
+			}
+
+			return;
+		}
+		break;
+	}
+	default:
+		break;
+	}
+
+
+	if (GameEngineInput::IsDown("ButtonX"))
+	{
+		for (int i = 0; i < RewindNum; i++)
+		{
+			UnitCommand::PopCommandList();
+		}
+		ChangeState(BattleState::Select);
+		return;
+	}
+
+
 }
 
 void BattleLevel::TimeStoneEnd()
 {
+	for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
+	{
+		_Unit->GetRenderer()->SetIsBlur(false);
+		_Unit->GetRenderer()->OffLerp();
+	}
+	for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
+	{
+		_Unit->GetRenderer()->SetIsBlur(false);
+		_Unit->GetRenderer()->OffLerp();
+	}
+	MainMap->GetRenderer()->OffLerp();
+	MainMap->GetRenderer()->SetIsBlur(false);
 }

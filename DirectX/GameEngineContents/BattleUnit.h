@@ -47,6 +47,10 @@ public:
 		{
 			On();
 		}
+		else
+		{
+			Off();
+		}
 		SetIsTurnEnd(GetIsTurnEnd());
 	}
 

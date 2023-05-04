@@ -3,9 +3,14 @@
 
 	enum class CommandType
 	{
+		None,
 		Attack,
 		Item,
 		Wait,
+		PlayerPhaseStart,
+		PlayerPhaseEnd,
+		EnemyPhaseStart,
+		EnemyPhaseEnd,
 	};
 
 struct AttackCommand
@@ -27,8 +32,11 @@ public:
 	static std::list<AttackCommand> Attack(std::shared_ptr<BattleUnit> _SubjectUnit, std::shared_ptr<BattleUnit> _TargetUnit);
 	static void Wait(std::shared_ptr<BattleUnit> _SubjectUnit);
 	static void ItemUse() {}
+	static void PhaseStart(Faction _Faction);
+	static void PhaseEnd(Faction _Faction);
 
 	static std::list<UnitCommand> GetCommandList() { return CommandList; }
+	static void SetCommandList(std::list<UnitCommand> _Value) { CommandList = _Value; }
 	static void ResetCommandList()
 	{
 		CommandList.clear();
