@@ -36,6 +36,26 @@ public:
 		return Str;
 	}
 
+	void LevelUp()
+	{
+		MainStat UpStat = UnitStat.LevelUp();
+		if (1 <= UpStat.HP)
+		{
+			CurrentHP += UpStat.HP;
+		}
+	}
+	void LevelUp(int _Value)
+	{
+		for (int i = 0; i < _Value; i++)
+		{
+			MainStat UpStat = UnitStat.LevelUp();
+			if (1 <= UpStat.HP)
+			{
+				CurrentHP += UpStat.HP;
+			}
+		}
+	}
+
 	int UnitCode = 0;
 	int CurrentHP = 0;
 	int TerrainDeffence = 0;

@@ -9,6 +9,8 @@
 #include "BattleUnit.h"
 #include "TileRender.h"
 #include "SpriteRenderer.h"
+#include "UnitCommand.h"
+#include "FERandom.h"
 const float PreesTime = 0.2f;
 bool PressOK = false;
 void BattleLevel::CursorMove()
@@ -93,7 +95,7 @@ void BattleLevel::CursorMove()
 		MainCursor->MoveMapPosLerp(MoveValue);
 		CursorDirCheck();	// 커서의 방향(정중앙 기준) 체크
 		CursorUnitSelect();
-		
+
 	}
 }
 
@@ -183,7 +185,7 @@ void BattleLevel::CursorAndArrowMove()
 	if (GameEngineInput::IsDown("Down") || (GameEngineInput::IsPress("Down") && PressOK))
 	{
 		// 이동할 곳이 맵 밖이 아니라면
-		if ( false == IsMapOut(CursorPos + MoveValue + int2::Down))
+		if (false == IsMapOut(CursorPos + MoveValue + int2::Down))
 		{
 			MoveValue += int2::Down;
 		}
@@ -238,7 +240,7 @@ void BattleLevel::CursorMoveMouse()
 		CursorUnitSelect();
 		CursorDirCheck();
 	}
-	
+
 
 }
 
@@ -344,7 +346,7 @@ void BattleLevel::UnitSelect()
 			SelectUnit->SetIsCheckTile(!SelectUnit->GetIsCheckTile());
 			if (true == SelectUnit->GetIsCheckTile())
 			{
-				SelectUnit->GetRenderer()->SetLerp({1.0f, 0.0f, 0.5f}, 0.3f);
+				SelectUnit->GetRenderer()->SetLerp({ 1.0f, 0.0f, 0.5f }, 0.3f);
 			}
 			else
 			{
@@ -420,7 +422,7 @@ void BattleLevel::UnitSelect()
 	{
 		IsEnemyRangeCheck = !IsEnemyRangeCheck;
 		EnemyTileCheck();
-		
+
 
 		// 선택한 유닛이 있다면
 		if (nullptr == SelectUnit) { return; }
@@ -442,6 +444,85 @@ void BattleLevel::UnitSelect()
 	{
 		if (nullptr == SelectUnit) { return; }
 		MsgTextBox(SelectUnit->ToString());
+	}
+
+
+	// 시간을 되돌리는 기능 (테스트용)
+	if (GameEngineInput::IsDown("ButtonX"))
+	{
+		std::list<UnitCommand> Command;
+		std::list<UnitCommand>::reverse_iterator RIter;
+		std::list<UnitCommand>::reverse_iterator RIterEnd;
+		Command = UnitCommand::GetCommandList();
+		RIter = Command.rbegin();
+		RIterEnd = Command.rend();
+
+		if (RIter == RIterEnd)
+		{
+			return;
+		}
+		switch (RIter->TypeValue)
+		{
+		case CommandType::Attack:
+		{
+			for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
+			{
+				if ((*RIter).BeforeSubjectUnit.UnitCode == _Unit->GetUnitData().UnitCode)
+				{
+					_Unit->SetUnitData((*RIter).BeforeSubjectUnit);
+					_Unit->SetMapPos((*RIter).BeforeSubjectUnitPos);
+				}
+				else if ((*RIter).BeforeTargetUnit.UnitCode == _Unit->GetUnitData().UnitCode)
+				{
+					_Unit->SetUnitData((*RIter).BeforeTargetUnit);
+				}
+			}
+			for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
+			{
+				if ((*RIter).BeforeSubjectUnit.UnitCode == _Unit->GetUnitData().UnitCode)
+				{
+					_Unit->SetUnitData((*RIter).BeforeSubjectUnit);
+					_Unit->SetMapPos((*RIter).BeforeSubjectUnitPos);
+				}
+				else if ((*RIter).BeforeTargetUnit.UnitCode == _Unit->GetUnitData().UnitCode)
+				{
+					_Unit->SetUnitData((*RIter).BeforeTargetUnit);
+				}
+			}
+		}
+		break;
+		case CommandType::Item:
+			break;
+		case CommandType::Wait:
+		{
+			for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
+			{
+				if ((*RIter).BeforeSubjectUnit.UnitCode == _Unit->GetUnitData().UnitCode)
+				{
+					_Unit->SetUnitData((*RIter).BeforeSubjectUnit);
+					_Unit->SetMapPos((*RIter).BeforeSubjectUnitPos);
+				}
+			}
+			for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
+			{
+				if ((*RIter).BeforeSubjectUnit.UnitCode == _Unit->GetUnitData().UnitCode)
+				{
+					_Unit->SetUnitData((*RIter).BeforeSubjectUnit);
+					_Unit->SetMapPos((*RIter).BeforeSubjectUnitPos);
+				}
+			}
+		}
+		break;
+		default:
+			break;
+		}
+		FERandom::AddRandomCount(-(*RIter).RandomNum);
+		int randc = FERandom::GetRandomCount();
+
+		UnitCommand::PopCommandList();
+
+		ChangeState(BattleState::Select);
+		return;
 	}
 }
 

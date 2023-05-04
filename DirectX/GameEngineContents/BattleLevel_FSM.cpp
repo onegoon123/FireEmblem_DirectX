@@ -494,6 +494,8 @@ void BattleLevel::BattleEnd()
 
 void BattleLevel::EnemyPhaseStart()
 {
+	IsSkip = false;
+
 	for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
 	{
 		if (true == _Unit->GetIsDie()) { continue; }
@@ -507,6 +509,16 @@ void BattleLevel::EnemyPhaseStart()
 
 void BattleLevel::EnemyPhaseUpdate(float _DeltaTime)
 {
+	if (GameEngineInput::IsDown("Start"))
+	{
+		IsSkip = true;
+	}
+	if (true == IsSkip)
+	{
+		UI_Phase->PhaseOff();
+		ChangeState(BattleState::EnemySelect);
+		return;
+	}
 	if (true == UI_Phase->PhaseUIEnd())
 	{
 		ChangeState(BattleState::EnemySelect);
@@ -612,6 +624,15 @@ void BattleLevel::EnemyMoveStart()
 
 void BattleLevel::EnemyMoveUpdate(float _DeltaTime)
 {
+	if (GameEngineInput::IsDown("Start"))
+	{
+		IsSkip = true;
+	}
+	if (true == IsSkip)
+	{
+		ChangeState(BattleState::EnemyBattle);
+		return;
+	}
 	MoveTimer += _DeltaTime * MoveSpeed;
 	if (true == UnitMoveAnim())
 	{
@@ -654,9 +675,12 @@ void BattleLevel::EnemyBattleUpdate(float _DeltaTime)
 {
 	static float CloseUpTimer = 0;
 	CloseUpTimer += _DeltaTime;
-	if (0.5f < CloseUpTimer)
+	if (0.5f < CloseUpTimer || true == IsSkip)
 	{
-		GameEngineCore::ChangeLevel("BattleAnimationLevel");
+		if (false == IsSkip)
+		{
+			GameEngineCore::ChangeLevel("BattleAnimationLevel");
+		}
 		CloseUpTimer = 0;
 		if (TargetUnit->GetIsDie())
 		{
@@ -722,7 +746,6 @@ void BattleLevel::GameOverStart()
 	Command = UnitCommand::GetCommandList();
 	RIter = Command.rbegin();
 	RIterEnd = Command.rend();
-	int a = 0;
 }
 void BattleLevel::GameOverUpdate(float _DeltaTime)
 {

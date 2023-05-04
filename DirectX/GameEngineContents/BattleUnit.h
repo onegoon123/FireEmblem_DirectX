@@ -47,9 +47,10 @@ public:
 		{
 			On();
 		}
+		SetIsTurnEnd(GetIsTurnEnd());
 	}
 
-	const Unit& GetUnitData()
+	Unit& GetUnitData()
 	{
 		return UnitData;
 	}

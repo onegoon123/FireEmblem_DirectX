@@ -57,19 +57,34 @@ void BattleLevel::Start()
 	PlayerUnits.push_back(NewActor);
 
 	NewActor = CreateActor<BattleUnit>();
+	NewActor->SetUnitCode(UnitIdentityCode::Wallace);
+	NewActor->SetMapPos({ 4, 3 });
+	NewActor->NewWeapon(ItemCode::IronLance);
+	PlayerUnits.push_back(NewActor);
+
+	NewActor = CreateActor<BattleUnit>();
+	NewActor->SetUnitCode(UnitIdentityCode::Kent);
+	NewActor->SetMapPos({ 3, 5 });
+	NewActor->NewWeapon(ItemCode::IronLance);
+	PlayerUnits.push_back(NewActor);
+
+	NewActor = CreateActor<BattleUnit>();
 	NewActor->SetUnitCode(UnitIdentityCode::Brigand);
-	NewActor->NewWeapon(ItemCode::IronAxe);
+	NewActor->GetUnitData().LevelUp(10);
+	NewActor->NewWeapon(ItemCode::IronAxe); 
 	NewActor->SetMapPos({ 8, 5 });
 	EnemyUnits.push_back(NewActor);
 
 	NewActor = CreateActor<BattleUnit>();
 	NewActor->SetUnitCode(UnitIdentityCode::Brigand);
+	NewActor->GetUnitData().LevelUp(10);
 	NewActor->NewWeapon(ItemCode::IronAxe);
 	NewActor->SetMapPos({ 9, 6 });
 	EnemyUnits.push_back(NewActor);
 
 	NewActor = CreateActor<BattleUnit>();
 	NewActor->SetUnitCode(UnitIdentityCode::Brigand);
+	NewActor->GetUnitData().LevelUp(10);
 	NewActor->NewWeapon(ItemCode::IronAxe);
 	NewActor->SetMapPos({ 9, 4 });
 	EnemyUnits.push_back(NewActor);

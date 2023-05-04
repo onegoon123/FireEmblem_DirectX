@@ -33,7 +33,10 @@ public:
 	{
 		CommandList.clear();
 	}
-
+	static void PopCommandList()
+	{
+		CommandList.pop_back();
+	}
 protected:
 
 private:

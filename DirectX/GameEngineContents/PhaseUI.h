@@ -18,6 +18,7 @@ public:
 
 	void PhaseOn(Faction _Faction);
 	bool PhaseUIEnd();
+	void PhaseOff();
 
 protected:
 	void Start() override;

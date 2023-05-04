@@ -97,7 +97,7 @@ MainStat Stat::LevelUp()
 	// 성장률 확률만큼 레벨업시 스텟 성장
 	MainStat UpValue;
 	
-	if (FERandom::RandomInt() < GrowthRates_HP == true) { MainStatValue.HP++; UpValue.HP++; }
+	if (FERandom::RandomInt() < GrowthRates_HP == true) { MainStatValue.HP++; UpValue.HP++;}
 	if (FERandom::RandomInt() < GrowthRates_Strength == true) { MainStatValue.Strength++; UpValue.Strength++; }
 	if (FERandom::RandomInt() < GrowthRates_Magic == true) { MainStatValue.Magic++; UpValue.Magic++; }
 	if (FERandom::RandomInt() < GrowthRates_Dexterity == true) { MainStatValue.Dexterity++; UpValue.Dexterity++; }

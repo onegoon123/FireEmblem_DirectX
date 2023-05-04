@@ -55,6 +55,10 @@ void BattleUnit::SetUnitCode(UnitIdentityCode _Code)
 	case UnitIdentityCode::Sain:
 		break;
 	case UnitIdentityCode::Kent:
+		SetName("ÄËÆ®");
+		UnitData.SetName("Kent");
+		ImageName = "Map_LynTest.png";
+		UnitData.IsPlayer = true;
 		break;
 	case UnitIdentityCode::Florina:
 		break;
@@ -62,8 +66,7 @@ void BattleUnit::SetUnitCode(UnitIdentityCode _Code)
 		break;
 	case UnitIdentityCode::Dorcas:
 		SetName("µ¹Ä«½º");
-		//UnitData.SetName("Dorcas");
-		UnitData.SetName("Wallace");
+		UnitData.SetName("Dorcas");
 		ImageName = "Map_LynTest.png";
 		UnitData.IsPlayer = true;
 		break;

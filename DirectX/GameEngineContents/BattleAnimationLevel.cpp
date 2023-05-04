@@ -44,13 +44,13 @@ void BattleAnimationLevel::Start()
 	TerrainRight->GetTransform()->SetWorldPosition({ 240, -112 });
 
 	UnitLeft = NewActor->CreateComponent<SpriteRenderer>();
-	UnitLeft->SetTexture("TestBattleBrigand.png");
-	UnitLeft->SetWorldScale({ 768, 512 });
+	UnitLeft->SetTexture("TestBattleLyn.png");
+	UnitLeft->SetWorldScale({ -768, 512 });
 	UnitLeft->GetTransform()->SetWorldPosition({ 0, 64 });
 
 	UnitRight = NewActor->CreateComponent<SpriteRenderer>();
-	UnitRight->SetTexture("TestBattleLyn.png");
-	UnitRight->SetWorldScale({ 768, 512 });
+	UnitRight->SetTexture("TestBattleBrigand.png");
+	UnitRight->SetWorldScale({ -768, 512 });
 	UnitRight->GetTransform()->SetWorldPosition({ 0, 64 });
 
 	UIRender = NewActor->CreateComponent<SpriteRenderer>();
@@ -61,7 +61,7 @@ void BattleAnimationLevel::Start()
 void BattleAnimationLevel::Update(float _DeltaTime)
 {
 	Timer += _DeltaTime;
-	if (2.0f < Timer)
+	if (1.1f < Timer)
 	{
 		GameEngineCore::ChangeLevel("BattleLevel");
 	}

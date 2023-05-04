@@ -29,6 +29,7 @@ void PhaseUI::PhaseOn(Faction _Faction)
 	}
 	Renderer->GetTransform()->SetLocalPosition({ 1316, 0 });
 	Renderer->On();
+	On();
 	Timer = 0;
 }
 
@@ -36,10 +37,16 @@ bool PhaseUI::PhaseUIEnd()
 {
 	if (2.2f < Timer)
 	{
-		Renderer->Off();
+		PhaseOff();
 		return true;
 	}
 	return false;
+}
+
+void PhaseUI::PhaseOff()
+{
+	Renderer->Off();
+	Off();
 }
 
 void PhaseUI::Start()

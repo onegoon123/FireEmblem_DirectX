@@ -72,6 +72,7 @@ private:
 	bool IsArrowOut = false;
 	bool IsEnemyRangeCheck = false;
 	bool IsMouseOn = false;
+	bool IsSkip = false;
 
 	// UI
 	std::shared_ptr <SelectUI> UI_Select = nullptr;

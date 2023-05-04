@@ -4,7 +4,8 @@
 #include "UnitCommand.h"
 void BattleLevel::UnitCommand_Item()
 {
-	UnitCommand::ItemUse();
+	// юс╫ц
+	UnitCommand::Wait(SelectUnit);
 	SelectUnit->SetIsTurnEnd(true);
 	ChangeState(BattleState::Select);
 }
