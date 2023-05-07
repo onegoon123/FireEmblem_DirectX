@@ -280,6 +280,12 @@ public:
 protected:
 
 private:
+
+	void WorldDecompose();
+	void LocalDecompose();
+
+	void AbsoluteReset();
+
 	void TransformUpdate();
 
 	TransformData TransData;

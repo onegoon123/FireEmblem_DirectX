@@ -159,7 +159,7 @@ void SelectUI::Start()
 
 	UnitData.Render = CreateComponent<SpriteRenderer>();
 	UnitData.Render->SetTexture("ActorUI.png");
-	UnitData.Render->GetTransform()->SetWorldScale({ 344, 152 });
+	UnitData.Render->GetTransform()->SetWorldScale({ 344, 152, 100 });
 	UnitData.BenchmarkHidePos = { -652, 228 };
 	UnitData.BenchmarkShowPos = { -292, 228 };
 	UnitData.ChangeDir(UIDir::None);

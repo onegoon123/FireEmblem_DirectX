@@ -15,7 +15,7 @@
 #include "SelectUI.h"
 #include "UnitCommandUI.h"
 #include "PhaseUI.h"
-
+#include "DebugWindow.h" // 임시
 void BattleLevel::ChangeState(BattleState _State)
 {
 
@@ -876,6 +876,14 @@ void BattleLevel::TimeStoneStart()
 		_Unit->GetRenderer()->SetIsBlur(true);
 	}
 	MainMap->GetRenderer()->SetIsBlur(true);
+
+	std::shared_ptr<DebugWindow> Window = GameEngineGUI::FindGUIWindowConvert<DebugWindow>("DebugWindow");
+	{
+		if (nullptr == Window)
+		{
+			MsgAssert("윈도우 테스트 코드 미작동");
+		}
+	}
 }
 
 void BattleLevel::TimeStoneUpdate(float _DeltaTime)

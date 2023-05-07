@@ -51,14 +51,8 @@
     <ClCompile Include="TileRender.cpp">
       <Filter>Battle\Map</Filter>
     </ClCompile>
-    <ClCompile Include="UnitCommand.cpp">
-      <Filter>Battle\Unit</Filter>
-    </ClCompile>
     <ClCompile Include="Unit.cpp">
       <Filter>Battle\Unit</Filter>
-    </ClCompile>
-    <ClCompile Include="FERandom.cpp">
-      <Filter>Battle\System</Filter>
     </ClCompile>
     <ClCompile Include="SpriteRenderer.cpp">
       <Filter>Component</Filter>
@@ -82,6 +76,12 @@
       <Filter>UI</Filter>
     </ClCompile>
     <ClCompile Include="BattleLevel_Battle.cpp">
+      <Filter>Battle\System</Filter>
+    </ClCompile>
+    <ClCompile Include="FERandom.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="UnitCommand.cpp">
       <Filter>Battle\System</Filter>
     </ClCompile>
   </ItemGroup>
@@ -131,14 +131,8 @@
     <ClInclude Include="TileRender.h">
       <Filter>Battle\Map</Filter>
     </ClInclude>
-    <ClInclude Include="UnitCommand.h">
-      <Filter>Battle\Unit</Filter>
-    </ClInclude>
     <ClInclude Include="Unit.h">
       <Filter>Battle\Unit</Filter>
-    </ClInclude>
-    <ClInclude Include="FERandom.h">
-      <Filter>Battle\System</Filter>
     </ClInclude>
     <ClInclude Include="SpriteRenderer.h">
       <Filter>Component</Filter>
@@ -155,11 +149,14 @@
     <ClInclude Include="DebugWindow.h">
       <Filter>UI</Filter>
     </ClInclude>
+    <ClInclude Include="FERandom.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="UnitCommand.h">
+      <Filter>Battle\System</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="Object">
-      <UniqueIdentifier>{4cc6ab6f-c175-463c-8377-17cda5d0f23f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Levels">
       <UniqueIdentifier>{b816690e-a0dd-45b5-b55c-a0c2ffa8da46}</UniqueIdentifier>
     </Filter>

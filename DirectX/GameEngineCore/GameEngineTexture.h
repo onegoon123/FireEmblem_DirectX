@@ -33,6 +33,7 @@ public:
 
 	GameEnginePixelColor()
 	{
+
 	}
 
 	GameEnginePixelColor(char _r, char _g, char _b, char _a)
@@ -92,6 +93,10 @@ public:
 		return NewTexture;
 	}
 
+	ID3D11ShaderResourceView* GetSRV()
+	{
+		return SRV;
+	}
 
 	ID3D11RenderTargetView* GetRTV()
 	{

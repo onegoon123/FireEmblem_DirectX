@@ -237,8 +237,8 @@ void BattleLevel::CursorMoveMouse()
 	{
 		int2 MovePos = MouseMapPos - CursorPos;
 		MainCursor->MoveMapPosLerp(MovePos.Normalize());
-		CursorUnitSelect();
 		CursorDirCheck();
+		CursorUnitSelect();
 	}
 
 
@@ -268,8 +268,8 @@ void BattleLevel::CursorAndArrowMoveMouse()
 	{
 		int2 MovePos = MouseMapPos - CursorPos;
 		MainCursor->MoveMapPosLerp(MovePos.Normalize());
-		AddArrow(MainCursor->GetMapPos());
 		CursorDirCheck();
+		AddArrow(MainCursor->GetMapPos());
 	}
 }
 

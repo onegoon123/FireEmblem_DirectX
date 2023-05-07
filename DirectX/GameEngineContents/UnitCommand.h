@@ -35,7 +35,7 @@ public:
 	static void PhaseStart(Faction _Faction);
 	static void PhaseEnd(Faction _Faction);
 
-	static std::list<UnitCommand> GetCommandList() { return CommandList; }
+	static std::list<UnitCommand>& GetCommandList() { return CommandList; }
 	static void SetCommandList(std::list<UnitCommand> _Value) { CommandList = _Value; }
 	static void ResetCommandList()
 	{
