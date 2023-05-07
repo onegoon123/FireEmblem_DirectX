@@ -1,13 +1,13 @@
 #pragma once
 #include <GameEngineBase/GameEngineString.h>
 #include <memory>
-#include "GameEngineNameObject.h"
+#include "GameEngineObject.h"
 #include <map>
 #include "imgui.h"
 #include "imgui_impl_win32.h"
 #include "imgui_impl_dx11.h"
 
-class GameEngineGUIWindow : public GameEngineNameObject, public std::enable_shared_from_this<GameEngineGUIWindow>
+class GameEngineGUIWindow : public GameEngineObject, public std::enable_shared_from_this<GameEngineGUIWindow>
 {
 	friend class GameEngineGUI;
 
