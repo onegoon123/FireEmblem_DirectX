@@ -11,6 +11,7 @@ class ArrowRender;
 class SelectUI;
 class UnitCommandUI;
 class PhaseUI;
+class FieldCommandUI;
 class BattleLevel : public GameEngineLevel
 {
 public:
@@ -80,6 +81,7 @@ private:
 	// UI
 	std::shared_ptr <SelectUI> UI_Select = nullptr;
 	std::shared_ptr <UnitCommandUI> UI_UnitCommand = nullptr;
+	std::shared_ptr <FieldCommandUI> UI_FieldCommand = nullptr;
 	std::shared_ptr <PhaseUI> UI_Phase = nullptr;
 
 	const float MoveSpeed = 10;
@@ -204,6 +206,19 @@ public:
 	void UnitCommand_Attack();
 	void UnitCommand_Exchange();
 	void UnitCommand_Cancel();
+private:
+
+#pragma endregion
+
+#pragma region FieldCommand
+
+public:
+	void FieldCommand_TimeStone();
+	void FieldCommand_ArmyUnit();
+	void FieldCommand_Setting();
+	void FieldCommand_Exit();
+	void FieldCommand_PhaseEnd();
+	void FieldCommand_Cancel();
 private:
 
 #pragma endregion

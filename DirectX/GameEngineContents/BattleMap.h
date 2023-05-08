@@ -19,6 +19,7 @@ enum class Terrain
 	River,		//강
 	Bridge,		//다리
 	Wall,		//벽
+	Fort,		//요새
 };
 
 

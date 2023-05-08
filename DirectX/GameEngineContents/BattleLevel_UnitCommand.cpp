@@ -55,6 +55,7 @@ void BattleLevel::UnitCommand_Attack()
 
 void BattleLevel::UnitCommand_Exchange()
 {
+	UnitCommand::Wait(SelectUnit);
 	SelectUnit->SetIsTurnEnd(true);
 	ChangeState(BattleState::Select);
 }

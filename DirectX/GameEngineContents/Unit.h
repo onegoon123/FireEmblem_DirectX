@@ -14,6 +14,7 @@ public:
 		UnitCode = _Other.UnitCode;
 		UnitStat = Stat(_Other.UnitStat);
 		CurrentHP = _Other.CurrentHP;
+		TerrainData = _Other.TerrainData;
 		TerrainDeffence = _Other.TerrainDeffence;
 		TerrainDodge = _Other.TerrainDodge;
 		IsTurnEnd = _Other.IsTurnEnd;
@@ -24,6 +25,7 @@ public:
 		UnitCode = _Other.UnitCode;
 		UnitStat = Stat(_Other.UnitStat);
 		CurrentHP = _Other.CurrentHP;
+		TerrainData = _Other.TerrainData;
 		TerrainDeffence = _Other.TerrainDeffence;
 		TerrainDodge = _Other.TerrainDodge;
 		IsTurnEnd = _Other.IsTurnEnd;
@@ -55,6 +57,20 @@ public:
 				CurrentHP += UpStat.HP;
 			}
 		}
+	}
+
+	void Recover(int _Value)
+	{
+		CurrentHP += _Value;
+		if (UnitStat.MainStatValue.HP < CurrentHP)
+		{
+			CurrentHP = UnitStat.MainStatValue.HP;
+		}
+	}
+
+	void RecoverPersent(float _Value)
+	{
+		Recover(static_cast<int>(std::roundf(UnitStat.MainStatValue.HP * _Value)));
 	}
 
 	int UnitCode = -1;

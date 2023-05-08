@@ -15,6 +15,7 @@
 #include "SelectUI.h"
 #include "UnitCommandUI.h"
 #include "PhaseUI.h"
+#include "FieldCommandUI.h"
 #include "DebugWindow.h" // 임시
 void BattleLevel::ChangeState(BattleState _State)
 {
@@ -109,6 +110,23 @@ void BattleLevel::PlayerPhaseStart()
 	{
 		if (true == _Unit->GetIsDie()) { continue; }
 		_Unit->SetIsTurnEnd(false);
+	}
+
+	// 지형에 따른 체력회복
+	for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
+	{
+		if (true == _Unit->GetIsDie()) { continue; }
+		switch (_Unit->GetUnitData().TerrainData)
+		{
+		case Terrain::Fort:
+			_Unit->GetUnitData().RecoverPersent(0.2f);
+			break;
+		case Terrain::Gate:
+			_Unit->GetUnitData().RecoverPersent(0.1f);
+			break;
+		default:
+			break;
+		}
 	}
 	UI_Phase->PhaseOn(Faction::Player);
 }
@@ -281,9 +299,7 @@ void BattleLevel::MoveWaitEnd()
 	// 정확한 위치로 다시 지정
 	SelectUnit->SetMapPos(MainCursor->GetMapPos());
 	Terrain TerrainData = MainMap->TerrainData[SelectUnit->GetMapPos().y][SelectUnit->GetMapPos().x];
-	int TerrainDodge = BattleMap::GetTerrainDodge(TerrainData);
-	int TerrainDef = BattleMap::GetTerrainDef(TerrainData);
-	SelectUnit->SetTerrain(TerrainData, TerrainDodge, TerrainDef);
+	SelectUnit->SetTerrain(TerrainData);
 }
 
 void BattleLevel::UnitCommandStart()
@@ -392,27 +408,17 @@ void BattleLevel::UnitCommandEnd()
 void BattleLevel::FieldCommandStart()
 {
 	//UI_UnitCommand->SetCommand(false, false);
-	//UI_UnitCommand->On();
+	UI_FieldCommand->On();
 	MainCursor->Off();
 }
 
 void BattleLevel::FieldCommandUpdate(float _DeltaTime)
 {
-	if (GameEngineInput::IsDown("ButtonA") || GameEngineInput::IsUp("LeftClick"))
-	{
-		ChangeState(BattleState::EnemyPhase);
-		return;
-	}
-	if (GameEngineInput::IsDown("ButtonB") || GameEngineInput::IsUp("RightClick"))
-	{
-		ChangeState(BattleState::Select);
-		return;
-	}
 }
 
 void BattleLevel::FieldCommandEnd()
 {
-	UI_UnitCommand->Off();
+	UI_FieldCommand->Off();
 	MainCursor->On();
 }
 
@@ -515,6 +521,23 @@ void BattleLevel::EnemyPhaseStart()
 	}
 	MainCursor->Off();
 	Tiles->EnemyTileClear();
+
+	// 지형에 따른 체력회복
+	for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
+	{
+		if (true == _Unit->GetIsDie()) { continue; }
+		switch (_Unit->GetUnitData().TerrainData)
+		{
+		case Terrain::Fort:
+			_Unit->GetUnitData().RecoverPersent(0.2f);
+			break;
+		case Terrain::Gate:
+			_Unit->GetUnitData().RecoverPersent(0.1f);
+			break;
+		default:
+			break;
+		}
+	}
 
 	UI_Phase->PhaseOn(Faction::Enemy);
 }
@@ -655,6 +678,8 @@ void BattleLevel::EnemyMoveUpdate(float _DeltaTime)
 void BattleLevel::EnemyMoveEnd()
 {
 	SelectUnit->SetMapPos(ArrowPos.back());
+	Terrain TerrainData = MainMap->TerrainData[SelectUnit->GetMapPos().y][SelectUnit->GetMapPos().x];
+	SelectUnit->SetTerrain(TerrainData);
 }
 
 void BattleLevel::EnemyBattleStart()

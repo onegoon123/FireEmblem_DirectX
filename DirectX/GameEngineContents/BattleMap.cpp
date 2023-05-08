@@ -25,7 +25,7 @@ void BattleMap::Start()
 	//	TerrainData[i].resize(15);
 	//}
 
-	TerrainData[0] = { Terrain::Cliff, Terrain::Plain, Terrain::Plain, Terrain::Forest, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Cliff, Terrain::Cliff, Terrain::Cliff, Terrain::Cliff, Terrain::Plain, Terrain::House };
+	TerrainData[0] = { Terrain::Cliff, Terrain::Plain, Terrain::Forest, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Cliff, Terrain::Cliff, Terrain::Cliff, Terrain::Cliff, Terrain::Plain, Terrain::House };
 	TerrainData[1] = { Terrain::Cliff, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Cliff, Terrain::Forest, Terrain::Plain };
 	TerrainData[2] = { Terrain::Cliff, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Forest, Terrain::Plain };
 	TerrainData[3] = { Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain };
@@ -42,31 +42,23 @@ int BattleMap::GetTerrainCostFoot(Terrain _Value)
 	switch (_Value)
 	{
 	case Terrain::Plain:
-		return 1;
-	case Terrain::None:
-		return 99;
-	case Terrain::Forest:
-		return 2;
-	case Terrain::Cliff:
-		return 99;
-	case Terrain::Mountain:
-		return 4;
-	case Terrain::Peak:
-		return 99;
-	case Terrain::Door:
-		return 99;
+	case Terrain::Fort:
 	case Terrain::Gate:
-		return 1;
 	case Terrain::House:
-		return 1;
-	case Terrain::Sea:
-		return 99;
-	case Terrain::River:
-		return 5;
 	case Terrain::Bridge:
 		return 1;
+	case Terrain::Forest:
+		return 2;
+	case Terrain::Mountain:
+		return 4;
+	case Terrain::River:
+		return 5;
+	case Terrain::None:
+	case Terrain::Cliff:
+	case Terrain::Peak:
+	case Terrain::Door:
+	case Terrain::Sea:
 	case Terrain::Wall:
-		return 99;
 	default:
 		return 99;
 	}
@@ -89,6 +81,7 @@ int BattleMap::GetTerrainDodge(Terrain _Value)
 		return 10;
 	case Terrain::Gate:
 	case Terrain::Forest:
+	case Terrain::Fort:
 		return 20;
 	case Terrain::Mountain:
 		return 30;
@@ -117,6 +110,7 @@ int BattleMap::GetTerrainDef(Terrain _Value)
 	case Terrain::Mountain:
 		return 1;
 	case Terrain::Peak:
+	case Terrain::Fort:
 		return 2;
 	case Terrain::Gate:
 		return 3;

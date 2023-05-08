@@ -12,6 +12,7 @@
 #include "ContentsEnum.h"
 #include "SelectUI.h"
 #include "UnitCommandUI.h"
+#include "FieldCommandUI.h"
 #include "PhaseUI.h"
 
 BattleLevel::BattleLevel()
@@ -46,25 +47,29 @@ void BattleLevel::Start()
 
 	std::shared_ptr<BattleUnit> NewActor = CreateActor<BattleUnit>();
 	NewActor->SetUnitCode(UnitIdentityCode::Lyn);
-	NewActor->SetMapPos({ 4, 5 });
 	NewActor->NewWeapon(ItemCode::IronSword);
+	NewActor->SetMapPos({ 4, 5 });
+	NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
 	PlayerUnits.push_back(NewActor);
 
 	//NewActor = CreateActor<BattleUnit>();
 	//NewActor->SetUnitCode(UnitIdentityCode::Dorcas);
 	//NewActor->SetMapPos({ 5, 4 });
+	//NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
 	//NewActor->NewWeapon(ItemCode::IronAxe);
 	//PlayerUnits.push_back(NewActor);
 
 	//NewActor = CreateActor<BattleUnit>();
 	//NewActor->SetUnitCode(UnitIdentityCode::Wallace);
 	//NewActor->SetMapPos({ 6, 5 });
+	//NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
 	//NewActor->NewWeapon(ItemCode::IronLance);
 	//PlayerUnits.push_back(NewActor);
 
 	//NewActor = CreateActor<BattleUnit>();
 	//NewActor->SetUnitCode(UnitIdentityCode::Kent);
 	//NewActor->SetMapPos({ 3, 5 });
+	//NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
 	//NewActor->NewWeapon(ItemCode::IronAxe);
 	//PlayerUnits.push_back(NewActor);
 
@@ -72,18 +77,21 @@ void BattleLevel::Start()
 	NewActor->SetUnitCode(UnitIdentityCode::Brigand);
 	NewActor->NewWeapon(ItemCode::IronAxe);
 	NewActor->SetMapPos({ 8, 5 });
+	NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
 	EnemyUnits.push_back(NewActor);
 
 	NewActor = CreateActor<BattleUnit>();
 	NewActor->SetUnitCode(UnitIdentityCode::Brigand);
 	NewActor->NewWeapon(ItemCode::IronAxe);
 	NewActor->SetMapPos({ 9, 6 });
+	NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
 	EnemyUnits.push_back(NewActor);
 
 	NewActor = CreateActor<BattleUnit>();
 	NewActor->SetUnitCode(UnitIdentityCode::Brigand);
 	NewActor->NewWeapon(ItemCode::IronAxe);
 	NewActor->SetMapPos({ 9, 4 });
+	NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
 	EnemyUnits.push_back(NewActor);
 
 	
@@ -107,6 +115,11 @@ void BattleLevel::Start()
 	UI_UnitCommand->GetTransform()->SetWorldPosition({ 448, 288 });
 	UI_UnitCommand->Setting(this);
 	UI_UnitCommand->Off();
+
+	UI_FieldCommand = CreateActor<FieldCommandUI>();
+	UI_FieldCommand->GetTransform()->SetWorldPosition({ 448, 288 });
+	UI_FieldCommand->Setting(this);
+	UI_FieldCommand->Off();
 
 	UI_Phase = CreateActor<PhaseUI>();
 	UI_Phase->GetTransform()->SetWorldPosition({ 448, 288 });

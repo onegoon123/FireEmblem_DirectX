@@ -1,93 +1,75 @@
 #include "PrecompileHeader.h"
-#include "UnitCommandUI.h"
+#include "FieldCommandUI.h"
 #include <GameEnginePlatform/GameEngineInput.h>
-#include "SpriteRenderer.h"
 #include "BattleLevel.h"
-UnitCommandUI::UnitCommandUI()
+#include "SpriteRenderer.h"
+FieldCommandUI::FieldCommandUI() 
 {
 	CommandFunctions.reserve(5);
 }
 
-UnitCommandUI::~UnitCommandUI()
+FieldCommandUI::~FieldCommandUI() 
 {
-	LevelPtr = nullptr;
 }
 
-void UnitCommandUI::Setting(BattleLevel* _Level)
+void FieldCommandUI::Setting(BattleLevel* _Level)
 {
 	LevelPtr = _Level;
-	CancelFunction = std::bind(&BattleLevel::UnitCommand_Cancel, LevelPtr);
-}
-
-void UnitCommandUI::SetCommand(bool _IsAttackable, bool _IsCloseUnit)
-{
-
-	if (true == _IsAttackable)
-	{
-		CommandFunctions.push_back(std::bind(&BattleLevel::UnitCommand_Attack, LevelPtr));	// 공격 커맨드
-	}
-	CommandFunctions.push_back(std::bind(&BattleLevel::UnitCommand_Item, LevelPtr));		// 소지품 커맨드
-	if (true == _IsCloseUnit)
-	{
-		CommandFunctions.push_back(std::bind(&BattleLevel::UnitCommand_Exchange, LevelPtr));// 교환 커맨드
-	}
-
-	CommandFunctions.push_back(std::bind(&BattleLevel::UnitCommand_Wait, LevelPtr));// 대기 커맨드
-
-	switch (CommandFunctions.size())
-	{
-	case 2:
-		WindowRender->SetTexture("Select2.png");
-		break;
-	case 3:
-		WindowRender->SetTexture("Select3.png");
-		break;
-	case 4:
-		WindowRender->SetTexture("Select4.png");
-		break;
-	default:
-		break;
-	}
-
+	CancelFunction = std::bind(&BattleLevel::FieldCommand_Cancel, LevelPtr);
+	CommandFunctions.push_back(std::bind(&BattleLevel::FieldCommand_TimeStone, LevelPtr));
+	CommandFunctions.push_back(std::bind(&BattleLevel::FieldCommand_ArmyUnit, LevelPtr));
+	CommandFunctions.push_back(std::bind(&BattleLevel::FieldCommand_Setting, LevelPtr));
+	CommandFunctions.push_back(std::bind(&BattleLevel::FieldCommand_Exit, LevelPtr));
+	CommandFunctions.push_back(std::bind(&BattleLevel::FieldCommand_PhaseEnd, LevelPtr));
 	CurrentCursor = 0;
 	SelectRender->GetTransform()->SetLocalPosition({ 330, 152 });
 	CursorRender->GetTransform()->SetLocalPosition({ 224, 144 });
-
 }
 
-void UnitCommandUI::Start()
+void FieldCommandUI::On()
+{
+	GameEngineActor::On();
+	IsOnFrame = true;
+	CurrentCursor = 0;
+	SelectRender->GetTransform()->SetLocalPosition({ 330, 152 });
+	CursorRender->GetTransform()->SetLocalPosition({ 224, 144 });
+}
+
+void FieldCommandUI::Start()
 {
 	WindowRender = CreateComponent<SpriteRenderer>();
 	WindowRender->GetTransform()->SetWorldScale({ 196, 356 });
 	WindowRender->GetTransform()->SetLocalPosition({ 334, 36 });
 	WindowRender->GetTransform()->SetWorldRotation({ 0,0 });
-	WindowRender->SetTexture("Select4.png");
+	WindowRender->SetTexture("FieldCommand.png");
 
 	SelectRender = CreateComponent<SpriteRenderer>();
 	SelectRender->GetTransform()->SetWorldScale({ 144, 20 });
 	SelectRender->GetTransform()->SetLocalPosition({ 330, 152 });
-	SelectRender->SetTexture("CommandSelect.png");
+	SelectRender->SetTexture("FieldCommandSelect.png");
 
 	CursorRender = CreateComponent<SpriteRenderer>();
 	CursorRender->GetTransform()->SetWorldScale({ 64, 64 });
 	CursorRender->GetTransform()->SetLocalPosition({ 224, 144 });
 	CursorRender->SetTexture("CommandCursor.png");
-
 }
 
-void UnitCommandUI::Update(float _DeltaTime)
+void FieldCommandUI::Update(float _DeltaTime)
 {
+	if (true == IsOnFrame)
+	{
+		IsOnFrame = false;
+		return;
+	}
 
 	if (GameEngineInput::IsDown("ButtonA") || GameEngineInput::IsUp("LeftClick"))
 	{
 		CommandFunctions[CurrentCursor]();
-		CommandFunctions.resize(0);
 		return;
 	}
 	if (GameEngineInput::IsDown("ButtonB") || GameEngineInput::IsUp("RightClick"))
 	{
 		CancelFunction();
-		CommandFunctions.resize(0);
 		return;
 	}
 

@@ -176,6 +176,10 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="BattleLevel_Battle.cpp" />
+    <ClCompile Include="BattleLevel_FieldCommand.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="BattleLevel_FSM.cpp">
       <SubType>
       </SubType>
@@ -200,6 +204,10 @@
     </ClCompile>
     <ClCompile Include="FECore.cpp" />
     <ClCompile Include="FERandom.cpp" />
+    <ClCompile Include="FieldCommandUI.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="Int2.cpp">
       <SubType>
       </SubType>
@@ -289,6 +297,10 @@
     </ClInclude>
     <ClInclude Include="FECore.h" />
     <ClInclude Include="FERandom.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="FieldCommandUI.h">
       <SubType>
       </SubType>
     </ClInclude>

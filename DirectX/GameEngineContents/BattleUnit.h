@@ -54,11 +54,11 @@ public:
 		SetIsTurnEnd(GetIsTurnEnd());
 	}
 
-	void SetTerrain(Terrain _TerrainData, int _TerrainDodge, int _TerrainDeffence)
+	void SetTerrain(Terrain _TerrainData)
 	{
 		UnitData.TerrainData = _TerrainData;
-		UnitData.TerrainDodge = _TerrainDodge;
-		UnitData.TerrainDeffence = _TerrainDeffence;
+		UnitData.TerrainDodge = BattleMap::GetTerrainDodge(_TerrainData);
+		UnitData.TerrainDeffence = BattleMap::GetTerrainDef(_TerrainData);
 	}
 
 	Unit& GetUnitData()
