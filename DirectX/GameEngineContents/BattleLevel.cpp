@@ -56,11 +56,11 @@ void BattleLevel::Start()
 	NewActor->NewWeapon(ItemCode::IronAxe);
 	PlayerUnits.push_back(NewActor);
 
-	NewActor = CreateActor<BattleUnit>();
-	NewActor->SetUnitCode(UnitIdentityCode::Wallace);
-	NewActor->SetMapPos({ 6, 5 });
-	NewActor->NewWeapon(ItemCode::IronLance);
-	PlayerUnits.push_back(NewActor);
+	//NewActor = CreateActor<BattleUnit>();
+	//NewActor->SetUnitCode(UnitIdentityCode::Wallace);
+	//NewActor->SetMapPos({ 6, 5 });
+	//NewActor->NewWeapon(ItemCode::IronLance);
+	//PlayerUnits.push_back(NewActor);
 
 	NewActor = CreateActor<BattleUnit>();
 	NewActor->SetUnitCode(UnitIdentityCode::Kent);

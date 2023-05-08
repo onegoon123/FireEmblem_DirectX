@@ -458,7 +458,7 @@ void BattleLevel::BattleUpdate(float _DeltaTime)
 			}
 			if (false == IsAliveUnit)
 			{
-				ChangeState(BattleState::GameOver);
+				ChangeState(BattleState::TimeStone);
 				return;
 			}
 		}
@@ -705,7 +705,7 @@ void BattleLevel::EnemyBattleUpdate(float _DeltaTime)
 			}
 			if (false == IsAliveUnit)
 			{
-				ChangeState(BattleState::GameOver);
+				ChangeState(BattleState::TimeStone);
 				return;
 			}
 		}
@@ -860,7 +860,6 @@ void BattleLevel::TimeStoneStart()
 
 	Tiles->Clear();
 	MainCursor->Off();
-
 	Command = UnitCommand::GetCommandList();
 	RIter = Command.rbegin();
 	RIterEnd = Command.rend();
@@ -875,18 +874,6 @@ void BattleLevel::TimeStoneStart()
 	}
 	MainMap->GetRenderer()->SetIsBlur(true);
 
-	std::shared_ptr<DebugWindow> Window = GameEngineGUI::FindGUIWindowConvert<DebugWindow>("DebugWindow");
-	{
-		if (nullptr == Window)
-		{
-			MsgAssert("윈도우 테스트 코드 미작동");
-		}
-		Window->Text = "";
-		for (UnitCommand _Command : Command)
-		{
-			Window->Text += _Command.Record + '\n';
-		}
-	}
 }
 
 void BattleLevel::TimeStoneUpdate(float _DeltaTime)
@@ -945,6 +932,10 @@ void BattleLevel::TimeStoneUpdate(float _DeltaTime)
 		if (GameEngineInput::IsDown("Up"))
 		{
 			if (RIter == RIterEnd) {
+				return;
+			}
+			if (RewindNum + 1 == Command.size())
+			{
 				return;
 			}
 			RewindNum++;
@@ -1177,7 +1168,24 @@ void BattleLevel::TimeStoneUpdate(float _DeltaTime)
 		return;
 	}
 
-
+	std::shared_ptr<DebugWindow> Window = GameEngineGUI::FindGUIWindowConvert<DebugWindow>("DebugWindow");
+	{
+		if (nullptr == Window)
+		{
+			MsgAssert("윈도우 테스트 코드 미작동");
+		}
+		Window->Text = "";
+		size_t i = Command.size();
+		for (UnitCommand _Command : Command)
+		{
+			Window->Text += _Command.Record;
+			if (RewindNum == --i)
+			{
+			Window->Text += " <";
+			}
+			Window->Text += '\n';
+		}
+	}
 }
 
 void BattleLevel::TimeStoneEnd()

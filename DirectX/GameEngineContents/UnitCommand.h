@@ -61,8 +61,8 @@ private:
 	Unit BeforeTargetUnit = Unit();
 	Unit AfterSubjectUnit = Unit();
 	Unit AfterTargetUnit = Unit();
-	int2 BeforeSubjectUnitPos = int2();
-	int2 AfterSubjectUnitPos = int2();
+	int2 BeforeSubjectUnitPos = int2(-1, -1);
+	int2 AfterSubjectUnitPos = int2(-1, -1);
 	int RandomNum = 0;
 	std::string Record = "";
 };
