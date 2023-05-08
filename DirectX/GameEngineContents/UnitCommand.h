@@ -8,9 +8,7 @@
 		Item,
 		Wait,
 		PlayerPhaseStart,
-		PlayerPhaseEnd,
 		EnemyPhaseStart,
-		EnemyPhaseEnd,
 	};
 
 struct AttackCommand
@@ -19,6 +17,14 @@ struct AttackCommand
 	Unit TargetUnit = Unit();
 	bool IsCritical = false;
 	bool IsHit = false;
+
+	AttackCommand& ChangeOrder()
+	{
+		Unit Temp = SubjectUnit;
+		SubjectUnit = TargetUnit;
+		TargetUnit = Temp;
+		return (*this);
+	}
 };
 class UnitCommand
 {
@@ -30,10 +36,11 @@ public:
 
 
 	static std::list<AttackCommand> Attack(std::shared_ptr<BattleUnit> _SubjectUnit, std::shared_ptr<BattleUnit> _TargetUnit);
+	static AttackCommand AttackCalculation(Unit& _SubjectUnit, Unit& _TargetUnit);
+
 	static void Wait(std::shared_ptr<BattleUnit> _SubjectUnit);
 	static void ItemUse() {}
 	static void PhaseStart(Faction _Faction);
-	static void PhaseEnd(Faction _Faction);
 
 	static std::list<UnitCommand>& GetCommandList() { return CommandList; }
 	static void SetCommandList(std::list<UnitCommand> _Value) { CommandList = _Value; }

@@ -500,7 +500,6 @@ void BattleLevel::BattleEnd()
 
 void BattleLevel::EnemyPhaseStart()
 {
-	UnitCommand::PhaseEnd(Faction::Player);
 	UnitCommand::PhaseStart(Faction::Enemy);
 
 	IsSkip = false;
@@ -553,7 +552,6 @@ void BattleLevel::EnemySelectStart()
 		}
 	}
 
-	UnitCommand::PhaseEnd(Faction::Enemy);
 	ChangeState(BattleState::PlayerPhase);
 }
 
@@ -883,6 +881,11 @@ void BattleLevel::TimeStoneStart()
 		{
 			MsgAssert("윈도우 테스트 코드 미작동");
 		}
+		Window->Text = "";
+		for (UnitCommand _Command : Command)
+		{
+			Window->Text += _Command.Record + '\n';
+		}
 	}
 }
 
@@ -1000,7 +1003,7 @@ void BattleLevel::TimeStoneUpdate(float _DeltaTime)
 
 				break;
 			}
-			case CommandType::PlayerPhaseEnd:
+			case CommandType::EnemyPhaseStart:
 			{
 				static std::list<UnitCommand>::reverse_iterator NewRIter;
 				NewRIter = RIter;
@@ -1024,7 +1027,7 @@ void BattleLevel::TimeStoneUpdate(float _DeltaTime)
 				}
 				break;
 			}
-			case CommandType::EnemyPhaseEnd:
+			case CommandType::PlayerPhaseStart:
 			{
 				static std::list<UnitCommand>::reverse_iterator NewRIter;
 				NewRIter = RIter;
@@ -1050,9 +1053,6 @@ void BattleLevel::TimeStoneUpdate(float _DeltaTime)
 				}
 				break;
 			}
-			case CommandType::PlayerPhaseStart:
-			case CommandType::EnemyPhaseStart:
-				break;
 
 			case CommandType::None:
 			{
@@ -1135,8 +1135,6 @@ void BattleLevel::TimeStoneUpdate(float _DeltaTime)
 			}
 			case CommandType::PlayerPhaseStart:
 			case CommandType::EnemyPhaseStart:
-			case CommandType::PlayerPhaseEnd:
-			case CommandType::EnemyPhaseEnd:
 			{
 				for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
 				{

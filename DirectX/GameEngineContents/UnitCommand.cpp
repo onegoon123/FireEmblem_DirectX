@@ -3,11 +3,11 @@
 #include "FERandom.h"
 std::list<UnitCommand> UnitCommand::CommandList = std::list<UnitCommand>();
 
-UnitCommand::UnitCommand() 
+UnitCommand::UnitCommand()
 {
 }
 
-UnitCommand::~UnitCommand() 
+UnitCommand::~UnitCommand()
 {
 }
 
@@ -23,42 +23,10 @@ std::list<AttackCommand> UnitCommand::Attack(std::shared_ptr<BattleUnit> _Subjec
 	CommandRecord.BeforeTargetUnit = Unit(TargetUnit);
 	CommandRecord.BeforeSubjectUnitPos = _SubjectUnit->GetBeforeMapPos();
 	CommandRecord.AfterSubjectUnitPos = _SubjectUnit->GetMapPos();
+	CommandRecord.Record = std::string(_SubjectUnit->GetName()) + "이(가) 공격했다.";
 
-	{
-		AttackCommand NewAttack;
-		int UnitHit = SubjectUnit.UnitStat.GetHitPoint();
-		int TargetDodge = TargetUnit.UnitStat.GetDodgePoint();
-		int TerrainDodge = TargetUnit.TerrainDodge;
-
-		int HitPercentage = UnitHit - (TargetDodge + TerrainDodge);
-		int CriticalPercentage = SubjectUnit.UnitStat.GetCriticalPoint() - TargetUnit.UnitStat.GetCriticalDodgePoint();
-
-		NewAttack.IsHit = FERandom::RandomInt() < HitPercentage;
-		NewAttack.IsCritical = FERandom::RandomInt() < CriticalPercentage;
-		CommandRecord.RandomNum += 2;
-
-		int Damage = (SubjectUnit.UnitStat.GetAttackPoint() * (NewAttack.IsCritical ? 3 : 1));
-		Damage = std::max<int>(1, Damage - TargetUnit.UnitStat.MainStatValue.Defense);
-
-		if (true == NewAttack.IsHit)
-		{
-			TargetUnit.CurrentHP = std::max<int>(0, TargetUnit.CurrentHP - Damage);
-			SubjectUnit.UnitStat.EquipWeapon->Uses--;
-
-			if (0 == TargetUnit.CurrentHP)
-			{
-				TargetUnit.IsDie = true;
-			}
-		}
-		
-		NewAttack.TargetUnit = TargetUnit;
-		NewAttack.SubjectUnit = SubjectUnit;
-
-		AttackList.push_back(NewAttack);
-
-		//MessageBoxA(nullptr, SubjectUnit.ToString().c_str(), (std::string(_SubjectUnit->GetName()) + "(이)가 공격").c_str(), MB_OK);
-		//MessageBoxA(nullptr, TargetUnit.ToString().c_str(), (std::string(_TargetUnit->GetName()) + "(이)가 대미지").c_str(), MB_OK);
-	}
+	AttackList.push_back(AttackCalculation(SubjectUnit, TargetUnit));
+	CommandRecord.RandomNum += 2;
 
 	if (true == TargetUnit.IsDie)
 	{
@@ -69,37 +37,8 @@ std::list<AttackCommand> UnitCommand::Attack(std::shared_ptr<BattleUnit> _Subjec
 		return AttackList;
 	}
 
-	{
-		AttackCommand NewAttack;
-		int UnitHit = TargetUnit.UnitStat.GetHitPoint();
-		int TargetDodge = SubjectUnit.UnitStat.GetDodgePoint();
-		int TerrainDodge = SubjectUnit.TerrainDodge;
-
-		int HitPercentage = UnitHit - (TargetDodge + TerrainDodge);
-		int CriticalPercentage = TargetUnit.UnitStat.GetCriticalPoint() - SubjectUnit.UnitStat.GetCriticalDodgePoint();
-
-		NewAttack.IsHit = FERandom::RandomInt() < HitPercentage;
-		NewAttack.IsCritical = FERandom::RandomInt() < CriticalPercentage;
-		CommandRecord.RandomNum += 2;
-
-		int Damage = (TargetUnit.UnitStat.GetAttackPoint() * (NewAttack.IsCritical ? 3 : 1));
-		Damage = std::max<int>(1, Damage - SubjectUnit.UnitStat.MainStatValue.Defense);
-		if (true == NewAttack.IsHit)
-		{
-			SubjectUnit.CurrentHP = std::max<int>(0, SubjectUnit.CurrentHP - Damage);
-			TargetUnit.UnitStat.EquipWeapon->Uses--;
-			if (0 == SubjectUnit.CurrentHP)
-			{
-				SubjectUnit.IsDie = true;
-			}
-		}
-
-		NewAttack.TargetUnit = TargetUnit;
-		NewAttack.SubjectUnit = SubjectUnit;
-		AttackList.push_back(NewAttack);
-		//MessageBoxA(nullptr, TargetUnit.ToString().c_str(), (std::string(_TargetUnit->GetName()) + "(이)가 공격").c_str(), MB_OK);
-		//MessageBoxA(nullptr, SubjectUnit.ToString().c_str(), (std::string(_SubjectUnit->GetName()) + "(이)가 대미지").c_str(), MB_OK);
-	}
+	AttackList.push_back(AttackCalculation(TargetUnit, SubjectUnit).ChangeOrder());
+	CommandRecord.RandomNum += 2;
 
 	if (true == SubjectUnit.IsDie)
 	{
@@ -112,77 +51,54 @@ std::list<AttackCommand> UnitCommand::Attack(std::shared_ptr<BattleUnit> _Subjec
 
 	if (TargetUnit.UnitStat.GetAttackSpeedPoint() + 4 <= SubjectUnit.UnitStat.GetAttackSpeedPoint())
 	{
-		AttackCommand NewAttack;
-		int UnitHit = SubjectUnit.UnitStat.GetHitPoint();
-		int TargetDodge = TargetUnit.UnitStat.GetDodgePoint();
-		int TerrainDodge = TargetUnit.TerrainDodge;
-
-		int HitPercentage = UnitHit - (TargetDodge + TerrainDodge);
-		int CriticalPercentage = SubjectUnit.UnitStat.GetCriticalPoint() - TargetUnit.UnitStat.GetCriticalDodgePoint();
-
-		NewAttack.IsHit = FERandom::RandomInt() < HitPercentage;
-		NewAttack.IsCritical = FERandom::RandomInt() < CriticalPercentage;
+		AttackList.push_back(AttackCalculation(SubjectUnit, TargetUnit));
 		CommandRecord.RandomNum += 2;
-
-		int Damage = (SubjectUnit.UnitStat.GetAttackPoint() * (NewAttack.IsCritical ? 3 : 1));
-		Damage = std::max<int>(1, Damage - TargetUnit.UnitStat.MainStatValue.Defense);
-
-		if (true == NewAttack.IsHit)
-		{
-			TargetUnit.CurrentHP = std::max<int>(0, TargetUnit.CurrentHP - Damage);
-			SubjectUnit.UnitStat.EquipWeapon->Uses--;
-			if (0 == TargetUnit.CurrentHP)
-			{
-				TargetUnit.IsDie = true;
-			}
-		}
-
-		NewAttack.TargetUnit = TargetUnit;
-		NewAttack.SubjectUnit = SubjectUnit;
-		AttackList.push_back(NewAttack);
-		//MessageBoxA(nullptr, SubjectUnit.ToString().c_str(), (std::string(_SubjectUnit->GetName()) + "(이)가 공격").c_str(), MB_OK);
-		//MessageBoxA(nullptr, TargetUnit.ToString().c_str(), (std::string(_TargetUnit->GetName()) + "(이)가 대미지").c_str(), MB_OK);
 	}
 	else if (SubjectUnit.UnitStat.GetAttackSpeedPoint() + 4 <= TargetUnit.UnitStat.GetAttackSpeedPoint())
 	{
-		AttackCommand NewAttack;
-		int UnitHit = TargetUnit.UnitStat.GetHitPoint();
-		int TargetDodge = SubjectUnit.UnitStat.GetDodgePoint();
-		int TerrainDodge = SubjectUnit.TerrainDodge;
-
-		int HitPercentage = UnitHit - (TargetDodge + TerrainDodge);
-		int CriticalPercentage = TargetUnit.UnitStat.GetCriticalPoint() - SubjectUnit.UnitStat.GetCriticalDodgePoint();
-
-		NewAttack.IsHit = FERandom::RandomInt() < HitPercentage;
-		NewAttack.IsCritical = FERandom::RandomInt() < CriticalPercentage;
+		AttackList.push_back(AttackCalculation(TargetUnit, SubjectUnit).ChangeOrder());
 		CommandRecord.RandomNum += 2;
-
-		int Damage = (TargetUnit.UnitStat.GetAttackPoint() * (NewAttack.IsCritical ? 3 : 1));
-		Damage = std::max<int>(1, Damage - SubjectUnit.UnitStat.MainStatValue.Defense);
-
-		if (true == NewAttack.IsHit)
-		{
-			SubjectUnit.CurrentHP = std::max<int>(0, SubjectUnit.CurrentHP - Damage);
-			TargetUnit.UnitStat.EquipWeapon->Uses--;
-			if (0 == SubjectUnit.CurrentHP)
-			{
-				SubjectUnit.IsDie = true;
-			}
-		}
-
-		NewAttack.TargetUnit = TargetUnit;
-		NewAttack.SubjectUnit = SubjectUnit;
-		AttackList.push_back(NewAttack);
-		//MessageBoxA(nullptr, TargetUnit.ToString().c_str(), (std::string(_TargetUnit->GetName()) + "(이)가 공격").c_str(), MB_OK);
-		//MessageBoxA(nullptr, SubjectUnit.ToString().c_str(), (std::string(_SubjectUnit->GetName()) + "(이)가 대미지").c_str(), MB_OK);
 	}
 
 	CommandRecord.AfterSubjectUnit = SubjectUnit;
 	CommandRecord.AfterSubjectUnit.IsTurnEnd = true;
 	CommandRecord.AfterTargetUnit = TargetUnit;
-	CommandRecord.Record = std::string(_TargetUnit->GetName()) + "에게 " + std::to_string(CommandRecord.BeforeTargetUnit.CurrentHP - CommandRecord.AfterTargetUnit.CurrentHP) + "의 대미지";
 	CommandList.push_back(CommandRecord);
 	return AttackList;
+}
+
+AttackCommand UnitCommand::AttackCalculation(Unit& _SubjectUnit, Unit& _TargetUnit)
+{
+
+	AttackCommand NewAttack;
+	int UnitHit = _SubjectUnit.UnitStat.GetHitPoint();
+	int TargetDodge = _TargetUnit.UnitStat.GetDodgePoint();
+	int TerrainDodge = _TargetUnit.TerrainDodge;
+
+	int HitPercentage = UnitHit - (TargetDodge + TerrainDodge);
+	int CriticalPercentage = _SubjectUnit.UnitStat.GetCriticalPoint() - _TargetUnit.UnitStat.GetCriticalDodgePoint();
+
+	NewAttack.IsHit = FERandom::RandomInt() < HitPercentage;
+	NewAttack.IsCritical = FERandom::RandomInt() < CriticalPercentage;
+
+	int Damage = (_SubjectUnit.UnitStat.GetAttackPoint() * (NewAttack.IsCritical ? 3 : 1));
+	Damage = std::max<int>(1, Damage - _TargetUnit.UnitStat.MainStatValue.Defense);
+
+	if (true == NewAttack.IsHit)
+	{
+		_TargetUnit.CurrentHP = std::max<int>(0, _TargetUnit.CurrentHP - Damage);
+		_SubjectUnit.UnitStat.EquipWeapon->Uses--;
+
+		if (0 == _TargetUnit.CurrentHP)
+		{
+			_TargetUnit.IsDie = true;
+		}
+	}
+
+	NewAttack.TargetUnit = _TargetUnit;
+	NewAttack.SubjectUnit = _SubjectUnit;
+
+	return NewAttack;
 }
 
 void UnitCommand::Wait(std::shared_ptr<BattleUnit> _SubjectUnit)
@@ -194,7 +110,7 @@ void UnitCommand::Wait(std::shared_ptr<BattleUnit> _SubjectUnit)
 	CommandRecord.AfterSubjectUnit.IsTurnEnd = true;
 	CommandRecord.BeforeSubjectUnitPos = _SubjectUnit->GetBeforeMapPos();
 	CommandRecord.AfterSubjectUnitPos = _SubjectUnit->GetMapPos();
-
+	CommandRecord.Record = std::string(_SubjectUnit->GetName()) + "이(가) 대기했다";
 	CommandList.push_back(CommandRecord);
 }
 
@@ -210,9 +126,11 @@ void UnitCommand::PhaseStart(Faction _Faction)
 	}
 	case Faction::Player:
 		CommandRecord.TypeValue = CommandType::PlayerPhaseStart;
+		CommandRecord.Record = "PLAYER PHASE 개시";
 		break;
 	case Faction::Enemy:
 		CommandRecord.TypeValue = CommandType::EnemyPhaseStart;
+		CommandRecord.Record = "ENEMY PHASE 개시";
 		break;
 	default:
 		break;
@@ -220,24 +138,3 @@ void UnitCommand::PhaseStart(Faction _Faction)
 	CommandList.push_back(CommandRecord);
 }
 
-void UnitCommand::PhaseEnd(Faction _Faction)
-{
-	UnitCommand CommandRecord;
-	switch (_Faction)
-	{
-	case Faction::None:
-	{
-		MsgAssert("Faction을 지정하지 않았습니다.");
-		break;
-	}
-	case Faction::Player:
-		CommandRecord.TypeValue = CommandType::PlayerPhaseEnd;
-		break;
-	case Faction::Enemy:
-		CommandRecord.TypeValue = CommandType::EnemyPhaseEnd;
-		break;
-	default:
-		break;
-	}
-	CommandList.push_back(CommandRecord);
-}

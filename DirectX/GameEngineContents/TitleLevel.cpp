@@ -73,7 +73,6 @@ void TitleLevel::Start()
 		Function = []() {
 			MsgTextBox("버튼누름");
 		};
-		Window->Test = Function;
 
 	}
 }
