@@ -280,6 +280,10 @@ void BattleLevel::MoveWaitEnd()
 {
 	// 정확한 위치로 다시 지정
 	SelectUnit->SetMapPos(MainCursor->GetMapPos());
+	Terrain TerrainData = MainMap->TerrainData[SelectUnit->GetMapPos().y][SelectUnit->GetMapPos().x];
+	int TerrainDodge = BattleMap::GetTerrainDodge(TerrainData);
+	int TerrainDef = BattleMap::GetTerrainDef(TerrainData);
+	SelectUnit->SetTerrain(TerrainData, TerrainDodge, TerrainDef);
 }
 
 void BattleLevel::UnitCommandStart()

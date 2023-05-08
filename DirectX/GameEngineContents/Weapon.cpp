@@ -404,3 +404,116 @@ void Weapon::SetWeapon_Lightning()
 	Range = 2;
 	Uses = 35;
 }
+
+int Weapon::GetWeaponeTriangle(std::shared_ptr<Weapon> _SubjectWeapon, std::shared_ptr<Weapon> _TargetWeapon)
+{
+
+	switch (_SubjectWeapon->WeaponTypeValue)
+	{
+	case WeaponType::Sword:
+	{
+		switch (_TargetWeapon->WeaponTypeValue)
+		{
+		case WeaponType::Lance:
+		case WeaponType::SwordReaver:
+			return -1;
+		case WeaponType::AxeReaver:
+		case WeaponType::Axe:
+			return 1;
+		case WeaponType::LanceReaver:
+		case WeaponType::Sword:
+		default:
+			return 0;
+		}
+	}
+	case WeaponType::LanceReaver:
+	{
+		switch (_TargetWeapon->WeaponTypeValue)
+		{
+		case WeaponType::AxeReaver:
+		case WeaponType::Axe:
+			return -1;
+		case WeaponType::SwordReaver:
+		case WeaponType::Lance:
+			return 1;
+		case WeaponType::LanceReaver:
+		case WeaponType::Sword:
+		default:
+			return 0;
+		}
+	}
+	case WeaponType::Lance:
+	{
+		switch (_TargetWeapon->WeaponTypeValue)
+		{
+		case WeaponType::Axe:
+		case WeaponType::LanceReaver:
+			return -1;
+		case WeaponType::Sword:
+		case WeaponType::SwordReaver:
+			return 1;
+		case WeaponType::AxeReaver:
+		case WeaponType::Lance:
+		default:
+			return 0;
+		}
+	}
+	case WeaponType::AxeReaver:
+	{
+		switch (_TargetWeapon->WeaponTypeValue)
+		{
+		case WeaponType::Sword:
+		case WeaponType::SwordReaver:
+			return -1;
+		case WeaponType::Axe:
+		case WeaponType::LanceReaver:
+			return 1;
+		case WeaponType::Lance:
+		case WeaponType::AxeReaver:
+		default:
+			return 0;
+		}
+	}
+	case WeaponType::Axe:
+	{
+		switch (_TargetWeapon->WeaponTypeValue)
+		{
+		case WeaponType::AxeReaver:
+		case WeaponType::Sword:
+			return -1;
+		case WeaponType::LanceReaver:
+		case WeaponType::Lance:
+			return 1;
+		case WeaponType::SwordReaver:
+		case WeaponType::Axe:
+		default:
+			return 0;
+		}
+	}
+	case WeaponType::SwordReaver:
+	{
+		switch (_TargetWeapon->WeaponTypeValue)
+		{
+		case WeaponType::Lance:
+		case WeaponType::LanceReaver:
+			return -1;
+		case WeaponType::Sword:
+		case WeaponType::AxeReaver:
+			return 1;
+		case WeaponType::Axe:
+		case WeaponType::SwordReaver:
+		default:
+			return 0;
+		}
+	}
+	case WeaponType::None:
+	case WeaponType::Stave:
+	case WeaponType::Bow:
+	case WeaponType::AnimaTome:
+	case WeaponType::DarkTome:
+	case WeaponType::LightTome:
+	default:
+		return 0;
+	}
+	return 0;
+}

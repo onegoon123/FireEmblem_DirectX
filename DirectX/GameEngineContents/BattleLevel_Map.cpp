@@ -601,90 +601,17 @@ bool BattleLevel::IsMapOut(int2 _Pos)
 int BattleLevel::GetTerrainCostFoot(int2 _Pos)
 {
 	Terrain TerrainData = MainMap->TerrainData[_Pos.y][_Pos.x];
-	switch (TerrainData)
-	{
-	case Terrain::Plain:
-		return 1;
-	case Terrain::None:
-		return 99;
-	case Terrain::Forest:
-		return 2;
-	case Terrain::Cliff:
-		return 99;
-	case Terrain::Mountain:
-		return 4;
-	case Terrain::Peak:
-		return 99;
-	case Terrain::Door:
-		return 99;
-	case Terrain::Gate:
-		return 1;
-	case Terrain::House:
-		return 1;
-	case Terrain::Sea:
-		return 99;
-	case Terrain::River:
-		return 5;
-	case Terrain::Bridge:
-		return 1;
-	case Terrain::Wall:
-		return 99;
-	default:
-		return 99;
-	}
+	return BattleMap::GetTerrainCostFoot(TerrainData);
 }
 
 int BattleLevel::GetTerrainDodge(int2 _Pos)
 {
 	Terrain TerrainData = MainMap->TerrainData[_Pos.y][_Pos.x];
-	switch (TerrainData)
-	{
-	case Terrain::Plain:
-	case Terrain::None:
-	case Terrain::Cliff:
-	case Terrain::Door:
-	case Terrain::Bridge:
-	case Terrain::Wall:
-		return 0;
-	case Terrain::House:
-	case Terrain::Sea:
-	case Terrain::River:
-		return 10;
-	case Terrain::Gate:
-	case Terrain::Forest:
-		return 20;
-	case Terrain::Mountain:
-		return 30;
-	case Terrain::Peak:
-		return 40;
-	default:
-		return 0;
-	}
+	return BattleMap::GetTerrainDodge(TerrainData);
 }
 
 int BattleLevel::GetTerrainDef(int2 _Pos)
 {
 	Terrain TerrainData = MainMap->TerrainData[_Pos.y][_Pos.x];
-	switch (TerrainData)
-	{
-	case Terrain::Plain:
-	case Terrain::None:
-	case Terrain::Cliff:
-	case Terrain::Door:
-	case Terrain::Bridge:
-	case Terrain::River:
-	case Terrain::Wall:
-	case Terrain::House:
-	case Terrain::Sea:
-		return 0;
-	case Terrain::Forest:
-	case Terrain::Mountain:
-		return 1;
-	case Terrain::Peak:
-		return 2;
-	case Terrain::Gate:
-		return 3;
-	default:
-		return 0;
-	}
+	return BattleMap::GetTerrainDef(TerrainData);
 }

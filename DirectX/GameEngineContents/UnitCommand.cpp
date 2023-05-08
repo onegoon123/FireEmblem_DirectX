@@ -71,26 +71,47 @@ AttackCommand UnitCommand::AttackCalculation(Unit& _SubjectUnit, Unit& _TargetUn
 {
 
 	AttackCommand NewAttack;
+
+	// 명중 회피 스텟
 	int UnitHit = _SubjectUnit.UnitStat.GetHitPoint();
 	int TargetDodge = _TargetUnit.UnitStat.GetDodgePoint();
-	int TerrainDodge = _TargetUnit.TerrainDodge;
 
-	int HitPercentage = UnitHit - (TargetDodge + TerrainDodge);
+	//  지형
+	int TerrainDodge = _TargetUnit.TerrainDodge;
+	int TerrainDeffence = _TargetUnit.TerrainDeffence;
+
+	// 무기 상성
+	int Triangle = Weapon::GetWeaponeTriangle(_SubjectUnit.UnitStat.EquipWeapon, _TargetUnit.UnitStat.EquipWeapon);
+	int TriangleDamage = Triangle;
+	int TriangleHit = Triangle * 15;
+
+	// 명중률, 치명타 확률 계산
+	int HitPercentage = UnitHit + TriangleHit - (TargetDodge + TerrainDodge);
 	int CriticalPercentage = _SubjectUnit.UnitStat.GetCriticalPoint() - _TargetUnit.UnitStat.GetCriticalDodgePoint();
 
 	NewAttack.IsHit = FERandom::RandomInt() < HitPercentage;
 	NewAttack.IsCritical = FERandom::RandomInt() < CriticalPercentage;
 
-	int Damage = (_SubjectUnit.UnitStat.GetAttackPoint() * (NewAttack.IsCritical ? 3 : 1));
-	Damage = std::max<int>(1, Damage - _TargetUnit.UnitStat.MainStatValue.Defense);
+	// 공격력 계산
+	int Damage = _SubjectUnit.UnitStat.GetAttackPoint(_TargetUnit.UnitStat.ClassValue) + TriangleDamage;	// 상성에 따른 대미지 적용
+	Damage -= _TargetUnit.UnitStat.MainStatValue.Defense + TerrainDeffence;	// 방어력에 의한 수치 감소, 지형 수치 적용
+	Damage *= NewAttack.IsCritical ? 3 : 1;	// 치명타 시 3배로 적용
+
+	// 대미지가 0이하 일때
+	if (0 >= Damage)
+	{
+		// No Damage
+		Damage = 0;
+	}
 
 	if (true == NewAttack.IsHit)
 	{
-		_TargetUnit.CurrentHP = std::max<int>(0, _TargetUnit.CurrentHP - Damage);
+		_TargetUnit.CurrentHP -= Damage;
 		_SubjectUnit.UnitStat.EquipWeapon->Uses--;
 
-		if (0 == _TargetUnit.CurrentHP)
+		if (0 >= _TargetUnit.CurrentHP)
 		{
+			_TargetUnit.CurrentHP = 0;
 			_TargetUnit.IsDie = true;
 		}
 	}

@@ -90,6 +90,7 @@ public:
 	MainStat LevelUp();
 
 	int GetAttackPoint() const;
+	int GetAttackPoint(BattleClass _TargetClass) const;
 	int GetMagicAttackPoint() const;
 	int GetHitPoint() const;
 	int GetCriticalPoint() const;

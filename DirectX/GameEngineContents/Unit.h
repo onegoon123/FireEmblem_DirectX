@@ -2,6 +2,7 @@
 #include "Stat.h"
 #include "Weapon.h"
 #include "ContentsEnum.h"
+#include "BattleMap.h"
 class Unit : public GameEngineNameObject
 {
 public:
@@ -58,6 +59,7 @@ public:
 
 	int UnitCode = -1;
 	int CurrentHP = 0;
+	Terrain TerrainData = Terrain::None;
 	int TerrainDeffence = 0;
 	int TerrainDodge = 0;
 	bool IsTurnEnd = false;

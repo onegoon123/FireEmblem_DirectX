@@ -54,6 +54,13 @@ public:
 		SetIsTurnEnd(GetIsTurnEnd());
 	}
 
+	void SetTerrain(Terrain _TerrainData, int _TerrainDodge, int _TerrainDeffence)
+	{
+		UnitData.TerrainData = _TerrainData;
+		UnitData.TerrainDodge = _TerrainDodge;
+		UnitData.TerrainDeffence = _TerrainDeffence;
+	}
+
 	Unit& GetUnitData()
 	{
 		return UnitData;

@@ -6,14 +6,18 @@ enum class WeaponType
 {
 	None,
 	Sword,		// 검
+	LanceReaver,
 	Lance,		// 창
+	AxeReaver,
 	Axe,		// 도끼
+	SwordReaver,
 	Bow,		// 활
 	Stave,		// 지팡이
 	AnimaTome,	// 속성마법
 	DarkTome,	// 흑마법
 	LightTome,	// 빛마법
 };
+
 
 // 설명 :
 class Weapon : public Item
@@ -46,6 +50,9 @@ public:
 	}
 
 	static std::shared_ptr<Weapon> CreateWeapon(ItemCode _Code);
+
+	// 무기의 상성을 체크하는 함수 (반환값이 1 : 유리, 0 : 일반, -1 : 불리)
+	static int GetWeaponeTriangle(std::shared_ptr<Weapon> _SubjectWeapon, std::shared_ptr<Weapon> _TargetWeapon);
 
 	WeaponType WeaponTypeValue = WeaponType::None;
 

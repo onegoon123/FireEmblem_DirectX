@@ -489,6 +489,46 @@ int Stat::GetAttackPoint() const
 	return Result;
 }
 
+int Stat::GetAttackPoint(BattleClass _TargetClass) const
+{
+	// 중갑 특효
+	if (true == EquipWeapon->ValidArmour)
+	{
+		switch (_TargetClass)
+		{
+		case BattleClass::Knight:
+		case BattleClass::General:
+			return MainStatValue.Strength + EquipWeapon->Damage * 3;
+		default:
+			break;
+		}
+	}
+	// 기마 특효
+	if (true == EquipWeapon->ValidHorse)
+	{
+		switch (_TargetClass)
+		{
+		case BattleClass::Cavalier:
+		case BattleClass::Nomad:
+			return MainStatValue.Strength + EquipWeapon->Damage * 3;
+		default:
+			break;
+		}
+	}
+	// 활 (공중 특효)
+	if (WeaponType::Bow == EquipWeapon->WeaponTypeValue)
+	{
+		switch (_TargetClass)
+		{
+		case BattleClass::PegasusKnight:
+			return MainStatValue.Strength + EquipWeapon->Damage * 3;
+		default:
+			break;
+		}
+	}
+	return GetAttackPoint();
+}
+
 int Stat::GetMagicAttackPoint() const
 {
 	int Result = MainStatValue.Magic + EquipWeapon->Damage;

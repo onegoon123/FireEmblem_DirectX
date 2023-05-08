@@ -21,6 +21,7 @@ enum class Terrain
 	Wall,		//º®
 };
 
+
 class SpriteRenderer;
 class BattleMap : public GameEngineActor
 {
@@ -38,6 +39,10 @@ public:
 
 	float4 MapScaleFloat4 = { 960, 640 };
 	int2 MapScaleInt2 = { 15, 10 };
+
+	static int GetTerrainCostFoot(Terrain _Value);
+	static int GetTerrainDodge(Terrain _Value);
+	static int GetTerrainDef(Terrain _Value);
 
 	std::shared_ptr<SpriteRenderer> GetRenderer()
 	{
