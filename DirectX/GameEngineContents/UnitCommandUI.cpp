@@ -51,8 +51,9 @@ void UnitCommandUI::SetCommand(bool _IsAttackable, bool _IsCloseUnit)
 
 	CurrentCursor = 0;
 	SelectRender->GetTransform()->SetLocalPosition({ 330, 152 });
-	CursorRender->GetTransform()->SetLocalPosition({ 224, 144 });
 
+	CursorTransform.SetLocalPosition({ 224, 144 });
+	CursorPos = { 224, 144 };
 }
 
 void UnitCommandUI::Start()
@@ -69,14 +70,37 @@ void UnitCommandUI::Start()
 	SelectRender->SetTexture("CommandSelect.png");
 
 	CursorRender = CreateComponent<SpriteRenderer>();
+	CursorRender->GetTransform()->SetParent(&CursorTransform);
 	CursorRender->GetTransform()->SetWorldScale({ 64, 64 });
-	CursorRender->GetTransform()->SetLocalPosition({ 224, 144 });
+	CursorRender->GetTransform()->SetLocalPosition(float4::Zero);
 	CursorRender->SetTexture("CommandCursor.png");
 
+	CursorPos = { 224, 144 };
+	CursorTransform.SetParent(GetTransform());
+	CursorTransform.SetLocalPosition(CursorPos);
 }
-
+float CursorTimer = 0;
+float AnimTimer = 0;
 void UnitCommandUI::Update(float _DeltaTime)
 {
+	CursorTimer += _DeltaTime * 10;
+	CursorTransform.SetLocalPosition(float4::Lerp(CursorTransform.GetLocalPosition(), CursorPos, _DeltaTime * 20));
+
+	AnimTimer += _DeltaTime * 5;
+	if (2 < AnimTimer)
+	{
+		AnimTimer = 0;
+	}
+	if (1 < AnimTimer)
+	{
+		CursorRender->GetTransform()->SetLocalPosition(float4::Lerp({ -16, 0 }, float4::Zero, AnimTimer - 1.0f));
+	}
+	else
+	{
+		CursorRender->GetTransform()->SetLocalPosition(float4::Lerp(float4::Zero, { -16, 0 }, AnimTimer));
+	}
+
+	if (CursorTimer < 1) { return; }
 
 	if (GameEngineInput::IsDown("ButtonA") || GameEngineInput::IsUp("LeftClick"))
 	{
@@ -103,32 +127,34 @@ void UnitCommandUI::Update(float _DeltaTime)
 
 	if (GameEngineInput::IsDown("Up") || (GameEngineInput::IsPress("Up") && PressOK))
 	{
+		CursorTimer = 0;
 		if (CurrentCursor == 0)
 		{
 			CurrentCursor = CommandFunctions.size() - 1;
 			SelectRender->GetTransform()->SetLocalPosition({ 330.0f, 152.0f - (64.0f * CurrentCursor) });
-			CursorRender->GetTransform()->SetLocalPosition({ 224.0f, 144.0f - (64.0f * CurrentCursor) });
+			CursorPos = { 224.0f, 144.0f - (64.0f * CurrentCursor) };
 			return;
 		}
 		CurrentCursor--;
 		SelectRender->GetTransform()->AddLocalPosition(float4::Up * 64);
-		CursorRender->GetTransform()->AddLocalPosition(float4::Up * 64);
+		CursorPos += float4::Up * 64;
 
 		return;
 	}
 
 	if (GameEngineInput::IsDown("Down") || (GameEngineInput::IsPress("Down") && PressOK))
 	{
+		CursorTimer = 0;
 		if (CurrentCursor == CommandFunctions.size() - 1)
 		{
 			CurrentCursor = 0;
 			SelectRender->GetTransform()->SetLocalPosition({ 330, 152 });
-			CursorRender->GetTransform()->SetLocalPosition({ 224, 144 });
+			CursorPos = { 224, 144 };
 			return;
 		}
 		CurrentCursor++;
 		SelectRender->GetTransform()->AddLocalPosition(float4::Down * 64);
-		CursorRender->GetTransform()->AddLocalPosition(float4::Down * 64);
+		CursorPos += float4::Down * 64;
 
 		return;
 	}

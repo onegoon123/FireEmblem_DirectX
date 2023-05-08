@@ -30,6 +30,8 @@ private:
 
 	std::vector<std::function<void()>> CommandFunctions;
 	std::function<void()> CancelFunction;
+	GameEngineTransform CursorTransform;
+	float4 CursorPos;
 	size_t CurrentCursor = 0;
 
 	const float PreesTime = 0.2f;

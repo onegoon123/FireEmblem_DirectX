@@ -1187,7 +1187,7 @@ void BattleLevel::TimeStoneUpdate(float _DeltaTime)
 	}
 
 
-	if (GameEngineInput::IsDown("ButtonX"))
+	if (GameEngineInput::IsDown("ButtonA"))
 	{
 		for (int i = 0; i < RewindNum; i++)
 		{
@@ -1196,7 +1196,93 @@ void BattleLevel::TimeStoneUpdate(float _DeltaTime)
 		ChangeState(BattleState::Select);
 		return;
 	}
+	if (GameEngineInput::IsDown("ButtonB"))
+	{
+		while (RIter != Command.rbegin()) {
+			RIter--;
+			RewindNum--;
+			FERandom::AddRandomCount((*RIter).RandomNum);
 
+			switch (RIter->TypeValue)
+			{
+			case CommandType::Attack:
+			{
+				for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
+				{
+					if ((*RIter).AfterSubjectUnit.UnitCode == _Unit->GetUnitData().UnitCode)
+					{
+						_Unit->SetUnitData((*RIter).AfterSubjectUnit);
+						_Unit->SetMapPos((*RIter).AfterSubjectUnitPos);
+					}
+					else if ((*RIter).AfterTargetUnit.UnitCode == _Unit->GetUnitData().UnitCode)
+					{
+						_Unit->SetUnitData((*RIter).AfterTargetUnit);
+					}
+				}
+				for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
+				{
+					if ((*RIter).AfterSubjectUnit.UnitCode == _Unit->GetUnitData().UnitCode)
+					{
+						_Unit->SetUnitData((*RIter).AfterSubjectUnit);
+						_Unit->SetMapPos((*RIter).AfterSubjectUnitPos);
+					}
+					else if ((*RIter).AfterTargetUnit.UnitCode == _Unit->GetUnitData().UnitCode)
+					{
+						_Unit->SetUnitData((*RIter).AfterTargetUnit);
+					}
+				}
+				break;
+			}
+			case CommandType::Item:
+				break;
+			case CommandType::Wait:
+			{
+				for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
+				{
+					if ((*RIter).AfterSubjectUnit.UnitCode == _Unit->GetUnitData().UnitCode)
+					{
+						_Unit->SetUnitData((*RIter).AfterSubjectUnit);
+						_Unit->SetMapPos((*RIter).AfterSubjectUnitPos);
+					}
+				}
+				for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
+				{
+					if ((*RIter).AfterSubjectUnit.UnitCode == _Unit->GetUnitData().UnitCode)
+					{
+						_Unit->SetUnitData((*RIter).AfterSubjectUnit);
+						_Unit->SetMapPos((*RIter).AfterSubjectUnitPos);
+					}
+				}
+				break;
+			}
+			case CommandType::PlayerPhaseStart:
+			case CommandType::EnemyPhaseStart:
+			{
+				for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
+				{
+					_Unit->SetIsTurnEnd(false);
+				}
+				for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
+				{
+					_Unit->SetIsTurnEnd(false);
+				}
+				break;
+			}
+			case CommandType::None:
+			{
+				MsgAssert("커맨드 타입 오류");
+				break;
+			}
+			default:
+			{
+				MsgAssert("커맨드 타입 오류");
+				break;
+			}
+			}
+		}
+		ChangeState(BattleState::Select);
+		return;
+	}
 	std::shared_ptr<DebugWindow> Window = GameEngineGUI::FindGUIWindowConvert<DebugWindow>("DebugWindow");
 	{
 		if (nullptr == Window)
