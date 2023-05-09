@@ -55,3 +55,23 @@ void GameEngineActor::AccLiveTime(float _LiveTime)
 		Component->AccLiveTime(_LiveTime);
 	}
 }
+
+void GameEngineActor::ComponentsRelease()
+{
+	std::list<std::shared_ptr<class GameEngineComponent>>::iterator ComStartIter = ComponentsList.begin();
+	std::list<std::shared_ptr<class GameEngineComponent>>::iterator ComEndIter = ComponentsList.end();
+
+	for (; ComStartIter != ComEndIter; )
+	{
+		std::shared_ptr<class GameEngineComponent>& ComPtr = *ComStartIter;
+
+		if (false == ComPtr->IsDeath())
+		{
+			++ComStartIter;
+			continue;
+		}
+
+		ComStartIter = ComponentsList.erase(ComStartIter);
+	}
+
+}

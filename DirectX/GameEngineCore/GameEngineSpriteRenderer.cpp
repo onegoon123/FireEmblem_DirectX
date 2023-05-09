@@ -47,6 +47,6 @@ void GameEngineSpriteRenderer::SetScaleToTexture(const std::string_view& _Name)
 		return;
 	}
 
-	float4 Scale = float4(static_cast<float>(FindTex->GetWidth()), static_cast<float>(FindTex->GetHeight()), 1.0f);
+	float4 Scale = float4(static_cast<float>(FindTex->GetWidth()), static_cast<float>(FindTex->GetHeight()), 1);
 	GetTransform()->SetLocalScale(Scale);
 }
