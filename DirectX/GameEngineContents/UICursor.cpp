@@ -16,6 +16,8 @@ void UICursor::Start()
 	CursorRender->GetTransform()->SetLocalPosition(float4::Zero);
 	CursorRender->GetTransform()->SetParent(GetTransform());
 	CursorRender->SetTexture("CommandCursor.png");
+
+	Off();
 }
 
 float AnimTimer = 0;

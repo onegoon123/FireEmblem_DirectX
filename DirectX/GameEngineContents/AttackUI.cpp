@@ -16,6 +16,7 @@ void AttackUI::Setting(BattleLevel* _Level)
 
 void AttackUI::Start()
 {
+	Off();
 }
 
 void AttackUI::Update(float _DeltaTime)

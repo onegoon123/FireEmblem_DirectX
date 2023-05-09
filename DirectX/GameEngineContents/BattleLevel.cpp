@@ -15,7 +15,6 @@
 #include "FieldCommandUI.h"
 #include "PhaseUI.h"
 #include "UICursor.h"
-#include "UIWindow.h"
 BattleLevel::BattleLevel()
 {
 	StateUpdate = std::bind(&BattleLevel::PlayerPhaseUpdate, this, std::placeholders::_1);
@@ -107,28 +106,32 @@ void BattleLevel::Start()
 		IsAttack[i].resize(MainMap->MapScaleInt2.x);
 	}
 
-	// UI »ý¼º
+	UITransform.SetParent(GetMainCamera()->GetTransform());
+	UITransform.SetLocalPosition({ 0, 0,  554.0f });
 
 	UI_Select = CreateActor<SelectUI>();
-	UI_Select->GetTransform()->SetLocalPosition({448, 288});
-	UI_Select->UIOff();
+	UI_Select->GetTransform()->SetParent(&UITransform);
+	UI_Select->GetTransform()->SetLocalPosition(float4::Zero);
 
 	UI_UnitCommand = CreateActor<UnitCommandUI>();
-	UI_UnitCommand->GetTransform()->SetLocalPosition({ 448, 288 });
+	UI_UnitCommand->GetTransform()->SetParent(&UITransform);
+	UI_UnitCommand->GetTransform()->SetLocalPosition(float4::Zero);
 
 	UI_FieldCommand = CreateActor<FieldCommandUI>();
-	UI_FieldCommand->GetTransform()->SetLocalPosition({ 448, 288 });
+	UI_FieldCommand->GetTransform()->SetParent(&UITransform);
+	UI_FieldCommand->GetTransform()->SetLocalPosition(float4::Zero);
 
 	UI_Phase = CreateActor<PhaseUI>();
-	UI_Phase->GetTransform()->SetLocalPosition({ 448, 288 });
+	UI_Phase->GetTransform()->SetParent(&UITransform);
+	UI_Phase->GetTransform()->SetLocalPosition(float4::Zero);
 
 	UI_Cursor = CreateActor<UICursor>();
-	UI_Cursor->Off();
 
-	UI_Window = CreateActor<UIWindow>();
-	UI_Window->GetTransform()->SetLocalPosition({ 448, 288 });
-	UI_Window->UISet({ 8, 1 });
-	UI_Window->Off();
+	//UI_Window = CreateActor<UIWindow>();
+	//UI_Window->GetTransform()->SetParent(&UITransform);
+	//UI_Window->GetTransform()->SetLocalPosition(float4::Zero);
+	//UI_Window->Setting();
+	
 
 
 	UI_UnitCommand->Setting(this);

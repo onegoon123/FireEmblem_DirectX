@@ -128,6 +128,7 @@ void BattleLevel::PlayerPhaseStart()
 			break;
 		}
 	}
+	MainCursor->Off();
 	UI_Phase->PhaseOn(Faction::Player);
 }
 
@@ -179,7 +180,7 @@ void BattleLevel::SelectStart()
 
 	// Select State시 필요한 UI
 	MainCursor->On();
-	UI_Select->UIOn();
+	UI_Select->On();
 	CursorDirCheck();
 	// 선택된 유닛이 있다면 유닛 데이터 지정
 	if (nullptr != SelectUnit)
@@ -207,7 +208,7 @@ void BattleLevel::SelectUpdate(float _DeltaTime)
 void BattleLevel::SelectEnd()
 {
 	// Select State 종료시 끄는 UI
-	UI_Select->UIOff();
+	UI_Select->Off();
 }
 
 void BattleLevel::MoveStart()

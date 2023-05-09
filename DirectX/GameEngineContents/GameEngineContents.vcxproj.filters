@@ -60,9 +60,6 @@
     <ClCompile Include="BattleLevel_Select.cpp">
       <Filter>Battle\System</Filter>
     </ClCompile>
-    <ClCompile Include="UIWindow.cpp">
-      <Filter>Battle\UI</Filter>
-    </ClCompile>
     <ClCompile Include="BattleLevel_UnitCommand.cpp">
       <Filter>Battle\System</Filter>
     </ClCompile>
@@ -148,9 +145,6 @@
     </ClInclude>
     <ClInclude Include="SpriteRenderer.h">
       <Filter>Component</Filter>
-    </ClInclude>
-    <ClInclude Include="UIWindow.h">
-      <Filter>Battle\UI</Filter>
     </ClInclude>
     <ClInclude Include="PhaseUI.h">
       <Filter>Battle\UI</Filter>

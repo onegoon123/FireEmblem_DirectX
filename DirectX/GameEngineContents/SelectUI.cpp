@@ -55,8 +55,9 @@ void SelectUI::SetCursorDir(UIDir _Dir)
 
 }
 
-void SelectUI::UIOn()
+void SelectUI::On()
 {
+	GameEngineActor::On();
 	Goal.Render->On();
 	Goal.Timer = 0;
 	Terrain.Render->On();
@@ -74,8 +75,9 @@ void SelectUI::UIOn()
 	CursorDir = UIDir::None;
 }
 
-void SelectUI::UIOff()
+void SelectUI::Off()
 {
+	GameEngineActor::Off();
 	CursorDir = UIDir::None;
 	Goal.Render->Off();
 	Goal.Render->GetTransform()->SetLocalPosition(Goal.BenchmarkHidePos);
@@ -162,7 +164,8 @@ void SelectUI::Start()
 	UnitData.Render->GetTransform()->SetWorldScale({ 344, 152, 100 });
 	UnitData.BenchmarkHidePos = { -652, 228 };
 	UnitData.BenchmarkShowPos = { -292, 228 };
-	UnitData.ChangeDir(UIDir::None);
+	UnitData.CurDir = UIDir::None;
+	UnitData.NextDir = UIDir::None;
 
 	HPBarRender = CreateComponent<SpriteRenderer>();
 	HPBarRender->SetTexture("HPBar.png");
@@ -178,6 +181,7 @@ void SelectUI::Start()
 	PortraitRender->GetTransform()->SetLocalPosition({ -96, 0 });
 	CursorDir = UIDir::None;
 
+	Off();
 }
 static float Timer = 0;
 void SelectUI::Update(float _DeltaTiime)

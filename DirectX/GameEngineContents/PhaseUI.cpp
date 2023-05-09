@@ -54,6 +54,8 @@ void PhaseUI::Start()
 	Renderer = CreateComponent<SpriteRenderer>();
 	Renderer->GetTransform()->SetWorldScale({ 712, 76 });
 	Renderer->Off();
+
+	Off();
 }
 
 void PhaseUI::Update(float _DeltaTime)

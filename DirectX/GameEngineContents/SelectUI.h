@@ -49,15 +49,15 @@ public:
 	SelectUI& operator=(SelectUI&& _Other) noexcept = delete;
 
 	void SetCursorDir(UIDir _Dir);
-	void UIOn();
-	void UIOff();
+	void On();
+	void Off();
 
 	void SetHPBar(float _Value);
 	void SetUnitData(std::shared_ptr<BattleUnit> _Unit);
 	void UnitUIOff();
 
 protected:
-	void Start() override;
+	void Start();
 	void Update(float _DeltaTiime) override;
 
 private:
