@@ -12,6 +12,8 @@ class SelectUI;
 class UnitCommandUI;
 class PhaseUI;
 class FieldCommandUI;
+class UICursor;
+class UIWindow;
 class BattleLevel : public GameEngineLevel
 {
 public:
@@ -24,6 +26,11 @@ public:
 	BattleLevel(BattleLevel&& _Other) = delete;
 	BattleLevel& operator=(const BattleLevel& _Other) = delete;
 	BattleLevel& operator=(BattleLevel&& _Other) = delete;
+
+	std::shared_ptr <UICursor> GetUICursor()
+	{
+		return UI_Cursor;
+	}
 
 protected:
 	void Start() override;
@@ -83,6 +90,8 @@ private:
 	std::shared_ptr <UnitCommandUI> UI_UnitCommand = nullptr;
 	std::shared_ptr <FieldCommandUI> UI_FieldCommand = nullptr;
 	std::shared_ptr <PhaseUI> UI_Phase = nullptr;
+	std::shared_ptr <UICursor> UI_Cursor = nullptr;
+	std::shared_ptr <UIWindow> UI_Window = nullptr;
 
 	const float MoveSpeed = 10;
 	float MoveTimer = 0;

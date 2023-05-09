@@ -90,6 +90,12 @@
     <ClCompile Include="BattleLevel_FieldCommand.cpp">
       <Filter>Battle\System</Filter>
     </ClCompile>
+    <ClCompile Include="AttackUI.cpp">
+      <Filter>Battle\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UICursor.cpp">
+      <Filter>Battle\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FECore.h" />
@@ -162,6 +168,12 @@
       <Filter>Battle\System</Filter>
     </ClInclude>
     <ClInclude Include="FieldCommandUI.h">
+      <Filter>Battle\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="AttackUI.h">
+      <Filter>Battle\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UICursor.h">
       <Filter>Battle\UI</Filter>
     </ClInclude>
   </ItemGroup>

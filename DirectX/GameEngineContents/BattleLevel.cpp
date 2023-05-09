@@ -14,7 +14,8 @@
 #include "UnitCommandUI.h"
 #include "FieldCommandUI.h"
 #include "PhaseUI.h"
-
+#include "UICursor.h"
+#include "UIWindow.h"
 BattleLevel::BattleLevel()
 {
 	StateUpdate = std::bind(&BattleLevel::PlayerPhaseUpdate, this, std::placeholders::_1);
@@ -52,26 +53,26 @@ void BattleLevel::Start()
 	NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
 	PlayerUnits.push_back(NewActor);
 
-	//NewActor = CreateActor<BattleUnit>();
-	//NewActor->SetUnitCode(UnitIdentityCode::Dorcas);
-	//NewActor->SetMapPos({ 5, 4 });
-	//NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
-	//NewActor->NewWeapon(ItemCode::IronAxe);
-	//PlayerUnits.push_back(NewActor);
+	NewActor = CreateActor<BattleUnit>();
+	NewActor->SetUnitCode(UnitIdentityCode::Dorcas);
+	NewActor->SetMapPos({ 5, 4 });
+	NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
+	NewActor->NewWeapon(ItemCode::IronAxe);
+	PlayerUnits.push_back(NewActor);
 
-	//NewActor = CreateActor<BattleUnit>();
-	//NewActor->SetUnitCode(UnitIdentityCode::Wallace);
-	//NewActor->SetMapPos({ 6, 5 });
-	//NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
-	//NewActor->NewWeapon(ItemCode::IronLance);
-	//PlayerUnits.push_back(NewActor);
+	NewActor = CreateActor<BattleUnit>();
+	NewActor->SetUnitCode(UnitIdentityCode::Wallace);
+	NewActor->SetMapPos({ 6, 5 });
+	NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
+	NewActor->NewWeapon(ItemCode::IronLance);
+	PlayerUnits.push_back(NewActor);
 
-	//NewActor = CreateActor<BattleUnit>();
-	//NewActor->SetUnitCode(UnitIdentityCode::Kent);
-	//NewActor->SetMapPos({ 3, 5 });
-	//NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
-	//NewActor->NewWeapon(ItemCode::IronAxe);
-	//PlayerUnits.push_back(NewActor);
+	NewActor = CreateActor<BattleUnit>();
+	NewActor->SetUnitCode(UnitIdentityCode::Kent);
+	NewActor->SetMapPos({ 3, 5 });
+	NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
+	NewActor->NewWeapon(ItemCode::IronAxe);
+	PlayerUnits.push_back(NewActor);
 
 	NewActor = CreateActor<BattleUnit>();
 	NewActor->SetUnitCode(UnitIdentityCode::Brigand);
@@ -107,22 +108,31 @@ void BattleLevel::Start()
 	}
 
 	// UI »ý¼º
+
 	UI_Select = CreateActor<SelectUI>();
-	UI_Select->GetTransform()->SetWorldPosition({448, 288});
+	UI_Select->GetTransform()->SetLocalPosition({448, 288});
 	UI_Select->UIOff();
 
 	UI_UnitCommand = CreateActor<UnitCommandUI>();
-	UI_UnitCommand->GetTransform()->SetWorldPosition({ 448, 288 });
-	UI_UnitCommand->Setting(this);
-	UI_UnitCommand->Off();
+	UI_UnitCommand->GetTransform()->SetLocalPosition({ 448, 288 });
 
 	UI_FieldCommand = CreateActor<FieldCommandUI>();
-	UI_FieldCommand->GetTransform()->SetWorldPosition({ 448, 288 });
-	UI_FieldCommand->Setting(this);
-	UI_FieldCommand->Off();
+	UI_FieldCommand->GetTransform()->SetLocalPosition({ 448, 288 });
 
 	UI_Phase = CreateActor<PhaseUI>();
-	UI_Phase->GetTransform()->SetWorldPosition({ 448, 288 });
+	UI_Phase->GetTransform()->SetLocalPosition({ 448, 288 });
+
+	UI_Cursor = CreateActor<UICursor>();
+	UI_Cursor->Off();
+
+	UI_Window = CreateActor<UIWindow>();
+	UI_Window->GetTransform()->SetLocalPosition({ 448, 288 });
+	UI_Window->UISet({ 8, 1 });
+	UI_Window->Off();
+
+
+	UI_UnitCommand->Setting(this);
+	UI_FieldCommand->Setting(this);
 
 	CursorDirCheck();
 	ChangeState(BattleState::PlayerPhase);

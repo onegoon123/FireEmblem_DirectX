@@ -1,6 +1,7 @@
 #pragma once
 #include <GameEngineCore/GameEngineActor.h>
 
+class UICursor;
 class SpriteRenderer;
 class BattleLevel;
 class UnitCommandUI : public GameEngineActor
@@ -19,23 +20,25 @@ public:
 	void Setting(BattleLevel* _Level);
 	void SetCommand(bool _IsAttackable, bool _IsCloseUnit);
 
+	void On();
+	void Off();
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
 private:
 	BattleLevel* LevelPtr = nullptr;
-	std::shared_ptr<SpriteRenderer> CursorRender = nullptr;
+	std::shared_ptr<UICursor> Cursor = nullptr;
 	std::shared_ptr<SpriteRenderer> SelectRender = nullptr;
 	std::shared_ptr<SpriteRenderer> WindowRender = nullptr;
 
 	std::vector<std::function<void()>> CommandFunctions;
 	std::function<void()> CancelFunction;
-	GameEngineTransform CursorTransform;
 	float4 CursorPos;
 	size_t CurrentCursor = 0;
+	float CursorTimer = 0;
 
 	const float PreesTime = 0.2f;
 	bool PressOK = false;
-
 };
 

@@ -24,18 +24,19 @@ void UIWindow::UISet(int2 Scale)
 
 	LeftTopRender = CreateComponent<SpriteRenderer>();
 	LeftTopRender->GetTransform()->SetWorldScale({ RenderSize, RenderSize });
-	LeftTopRender->SetTexture("TestUI.png");
+	LeftTopRender->GetTransform()->SetLocalPosition(float4::Zero);
+	LeftTopRender->SetTexture("LeftUp.png");
 
 	for (int x = 0; x < Scale.x; x++)
 	{
 		std::shared_ptr<SpriteRenderer> NewRender = CenterTopRender.emplace_back(CreateComponent<SpriteRenderer>());
 		NewRender->GetTransform()->SetWorldScale({ RenderSize, RenderSize });
 		NewRender->GetTransform()->SetLocalPosition(float4::Right * RenderSize * (float)(x + 1));
-		NewRender->SetTexture("TestUI.png");
+		NewRender->SetTexture("CenterUp.png");
 	}
 
 	RightTopRender = CreateComponent<SpriteRenderer>();
-	RightTopRender->SetTexture("TestUI.png");
+	RightTopRender->SetTexture("RightUp.png");
 	RightTopRender->GetTransform()->SetWorldScale({ RenderSize, RenderSize });
 	RightTopRender->GetTransform()->SetLocalPosition(float4::Right * RenderSize * (float)(Scale.x + 1));
 
@@ -44,7 +45,7 @@ void UIWindow::UISet(int2 Scale)
 		std::shared_ptr<SpriteRenderer> NewRender = LeftMiddleRender.emplace_back(CreateComponent<SpriteRenderer>());
 		NewRender->GetTransform()->SetWorldScale({ RenderSize, RenderSize });
 		NewRender->GetTransform()->SetLocalPosition(float4::Down * RenderSize * (float)(y + 1));
-		NewRender->SetTexture("TestUI.png");
+		NewRender->SetTexture("LeftCenter.png");
 	}
 
 	for (int y = 0; y < Scale.y; y++)
@@ -54,7 +55,7 @@ void UIWindow::UISet(int2 Scale)
 			std::shared_ptr<SpriteRenderer> NewRender = CenterMiddleRender.emplace_back(CreateComponent<SpriteRenderer>());
 			NewRender->GetTransform()->SetWorldScale({ RenderSize, RenderSize });
 			NewRender->GetTransform()->SetLocalPosition(float4::Right * RenderSize * (float)(x + 1) + float4::Down * RenderSize * (float)(y + 1));
-			NewRender->SetTexture("TestUI.png");
+			NewRender->SetTexture("CenterCenter.png");
 		}
 	}
 	//CenterMiddleRender = CreateComponent<SpriteRenderer>();
@@ -68,13 +69,13 @@ void UIWindow::UISet(int2 Scale)
 		std::shared_ptr<SpriteRenderer> NewRender = RightMiddleRender.emplace_back(CreateComponent<SpriteRenderer>());
 		NewRender->GetTransform()->SetWorldScale({ RenderSize, RenderSize });
 		NewRender->GetTransform()->SetLocalPosition(float4::Right * RenderSize * (float)(Scale.x + 1) + float4::Down * RenderSize * (float)(y + 1));
-		NewRender->SetTexture("TestUI.png");
+		NewRender->SetTexture("RightCenter.png");
 	}
 
 	LeftBottomRender = CreateComponent<SpriteRenderer>();
 	LeftBottomRender->GetTransform()->SetWorldScale({ RenderSize, RenderSize });
 	LeftBottomRender->GetTransform()->SetLocalPosition(float4::Down * RenderSize * (float)(Scale.y + 1));
-	LeftBottomRender->SetTexture("TestUI.png");
+	LeftBottomRender->SetTexture("LeftDown.png");
 
 
 	for (int x = 0; x < Scale.x; x++)
@@ -82,12 +83,12 @@ void UIWindow::UISet(int2 Scale)
 		std::shared_ptr<SpriteRenderer> NewRender = CenterBottomRender.emplace_back(CreateComponent<SpriteRenderer>());
 		NewRender->GetTransform()->SetWorldScale({ RenderSize, RenderSize });
 		NewRender->GetTransform()->SetLocalPosition(float4::Right * RenderSize * (float)(x + 1) + float4::Down * RenderSize * (float)(Scale.y + 1));
-		NewRender->SetTexture("TestUI.png");
+		NewRender->SetTexture("CenterDown.png");
 	}
 	RightBottomRender = CreateComponent<SpriteRenderer>();
 	RightBottomRender->GetTransform()->SetWorldScale({ RenderSize, RenderSize });
 	RightBottomRender->GetTransform()->SetLocalPosition(float4::Right * RenderSize * (float)(Scale.x + 1) + float4::Down * RenderSize * (float)(Scale.y + 1));
-	RightBottomRender->SetTexture("TestUI.png");
+	RightBottomRender->SetTexture("RightDown.png");
 }
 
 void UIWindow::Clear()

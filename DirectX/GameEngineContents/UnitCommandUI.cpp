@@ -3,6 +3,7 @@
 #include <GameEnginePlatform/GameEngineInput.h>
 #include "SpriteRenderer.h"
 #include "BattleLevel.h"
+#include "UICursor.h"
 UnitCommandUI::UnitCommandUI()
 {
 	CommandFunctions.reserve(5);
@@ -17,6 +18,7 @@ void UnitCommandUI::Setting(BattleLevel* _Level)
 {
 	LevelPtr = _Level;
 	CancelFunction = std::bind(&BattleLevel::UnitCommand_Cancel, LevelPtr);
+	Cursor = _Level->GetUICursor();
 }
 
 void UnitCommandUI::SetCommand(bool _IsAttackable, bool _IsCloseUnit)
@@ -52,10 +54,21 @@ void UnitCommandUI::SetCommand(bool _IsAttackable, bool _IsCloseUnit)
 	CurrentCursor = 0;
 	SelectRender->GetTransform()->SetLocalPosition({ 330, 152 });
 
-	CursorTransform.SetLocalPosition({ 224, 144 });
+	Cursor->GetTransform()->SetParent(GetTransform());
+	Cursor->GetTransform()->SetLocalPosition({ 224, 144 });
 	CursorPos = { 224, 144 };
 }
 
+void UnitCommandUI::On()
+{
+	GameEngineActor::On();
+	Cursor->On();
+}
+void UnitCommandUI::Off()
+{
+	GameEngineActor::Off();
+	Cursor->Off();
+}
 void UnitCommandUI::Start()
 {
 	WindowRender = CreateComponent<SpriteRenderer>();
@@ -69,36 +82,17 @@ void UnitCommandUI::Start()
 	SelectRender->GetTransform()->SetLocalPosition({ 330, 152 });
 	SelectRender->SetTexture("CommandSelect.png");
 
-	CursorRender = CreateComponent<SpriteRenderer>();
-	CursorRender->GetTransform()->SetParent(&CursorTransform);
-	CursorRender->GetTransform()->SetWorldScale({ 64, 64 });
-	CursorRender->GetTransform()->SetLocalPosition(float4::Zero);
-	CursorRender->SetTexture("CommandCursor.png");
-
 	CursorPos = { 224, 144 };
-	CursorTransform.SetParent(GetTransform());
-	CursorTransform.SetLocalPosition(CursorPos);
+
+	GameEngineActor::Off();
 }
-float CursorTimer = 0;
-float AnimTimer = 0;
+
 void UnitCommandUI::Update(float _DeltaTime)
 {
 	CursorTimer += _DeltaTime * 10;
-	CursorTransform.SetLocalPosition(float4::Lerp(CursorTransform.GetLocalPosition(), CursorPos, _DeltaTime * 20));
+	Cursor->GetTransform()->SetLocalPosition(float4::Lerp(Cursor->GetTransform()->GetLocalPosition(), CursorPos, _DeltaTime * 20));
 
-	AnimTimer += _DeltaTime * 5;
-	if (2 < AnimTimer)
-	{
-		AnimTimer = 0;
-	}
-	if (1 < AnimTimer)
-	{
-		CursorRender->GetTransform()->SetLocalPosition(float4::Lerp({ -16, 0 }, float4::Zero, AnimTimer - 1.0f));
-	}
-	else
-	{
-		CursorRender->GetTransform()->SetLocalPosition(float4::Lerp(float4::Zero, { -16, 0 }, AnimTimer));
-	}
+
 
 	if (CursorTimer < 1) { return; }
 

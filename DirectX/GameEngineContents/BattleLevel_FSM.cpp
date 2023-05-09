@@ -390,8 +390,8 @@ void BattleLevel::UnitCommandStart()
 
 
 	// 커맨드 UI 켜기
-	UI_UnitCommand->SetCommand(IsAttackable, IsCloseUnit);
 	UI_UnitCommand->On();
+	UI_UnitCommand->SetCommand(IsAttackable, IsCloseUnit);
 }
 
 void BattleLevel::UnitCommandUpdate(float _DeltaTime)

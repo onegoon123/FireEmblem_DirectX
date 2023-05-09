@@ -4,35 +4,29 @@
 class UICursor;
 class SpriteRenderer;
 class BattleLevel;
-class FieldCommandUI : public GameEngineActor
+class AttackUI : public GameEngineActor
 {
 public:
 	// constrcuter destructer
-	FieldCommandUI();
-	~FieldCommandUI();
+	AttackUI();
+	~AttackUI();
 
 	// delete Function
-	FieldCommandUI(const FieldCommandUI& _Other) = delete;
-	FieldCommandUI(FieldCommandUI&& _Other) noexcept = delete;
-	FieldCommandUI& operator=(const FieldCommandUI& _Other) = delete;
-	FieldCommandUI& operator=(FieldCommandUI&& _Other) noexcept = delete;
+	AttackUI(const AttackUI& _Other) = delete;
+	AttackUI(AttackUI&& _Other) noexcept = delete;
+	AttackUI& operator=(const AttackUI& _Other) = delete;
+	AttackUI& operator=(AttackUI&& _Other) noexcept = delete;
 
 	void Setting(BattleLevel* _Level);
-	void On();
-	void Off();
 
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
-
 private:
 	BattleLevel* LevelPtr = nullptr;
 	std::shared_ptr<UICursor> Cursor = nullptr;
 	std::shared_ptr<SpriteRenderer> SelectRender = nullptr;
 	std::shared_ptr<SpriteRenderer> WindowRender = nullptr;
-
-	std::vector<std::function<void()>> CommandFunctions;
-	std::function<void()> CancelFunction;
 
 	float4 CursorPos;
 	size_t CurrentCursor = 0;
