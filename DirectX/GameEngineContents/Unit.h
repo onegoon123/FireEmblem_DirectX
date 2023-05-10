@@ -74,10 +74,16 @@ public:
 	}
 
 	int GetRangeStat();
-	std::list<std::shared_ptr<Weapon>>& GetWeapons()
+	const std::list<std::shared_ptr<Weapon>>& GetWeapons()
 	{
 		return Weapons;
 	}
+	const std::list<std::shared_ptr<Item>>& GetItems()
+	{
+		return Items;
+	}
+	void EquipWeapon(std::shared_ptr<Weapon> _Weapon);
+	void DropItem(std::shared_ptr<Item> _Item);
 
 	int UnitCode = -1;
 	int CurrentHP = 0;

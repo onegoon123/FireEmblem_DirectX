@@ -507,7 +507,6 @@ int Weapon::GetWeaponeTriangle(std::shared_ptr<Weapon> _SubjectWeapon, std::shar
 		}
 	}
 	case WeaponType::None:
-	case WeaponType::Stave:
 	case WeaponType::Bow:
 	case WeaponType::AnimaTome:
 	case WeaponType::DarkTome:
@@ -516,4 +515,124 @@ int Weapon::GetWeaponeTriangle(std::shared_ptr<Weapon> _SubjectWeapon, std::shar
 		return 0;
 	}
 	return 0;
+}
+
+bool Weapon::IsUseWeapon(BattleClass _Class)
+{
+	switch (_Class)
+	{
+	case BattleClass::Lord:
+	{
+		if (WeaponTypeValue == WeaponType::Sword) { return true; }
+		if (WeaponTypeValue == WeaponType::LanceReaver) { return true; }
+		return false;
+	}
+	case BattleClass::BladeLord:
+	{
+		if (WeaponTypeValue == WeaponType::Sword) { return true; }
+		if (WeaponTypeValue == WeaponType::LanceReaver) { return true; }
+		return false;
+	}
+	case BattleClass::Cavalier:
+	{
+		if (WeaponTypeValue == WeaponType::Sword) { return true; }
+		if (WeaponTypeValue == WeaponType::LanceReaver) { return true; }
+		if (WeaponTypeValue == WeaponType::Lance) { return true; }
+		if (WeaponTypeValue == WeaponType::AxeReaver) { return true; }
+		return false;
+	}
+	case BattleClass::PegasusKnight:
+	{
+		if (WeaponTypeValue == WeaponType::Lance) { return true; }
+		if (WeaponTypeValue == WeaponType::AxeReaver) { return true; }
+		return false;
+	}
+	case BattleClass::Archer:
+	{
+		if (WeaponTypeValue == WeaponType::Bow) { return true; }
+		return false;
+	}
+	case BattleClass::Fighter:
+	{
+		if (WeaponTypeValue == WeaponType::Axe) { return true; }
+		if (WeaponTypeValue == WeaponType::SwordReaver) { return true; }
+		return false;
+	}
+	case BattleClass::Warrior:
+	{
+		if (WeaponTypeValue == WeaponType::Axe) { return true; }
+		if (WeaponTypeValue == WeaponType::SwordReaver) { return true; }
+		return false;
+	}
+	case BattleClass::Cleric:
+	{
+		return false;
+	}
+	case BattleClass::Mage:
+	{
+		if (WeaponTypeValue == WeaponType::AnimaTome) { return true; }
+		return false;
+	}
+	case BattleClass::Nomad:
+	{
+		if (WeaponTypeValue == WeaponType::Bow) { return true; }
+		return false;
+	}
+	case BattleClass::Thief:
+	{
+		if (WeaponTypeValue == WeaponType::Sword) { return true; }
+		if (WeaponTypeValue == WeaponType::LanceReaver) { return true; }
+		return false;
+	}
+	case BattleClass::Assassin:
+	{
+		if (WeaponTypeValue == WeaponType::Sword) { return true; }
+		if (WeaponTypeValue == WeaponType::LanceReaver) { return true; }
+		return false;
+	}
+	case BattleClass::Dancer:
+	{
+		return false;
+	}
+	case BattleClass::Monk:
+	{
+		if (WeaponTypeValue == WeaponType::LightTome) { return true; }
+		return false;
+	}
+	case BattleClass::Knight:
+	{
+		if (WeaponTypeValue == WeaponType::Lance) { return true; }
+		if (WeaponTypeValue == WeaponType::AxeReaver) { return true; }
+		return false;
+	}
+	case BattleClass::General:
+	{
+		if (WeaponTypeValue == WeaponType::Lance) { return true; }
+		if (WeaponTypeValue == WeaponType::AxeReaver) { return true; }
+		if (WeaponTypeValue == WeaponType::Axe) { return true; }
+		if (WeaponTypeValue == WeaponType::SwordReaver) { return true; }
+		return false;
+	}
+	case BattleClass::Brigand:
+	{
+		if (WeaponTypeValue == WeaponType::Axe) { return true; }
+		if (WeaponTypeValue == WeaponType::SwordReaver) { return true; }
+		return false;
+	}
+	case BattleClass::Soldier:
+	{
+		if (WeaponTypeValue == WeaponType::Lance) { return true; }
+		if (WeaponTypeValue == WeaponType::AxeReaver) { return true; }
+		return false;
+	}
+	case BattleClass::Mercenary:
+	{
+		if (WeaponTypeValue == WeaponType::Sword) { return true; }
+		if (WeaponTypeValue == WeaponType::LanceReaver) { return true; }
+		return false;
+	}
+	default:
+		break;
+	}
+	return false;
 }

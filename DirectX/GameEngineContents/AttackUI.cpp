@@ -20,7 +20,7 @@ void AttackUI::Setting(BattleLevel* _Level)
 	UICursor = _Level->GetUICursor();
 	Cursor = _Level->GetMapCursor();
 	AttackFunction = std::bind(&BattleLevel::UnitCommand_TargetAttack, _Level, std::placeholders::_1);
-	CancelFunction = std::bind(&BattleLevel::UnitCommand_AttackCancel, _Level);
+	CancelFunction = std::bind(&BattleLevel::UnitCommand_CommandCancel, _Level);
 }
 
 void AttackUI::On(std::shared_ptr<BattleUnit> _SelectUnit, std::list<std::shared_ptr<BattleUnit>>& _TargetUnits)
@@ -133,12 +133,6 @@ void AttackUI::WeaponSelectStart()
 
 void AttackUI::WeaponSelectUpdate(float _DeltaTime)
 {
-
-	CursorTimer += _DeltaTime * 10;
-	UICursor->GetTransform()->SetLocalPosition(float4::Lerp(UICursor->GetTransform()->GetLocalPosition(), CursorPos, _DeltaTime * 20));
-
-	if (CursorTimer < 1) { return; }
-
 	if (true == IsOnFrame)
 	{
 		IsOnFrame = false;
@@ -156,6 +150,12 @@ void AttackUI::WeaponSelectUpdate(float _DeltaTime)
 		CancelFunction();
 		return;
 	}
+
+	CursorTimer += _DeltaTime * 10;
+	UICursor->GetTransform()->SetLocalPosition(float4::Lerp(UICursor->GetTransform()->GetLocalPosition(), CursorPos, _DeltaTime * 20));
+
+	if (CursorTimer < 1) { return; }
+
 
 
 	if (PreesTime < GameEngineInput::GetPressTime("Up") || PreesTime < GameEngineInput::GetPressTime("Down"))
@@ -231,8 +231,6 @@ void AttackUI::TargetSelectStart()
 
 void AttackUI::TargetSelectUpdate(float _DeltaTime)
 {
-	if (Cursor->GetIsMove()) { return; }
-
 	if (GameEngineInput::IsDown("ButtonA") || GameEngineInput::IsUp("LeftClick"))
 	{
 		AttackFunction(TargetUnit);
@@ -246,6 +244,8 @@ void AttackUI::TargetSelectUpdate(float _DeltaTime)
 		WeaponSelectStart();
 		return;
 	}
+	if (Cursor->GetIsMove()) { return; }
+
 
 	if (GameEngineInput::IsDown("Up") || GameEngineInput::IsDown("Left"))
 	{

@@ -93,6 +93,9 @@
     <ClCompile Include="UICursor.cpp">
       <Filter>Battle\UI</Filter>
     </ClCompile>
+    <ClCompile Include="ItemUI.cpp">
+      <Filter>Battle\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FECore.h" />
@@ -168,6 +171,9 @@
       <Filter>Battle\UI</Filter>
     </ClInclude>
     <ClInclude Include="UICursor.h">
+      <Filter>Battle\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemUI.h">
       <Filter>Battle\UI</Filter>
     </ClInclude>
   </ItemGroup>

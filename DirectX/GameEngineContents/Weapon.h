@@ -12,7 +12,6 @@ enum class WeaponType
 	Axe,		// 도끼
 	SwordReaver,
 	Bow,		// 활
-	Stave,		// 지팡이
 	AnimaTome,	// 속성마법
 	DarkTome,	// 흑마법
 	LightTome,	// 빛마법
@@ -53,6 +52,9 @@ public:
 
 	// 무기의 상성을 체크하는 함수 (반환값이 1 : 유리, 0 : 일반, -1 : 불리)
 	static int GetWeaponeTriangle(std::shared_ptr<Weapon> _SubjectWeapon, std::shared_ptr<Weapon> _TargetWeapon);
+
+	// 해당 클래스가 이 무기를 사용 가능한가?
+	bool IsUseWeapon(BattleClass _Class);
 
 	WeaponType WeaponTypeValue = WeaponType::None;
 

@@ -549,7 +549,15 @@ int Stat::GetCriticalPoint() const
 
 int Stat::GetAttackSpeedPoint() const
 {
-	int Result = MainStatValue.Speed - std::max<int>(0, EquipWeapon->Weight - MainStatValue.Constitution);
+	int Result;
+	if (nullptr != EquipWeapon)
+	{
+		Result = MainStatValue.Speed - std::max<int>(0, EquipWeapon->Weight - MainStatValue.Constitution);
+	}
+	else
+	{
+		Result = MainStatValue.Speed;
+	}
 	return Result;
 }
 

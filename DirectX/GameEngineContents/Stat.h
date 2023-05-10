@@ -16,28 +16,6 @@ struct MainStat
 	int Constitution = 0;	// 체격
 };
 
-enum class BattleClass
-{
-	Lord,		// 로드
-	BladeLord,	// 블레이드 로드 *
-	Cavalier,	// 소셜나이트
-	PegasusKnight,// 페가수스 나이트
-	Archer,		// 아쳐
-	Fighter,	// 전사
-	Warrior,	// 워리어 *
-	Cleric,		// 시스터
-	Mage,		// 마도사
-	Nomad,		// 유목민
-	Thief,		// 도적
-	Assassin,	// 어쌔신 *
-	Dancer,		// 무희
-	Monk,		// 승려
-	Knight,		// 아머나이트
-	General,	// 제너럴 *
-	Brigand,	// 산적 (도끼든 적)
-	Soldier,	// 군인 (창든 적)
-	Mercenary,	// 용병 (검든 적)
-};
 
 // 스탯 클래스
 // 유닛이 지닐 스탯을 관리하는 클래스

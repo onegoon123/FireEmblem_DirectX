@@ -64,11 +64,6 @@ void FieldCommandUI::Start()
 
 void FieldCommandUI::Update(float _DeltaTime)
 {
-	CursorTimer += _DeltaTime * 10;
-	Cursor->GetTransform()->SetLocalPosition(float4::Lerp(Cursor->GetTransform()->GetLocalPosition(), CursorPos, _DeltaTime * 20));
-
-	if (CursorTimer < 1) { return; }
-
 	if (true == IsOnFrame)
 	{
 		IsOnFrame = false;
@@ -85,6 +80,11 @@ void FieldCommandUI::Update(float _DeltaTime)
 		CancelFunction();
 		return;
 	}
+	CursorTimer += _DeltaTime * 10;
+	Cursor->GetTransform()->SetLocalPosition(float4::Lerp(Cursor->GetTransform()->GetLocalPosition(), CursorPos, _DeltaTime * 20));
+
+	if (CursorTimer < 1) { return; }
+
 
 
 	if (PreesTime < GameEngineInput::GetPressTime("Up") || PreesTime < GameEngineInput::GetPressTime("Down"))

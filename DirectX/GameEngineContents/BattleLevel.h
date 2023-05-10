@@ -12,6 +12,7 @@ class SelectUI;
 class UnitCommandUI;
 class PhaseUI;
 class AttackUI;
+class ItemUI;
 class FieldCommandUI;
 class UICursor;
 class UIWindow;
@@ -94,6 +95,7 @@ private:
 	std::shared_ptr <UnitCommandUI> UI_UnitCommand = nullptr;
 	std::shared_ptr <FieldCommandUI> UI_FieldCommand = nullptr;
 	std::shared_ptr <AttackUI> UI_Attack = nullptr;
+	std::shared_ptr <ItemUI> UI_Item = nullptr;
 	std::shared_ptr <PhaseUI> UI_Phase = nullptr;
 	std::shared_ptr <UICursor> UI_Cursor = nullptr;
 	std::shared_ptr <UIWindow> UI_Window = nullptr;
@@ -220,7 +222,7 @@ public:
 	void UnitCommand_Attack();
 	void UnitCommand_Exchange();
 	void UnitCommand_Cancel();
-	void UnitCommand_AttackCancel();
+	void UnitCommand_CommandCancel();
 	void UnitCommand_TargetAttack(std::shared_ptr<BattleUnit> _Target);
 private:
 

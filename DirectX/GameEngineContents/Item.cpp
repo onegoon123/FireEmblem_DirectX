@@ -41,36 +41,38 @@ std::shared_ptr<Item> Item::CreateItem(ItemCode _Code)
 	case ItemCode::Flux:
 	case ItemCode::Lightning:
 	{
-		//std::shared_ptr<Weapon> NewWeapon = std::make_shared<Weapon>(new Weapon(_Code));
-		//ReturnItem = std::make_shared<Item>(dynamic_cast<Item*>(_Code)));
+		std::shared_ptr<Weapon> NewWeapon = Weapon::CreateWeapon(_Code);
+		ReturnItem = NewWeapon;
 		break;
 	}
-
 	case ItemCode::Heal:
 	case ItemCode::Rescue:
-
+		ReturnItem = std::make_shared<Item>();
+		ReturnItem->TypeValue = ItemType::Stave;
 		break;
 	case ItemCode::Vulnerary:
 	case ItemCode::Elixir:
-
-		break;
 	case ItemCode::MasterSeal:
-
+		ReturnItem = std::make_shared<Item>();
+		ReturnItem->TypeValue = ItemType::Potion;
 		break;
 	case ItemCode::DoorKey:
 	case ItemCode::ChestKey:
-
+		ReturnItem = std::make_shared<Item>();
+		ReturnItem->TypeValue = ItemType::Key;
 		break;
 	case ItemCode::Ring1:
 	case ItemCode::Ring2:
 	case ItemCode::Torch:
 	case ItemCode::GoldCard:
-
+		ReturnItem = std::make_shared<Item>();
+		ReturnItem->TypeValue = ItemType::None;
 		break;
 	default:
 		break;
 	}
 
+	ReturnItem->Code = _Code;
 	return ReturnItem;
 }
 

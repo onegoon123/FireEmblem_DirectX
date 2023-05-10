@@ -44,10 +44,6 @@ public:
 		{
 			On();
 		}
-		else
-		{
-			Off();
-		}
 		SetIsTurnEnd(GetIsTurnEnd());
 	}
 	Unit& GetUnitData()
@@ -71,7 +67,7 @@ public:
 	}
 
 
-	void NewWeapon(ItemCode _Code)
+	void NewItem(ItemCode _Code)
 	{
 		UnitData.NewItem(_Code);
 	}

@@ -4,8 +4,9 @@
 enum class ItemType 
 {
 	None,
-	Weapon,
-	Potion,
+	Weapon,	// 무기
+	Stave,	// 지팡이
+	Potion,	// 포션
 	Key
 };
 
@@ -23,9 +24,12 @@ public:
 	{
 		return TypeValue;
 	}
-
+	ItemCode GetItemCode()
+	{
+		return Code;
+	}
 protected:
-
+	ItemCode Code = ItemCode::None;
 	ItemType TypeValue = ItemType::None;
 
 private:

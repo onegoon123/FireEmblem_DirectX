@@ -90,25 +90,22 @@ void UnitCommandUI::Start()
 
 void UnitCommandUI::Update(float _DeltaTime)
 {
-	CursorTimer += _DeltaTime * 10;
-	Cursor->GetTransform()->SetLocalPosition(float4::Lerp(Cursor->GetTransform()->GetLocalPosition(), CursorPos, _DeltaTime * 20));
-
-
-
-	if (CursorTimer < 1) { return; }
-
 	if (GameEngineInput::IsDown("ButtonA") || GameEngineInput::IsUp("LeftClick"))
 	{
 		CommandFunctions[CurrentCursor]();
-		//CommandFunctions.resize(0);
 		return;
 	}
 	if (GameEngineInput::IsDown("ButtonB") || GameEngineInput::IsUp("RightClick"))
 	{
 		CancelFunction();
-		//CommandFunctions.resize(0);
 		return;
 	}
+
+	CursorTimer += _DeltaTime * 10;
+	Cursor->GetTransform()->SetLocalPosition(float4::Lerp(Cursor->GetTransform()->GetLocalPosition(), CursorPos, _DeltaTime * 20));
+
+	if (CursorTimer < 1) { return; }
+
 
 
 	if (PreesTime < GameEngineInput::GetPressTime("Up") || PreesTime < GameEngineInput::GetPressTime("Down"))

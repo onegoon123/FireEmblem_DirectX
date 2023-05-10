@@ -25,39 +25,52 @@ std::list<AttackCommand> UnitCommand::Attack(std::shared_ptr<BattleUnit> _Subjec
 	CommandRecord.AfterSubjectUnitPos = _SubjectUnit->GetMapPos();
 	CommandRecord.Record = std::string(_SubjectUnit->GetName()) + "이(가) 공격했다.";
 
-	AttackList.push_back(AttackCalculation(SubjectUnit, TargetUnit));
-	CommandRecord.RandomNum += 2;
-
-	if (true == TargetUnit.IsDie)
-	{
-		CommandRecord.AfterSubjectUnit = SubjectUnit;
-		CommandRecord.AfterSubjectUnit.IsTurnEnd = true;
-		CommandRecord.AfterTargetUnit = TargetUnit;
-		CommandList.push_back(CommandRecord);
-		return AttackList;
-	}
-
-	AttackList.push_back(AttackCalculation(TargetUnit, SubjectUnit).ChangeOrder());
-	CommandRecord.RandomNum += 2;
-
-	if (true == SubjectUnit.IsDie)
-	{
-		CommandRecord.AfterSubjectUnit = SubjectUnit;
-		CommandRecord.AfterSubjectUnit.IsTurnEnd = true;
-		CommandRecord.AfterTargetUnit = TargetUnit;
-		CommandList.push_back(CommandRecord);
-		return AttackList;
-	}
-
-	if (TargetUnit.UnitStat.GetAttackSpeedPoint() + 4 <= SubjectUnit.UnitStat.GetAttackSpeedPoint())
+	if (nullptr != SubjectUnit.UnitStat.EquipWeapon)
 	{
 		AttackList.push_back(AttackCalculation(SubjectUnit, TargetUnit));
 		CommandRecord.RandomNum += 2;
+
+		if (true == TargetUnit.IsDie)
+		{
+			CommandRecord.AfterSubjectUnit = SubjectUnit;
+			CommandRecord.AfterSubjectUnit.IsTurnEnd = true;
+			CommandRecord.AfterTargetUnit = TargetUnit;
+			CommandList.push_back(CommandRecord);
+			return AttackList;
+		}
 	}
-	else if (SubjectUnit.UnitStat.GetAttackSpeedPoint() + 4 <= TargetUnit.UnitStat.GetAttackSpeedPoint())
+
+	if (nullptr != TargetUnit.UnitStat.EquipWeapon)
 	{
 		AttackList.push_back(AttackCalculation(TargetUnit, SubjectUnit).ChangeOrder());
 		CommandRecord.RandomNum += 2;
+
+		if (true == SubjectUnit.IsDie)
+		{
+			CommandRecord.AfterSubjectUnit = SubjectUnit;
+			CommandRecord.AfterSubjectUnit.IsTurnEnd = true;
+			CommandRecord.AfterTargetUnit = TargetUnit;
+			CommandList.push_back(CommandRecord);
+			return AttackList;
+		}
+	}
+
+
+	if (TargetUnit.UnitStat.GetAttackSpeedPoint() + 4 <= SubjectUnit.UnitStat.GetAttackSpeedPoint())
+	{
+		if (nullptr != SubjectUnit.UnitStat.EquipWeapon)
+		{
+			AttackList.push_back(AttackCalculation(SubjectUnit, TargetUnit));
+			CommandRecord.RandomNum += 2;
+		}
+	}
+	else if (SubjectUnit.UnitStat.GetAttackSpeedPoint() + 4 <= TargetUnit.UnitStat.GetAttackSpeedPoint())
+	{
+		if (nullptr != TargetUnit.UnitStat.EquipWeapon)
+		{
+			AttackList.push_back(AttackCalculation(TargetUnit, SubjectUnit).ChangeOrder());
+			CommandRecord.RandomNum += 2;
+		}
 	}
 
 	CommandRecord.AfterSubjectUnit = SubjectUnit;
@@ -81,9 +94,16 @@ AttackCommand UnitCommand::AttackCalculation(Unit& _SubjectUnit, Unit& _TargetUn
 	int TerrainDeffence = _TargetUnit.TerrainDeffence;
 
 	// 무기 상성
-	int Triangle = Weapon::GetWeaponeTriangle(_SubjectUnit.UnitStat.EquipWeapon, _TargetUnit.UnitStat.EquipWeapon);
-	int TriangleDamage = Triangle;
-	int TriangleHit = Triangle * 15;
+	int Triangle = 0;
+	int TriangleDamage = 0;
+	int TriangleHit = 0;
+
+	if (nullptr != _TargetUnit.UnitStat.EquipWeapon)
+	{
+		Triangle = Weapon::GetWeaponeTriangle(_SubjectUnit.UnitStat.EquipWeapon, _TargetUnit.UnitStat.EquipWeapon);
+		TriangleDamage = Triangle;
+		TriangleHit = Triangle * 15;
+	}
 
 	// 명중률, 치명타 확률 계산
 	int HitPercentage = UnitHit + TriangleHit - (TargetDodge + TerrainDodge);
