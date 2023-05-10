@@ -80,7 +80,7 @@ void TitleLevel::Start()
 void TitleLevel::Update(float _DeltaTime)
 {
 
-	if (true == GameEngineInput::IsDown("ButtonA") || true == GameEngineInput::IsDown("Start"))
+	if (true == GameEngineInput::IsAnyKey())
 	{
 		GameEngineCore::ChangeLevel("BattleLevel");
 	}

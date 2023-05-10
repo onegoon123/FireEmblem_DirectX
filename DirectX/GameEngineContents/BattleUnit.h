@@ -25,21 +25,18 @@ public:
 	{
 		return UnitData.IsDie;
 	}
+
 	bool GetIsPlayer()
 	{
 		return UnitData.IsPlayer;
 	}
+
 	void SetUnitCode(int _Code);
 	void SetUnitCode(UnitIdentityCode _Code);
 	int GetUnitCode()
 	{
 		return UnitData.UnitCode;
 	}
-	int GetMoveStat()
-	{
-		return UnitData.UnitStat.Movement;
-	}
-
 	void SetUnitData(Unit _Value)
 	{
 		UnitData = _Value;
@@ -53,6 +50,18 @@ public:
 		}
 		SetIsTurnEnd(GetIsTurnEnd());
 	}
+	Unit& GetUnitData()
+	{
+		return UnitData;
+	}
+
+	int GetMoveStat()
+	{
+		return UnitData.UnitStat.Movement;
+	}
+	int GetRangeStat() {
+		return UnitData.GetRangeStat();
+	}
 
 	void SetTerrain(Terrain _TerrainData)
 	{
@@ -61,10 +70,6 @@ public:
 		UnitData.TerrainDeffence = BattleMap::GetTerrainDef(_TerrainData);
 	}
 
-	Unit& GetUnitData()
-	{
-		return UnitData;
-	}
 
 	void NewWeapon(ItemCode _Code)
 	{

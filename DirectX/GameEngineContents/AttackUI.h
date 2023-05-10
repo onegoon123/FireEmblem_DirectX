@@ -1,6 +1,7 @@
 #pragma once
 #include <GameEngineCore/GameEngineActor.h>
 
+class MapCursor;
 class UICursor;
 class SpriteRenderer;
 class BattleLevel;
@@ -20,21 +21,42 @@ public:
 	AttackUI& operator=(AttackUI&& _Other) noexcept = delete;
 
 	void Setting(BattleLevel* _Level);
-	void On();
+	void On(std::shared_ptr<BattleUnit> _SelectUnit, std::list<std::shared_ptr<BattleUnit>>& _TargetUnits);
+	//void On();
 	void Off();
 
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
 private:
+	void WeaponSelectStart();
+	void WeaponSelectUpdate(float _DeltaTime);
+	void WeaponSelectEnd();
+	void TargetSelectStart();
+	void TargetSelectUpdate(float _DeltaTime);
+	void TargetSelectEnd();
+	void SetTarget();
 	BattleLevel* LevelPtr = nullptr;
-	std::shared_ptr<UICursor> Cursor = nullptr;
-	std::shared_ptr<SpriteRenderer> SelectRender = nullptr;
-	std::shared_ptr<SpriteRenderer> WindowRender = nullptr;
+	std::function<void(std::shared_ptr<BattleUnit>)> AttackFunction;
+	std::function<void()> CancelFunction;
+
+	std::shared_ptr<MapCursor> Cursor = nullptr;	// 커서
+	std::shared_ptr<UICursor> UICursor = nullptr;	// 커서
+	std::shared_ptr<SpriteRenderer> SelectRender = nullptr; // 선택배경
+	std::shared_ptr<SpriteRenderer> WindowRender = nullptr;	// 배경창
+	std::shared_ptr<SpriteRenderer> InfoRender = nullptr;	// 스탯 정보
+	std::shared_ptr<SpriteRenderer> Portrait = nullptr;		// 초상화
+	std::shared_ptr<SpriteRenderer> BattleEx = nullptr;		// 전투 예상
+	std::list<std::shared_ptr<SpriteRenderer>> WeaponeIcon;
+
 
 	std::shared_ptr<BattleUnit> SelectUnit = nullptr;;
+	std::list<std::shared_ptr<BattleUnit>> TargetUnits;
 	std::list<std::shared_ptr<Weapon>> Weapons;
+	std::shared_ptr<Weapon> SelectWeapon;
 	std::list<std::shared_ptr<BattleUnit>> Targets;
+	std::list<std::shared_ptr<BattleUnit>>::iterator TargetIter;
+	std::shared_ptr<BattleUnit> TargetUnit;
 
 	const float4 StartCursorPos = { -432, 192 };
 	const float4 StartSelectPos = { -232, 192 };
@@ -45,5 +67,6 @@ private:
 	const float PreesTime = 0.2f;
 	bool PressOK = false;
 	bool IsOnFrame = false;	// UI를 켠 프레임인가
+	bool IsWeaponSelect = false;// 무기를 선택했는가
 };
 

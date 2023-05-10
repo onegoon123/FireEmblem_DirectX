@@ -121,7 +121,7 @@ void BattleLevel::AttackSearch()
 		{
 			if (true == IsMove[y][x])
 			{
-				Queue.push(SearchData(int2(x, y), 1/*SelectUnit->GetRangeStat()*/));
+				Queue.push(SearchData(int2(x, y), SelectUnit->GetRangeStat()));
 			}
 		}
 	}
@@ -173,7 +173,7 @@ void BattleLevel::AttackSearchBow()
 		{
 			if (true == IsMove[y][x])
 			{
-				Queue.push(SearchData(int2(x, y), 1/* SelectUnit->GetRangeStat() / 2)*/));
+				Queue.push(SearchData(int2(x, y), SelectUnit->GetRangeStat() - 1));
 			}
 		}
 	}
@@ -299,7 +299,7 @@ void BattleLevel::AttackSearchForEnemy()
 		{
 			if (true == IsMove[y][x])
 			{
-				Queue.push(SearchData(int2(x, y), 1/*SelectUnit->GetRangeStat()*/));
+				Queue.push(SearchData(int2(x, y), SelectUnit->GetRangeStat()));
 			}
 		}
 	}

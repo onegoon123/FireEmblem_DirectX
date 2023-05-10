@@ -126,7 +126,7 @@ void SelectUI::SetUnitData(std::shared_ptr<BattleUnit> _Unit)
 		UnitData.Render->SetTexture("EnemyActorUI.png");
 	}
 
-	std::string TextureName = "Portrait_";
+	std::string TextureName = "BattleIcon_";
 	TextureName += _Unit->GetUnitData().GetName().data();
 	TextureName += ".png";
 	PortraitRender->SetTexture(TextureName);
@@ -175,7 +175,7 @@ void SelectUI::Start()
 
 	
 	PortraitRender = CreateComponent<SpriteRenderer>();
-	PortraitRender->SetTexture("Portrait_Lyn.png");
+	PortraitRender->SetTexture("BattleIcon_Lyn.png");
 	PortraitRender->GetTransform()->SetParent(UnitData.Render->GetTransform());
 	PortraitRender->GetTransform()->SetWorldScale({ 128, 128 });
 	PortraitRender->GetTransform()->SetLocalPosition({ -96, 0 });

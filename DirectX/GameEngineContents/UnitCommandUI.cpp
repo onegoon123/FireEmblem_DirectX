@@ -23,7 +23,7 @@ void UnitCommandUI::Setting(BattleLevel* _Level)
 
 void UnitCommandUI::SetCommand(bool _IsAttackable, bool _IsCloseUnit)
 {
-
+	CommandFunctions.clear();
 	if (true == _IsAttackable)
 	{
 		CommandFunctions.push_back(std::bind(&BattleLevel::UnitCommand_Attack, LevelPtr));	// 공격 커맨드
@@ -51,18 +51,19 @@ void UnitCommandUI::SetCommand(bool _IsAttackable, bool _IsCloseUnit)
 		break;
 	}
 
-	CurrentCursor = 0;
-	SelectRender->GetTransform()->SetLocalPosition(StartSelectPos);
-
-	Cursor->GetTransform()->SetParent(GetTransform());
-	Cursor->GetTransform()->SetLocalPosition(StartCursorPos);
-	CursorPos = StartCursorPos;
+	
 }
 
 void UnitCommandUI::On()
 {
 	GameEngineActor::On();
 	Cursor->On();
+	CurrentCursor = 0;
+	SelectRender->GetTransform()->SetLocalPosition(StartSelectPos);
+
+	Cursor->GetTransform()->SetParent(GetTransform());
+	Cursor->GetTransform()->SetLocalPosition(StartCursorPos);
+	CursorPos = StartCursorPos;
 }
 void UnitCommandUI::Off()
 {
@@ -99,13 +100,13 @@ void UnitCommandUI::Update(float _DeltaTime)
 	if (GameEngineInput::IsDown("ButtonA") || GameEngineInput::IsUp("LeftClick"))
 	{
 		CommandFunctions[CurrentCursor]();
-		CommandFunctions.resize(0);
+		//CommandFunctions.resize(0);
 		return;
 	}
 	if (GameEngineInput::IsDown("ButtonB") || GameEngineInput::IsUp("RightClick"))
 	{
 		CancelFunction();
-		CommandFunctions.resize(0);
+		//CommandFunctions.resize(0);
 		return;
 	}
 

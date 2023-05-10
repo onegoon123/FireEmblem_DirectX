@@ -73,6 +73,12 @@ public:
 		Recover(static_cast<int>(std::roundf(UnitStat.MainStatValue.HP * _Value)));
 	}
 
+	int GetRangeStat();
+	std::list<std::shared_ptr<Weapon>>& GetWeapons()
+	{
+		return Weapons;
+	}
+
 	int UnitCode = -1;
 	int CurrentHP = 0;
 	Terrain TerrainData = Terrain::None;
@@ -89,6 +95,7 @@ public:
 private:
 
 	std::list<std::shared_ptr<Item>> Items = std::list<std::shared_ptr<Item>>();
+	std::list<std::shared_ptr<Weapon>> Weapons = std::list<std::shared_ptr<Weapon>>();
 	
 };
 

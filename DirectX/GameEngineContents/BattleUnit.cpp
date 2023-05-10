@@ -111,6 +111,7 @@ void BattleUnit::SetUnitCode(UnitIdentityCode _Code)
 	Renderer->SetTexture(ImageName);
 }
 
+
 void BattleUnit::Start()
 {
 	Renderer = CreateComponent<SpriteRenderer>();

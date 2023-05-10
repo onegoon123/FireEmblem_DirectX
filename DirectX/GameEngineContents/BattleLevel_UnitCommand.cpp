@@ -22,11 +22,9 @@ void BattleLevel::UnitCommand_Wait()
 void BattleLevel::UnitCommand_Attack()
 {
 	UI_UnitCommand->Off();
-	UI_Attack->On();
+	UI_Attack->On(SelectUnit, AttackableUnits);
 	return;
-	TargetUnit = AttackableUnits.front();
-	ChangeState(BattleState::Battle);
-	return;
+	
 
 	//std::list<AttackCommand> AttackDetail = UnitCommand::Attack(SelectUnit, AttackableUnits.front());
 	//SelectUnit->SetUnitData(Unit(AttackDetail.back().SubjectUnit));
@@ -69,4 +67,17 @@ void BattleLevel::UnitCommand_Cancel()
 {
 	SelectUnit->SetMapPos(BeforePos);
 	ChangeState(BattleState::Move);
+}
+
+void BattleLevel::UnitCommand_AttackCancel()
+{
+	UI_Attack->Off();
+	UI_UnitCommand->On();
+}
+
+void BattleLevel::UnitCommand_TargetAttack(std::shared_ptr<BattleUnit> _Target)
+{
+	TargetUnit = _Target;
+	ChangeState(BattleState::Battle);
+	return;
 }

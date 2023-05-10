@@ -92,6 +92,20 @@ void GameEngineTransform::SetParent(GameEngineTransform* _Parent)
 		int a = 0;
 	}
 
+	if (Parent != nullptr)
+	{
+		std::list<GameEngineTransform*>::iterator StartIter = Parent->Child.begin();
+		std::list<GameEngineTransform*>::iterator EndIter = Parent->Child.end();
+		for (; StartIter != EndIter; StartIter++)
+		{
+			if ((*StartIter) == this)
+			{
+				Parent->Child.erase(StartIter);
+				break;
+			}
+		}
+		
+	}
 	Parent = _Parent;
 
 	// 월드 포지션은 달라지는게 없다.

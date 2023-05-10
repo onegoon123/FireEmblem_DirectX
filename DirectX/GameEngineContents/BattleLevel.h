@@ -32,7 +32,10 @@ public:
 	{
 		return UI_Cursor;
 	}
-
+	std::shared_ptr <MapCursor> GetMapCursor()
+	{
+		return MainCursor;
+	}
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -217,6 +220,8 @@ public:
 	void UnitCommand_Attack();
 	void UnitCommand_Exchange();
 	void UnitCommand_Cancel();
+	void UnitCommand_AttackCancel();
+	void UnitCommand_TargetAttack(std::shared_ptr<BattleUnit> _Target);
 private:
 
 #pragma endregion
