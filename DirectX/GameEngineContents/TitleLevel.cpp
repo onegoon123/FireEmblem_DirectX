@@ -48,6 +48,7 @@ void TitleLevel::Start()
 		GameEngineInput::CreateKey("Start", VK_RETURN);
 		GameEngineInput::CreateKey("LeftClick", VK_LBUTTON);
 		GameEngineInput::CreateKey("RightClick", VK_RBUTTON);
+		GameEngineInput::CreateKey("MiddleClick", VK_MBUTTON);
 	}
 	
 	// 카메라 세팅

@@ -298,12 +298,12 @@ void ItemUI::ItemUseUpdate(float _DeltaTime)
 		return;
 	}
 
-	if (GameEngineInput::IsDown("Down") || (GameEngineInput::IsPress("Down") && PressOK))
+	if (GameEngineInput::IsDown("Down") || (GameEngineInput::IsPress("Down") && PressOK) || GameEngineInput::IsUp("MiddleClick"))
 	{
 		CursorTimer = 0;
 		if (CurrentUseCursor == UseFunctions.size() - 1)
 		{
-			if (false == GameEngineInput::IsDown("Down")) { return; }
+			if (false == GameEngineInput::IsDown("Down") && false == GameEngineInput::IsUp("MiddleClick")) { return; }
 			CurrentUseCursor = 0;
 			ItemUseSelect->GetTransform()->SetLocalPosition(StartUseSelectPos + float4::Down * (64.0f * CurrentUseCursor));
 			UseCursorPos = StartUseCursorPos;

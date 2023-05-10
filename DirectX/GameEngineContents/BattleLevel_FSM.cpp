@@ -959,7 +959,7 @@ void BattleLevel::TimeStoneUpdate(float _DeltaTime)
 	}
 	case Control:
 	{
-		if (GameEngineInput::IsDown("Up"))
+		if (GameEngineInput::IsDown("Up") || GameEngineInput::IsUp("MiddleClick"))
 		{
 			if (RIter == RIterEnd) {
 				return;
@@ -1188,7 +1188,7 @@ void BattleLevel::TimeStoneUpdate(float _DeltaTime)
 	}
 
 
-	if (GameEngineInput::IsDown("ButtonA"))
+	if (GameEngineInput::IsDown("ButtonA") || GameEngineInput::IsUp("LeftClick"))
 	{
 		for (int i = 0; i < RewindNum; i++)
 		{
@@ -1197,7 +1197,7 @@ void BattleLevel::TimeStoneUpdate(float _DeltaTime)
 		ChangeState(BattleState::Select);
 		return;
 	}
-	if (GameEngineInput::IsDown("ButtonB"))
+	if (GameEngineInput::IsDown("ButtonB") || GameEngineInput::IsUp("RightClick"))
 	{
 		while (RIter != Command.rbegin()) {
 			RIter--;
