@@ -38,6 +38,9 @@ private:
 	size_t CurrentCursor = 0;
 	float CursorTimer = 0;
 
+	const float4 StartCursorPos = { 224, 144 };
+	const float4 StartSelectPos = { 330, 152 };
+
 	const float PreesTime = 0.2f;
 	bool PressOK = false;
 	bool IsOnFrame = false;	// UI를 켠 프레임인가

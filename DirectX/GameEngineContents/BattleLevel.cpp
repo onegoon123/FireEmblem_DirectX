@@ -15,6 +15,7 @@
 #include "FieldCommandUI.h"
 #include "PhaseUI.h"
 #include "UICursor.h"
+#include "AttackUI.h"
 BattleLevel::BattleLevel()
 {
 	StateUpdate = std::bind(&BattleLevel::PlayerPhaseUpdate, this, std::placeholders::_1);
@@ -117,6 +118,10 @@ void BattleLevel::Start()
 	UI_UnitCommand->GetTransform()->SetParent(&UITransform);
 	UI_UnitCommand->GetTransform()->SetLocalPosition(float4::Zero);
 
+	UI_Attack = CreateActor<AttackUI>();
+	UI_Attack->GetTransform()->SetParent(&UITransform);
+	UI_Attack->GetTransform()->SetLocalPosition(float4::Zero);
+
 	UI_FieldCommand = CreateActor<FieldCommandUI>();
 	UI_FieldCommand->GetTransform()->SetParent(&UITransform);
 	UI_FieldCommand->GetTransform()->SetLocalPosition(float4::Zero);
@@ -136,6 +141,7 @@ void BattleLevel::Start()
 
 	UI_UnitCommand->Setting(this);
 	UI_FieldCommand->Setting(this);
+	UI_Attack->Setting(this);
 
 	CursorDirCheck();
 	ChangeState(BattleState::PlayerPhase);

@@ -11,6 +11,7 @@ class ArrowRender;
 class SelectUI;
 class UnitCommandUI;
 class PhaseUI;
+class AttackUI;
 class FieldCommandUI;
 class UICursor;
 class UIWindow;
@@ -89,6 +90,7 @@ private:
 	std::shared_ptr <SelectUI> UI_Select = nullptr;
 	std::shared_ptr <UnitCommandUI> UI_UnitCommand = nullptr;
 	std::shared_ptr <FieldCommandUI> UI_FieldCommand = nullptr;
+	std::shared_ptr <AttackUI> UI_Attack = nullptr;
 	std::shared_ptr <PhaseUI> UI_Phase = nullptr;
 	std::shared_ptr <UICursor> UI_Cursor = nullptr;
 	std::shared_ptr <UIWindow> UI_Window = nullptr;

@@ -2,6 +2,8 @@
 #include "BattleLevel.h"
 #include "BattleUnit.h"
 #include "UnitCommand.h"
+#include "UnitCommandUI.h"
+#include "AttackUI.h"
 void BattleLevel::UnitCommand_Item()
 {
 	// юс╫ц
@@ -19,6 +21,9 @@ void BattleLevel::UnitCommand_Wait()
 
 void BattleLevel::UnitCommand_Attack()
 {
+	UI_UnitCommand->Off();
+	UI_Attack->On();
+	return;
 	TargetUnit = AttackableUnits.front();
 	ChangeState(BattleState::Battle);
 	return;

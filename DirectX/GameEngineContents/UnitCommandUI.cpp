@@ -52,11 +52,11 @@ void UnitCommandUI::SetCommand(bool _IsAttackable, bool _IsCloseUnit)
 	}
 
 	CurrentCursor = 0;
-	SelectRender->GetTransform()->SetLocalPosition({ 330, 152 });
+	SelectRender->GetTransform()->SetLocalPosition(StartSelectPos);
 
 	Cursor->GetTransform()->SetParent(GetTransform());
-	Cursor->GetTransform()->SetLocalPosition({ 224, 144 });
-	CursorPos = { 224, 144 };
+	Cursor->GetTransform()->SetLocalPosition(StartCursorPos);
+	CursorPos = StartCursorPos;
 }
 
 void UnitCommandUI::On()
@@ -79,10 +79,10 @@ void UnitCommandUI::Start()
 
 	SelectRender = CreateComponent<SpriteRenderer>();
 	SelectRender->GetTransform()->SetWorldScale({ 144, 20 });
-	SelectRender->GetTransform()->SetLocalPosition({ 330, 152 });
+	SelectRender->GetTransform()->SetLocalPosition(StartSelectPos);
 	SelectRender->SetTexture("CommandSelect.png");
 
-	CursorPos = { 224, 144 };
+	CursorPos = StartCursorPos;
 
 	GameEngineActor::Off();
 }
@@ -124,14 +124,15 @@ void UnitCommandUI::Update(float _DeltaTime)
 		CursorTimer = 0;
 		if (CurrentCursor == 0)
 		{
+			if (false == GameEngineInput::IsDown("Up")) { return; }
 			CurrentCursor = CommandFunctions.size() - 1;
-			SelectRender->GetTransform()->SetLocalPosition({ 330.0f, 152.0f - (64.0f * CurrentCursor) });
-			CursorPos = { 224.0f, 144.0f - (64.0f * CurrentCursor) };
+			SelectRender->GetTransform()->SetLocalPosition(StartSelectPos + float4::Down * (64.0f * CurrentCursor));
+			CursorPos = { StartCursorPos + float4::Down * (64.0f * CurrentCursor) };
 			return;
 		}
 		CurrentCursor--;
-		SelectRender->GetTransform()->AddLocalPosition(float4::Up * 64);
-		CursorPos += float4::Up * 64;
+		SelectRender->GetTransform()->SetLocalPosition(StartSelectPos + float4::Down * (64.0f * CurrentCursor));
+		CursorPos = { StartCursorPos + float4::Down * (64.0f * CurrentCursor) };
 
 		return;
 	}
@@ -141,14 +142,15 @@ void UnitCommandUI::Update(float _DeltaTime)
 		CursorTimer = 0;
 		if (CurrentCursor == CommandFunctions.size() - 1)
 		{
+			if (false == GameEngineInput::IsDown("Down")) { return; }
 			CurrentCursor = 0;
-			SelectRender->GetTransform()->SetLocalPosition({ 330, 152 });
-			CursorPos = { 224, 144 };
+			SelectRender->GetTransform()->SetLocalPosition(StartSelectPos + float4::Down * (64.0f * CurrentCursor));
+			CursorPos = StartCursorPos;
 			return;
 		}
 		CurrentCursor++;
-		SelectRender->GetTransform()->AddLocalPosition(float4::Down * 64);
-		CursorPos += float4::Down * 64;
+		SelectRender->GetTransform()->SetLocalPosition(StartSelectPos + float4::Down * (64.0f * CurrentCursor));
+		CursorPos = { StartCursorPos + float4::Down * (64.0f * CurrentCursor) };
 
 		return;
 	}

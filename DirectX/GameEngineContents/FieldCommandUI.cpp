@@ -4,6 +4,7 @@
 #include "BattleLevel.h"
 #include "SpriteRenderer.h"
 #include "UICursor.h"
+
 FieldCommandUI::FieldCommandUI() 
 {
 	CommandFunctions.reserve(5);
@@ -23,7 +24,6 @@ void FieldCommandUI::Setting(BattleLevel* _Level)
 	CommandFunctions.push_back(std::bind(&BattleLevel::FieldCommand_Exit, LevelPtr));
 	CommandFunctions.push_back(std::bind(&BattleLevel::FieldCommand_PhaseEnd, LevelPtr));
 	CurrentCursor = 0;
-	SelectRender->GetTransform()->SetLocalPosition({ 330, 152 });
 	Cursor = _Level->GetUICursor();
 }
 
@@ -32,12 +32,12 @@ void FieldCommandUI::On()
 	GameEngineActor::On();
 	IsOnFrame = true;
 	CurrentCursor = 0;
-	SelectRender->GetTransform()->SetLocalPosition({ 330, 152 });
+	SelectRender->GetTransform()->SetLocalPosition(StartSelectPos);
 
-	CursorPos = { 224.0f, 144.0f };
+	CursorPos = StartCursorPos;
 	Cursor->On();
 	Cursor->GetTransform()->SetParent(GetTransform());
-	Cursor->GetTransform()->SetLocalPosition({ 224, 144 });
+	Cursor->GetTransform()->SetLocalPosition(StartCursorPos);
 }
 
 void FieldCommandUI::Off()
@@ -52,12 +52,12 @@ void FieldCommandUI::Start()
 	WindowRender->GetTransform()->SetWorldScale({ 196, 356 });
 	WindowRender->GetTransform()->SetLocalPosition({ 334, 36 });
 	WindowRender->GetTransform()->SetWorldRotation({ 0,0 });
-	WindowRender->SetTexture("FieldCommand.png");
+	WindowRender->SetTexture("Select5.png");
 
 	SelectRender = CreateComponent<SpriteRenderer>();
 	SelectRender->GetTransform()->SetWorldScale({ 144, 20 });
-	SelectRender->GetTransform()->SetLocalPosition({ 330, 152 });
-	SelectRender->SetTexture("FieldCommandSelect.png");
+	SelectRender->GetTransform()->SetLocalPosition(StartSelectPos);
+	SelectRender->SetTexture("CommandSelect.png");
 
 	GameEngineActor::Off();
 }
@@ -103,13 +103,13 @@ void FieldCommandUI::Update(float _DeltaTime)
 		{
 			if (false == GameEngineInput::IsDown("Up")) { return; }
 			CurrentCursor = CommandFunctions.size() - 1;
-			SelectRender->GetTransform()->SetLocalPosition({ 330.0f, 152.0f - (64.0f * CurrentCursor) });
-			CursorPos = { 224.0f, 144.0f - (64.0f * CurrentCursor) };
+			SelectRender->GetTransform()->SetLocalPosition(StartSelectPos + float4::Down * (64.0f * CurrentCursor));
+			CursorPos = StartCursorPos + float4::Down * (64.0f * CurrentCursor);
 			return;
 		}
 		CurrentCursor--;
-		SelectRender->GetTransform()->AddLocalPosition(float4::Up * 64);
-		CursorPos += float4::Up * 64;
+		SelectRender->GetTransform()->SetLocalPosition(StartSelectPos + float4::Down * (64.0f * CurrentCursor));
+		CursorPos = StartCursorPos + float4::Down * (64.0f * CurrentCursor);
 
 		return;
 	}
@@ -121,13 +121,13 @@ void FieldCommandUI::Update(float _DeltaTime)
 		{
 			if (false == GameEngineInput::IsDown("Down")) { return; }
 			CurrentCursor = 0;
-			SelectRender->GetTransform()->SetLocalPosition({ 330, 152 });
-			CursorPos = { 224, 144 };
+			SelectRender->GetTransform()->SetLocalPosition(StartSelectPos + float4::Down * (64.0f * CurrentCursor));
+			CursorPos = StartCursorPos;
 			return;
 		}
 		CurrentCursor++;
-		SelectRender->GetTransform()->AddLocalPosition(float4::Down * 64);
-		CursorPos += float4::Down * 64;
+		SelectRender->GetTransform()->SetLocalPosition(StartSelectPos + float4::Down * (64.0f * CurrentCursor));
+		CursorPos = StartCursorPos + float4::Down * (64.0f * CurrentCursor);
 
 		return;
 	}

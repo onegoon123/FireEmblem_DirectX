@@ -4,6 +4,8 @@
 class UICursor;
 class SpriteRenderer;
 class BattleLevel;
+class Weapon;
+class BattleUnit;
 class AttackUI : public GameEngineActor
 {
 public:
@@ -18,6 +20,8 @@ public:
 	AttackUI& operator=(AttackUI&& _Other) noexcept = delete;
 
 	void Setting(BattleLevel* _Level);
+	void On();
+	void Off();
 
 protected:
 	void Start() override;
@@ -28,6 +32,12 @@ private:
 	std::shared_ptr<SpriteRenderer> SelectRender = nullptr;
 	std::shared_ptr<SpriteRenderer> WindowRender = nullptr;
 
+	std::shared_ptr<BattleUnit> SelectUnit = nullptr;;
+	std::list<std::shared_ptr<Weapon>> Weapons;
+	std::list<std::shared_ptr<BattleUnit>> Targets;
+
+	const float4 StartCursorPos = { -432, 192 };
+	const float4 StartSelectPos = { -232, 192 };
 	float4 CursorPos;
 	size_t CurrentCursor = 0;
 	float CursorTimer = 0;
