@@ -49,8 +49,12 @@ public:
 };
 
 // 설명 : 특정한 문체의 크기 회전 이동에 관련된 기하속성을 관리해준다.
+class GameEngineObject;
 class GameEngineTransform : public GameEngineObjectBase
 {
+	friend class GameEngineObject;
+	friend class GameEngineLevel;
+
 public:
 	// constrcuter destructer
 	GameEngineTransform();
@@ -61,6 +65,18 @@ public:
 	GameEngineTransform(GameEngineTransform&& _Other) noexcept = delete;
 	GameEngineTransform& operator=(const GameEngineTransform& _Other) = delete;
 	GameEngineTransform& operator=(GameEngineTransform&& _Other) noexcept = delete;
+
+	void SetLocalPositiveScaleX()
+	{
+		TransData.Scale.x = abs(TransData.Scale.x);
+		SetLocalScale(TransData.Scale);
+	}
+
+	void SetLocalNegativeScaleX()
+	{
+		TransData.Scale.x = -abs(TransData.Scale.x);
+		SetLocalScale(TransData.Scale);
+	}
 
 	void SetWorldScale(const float4& _Value)
 	{
@@ -202,24 +218,6 @@ public:
 		return TransData.LocalWorldMatrix.ArrVector[0].NormalizeReturn();
 	}
 
-
-
-	//float4 GetWorldPosition()
-	//{
-	//	return WorldPosition;
-	//}
-
-	//float4 GetWorldScale()
-	//{
-	//	return WorldScale;
-	//}
-
-	//float4 GetWorldRotation()
-	//{
-	//	return WorldRotation;
-	//}
-
-
 	float4x4 GetLocalWorldMatrix()
 	{
 		return TransData.LocalWorldMatrix;
@@ -267,6 +265,11 @@ public:
 
 	void SetParent(GameEngineTransform* _Parent);
 
+	GameEngineTransform* GetParent()
+	{
+		return Parent;
+	}
+
 	const TransformData& GetTransDataRef()
 	{
 		return TransData;
@@ -296,5 +299,26 @@ private:
 
 	GameEngineTransform* Parent = nullptr;
 	std::list<GameEngineTransform*> Child;
+
+
+private:
+	void AllAccTime(float _DeltaTime);
+
+	void AllUpdate(float _DeltaTime);
+
+	void AllRender(float _DeltaTime);
+
+	void AllRelease();
+
+	void ChildRelease();
+
+	void SetMaster(GameEngineObject* _Master);
+
+	GameEngineObject* GetMaster()
+	{
+		return Master;
+	}
+
+	GameEngineObject* Master = nullptr;
 };
 

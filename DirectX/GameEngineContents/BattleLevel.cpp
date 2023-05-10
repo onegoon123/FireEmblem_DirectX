@@ -107,28 +107,26 @@ void BattleLevel::Start()
 		IsAttack[i].resize(MainMap->MapScaleInt2.x);
 	}
 
-	UITransform.SetParent(GetMainCamera()->GetTransform());
-	UITransform.SetLocalPosition({ 0, 0,  554.0f });
 
 	UI_Select = CreateActor<SelectUI>();
-	UI_Select->GetTransform()->SetParent(&UITransform);
-	UI_Select->GetTransform()->SetLocalPosition(float4::Zero);
+	//UI_Select->GetTransform()->SetParent(GetMainCamera()->GetTransform());
+	UI_Select->GetTransform()->SetLocalPosition({ 448, 288, 0 });
 
 	UI_UnitCommand = CreateActor<UnitCommandUI>();
-	UI_UnitCommand->GetTransform()->SetParent(&UITransform);
-	UI_UnitCommand->GetTransform()->SetLocalPosition(float4::Zero);
+	//UI_UnitCommand->GetTransform()->SetParent(GetMainCamera()->GetTransform());
+	UI_UnitCommand->GetTransform()->SetLocalPosition({ 448, 288, 0 });
 
 	UI_Attack = CreateActor<AttackUI>();
-	UI_Attack->GetTransform()->SetParent(&UITransform);
-	UI_Attack->GetTransform()->SetLocalPosition(float4::Zero);
+	//UI_Attack->GetTransform()->SetParent(GetMainCamera()->GetTransform());
+	UI_Attack->GetTransform()->SetLocalPosition({ 448, 288, 0 });
 
 	UI_FieldCommand = CreateActor<FieldCommandUI>();
-	UI_FieldCommand->GetTransform()->SetParent(&UITransform);
-	UI_FieldCommand->GetTransform()->SetLocalPosition(float4::Zero);
+	//UI_FieldCommand->GetTransform()->SetParent(GetMainCamera()->GetTransform());
+	UI_FieldCommand->GetTransform()->SetLocalPosition({ 448, 288, 0 });
 
 	UI_Phase = CreateActor<PhaseUI>();
-	UI_Phase->GetTransform()->SetParent(&UITransform);
-	UI_Phase->GetTransform()->SetLocalPosition(float4::Zero);
+	//UI_Phase->GetTransform()->SetParent(GetMainCamera()->GetTransform());
+	UI_Phase->GetTransform()->SetLocalPosition({ 448, 288, 0 });
 
 	UI_Cursor = CreateActor<UICursor>();
 

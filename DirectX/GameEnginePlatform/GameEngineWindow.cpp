@@ -30,6 +30,16 @@ LRESULT CALLBACK GameEngineWindow::MessageFunction(HWND _hWnd, UINT _message, WP
 
     switch (_message)
     {
+    case WM_SETFOCUS:
+    {
+        GameEngineInput::IsFocusOn();
+        break;
+    }
+    case WM_KILLFOCUS:
+    {
+        GameEngineInput::IsFocusOff();
+        break;
+    }
     case WM_KEYDOWN:
     {
         GameEngineInput::IsAnyKeyOn();
@@ -149,15 +159,15 @@ int GameEngineWindow::WindowLoop(
     {
         if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
         {
+
             if (nullptr != _Loop)
             {
                 _Loop();
+                GameEngineInput::IsAnyKeyOff();
             }
 
             TranslateMessage(&msg);
             DispatchMessage(&msg);
-
-            GameEngineInput::IsAnyKeyOff();
             continue;
         }
 
@@ -166,9 +176,8 @@ int GameEngineWindow::WindowLoop(
         if (nullptr != _Loop)
         {
             _Loop();
+            GameEngineInput::IsAnyKeyOff();
         }
-
-        GameEngineInput::IsAnyKeyOff();
     }
 
     if (nullptr != _End)

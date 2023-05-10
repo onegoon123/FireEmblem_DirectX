@@ -13,7 +13,7 @@ public:
 	GameEngineDirectory();
 	~GameEngineDirectory();
 
-	GameEngineDirectory(std::string_view& _Path)
+	GameEngineDirectory(const std::string_view& _Path)
 		: Path(_Path)
 	{
 
@@ -31,9 +31,6 @@ public:
 	GameEngineDirectory& operator=(const GameEngineDirectory& _Other) = delete;
 	GameEngineDirectory& operator=(GameEngineDirectory&& _Other) noexcept = delete;
 
-	// 이 디렉토리에 이 파일이 있어?
-	bool IsFile(const std::string_view& _FileName);
-
 	bool MoveParent();
 
 	void MoveParentToDirectory(const std::string_view& _String);
@@ -46,6 +43,11 @@ public:
 	// std::vector<GameEngineFile> GetAllFile(const std::string_view& _Ext = "");
 
 	std::vector<GameEngineFile> GetAllFile(std::vector<std::string_view> _Ext);
+
+	const GameEnginePath& GetPath()
+	{
+		return Path;
+	}
 
 protected:
 

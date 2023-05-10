@@ -9,13 +9,18 @@ class GameEngineObject :
 	public GameEngineObjectBase,
 	public GameEngineNameObject,
 	public std::enable_shared_from_this<GameEngineObject>
-	// 침습형
+	// 침습형이 된겁니다.
 {
+	friend class GameEngineTransform;
 	friend class GameEngineLevel;
 
 public:
-
+	// constrcuter destructer
 	GameEngineObject();
+	// 소멸자에 virtual붙이는 이유 => 자식소멸자가 제대로 호출되게 하기 위해서
+	// 순수가상함수 쓰는 이유 => 자식에게 인터페이스를 강요하기 위해서
+	// 순수가상함수 쓰는 이유 => 그 클래스를 객체화 할수 없게 만들기 위해서.
+	// 소멸자를 순수가상함수를 만드는 이유? => 추상화 할만한게 딱히 없어서.
 	virtual ~GameEngineObject() = 0;
 
 	// delete Function
@@ -36,7 +41,36 @@ public:
 	}
 
 
+	virtual void AccLiveTime(float _LiveTime)
+	{
+		LiveTime += _LiveTime;
+	}
+
+	void ResetLiveTime()
+	{
+		LiveTime = 0.0f;
+	}
+
+	float GetLiveTime()
+	{
+		return LiveTime;
+	}
+
+
+protected:
+	virtual void Start() {}
+	virtual void Update(float _DeltaTime) {}
+	virtual void Render(float _DeltaTime) {}
+	virtual void Release();
+
+	void PushChild(std::shared_ptr<GameEngineObject> _Child)
+	{
+		Childs.push_back(_Child);
+	}
+
 private:
+	float LiveTime = 0.0f;
 	GameEngineTransform Transform;
 
+	std::list<std::shared_ptr<GameEngineObject>> Childs;
 };

@@ -95,8 +95,6 @@ private:
 	std::shared_ptr <UICursor> UI_Cursor = nullptr;
 	std::shared_ptr <UIWindow> UI_Window = nullptr;
 
-	GameEngineTransform UITransform = GameEngineTransform();
-
 	const float MoveSpeed = 10;
 	float MoveTimer = 0;
 	int MoveIndex = 0;
