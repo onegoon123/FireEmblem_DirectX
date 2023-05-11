@@ -25,6 +25,9 @@ std::list<AttackCommand> UnitCommand::Attack(std::shared_ptr<BattleUnit> _Subjec
 	CommandRecord.AfterSubjectUnitPos = _SubjectUnit->GetMapPos();
 	CommandRecord.Record = std::string(_SubjectUnit->GetName()) + "이(가) 공격했다.";
 
+	CommandRecord.BeforeSubjectItems = Item::SaveItemDataList(SubjectUnit.GetItems());
+	CommandRecord.BeforeTargetItems = Item::SaveItemDataList(TargetUnit.GetItems());
+
 	if (nullptr != SubjectUnit.GetCurWeapon())
 	{
 		AttackList.push_back(AttackCalculation(SubjectUnit, TargetUnit));
@@ -35,6 +38,8 @@ std::list<AttackCommand> UnitCommand::Attack(std::shared_ptr<BattleUnit> _Subjec
 			CommandRecord.AfterSubjectUnit = SubjectUnit;
 			CommandRecord.AfterSubjectUnit.SetIsTurnEnd(true);
 			CommandRecord.AfterTargetUnit = TargetUnit;
+			CommandRecord.AfterSubjectItems = Item::SaveItemDataList(SubjectUnit.GetItems());
+			CommandRecord.AfterTargetItems = Item::SaveItemDataList(TargetUnit.GetItems());
 			CommandList.push_back(CommandRecord);
 			return AttackList;
 		}
@@ -50,6 +55,8 @@ std::list<AttackCommand> UnitCommand::Attack(std::shared_ptr<BattleUnit> _Subjec
 			CommandRecord.AfterSubjectUnit = SubjectUnit;
 			CommandRecord.AfterSubjectUnit.SetIsTurnEnd(true);
 			CommandRecord.AfterTargetUnit = TargetUnit;
+			CommandRecord.AfterSubjectItems = Item::SaveItemDataList(SubjectUnit.GetItems());
+			CommandRecord.AfterTargetItems = Item::SaveItemDataList(TargetUnit.GetItems());
 			CommandList.push_back(CommandRecord);
 			return AttackList;
 		}
@@ -76,6 +83,8 @@ std::list<AttackCommand> UnitCommand::Attack(std::shared_ptr<BattleUnit> _Subjec
 	CommandRecord.AfterSubjectUnit = SubjectUnit;
 	CommandRecord.AfterSubjectUnit.SetIsTurnEnd(true);
 	CommandRecord.AfterTargetUnit = TargetUnit;
+	CommandRecord.AfterSubjectItems = Item::SaveItemDataList(SubjectUnit.GetItems());
+	CommandRecord.AfterTargetItems = Item::SaveItemDataList(TargetUnit.GetItems());
 	CommandList.push_back(CommandRecord);
 	return AttackList;
 }
@@ -142,6 +151,24 @@ void UnitCommand::Wait(std::shared_ptr<BattleUnit> _SubjectUnit)
 	CommandRecord.BeforeSubjectUnitPos = _SubjectUnit->GetBeforeMapPos();
 	CommandRecord.AfterSubjectUnitPos = _SubjectUnit->GetMapPos();
 	CommandRecord.Record = std::string(_SubjectUnit->GetName()) + "이(가) 대기했다";
+	CommandList.push_back(CommandRecord);
+}
+
+void UnitCommand::ItemUse(std::shared_ptr<BattleUnit> _SubjectUnit, std::list<std::shared_ptr<Item>>::iterator& _ItemIter)
+{
+	UnitCommand CommandRecord;
+	CommandRecord.TypeValue = CommandType::Item;
+	CommandRecord.BeforeSubjectUnit = Unit(_SubjectUnit->GetUnitData());
+	CommandRecord.BeforeSubjectUnitPos = _SubjectUnit->GetBeforeMapPos();
+	CommandRecord.BeforeSubjectItems = Item::SaveItemDataList(CommandRecord.BeforeSubjectUnit.GetItems());
+
+	CommandRecord.Record = std::string(_SubjectUnit->GetName()) + "이(가) "+ std::string((*_ItemIter)->GetName()) + "를(을) 사용했다.";
+	_SubjectUnit->GetUnitData().UseItem(_ItemIter);
+
+	CommandRecord.AfterSubjectItems = Item::SaveItemDataList(_SubjectUnit->GetUnitData().GetItems());
+	CommandRecord.AfterSubjectUnit = CommandRecord.BeforeSubjectUnit;
+	CommandRecord.AfterSubjectUnitPos = _SubjectUnit->GetMapPos();
+	CommandRecord.AfterSubjectUnit.SetIsTurnEnd(true);
 	CommandList.push_back(CommandRecord);
 }
 

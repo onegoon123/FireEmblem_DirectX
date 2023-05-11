@@ -1,11 +1,11 @@
 #include "PrecompileHeader.h"
 #include "Unit.h"
 
-Unit::Unit() 
+Unit::Unit()
 {
 }
 
-Unit::~Unit() 
+Unit::~Unit()
 {
 }
 
@@ -42,12 +42,13 @@ void Unit::EquipWeapon(std::shared_ptr<Weapon> _Weapon)
 
 void Unit::UseItem(std::list<std::shared_ptr<Item>>::iterator& _ItemIter)
 {
+	
 	if (Items.end() == _ItemIter)
 	{
 		MsgAssert("잘못된 Iterator 값입니다.");
 	}
 	std::shared_ptr<Item> _Item = *_ItemIter;
-	
+
 	switch (_Item->GetItemCode())
 	{
 	case ItemCode::Vulnerary:
@@ -63,7 +64,7 @@ void Unit::UseItem(std::list<std::shared_ptr<Item>>::iterator& _ItemIter)
 	{
 		MsgAssert("아직 지정하지 않은 아이템입니다.");
 	}
-		break;
+	break;
 	default:
 		break;
 	}
@@ -92,30 +93,17 @@ void Unit::DropItem(std::list<std::shared_ptr<Item>>::iterator& _ItemIter)
 
 void Unit::NewItem(ItemCode _Code)
 {
-	if (_Code <= ItemCode::Lightning)
+	std::shared_ptr <Item> NewItem = Item::CreateItem(_Code);
+	Items.push_back(NewItem);
+	if (NewItem->GetItemType() == ItemType::Weapon)
 	{
-		// 무기 생성
-		std::shared_ptr<Weapon> NewWeapon = Weapon::CreateWeapon(_Code);
-		Items.push_back(NewWeapon);	// 아이템 리스트에 추가
-		// 사용가능한 무기라면
-		if (NewWeapon->IsUseWeapon(UnitStat.ClassValue))
+		std::shared_ptr<Weapon> NewWeapon = std::dynamic_pointer_cast<Weapon>(NewItem);
+		Weapons.push_back(NewWeapon);
+		if (nullptr == CurWeapon && NewWeapon->IsUseWeapon(UnitStat.ClassValue))
 		{
-			// 무기 리스트에 추가
-			Weapons.push_back(NewWeapon);
-			// 사용중인 무기가 없다면
-			if (nullptr == CurWeapon)
-			{
-				// 무기 장비
-				CurWeapon = NewWeapon;
-				std::list<std::shared_ptr<Item>>::iterator Iter = std::find(Items.begin(), Items.end(), CurWeapon);
-				Items.splice(Items.begin(), Items, Iter);
-			}
+			EquipWeapon(NewWeapon);
 		}
-		return;
 	}
-	
-
-	Items.push_back(Item::CreateItem(_Code));
-
+	return;
 }
 

@@ -54,9 +54,9 @@ void BattleLevel::UnitCommand_TargetAttack(std::shared_ptr<BattleUnit> _Target)
 
 void BattleLevel::UnitCommand_ItemUse(std::list<std::shared_ptr<Item>>::iterator& _ItemIter)
 {
-	UnitCommand::Wait(SelectUnit);
+	ItemCode _ItemCode = (*_ItemIter)->GetItemCode();
 	UI_Item->Off();
+	UnitCommand::ItemUse(SelectUnit, _ItemIter);
 	SelectUnit->SetIsTurnEnd(true);
-	SelectUnit->GetUnitData().UseItem(_ItemIter);
 	ChangeState(BattleState::Select);
 }

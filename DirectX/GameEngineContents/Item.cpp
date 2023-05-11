@@ -105,7 +105,49 @@ std::shared_ptr<Item> Item::CreateItem(ItemCode _Code)
 		break;
 	}
 
+	static int IdentityNum = 0;
+
+	ReturnItem->IdentityCode = IdentityNum++;
 	ReturnItem->Code = _Code;
 	return ReturnItem;
+}
+
+Item Item::SaveItemData(std::shared_ptr<Item> _Item)
+{
+	Item NewItem;
+	NewItem.SetName(_Item->GetName());
+	NewItem.IdentityCode = _Item->IdentityCode;
+	NewItem.Code = _Item->Code;
+	NewItem.TypeValue = _Item->TypeValue;
+	NewItem.Uses = _Item->Uses;
+	NewItem.MaxUses = _Item->MaxUses;
+	return NewItem;
+}
+
+std::list<Item> Item::SaveItemDataList(std::list<std::shared_ptr<Item>> _ItemList)
+{
+	std::list<Item> ReturnList;
+
+	for (std::shared_ptr<Item> _Item : _ItemList)
+	{
+		ReturnList.push_back(SaveItemData(_Item));
+	}
+
+	return ReturnList;
+}
+
+void Item::LoadItemDataList(std::list<std::shared_ptr<Item>>& _ItemList, std::list<Item>& _LoadList)
+{
+	_ItemList.clear();
+	for (Item _Item : _LoadList)
+	{
+		std::shared_ptr<Item> _ItemPtr = _ItemList.emplace_back(std::make_shared<Item>());
+		_ItemPtr->SetName(_Item.GetName());
+		_ItemPtr->IdentityCode = _Item.IdentityCode;
+		_ItemPtr->Code = _Item.Code;
+		_ItemPtr->TypeValue = _Item.TypeValue;
+		_ItemPtr->Uses = _Item.Uses;
+		_ItemPtr->MaxUses = _Item.MaxUses;
+	}
 }
 

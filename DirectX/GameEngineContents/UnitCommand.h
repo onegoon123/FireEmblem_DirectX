@@ -37,10 +37,10 @@ public:
 
 	static std::list<AttackCommand> Attack(std::shared_ptr<BattleUnit> _SubjectUnit, std::shared_ptr<BattleUnit> _TargetUnit);
 	static AttackCommand AttackCalculation(Unit& _SubjectUnit, Unit& _TargetUnit);
-
 	static void Wait(std::shared_ptr<BattleUnit> _SubjectUnit);
-	static void ItemUse() {}
+	static void ItemUse(std::shared_ptr<BattleUnit> _SubjectUnit, std::list<std::shared_ptr<Item>>::iterator& _ItemIter);
 	static void PhaseStart(Faction _Faction);
+
 
 	static std::list<UnitCommand>& GetCommandList() { return CommandList; }
 	static void SetCommandList(std::list<UnitCommand> _Value) { CommandList = _Value; }
@@ -61,6 +61,10 @@ private:
 	Unit BeforeTargetUnit = Unit();
 	Unit AfterSubjectUnit = Unit();
 	Unit AfterTargetUnit = Unit();
+	std::list<Item> BeforeSubjectItems = std::list<Item>();
+	std::list<Item> BeforeTargetItems = std::list<Item>();
+	std::list<Item> AfterSubjectItems = std::list<Item>();
+	std::list<Item> AfterTargetItems = std::list<Item>();
 	int2 BeforeSubjectUnitPos = int2(-1, -1);
 	int2 AfterSubjectUnitPos = int2(-1, -1);
 	int RandomNum = 0;

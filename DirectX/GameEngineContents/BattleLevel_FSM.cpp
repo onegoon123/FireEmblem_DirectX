@@ -998,10 +998,12 @@ void BattleLevel::TimeStoneUpdate(float _DeltaTime)
 					{
 						_Unit->SetUnitData((*RIter).BeforeSubjectUnit);
 						_Unit->SetMapPos((*RIter).BeforeSubjectUnitPos);
+						Item::LoadItemDataList(_Unit->GetUnitData().GetItems(), (*RIter).BeforeSubjectItems);
 					}
 					else if ((*RIter).BeforeTargetUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
 					{
 						_Unit->SetUnitData((*RIter).BeforeTargetUnit);
+						Item::LoadItemDataList(_Unit->GetUnitData().GetItems(), (*RIter).BeforeTargetItems);
 					}
 				}
 				for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
@@ -1010,16 +1012,38 @@ void BattleLevel::TimeStoneUpdate(float _DeltaTime)
 					{
 						_Unit->SetUnitData((*RIter).BeforeSubjectUnit);
 						_Unit->SetMapPos((*RIter).BeforeSubjectUnitPos);
+						Item::LoadItemDataList(_Unit->GetUnitData().GetItems(), (*RIter).BeforeSubjectItems);
 					}
 					else if ((*RIter).BeforeTargetUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
 					{
 						_Unit->SetUnitData((*RIter).BeforeTargetUnit);
+						Item::LoadItemDataList(_Unit->GetUnitData().GetItems(), (*RIter).BeforeTargetItems);
 					}
 				}
 				break;
 			}
 			case CommandType::Item:
+			{
+				for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
+				{
+					if ((*RIter).BeforeSubjectUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
+					{
+						_Unit->SetUnitData((*RIter).BeforeSubjectUnit);
+						_Unit->SetMapPos((*RIter).BeforeSubjectUnitPos);
+						Item::LoadItemDataList(_Unit->GetUnitData().GetItems(), (*RIter).BeforeSubjectItems);
+					}
+				}
+				for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
+				{
+					if ((*RIter).BeforeSubjectUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
+					{
+						_Unit->SetUnitData((*RIter).BeforeSubjectUnit);
+						_Unit->SetMapPos((*RIter).BeforeSubjectUnitPos);
+						Item::LoadItemDataList(_Unit->GetUnitData().GetItems(), (*RIter).BeforeSubjectItems);
+					}
+				}
 				break;
+			}
 			case CommandType::Wait:
 			{
 				for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
