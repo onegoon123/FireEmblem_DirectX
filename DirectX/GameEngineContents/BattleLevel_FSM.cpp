@@ -1153,10 +1153,12 @@ void BattleLevel::TimeStoneUpdate(float _DeltaTime)
 					{
 						_Unit->SetUnitData((*RIter).AfterSubjectUnit);
 						_Unit->SetMapPos((*RIter).AfterSubjectUnitPos);
+						Item::LoadItemDataList(_Unit->GetUnitData().GetItems(), (*RIter).AfterSubjectItems);
 					}
 					else if ((*RIter).AfterTargetUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
 					{
 						_Unit->SetUnitData((*RIter).AfterTargetUnit);
+						Item::LoadItemDataList(_Unit->GetUnitData().GetItems(), (*RIter).AfterTargetItems);
 					}
 				}
 				for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
@@ -1165,16 +1167,38 @@ void BattleLevel::TimeStoneUpdate(float _DeltaTime)
 					{
 						_Unit->SetUnitData((*RIter).AfterSubjectUnit);
 						_Unit->SetMapPos((*RIter).AfterSubjectUnitPos);
+						Item::LoadItemDataList(_Unit->GetUnitData().GetItems(), (*RIter).AfterSubjectItems);
 					}
 					else if ((*RIter).AfterTargetUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
 					{
 						_Unit->SetUnitData((*RIter).AfterTargetUnit);
+						Item::LoadItemDataList(_Unit->GetUnitData().GetItems(), (*RIter).AfterTargetItems);
 					}
 				}
 				break;
 			}
 			case CommandType::Item:
+			{
+				for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
+				{
+					if ((*RIter).AfterSubjectUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
+					{
+						_Unit->SetUnitData((*RIter).AfterSubjectUnit);
+						_Unit->SetMapPos((*RIter).AfterSubjectUnitPos);
+						Item::LoadItemDataList(_Unit->GetUnitData().GetItems(), (*RIter).AfterSubjectItems);
+					}
+				}
+				for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
+				{
+					if ((*RIter).AfterSubjectUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
+					{
+						_Unit->SetUnitData((*RIter).AfterSubjectUnit);
+						_Unit->SetMapPos((*RIter).AfterSubjectUnitPos);
+						Item::LoadItemDataList(_Unit->GetUnitData().GetItems(), (*RIter).AfterSubjectItems);
+					}
+				}
 				break;
+			}
 			case CommandType::Wait:
 			{
 				for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
