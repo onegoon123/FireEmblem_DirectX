@@ -127,7 +127,7 @@ AttackCommand UnitCommand::AttackCalculation(Unit& _SubjectUnit, Unit& _TargetUn
 	if (true == NewAttack.IsHit)
 	{
 		_TargetUnit.CurrentHP -= Damage;
-		_SubjectUnit.UnitStat.EquipWeapon->Uses--;
+		_SubjectUnit.UnitStat.EquipWeapon->Use();
 
 		if (0 >= _TargetUnit.CurrentHP)
 		{

@@ -153,7 +153,6 @@ void SelectUI::Start()
 	Terrain.Render = CreateComponent<SpriteRenderer>();
 	Terrain.Render->SetTexture("terrainUI.png");
 	Terrain.Render->GetTransform()->SetWorldScale({ 192, 212 });
-	Terrain.Render->GetTransform()->SetWorldRotation({ 0,0 });
 	Terrain.BenchmarkHidePos = { -576, 214 };
 	Terrain.BenchmarkShowPos = { -384, 214 };
 	Terrain.CurDir = UIDir::None;

@@ -28,10 +28,23 @@ public:
 	{
 		return Code;
 	}
+	int GetUses()
+	{
+		return Uses;
+	}
+	int GetMaxUses()
+	{
+		return MaxUses;
+	}
+	bool Use()
+	{
+		return 0 == --Uses;
+	}
 protected:
 	ItemCode Code = ItemCode::None;
 	ItemType TypeValue = ItemType::None;
-
+	int Uses = 0;		// ³»±¸µµ
+	int MaxUses = 0;
 private:
 
 };

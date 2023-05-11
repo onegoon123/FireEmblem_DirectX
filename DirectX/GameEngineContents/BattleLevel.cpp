@@ -51,7 +51,7 @@ void BattleLevel::Start()
 	NewActor->SetUnitCode(UnitIdentityCode::Lyn);
 	NewActor->SetMapPos({ 4, 5 });
 	NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
-	NewActor->NewItem(ItemCode::KillingSword);
+	NewActor->NewItem(ItemCode::IronSword);
 	NewActor->NewItem(ItemCode::KillingSword);
 	NewActor->NewItem(ItemCode::Vulnerary);
 	NewActor->NewItem(ItemCode::Vulnerary);

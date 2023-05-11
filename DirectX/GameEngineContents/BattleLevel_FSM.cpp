@@ -393,6 +393,19 @@ void BattleLevel::UnitCommandStart()
 	// 커맨드 UI 켜기
 	UI_UnitCommand->On();
 	UI_UnitCommand->SetCommand(IsAttackable, IsCloseUnit);
+	std::shared_ptr<DebugWindow> Window = GameEngineGUI::FindGUIWindowConvert<DebugWindow>("DebugWindow");
+	Window->Text = "";
+	if (true == IsAttackable) 
+	{
+		Window->Text += "공격\n";
+	}
+	Window->Text += "소지품\n";
+
+	if (true == IsCloseUnit)
+	{
+		Window->Text += "교환\n";
+	}
+	Window->Text += "대기\n";
 }
 
 void BattleLevel::UnitCommandUpdate(float _DeltaTime)
@@ -411,6 +424,10 @@ void BattleLevel::FieldCommandStart()
 	//UI_UnitCommand->SetCommand(false, false);
 	UI_FieldCommand->On();
 	MainCursor->Off();
+
+	// 커맨드 UI 켜기
+	std::shared_ptr<DebugWindow> Window = GameEngineGUI::FindGUIWindowConvert<DebugWindow>("DebugWindow");
+	Window->Text = "시간석\n부대\n설정\n중단\n종료";
 }
 
 void BattleLevel::FieldCommandUpdate(float _DeltaTime)

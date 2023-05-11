@@ -121,6 +121,7 @@ void Weapon::SetWeapon_SlimSword()
 	Weight = 2;
 	Range = 1;
 	Uses = 30;
+	MaxUses = 30;
 }
 
 void Weapon::SetWeapon_IronSword()
@@ -133,6 +134,7 @@ void Weapon::SetWeapon_IronSword()
 	Weight = 5;
 	Range = 1;
 	Uses = 46;
+	MaxUses = 46;
 }
 
 void Weapon::SetWeapon_SteelSword()
@@ -145,6 +147,7 @@ void Weapon::SetWeapon_SteelSword()
 	Weight = 8;
 	Range = 1;
 	Uses = 30;
+	MaxUses = 30;
 }
 
 void Weapon::SetWeapon_Lancereaver()
@@ -158,6 +161,7 @@ void Weapon::SetWeapon_Lancereaver()
 	Weight = 9;
 	Range = 1;
 	Uses = 15;
+	MaxUses = 15;
 }
 
 void Weapon::SetWeapon_Armourslayer()
@@ -171,6 +175,7 @@ void Weapon::SetWeapon_Armourslayer()
 	Weight = 11;
 	Range = 1;
 	Uses = 18;
+	MaxUses = 18;
 }
 
 void Weapon::SetWeapon_KillingSword()
@@ -183,6 +188,7 @@ void Weapon::SetWeapon_KillingSword()
 	Weight = 7;
 	Range = 1;
 	Uses = 20;
+	MaxUses = 20;
 }
 
 void Weapon::SetWeapon_ManiKatti()
@@ -195,6 +201,7 @@ void Weapon::SetWeapon_ManiKatti()
 	Weight = 3;
 	Range = 1;
 	Uses = 45;
+	MaxUses = 45;
 }
 
 void Weapon::SetWeapon_SlimLance()
@@ -207,6 +214,7 @@ void Weapon::SetWeapon_SlimLance()
 	Weight = 4;
 	Range = 1;
 	Uses = 30;
+	MaxUses = 30;
 }
 
 void Weapon::SetWeapon_IronLance()
@@ -219,6 +227,7 @@ void Weapon::SetWeapon_IronLance()
 	Weight = 8;
 	Range = 1;
 	Uses = 45;
+	MaxUses = 45;
 }
 
 void Weapon::SetWeapon_SteelLance()
@@ -231,6 +240,7 @@ void Weapon::SetWeapon_SteelLance()
 	Weight = 13;
 	Range = 1;
 	Uses = 30;
+	MaxUses = 30;
 }
 
 void Weapon::SetWeapon_SilverLance()
@@ -243,6 +253,7 @@ void Weapon::SetWeapon_SilverLance()
 	Weight = 10;
 	Range = 1;
 	Uses = 20;
+	MaxUses = 20;
 }
 
 void Weapon::SetWeapon_KillerLance()
@@ -255,6 +266,7 @@ void Weapon::SetWeapon_KillerLance()
 	Weight = 9;
 	Range = 1;
 	Uses = 20;
+	MaxUses = 20;
 }
 
 void Weapon::SetWeapon_Axereaver()
@@ -268,6 +280,7 @@ void Weapon::SetWeapon_Axereaver()
 	Weight = 11;
 	Range = 1;
 	Uses = 15;
+	MaxUses = 15;
 }
 
 void Weapon::SetWeapon_Horseslayer()
@@ -281,6 +294,7 @@ void Weapon::SetWeapon_Horseslayer()
 	Weight = 13;
 	Range = 1;
 	Uses = 16;
+	MaxUses = 16;
 }
 
 void Weapon::SetWeapon_HandAxe()
@@ -293,6 +307,7 @@ void Weapon::SetWeapon_HandAxe()
 	Weight = 12;
 	Range = 2;
 	Uses = 20;
+	MaxUses = 20;
 }
 
 void Weapon::SetWeapon_IronAxe()
@@ -305,6 +320,7 @@ void Weapon::SetWeapon_IronAxe()
 	Weight = 10;
 	Range = 1;
 	Uses = 45;
+	MaxUses = 45;
 }
 
 void Weapon::SetWeapon_Swordreaver()
@@ -318,6 +334,7 @@ void Weapon::SetWeapon_Swordreaver()
 	Weight = 11;
 	Range = 1;
 	Uses = 15;
+	MaxUses = 15;
 }
 
 void Weapon::SetWeapon_Hammer()
@@ -331,6 +348,7 @@ void Weapon::SetWeapon_Hammer()
 	Weight = 15;
 	Range = 1;
 	Uses = 20;
+	MaxUses = 20;
 }
 
 void Weapon::SetWeapon_ShortBow()
@@ -343,6 +361,7 @@ void Weapon::SetWeapon_ShortBow()
 	Weight = 3;
 	Range = 2;
 	Uses = 22;
+	MaxUses = 22;
 }
 
 void Weapon::SetWeapon_IronBow()
@@ -355,6 +374,7 @@ void Weapon::SetWeapon_IronBow()
 	Weight = 5;
 	Range = 2;
 	Uses = 45;
+	MaxUses = 45;
 }
 
 void Weapon::SetWeapon_Ballista()
@@ -367,6 +387,7 @@ void Weapon::SetWeapon_Ballista()
 	Weight = 20;
 	Range = 8;
 	Uses = 5;
+	MaxUses = 5;
 }
 
 void Weapon::SetWeapon_Fire()
@@ -379,6 +400,7 @@ void Weapon::SetWeapon_Fire()
 	Weight = 4;
 	Range = 2;
 	Uses = 40;
+	MaxUses = 40;
 }
 
 void Weapon::SetWeapon_Flux()
@@ -391,6 +413,7 @@ void Weapon::SetWeapon_Flux()
 	Weight = 8;
 	Range = 2;
 	Uses = 45;
+	MaxUses = 45;
 }
 
 void Weapon::SetWeapon_Lightning()
@@ -403,6 +426,7 @@ void Weapon::SetWeapon_Lightning()
 	Weight = 6;
 	Range = 2;
 	Uses = 35;
+	MaxUses = 35;
 }
 
 int Weapon::GetWeaponeTriangle(std::shared_ptr<Weapon> _SubjectWeapon, std::shared_ptr<Weapon> _TargetWeapon)

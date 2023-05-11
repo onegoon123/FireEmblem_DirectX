@@ -75,7 +75,6 @@ void UnitCommandUI::Start()
 	WindowRender = CreateComponent<SpriteRenderer>();
 	WindowRender->GetTransform()->SetWorldScale({ 196, 356 });
 	WindowRender->GetTransform()->SetLocalPosition({ 334, 36 });
-	WindowRender->GetTransform()->SetWorldRotation({ 0,0 });
 	WindowRender->SetTexture("Select4.png");
 
 	SelectRender = CreateComponent<SpriteRenderer>();

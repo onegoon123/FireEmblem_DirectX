@@ -73,4 +73,9 @@ private:
 	GameEngineTransform Transform;
 
 	std::list<std::shared_ptr<GameEngineObject>> Childs;
+
+	void AllAccTime(float _DeltaTime);
+	void AllUpdate(float _DeltaTime);
+	void AllRender(float _DeltaTime);
+	void AllRelease();
 };

@@ -1,6 +1,8 @@
 #include "PrecompileHeader.h"
 #include "Stat.h"
 #include "FERandom.h"
+
+#include "Unit.h"
 Stat::Stat()
 {
 }
@@ -529,6 +531,20 @@ int Stat::GetAttackPoint(BattleClass _TargetClass) const
 	return GetAttackPoint();
 }
 
+int Stat::GetAttackPoint(const Unit& _Other) const
+{
+	int Result = GetAttackPoint(_Other.UnitStat.ClassValue);
+	Result -= _Other.UnitStat.MainStatValue.Defense;
+	Result -= _Other.TerrainDeffence;
+
+	int Triangle;
+	Triangle = Weapon::GetWeaponeTriangle(EquipWeapon, _Other.UnitStat.EquipWeapon);
+	Result += Triangle;
+
+	if (0 >= Result) { return 0; }
+	return Result;
+}
+
 int Stat::GetMagicAttackPoint() const
 {
 	int Result = MainStatValue.Magic + EquipWeapon->Damage;
@@ -541,9 +557,34 @@ int Stat::GetHitPoint() const
 	return Result;
 }
 
+int Stat::GetHitPoint(const Unit& _Other) const
+{
+	int Result = GetHitPoint();
+	Result -= _Other.UnitStat.GetDodgePoint();
+	Result -= _Other.TerrainDodge;
+
+	int Triangle;
+	Triangle = Weapon::GetWeaponeTriangle(EquipWeapon, _Other.UnitStat.EquipWeapon);
+	Result += Triangle * 15;
+
+	if (0 >= Result) { return 0; }
+	if (100 <= Result) { return 100; }
+	return Result;
+}
+
 int Stat::GetCriticalPoint() const
 {
 	int Result = MainStatValue.Dexterity / 2 + EquipWeapon->Critical;
+	return Result;
+}
+
+int Stat::GetCriticalPoint(const Unit& _Other) const
+{
+	int Result = GetCriticalPoint();
+	Result -= _Other.UnitStat.GetCriticalDodgePoint();
+
+	if (0 >= Result) { return 0; }
+	if (100 <= Result) { return 100; }
 	return Result;
 }
 
@@ -570,6 +611,11 @@ int Stat::GetDodgePoint() const
 int Stat::GetCriticalDodgePoint() const
 {
 	return MainStatValue.Luck;
+}
+
+bool Stat::IsDoubleAttack(const Unit& _Other) const
+{
+	return _Other.UnitStat.GetAttackSpeedPoint() + 4 <= GetAttackSpeedPoint();
 }
 
 void Stat::SetStat_Brigand()

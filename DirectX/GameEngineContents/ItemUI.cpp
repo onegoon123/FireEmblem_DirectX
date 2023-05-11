@@ -5,7 +5,7 @@
 #include "UICursor.h"
 #include "BattleLevel.h"
 #include "BattleUnit.h"
-
+#include "DebugWindow.h"
 ItemUI::ItemUI() 
 {
 }
@@ -69,6 +69,16 @@ void ItemUI::On(std::shared_ptr<BattleUnit> _SelectUnit)
 
 	IsOnFrame = true;
 	IsItemSelect = false;
+
+	std::shared_ptr<DebugWindow> Window = GameEngineGUI::FindGUIWindowConvert<DebugWindow>("DebugWindow");
+	Window->Text = "";
+	for (std::shared_ptr<Item> _Item : Items)
+	{
+		Window->Text += _Item->GetName();
+		Window->Text += " ";
+		Window->Text += std::to_string(_Item->GetUses());
+		Window->Text += " / " + std::to_string(_Item->GetMaxUses()) + '\n';
+	}
 }
 
 void ItemUI::Off()
@@ -82,7 +92,6 @@ void ItemUI::Start()
 	WindowRender = CreateComponent<SpriteRenderer>();
 	WindowRender->GetTransform()->SetWorldScale({ 420, 356 });
 	WindowRender->GetTransform()->SetLocalPosition({ -224, 64 });
-	//WindowRender->GetTransform()->SetWorldRotation({ 0,0 });
 	WindowRender->SetTexture("ItemListUI3.png");
 
 	SelectRender = CreateComponent<SpriteRenderer>();
@@ -220,6 +229,9 @@ void ItemUI::ItemSelect()
 	CurrentUseCursor = 0;
 	UseFunctions.clear();
 
+	std::shared_ptr<DebugWindow> Window = GameEngineGUI::FindGUIWindowConvert<DebugWindow>("DebugWindow");
+	Window->Text = "";
+
 	switch (SelectItem->GetItemType())
 	{
 	case ItemType::None:
@@ -227,16 +239,20 @@ void ItemUI::ItemSelect()
 	case ItemType::Weapon:
 		UseFunctions.push_back(std::bind(&ItemUI::Equipment, this));
 		UseFunctions.push_back(std::bind(&ItemUI::Drop, this));
+		Window->Text += "장비\n버리기";
 		break;
 	case ItemType::Stave:
 		UseFunctions.push_back(std::bind(&ItemUI::Drop, this));
+		Window->Text += "버리기";
 		break;
 	case ItemType::Potion:
 		UseFunctions.push_back(std::bind(&ItemUI::Use, this));
 		UseFunctions.push_back(std::bind(&ItemUI::Drop, this));
+		Window->Text += "사용\n버리기";
 		break;
 	case ItemType::Key:
 		UseFunctions.push_back(std::bind(&ItemUI::Drop, this));
+		Window->Text += "버리기";
 		break;
 	default:
 	{

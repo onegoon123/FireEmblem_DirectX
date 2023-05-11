@@ -63,7 +63,7 @@ public:
 	int Critical = 0;	// 치명타
 	int Weight = 0;		// 무게
 	int Range = 0;		// 사거리
-	int Uses = 0;		// 내구도
+	//int Uses = 0;		// 내구도
 
 	bool ValidArmour = false;
 	bool ValidHorse = false;

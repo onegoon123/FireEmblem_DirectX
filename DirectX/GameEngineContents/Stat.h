@@ -69,12 +69,16 @@ public:
 
 	int GetAttackPoint() const;
 	int GetAttackPoint(BattleClass _TargetClass) const;
+	int GetAttackPoint(const class Unit& _Other) const;
 	int GetMagicAttackPoint() const;
 	int GetHitPoint() const;
+	int GetHitPoint(const class Unit& _Other) const;
 	int GetCriticalPoint() const;
+	int GetCriticalPoint(const class Unit& _Other) const;
 	int GetAttackSpeedPoint() const;
 	int GetDodgePoint() const;
 	int GetCriticalDodgePoint() const;
+	bool IsDoubleAttack(const class Unit& _Other) const;
 
 
 private:

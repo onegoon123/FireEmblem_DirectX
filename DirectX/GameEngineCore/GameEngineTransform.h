@@ -287,6 +287,8 @@ private:
 	void WorldDecompose();
 	void LocalDecompose();
 
+	void WorldCalculation();
+
 	void AbsoluteReset();
 
 	void TransformUpdate();
