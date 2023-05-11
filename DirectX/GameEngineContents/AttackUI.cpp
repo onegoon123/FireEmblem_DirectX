@@ -64,7 +64,6 @@ void AttackUI::On(std::shared_ptr<BattleUnit> _SelectUnit, std::list<std::shared
 	CurrentCursor = 0;
 	UICursor->On();
 	CursorPos = StartCursorPos;
-	UICursor->GetTransform()->SetParent(GetTransform());
 	UICursor->GetTransform()->SetLocalPosition(StartCursorPos);
 
 	IsOnFrame = true;

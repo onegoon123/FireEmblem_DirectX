@@ -61,7 +61,6 @@ void UnitCommandUI::On()
 	CurrentCursor = 0;
 	SelectRender->GetTransform()->SetLocalPosition(StartSelectPos);
 
-	Cursor->GetTransform()->SetParent(GetTransform());
 	Cursor->GetTransform()->SetLocalPosition(StartCursorPos);
 	CursorPos = StartCursorPos;
 }

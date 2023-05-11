@@ -36,7 +36,6 @@ void FieldCommandUI::On()
 
 	CursorPos = StartCursorPos;
 	Cursor->On();
-	Cursor->GetTransform()->SetParent(GetTransform());
 	Cursor->GetTransform()->SetLocalPosition(StartCursorPos);
 }
 

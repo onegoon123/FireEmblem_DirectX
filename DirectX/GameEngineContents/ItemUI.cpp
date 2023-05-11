@@ -62,7 +62,6 @@ void ItemUI::On(std::shared_ptr<BattleUnit> _SelectUnit)
 	CurrentCursor = 0;
 	UICursor->On();
 	CursorPos = StartCursorPos;
-	UICursor->GetTransform()->SetParent(GetTransform());
 	UICursor->GetTransform()->SetLocalPosition(StartCursorPos);
 
 	ItemUseWindow->Off();
