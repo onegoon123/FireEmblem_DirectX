@@ -36,6 +36,7 @@ public:
 	{
 		return MaxUses;
 	}
+	// 아이템을 소모합니다. 모두 소진시 true를 리턴합니다
 	bool Use()
 	{
 		return 0 == --Uses;

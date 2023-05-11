@@ -228,8 +228,13 @@ void AttackUI::TargetSelectStart()
 {
 	std::list<std::shared_ptr<Weapon>>::iterator StartIter = Weapons.begin();
 	std::advance(StartIter, CurrentCursor);
+	if (StartIter == Weapons.end())
+	{
+		MsgAssert("선택한 무기를 무기리스트에서 찾지 못했습니다.");
+		return;
+	}
 	SelectWeapon = *StartIter;
-	SelectUnit->GetUnitData().UnitStat.EquipWeapon = SelectWeapon;
+	SelectUnit->GetUnitData().EquipWeapon(SelectWeapon);
 	IsWeaponSelect = true;
 
 	TargetIter = TargetUnits.begin();

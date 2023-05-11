@@ -38,7 +38,7 @@ private:
 	void Use();
 
 	BattleLevel* LevelPtr = nullptr;
-	std::function<void(ItemCode)> UseFunction;
+	std::function<void(std::list<std::shared_ptr<Item>>::iterator&)> UseFunction;
 	std::function<void()> CancelFunction;
 	std::vector<std::function<void()>> UseFunctions;
 
@@ -50,8 +50,8 @@ private:
 	std::shared_ptr<SpriteRenderer> ItemUseWindow = nullptr;	// 아이템 사용 창
 	std::shared_ptr<SpriteRenderer> ItemUseSelect = nullptr;	// 아이템 사용 선택
 	std::list<std::shared_ptr<SpriteRenderer>> Icons;
-	std::list<std::shared_ptr<Item>> Items;
-	std::shared_ptr<Item> SelectItem;
+	size_t ItemSize = 0;
+	std::list<std::shared_ptr<Item>>::iterator ItemIter;
 	std::shared_ptr<BattleUnit> SelectUnit = nullptr;;
 
 	const float4 StartCursorPos = { -432, 192 };

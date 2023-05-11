@@ -19,6 +19,8 @@ public:
 		TerrainDodge = _Other.TerrainDodge;
 		IsTurnEnd = _Other.IsTurnEnd;
 		IsDie = _Other.IsDie;
+		Items = _Other.Items;
+		Weapons = _Other.Weapons;
 	}
 	void operator=(const Unit& _Other)
 	{
@@ -30,6 +32,8 @@ public:
 		TerrainDodge = _Other.TerrainDodge;
 		IsTurnEnd = _Other.IsTurnEnd;
 		IsDie = _Other.IsDie;
+		Items = _Other.Items;
+		Weapons = _Other.Weapons;
 	}
 	std::string ToString() const
 	{
@@ -78,12 +82,13 @@ public:
 	{
 		return Weapons;
 	}
-	const std::list<std::shared_ptr<Item>>& GetItems()
+	std::list<std::shared_ptr<Item>>& GetItems()
 	{
 		return Items;
 	}
 	void EquipWeapon(std::shared_ptr<Weapon> _Weapon);
-	void DropItem(std::shared_ptr<Item> _Item);
+	void UseItem(std::list<std::shared_ptr<Item>>::iterator& _ItemIter);
+	void DropItem(std::list<std::shared_ptr<Item>>::iterator& _ItemIter);
 
 	int UnitCode = -1;
 	int CurrentHP = 0;

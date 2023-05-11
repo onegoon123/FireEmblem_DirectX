@@ -19,6 +19,7 @@ void ItemUI::Setting(BattleLevel* _Level)
 	LevelPtr = _Level;
 	UICursor = _Level->GetUICursor();
 	CancelFunction = std::bind(&BattleLevel::UnitCommand_CommandCancel, _Level);
+	UseFunction = std::bind(&BattleLevel::UnitCommand_ItemUse, _Level, std::placeholders::_1);
 }
 
 void ItemUI::On(std::shared_ptr<BattleUnit> _SelectUnit)
@@ -26,8 +27,8 @@ void ItemUI::On(std::shared_ptr<BattleUnit> _SelectUnit)
 	GameEngineActor::On();
 
 	SelectUnit = _SelectUnit;
-	Items = SelectUnit->GetUnitData().GetItems();
-	switch (Items.size())
+	ItemSize = SelectUnit->GetUnitData().GetItems().size();
+	switch (ItemSize)
 	{
 	case 0:
 	case 1:
@@ -72,7 +73,7 @@ void ItemUI::On(std::shared_ptr<BattleUnit> _SelectUnit)
 
 	std::shared_ptr<DebugWindow> Window = GameEngineGUI::FindGUIWindowConvert<DebugWindow>("DebugWindow");
 	Window->Text = "";
-	for (std::shared_ptr<Item> _Item : Items)
+	for (std::shared_ptr<Item> _Item : SelectUnit->GetUnitData().GetItems())
 	{
 		Window->Text += _Item->GetName();
 		Window->Text += " ";
@@ -171,7 +172,7 @@ void ItemUI::ItemSelectUpdate(float _DeltaTime)
 		if (CurrentCursor == 0)
 		{
 			if (false == GameEngineInput::IsDown("Up")) { return; }
-			CurrentCursor = Items.size() - 1;
+			CurrentCursor = ItemSize - 1;
 			SelectRender->GetTransform()->SetLocalPosition(StartSelectPos + float4::Down * (64.0f * CurrentCursor));
 			CursorPos = StartCursorPos + float4::Down * (64.0f * CurrentCursor);
 			return;
@@ -183,12 +184,12 @@ void ItemUI::ItemSelectUpdate(float _DeltaTime)
 		return;
 	}
 
-	if (GameEngineInput::IsDown("Down") || (GameEngineInput::IsPress("Down") && PressOK))
+	if (GameEngineInput::IsDown("Down") || (GameEngineInput::IsPress("Down") && PressOK) || GameEngineInput::IsUp("MiddleClick"))
 	{
 		CursorTimer = 0;
-		if (CurrentCursor == Items.size() - 1)
+		if (CurrentCursor == ItemSize - 1)
 		{
-			if (false == GameEngineInput::IsDown("Down")) { return; }
+			if (false == GameEngineInput::IsDown("Down") && false == GameEngineInput::IsUp("MiddleClick")) { return; }
 			CurrentCursor = 0;
 			SelectRender->GetTransform()->SetLocalPosition(StartSelectPos + float4::Down * (64.0f * CurrentCursor));
 			CursorPos = StartCursorPos;
@@ -207,9 +208,8 @@ void ItemUI::ItemSelect()
 {
 	UICursor->GetTransform()->SetLocalPosition(CursorPos);
 	IsItemSelect = true;
-	std::list<std::shared_ptr<Item>>::iterator StartIter = Items.begin();
-	std::advance(StartIter, CurrentCursor);
-	SelectItem = *StartIter;
+	ItemIter = SelectUnit->GetUnitData().GetItems().begin();
+	std::advance(ItemIter, CurrentCursor);
 
 
 
@@ -232,7 +232,7 @@ void ItemUI::ItemSelect()
 	std::shared_ptr<DebugWindow> Window = GameEngineGUI::FindGUIWindowConvert<DebugWindow>("DebugWindow");
 	Window->Text = "";
 
-	switch (SelectItem->GetItemType())
+	switch ((*ItemIter)->GetItemType())
 	{
 	case ItemType::None:
 		break;
@@ -340,7 +340,7 @@ void ItemUI::Equipment()
 	//std::list<std::shared_ptr<Item>>::iterator Iter = std::find(_Items.begin(), _Items.end(), SelectItem);
 	//_Items.splice(_Items.begin(), _Items, Iter);
 
-	SelectUnit->GetUnitData().EquipWeapon(std::dynamic_pointer_cast<Weapon>(SelectItem));
+	SelectUnit->GetUnitData().EquipWeapon(std::dynamic_pointer_cast<Weapon>(*ItemIter));
 
 	ItemUseWindow->Off();
 	ItemUseSelect->Off();
@@ -350,7 +350,7 @@ void ItemUI::Equipment()
 
 void ItemUI::Drop()
 {
-	SelectUnit->GetUnitData().DropItem(SelectItem);
+	SelectUnit->GetUnitData().DropItem(ItemIter);
 
 	ItemUseWindow->Off();
 	ItemUseSelect->Off();
@@ -362,5 +362,5 @@ void ItemUI::Drop()
 
 void ItemUI::Use()
 {
-	UseFunction(SelectItem->GetItemCode());
+	UseFunction(ItemIter);
 }

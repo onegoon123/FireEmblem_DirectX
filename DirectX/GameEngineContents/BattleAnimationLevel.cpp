@@ -60,7 +60,7 @@ void BattleAnimationLevel::Start()
 
 void BattleAnimationLevel::Update(float _DeltaTime)
 {
-	if (GameEngineInput::IsDown("ButtonB") || GameEngineInput::IsDown("Start"))
+	if (GameEngineInput::IsDown("ButtonB") || GameEngineInput::IsDown("Start") || GameEngineInput::IsUp("RightClick"))
 	{
 		GameEngineCore::ChangeLevel("BattleLevel");
 		return;

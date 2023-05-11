@@ -5,6 +5,7 @@
 #include "UnitCommandUI.h"
 #include "AttackUI.h"
 #include "ItemUI.h"
+#include "Item.h"
 void BattleLevel::UnitCommand_Item()
 {
 	UI_UnitCommand->Off();
@@ -49,4 +50,13 @@ void BattleLevel::UnitCommand_TargetAttack(std::shared_ptr<BattleUnit> _Target)
 	TargetUnit = _Target;
 	ChangeState(BattleState::Battle);
 	return;
+}
+
+void BattleLevel::UnitCommand_ItemUse(std::list<std::shared_ptr<Item>>::iterator& _ItemIter)
+{
+	UnitCommand::Wait(SelectUnit);
+	UI_Item->Off();
+	SelectUnit->SetIsTurnEnd(true);
+	SelectUnit->GetUnitData().UseItem(_ItemIter);
+	ChangeState(BattleState::Select);
 }

@@ -16,6 +16,7 @@ class ItemUI;
 class FieldCommandUI;
 class UICursor;
 class UIWindow;
+class Item;
 class BattleLevel : public GameEngineLevel
 {
 public:
@@ -224,6 +225,7 @@ public:
 	void UnitCommand_Cancel();
 	void UnitCommand_CommandCancel();
 	void UnitCommand_TargetAttack(std::shared_ptr<BattleUnit> _Target);
+	void UnitCommand_ItemUse(std::list<std::shared_ptr<Item>>::iterator& _ItemIter);
 private:
 
 #pragma endregion

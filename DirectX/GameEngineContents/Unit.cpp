@@ -21,23 +21,70 @@ int Unit::GetRangeStat()
 
 void Unit::EquipWeapon(std::shared_ptr<Weapon> _Weapon)
 {
-	std::list<std::shared_ptr<Item>>::iterator Iter = std::find(Items.begin(), Items.end(), _Weapon);
-	if (Iter == Items.end())
+	std::list<std::shared_ptr<Item>>::iterator ItemIter = std::find(Items.begin(), Items.end(), _Weapon);
+	if (ItemIter == Items.end())
 	{
-		MsgAssert("존재하지 않는 무기를 장비하려 했습니다.");
+		MsgAssert("아이템리스트에 해당무기가 존재하지 않습니다." + std::string(_Weapon->GetName()));
 		return;
 	}
-	Items.splice(Items.begin(), Items, Iter);
+	std::list<std::shared_ptr<Weapon>>::iterator WeaponIter = std::find(Weapons.begin(), Weapons.end(), _Weapon);
+	if (WeaponIter == Weapons.end())
+	{
+		MsgAssert("무기리스트에 해당무기가 존재하지 않습니다." + std::string(_Weapon->GetName()));
+		return;
+	}
+
+	Items.splice(Items.begin(), Items, ItemIter);
+	Weapons.splice(Weapons.begin(), Weapons, WeaponIter);
+
 	UnitStat.EquipWeapon = _Weapon;
 }
 
-void Unit::DropItem(std::shared_ptr<Item> _Item)
+void Unit::UseItem(std::list<std::shared_ptr<Item>>::iterator& _ItemIter)
 {
-	std::list<std::shared_ptr<Item>>::iterator Iter = std::find(Items.begin(), Items.end(), _Item);
-	Items.erase(Iter);
-	if (_Item->GetItemType() == ItemType::Weapon)
+	if (Items.end() == _ItemIter)
 	{
-		std::list<std::shared_ptr<Weapon>>::iterator WeaponIter = std::find(Weapons.begin(), Weapons.end(), _Item);
+		MsgAssert("잘못된 Iterator 값입니다.");
+	}
+	std::shared_ptr<Item> _Item = *_ItemIter;
+	
+	switch (_Item->GetItemCode())
+	{
+	case ItemCode::Vulnerary:
+		Recover(10);
+		break;
+	case ItemCode::Elixir:
+		Recover(30);
+		break;
+	case ItemCode::DoorKey:
+	case ItemCode::ChestKey:
+	case ItemCode::GoldCard:
+	case ItemCode::MasterSeal:
+	{
+		MsgAssert("아직 지정하지 않은 아이템입니다.");
+	}
+		break;
+	default:
+		break;
+	}
+
+	// 아이템을 소진시
+	if (true == _Item->Use())
+	{
+		Items.erase(_ItemIter);
+	}
+}
+
+void Unit::DropItem(std::list<std::shared_ptr<Item>>::iterator& _ItemIter)
+{
+	if (Items.end() == _ItemIter)
+	{
+		MsgAssert("잘못된 Iterator 값입니다.");
+	}
+	Items.erase(_ItemIter);
+	if ((*_ItemIter)->GetItemType() == ItemType::Weapon)
+	{
+		std::list<std::shared_ptr<Weapon>>::iterator WeaponIter = std::find(Weapons.begin(), Weapons.end(), *_ItemIter);
 		Weapons.erase(WeaponIter);
 	}
 }
