@@ -28,7 +28,6 @@ public:
 	Stat(const Stat& _Other)
 	{
 		ClassValue = _Other.ClassValue;
-		EquipWeapon = _Other.EquipWeapon;
 		MainStatValue = _Other.MainStatValue;
 		Level = _Other.Level;			// 레벨
 		Movement = _Other.Movement;				// 이동력
@@ -44,7 +43,6 @@ public:
 	}
 
 	BattleClass ClassValue = BattleClass::Lord;
-	std::shared_ptr<Weapon> EquipWeapon = nullptr;		// 장비한 무기
 	MainStat MainStatValue;
 	int Level = 0;			// 레벨
 	int Movement = 0;				// 이동력
@@ -67,18 +65,7 @@ public:
 	// 레벨 업 (경험치 증가 후 직접 실행, 증가한 능력치를 반환)
 	MainStat LevelUp();
 
-	int GetAttackPoint() const;
-	int GetAttackPoint(BattleClass _TargetClass) const;
-	int GetAttackPoint(const class Unit& _Other) const;
-	int GetMagicAttackPoint() const;
-	int GetHitPoint() const;
-	int GetHitPoint(const class Unit& _Other) const;
-	int GetCriticalPoint() const;
-	int GetCriticalPoint(const class Unit& _Other) const;
-	int GetAttackSpeedPoint() const;
-	int GetDodgePoint() const;
-	int GetCriticalDodgePoint() const;
-	bool IsDoubleAttack(const class Unit& _Other) const;
+
 
 
 private:

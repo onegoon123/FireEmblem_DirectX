@@ -96,6 +96,9 @@
     <ClCompile Include="ItemUI.cpp">
       <Filter>Battle\UI</Filter>
     </ClCompile>
+    <ClCompile Include="Unit_StatCalculator.cpp">
+      <Filter>Battle\Unit</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FECore.h" />

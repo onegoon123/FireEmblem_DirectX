@@ -131,7 +131,7 @@ void SelectUI::SetUnitData(std::shared_ptr<BattleUnit> _Unit)
 	TextureName += ".png";
 	PortraitRender->SetTexture(TextureName);
 
-	SetHPBar(_Unit->GetUnitData().CurrentHP / (float)_Unit->GetUnitData().UnitStat.MainStatValue.HP);
+	SetHPBar(_Unit->GetUnitData().GetHP() / (float)_Unit->GetUnitData().GetMaxHP());
 }
 
 void SelectUI::UnitUIOff()

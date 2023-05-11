@@ -294,32 +294,32 @@ void AttackUI::SetTarget()
 	std::shared_ptr<DebugWindow> Window = GameEngineGUI::FindGUIWindowConvert<DebugWindow>("DebugWindow");
 	Window->Text = SelectUnit->GetName();
 	Window->Text += "\n HP : ";
-	Window->Text += std::to_string(SelectUnit->GetUnitData().CurrentHP);
+	Window->Text += std::to_string(SelectUnit->GetUnitData().GetHP());
 	Window->Text += "\n 위력 : ";
-	Window->Text += std::to_string(SelectUnit->GetUnitData().UnitStat.GetAttackPoint(TargetUnit->GetUnitData()));
-	if (true == SelectUnit->GetUnitData().UnitStat.IsDoubleAttack(TargetUnit->GetUnitData()))
+	Window->Text += std::to_string(SelectUnit->GetUnitData().GetAttackPoint(TargetUnit->GetUnitData()));
+	if (true == SelectUnit->GetUnitData().IsDoubleAttack(TargetUnit->GetUnitData()))
 	{
 		Window->Text += " × 2";
 	}
 	Window->Text += "\n 명중 : ";
-	Window->Text += std::to_string(SelectUnit->GetUnitData().UnitStat.GetHitPoint(TargetUnit->GetUnitData()));
+	Window->Text += std::to_string(SelectUnit->GetUnitData().GetHitPoint(TargetUnit->GetUnitData()));
 	Window->Text += "\n 필살 : ";
-	Window->Text += std::to_string(SelectUnit->GetUnitData().UnitStat.GetCriticalPoint(TargetUnit->GetUnitData()));
+	Window->Text += std::to_string(SelectUnit->GetUnitData().GetCriticalPoint(TargetUnit->GetUnitData()));
 
 	Window->Text += "\n\n";
 
 	Window->Text += TargetUnit->GetName();
 	Window->Text += "\n HP : ";
-	Window->Text += std::to_string(TargetUnit->GetUnitData().CurrentHP);
+	Window->Text += std::to_string(TargetUnit->GetUnitData().GetHP());
 	Window->Text += "\n 위력 : ";
-	Window->Text += std::to_string(TargetUnit->GetUnitData().UnitStat.GetAttackPoint(SelectUnit->GetUnitData()));
-	if (true == TargetUnit->GetUnitData().UnitStat.IsDoubleAttack(SelectUnit->GetUnitData()))
+	Window->Text += std::to_string(TargetUnit->GetUnitData().GetAttackPoint(SelectUnit->GetUnitData()));
+	if (true == TargetUnit->GetUnitData().IsDoubleAttack(SelectUnit->GetUnitData()))
 	{
 		Window->Text += " × 2";
 	}
 	Window->Text += "\n 명중 : ";
-	Window->Text += std::to_string(TargetUnit->GetUnitData().UnitStat.GetHitPoint(SelectUnit->GetUnitData()));
+	Window->Text += std::to_string(TargetUnit->GetUnitData().GetHitPoint(SelectUnit->GetUnitData()));
 	Window->Text += "\n 필살 : ";
-	Window->Text += std::to_string(TargetUnit->GetUnitData().UnitStat.GetCriticalPoint(SelectUnit->GetUnitData()));
+	Window->Text += std::to_string(TargetUnit->GetUnitData().GetCriticalPoint(SelectUnit->GetUnitData()));
 }
 

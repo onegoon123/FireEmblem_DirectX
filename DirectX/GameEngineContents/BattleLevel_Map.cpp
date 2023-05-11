@@ -241,7 +241,7 @@ void BattleLevel::MoveSearchForEnemy()
 			bool Check = false;
 			for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
 			{
-				if (true == _Unit->GetUnitData().IsDie) { continue; }
+				if (true == _Unit->GetUnitData().GetIsDie()) { continue; }
 				if (NextMove.Pos == _Unit->GetMapPos())
 				{
 					Check = true;

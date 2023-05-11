@@ -272,6 +272,7 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="Unit_StatCalculator.cpp" />
     <ClCompile Include="Weapon.cpp">
       <SubType>
       </SubType>

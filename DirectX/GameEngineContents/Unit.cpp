@@ -37,7 +37,7 @@ void Unit::EquipWeapon(std::shared_ptr<Weapon> _Weapon)
 	Items.splice(Items.begin(), Items, ItemIter);
 	Weapons.splice(Weapons.begin(), Weapons, WeaponIter);
 
-	UnitStat.EquipWeapon = _Weapon;
+	CurWeapon = _Weapon;
 }
 
 void Unit::UseItem(std::list<std::shared_ptr<Item>>::iterator& _ItemIter)
@@ -103,11 +103,11 @@ void Unit::NewItem(ItemCode _Code)
 			// 무기 리스트에 추가
 			Weapons.push_back(NewWeapon);
 			// 사용중인 무기가 없다면
-			if (nullptr == UnitStat.EquipWeapon)
+			if (nullptr == CurWeapon)
 			{
 				// 무기 장비
-				UnitStat.EquipWeapon = NewWeapon;
-				std::list<std::shared_ptr<Item>>::iterator Iter = std::find(Items.begin(), Items.end(), UnitStat.EquipWeapon);
+				CurWeapon = NewWeapon;
+				std::list<std::shared_ptr<Item>>::iterator Iter = std::find(Items.begin(), Items.end(), CurWeapon);
 				Items.splice(Items.begin(), Items, Iter);
 			}
 		}

@@ -116,7 +116,7 @@ void BattleLevel::PlayerPhaseStart()
 	for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
 	{
 		if (true == _Unit->GetIsDie()) { continue; }
-		switch (_Unit->GetUnitData().TerrainData)
+		switch (_Unit->GetUnitData().GetTerrainData())
 		{
 		case Terrain::Fort:
 			_Unit->GetUnitData().RecoverPersent(0.2f);
@@ -544,7 +544,7 @@ void BattleLevel::EnemyPhaseStart()
 	for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
 	{
 		if (true == _Unit->GetIsDie()) { continue; }
-		switch (_Unit->GetUnitData().TerrainData)
+		switch (_Unit->GetUnitData().GetTerrainData())
 		{
 		case Terrain::Fort:
 			_Unit->GetUnitData().RecoverPersent(0.2f);
@@ -821,24 +821,24 @@ void BattleLevel::GameOverUpdate(float _DeltaTime)
 			{
 				for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
 				{
-					if ((*RIter).BeforeSubjectUnit.UnitCode == _Unit->GetUnitData().UnitCode)
+					if ((*RIter).BeforeSubjectUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
 					{
 						_Unit->SetUnitData((*RIter).BeforeSubjectUnit);
 						_Unit->SetMapPos((*RIter).BeforeSubjectUnitPos);
 					}
-					else if ((*RIter).BeforeTargetUnit.UnitCode == _Unit->GetUnitData().UnitCode)
+					else if ((*RIter).BeforeTargetUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
 					{
 						_Unit->SetUnitData((*RIter).BeforeTargetUnit);
 					}
 				}
 				for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
 				{
-					if ((*RIter).BeforeSubjectUnit.UnitCode == _Unit->GetUnitData().UnitCode)
+					if ((*RIter).BeforeSubjectUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
 					{
 						_Unit->SetUnitData((*RIter).BeforeSubjectUnit);
 						_Unit->SetMapPos((*RIter).BeforeSubjectUnitPos);
 					}
-					else if ((*RIter).BeforeTargetUnit.UnitCode == _Unit->GetUnitData().UnitCode)
+					else if ((*RIter).BeforeTargetUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
 					{
 						_Unit->SetUnitData((*RIter).BeforeTargetUnit);
 					}
@@ -851,7 +851,7 @@ void BattleLevel::GameOverUpdate(float _DeltaTime)
 			{
 				for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
 				{
-					if ((*RIter).BeforeSubjectUnit.UnitCode == _Unit->GetUnitData().UnitCode)
+					if ((*RIter).BeforeSubjectUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
 					{
 						_Unit->SetUnitData((*RIter).BeforeSubjectUnit);
 						_Unit->SetMapPos((*RIter).BeforeSubjectUnitPos);
@@ -859,7 +859,7 @@ void BattleLevel::GameOverUpdate(float _DeltaTime)
 				}
 				for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
 				{
-					if ((*RIter).BeforeSubjectUnit.UnitCode == _Unit->GetUnitData().UnitCode)
+					if ((*RIter).BeforeSubjectUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
 					{
 						_Unit->SetUnitData((*RIter).BeforeSubjectUnit);
 						_Unit->SetMapPos((*RIter).BeforeSubjectUnitPos);
@@ -994,24 +994,24 @@ void BattleLevel::TimeStoneUpdate(float _DeltaTime)
 			{
 				for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
 				{
-					if ((*RIter).BeforeSubjectUnit.UnitCode == _Unit->GetUnitData().UnitCode)
+					if ((*RIter).BeforeSubjectUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
 					{
 						_Unit->SetUnitData((*RIter).BeforeSubjectUnit);
 						_Unit->SetMapPos((*RIter).BeforeSubjectUnitPos);
 					}
-					else if ((*RIter).BeforeTargetUnit.UnitCode == _Unit->GetUnitData().UnitCode)
+					else if ((*RIter).BeforeTargetUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
 					{
 						_Unit->SetUnitData((*RIter).BeforeTargetUnit);
 					}
 				}
 				for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
 				{
-					if ((*RIter).BeforeSubjectUnit.UnitCode == _Unit->GetUnitData().UnitCode)
+					if ((*RIter).BeforeSubjectUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
 					{
 						_Unit->SetUnitData((*RIter).BeforeSubjectUnit);
 						_Unit->SetMapPos((*RIter).BeforeSubjectUnitPos);
 					}
-					else if ((*RIter).BeforeTargetUnit.UnitCode == _Unit->GetUnitData().UnitCode)
+					else if ((*RIter).BeforeTargetUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
 					{
 						_Unit->SetUnitData((*RIter).BeforeTargetUnit);
 					}
@@ -1024,7 +1024,7 @@ void BattleLevel::TimeStoneUpdate(float _DeltaTime)
 			{
 				for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
 				{
-					if ((*RIter).BeforeSubjectUnit.UnitCode == _Unit->GetUnitData().UnitCode)
+					if ((*RIter).BeforeSubjectUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
 					{
 						_Unit->SetUnitData((*RIter).BeforeSubjectUnit);
 						_Unit->SetMapPos((*RIter).BeforeSubjectUnitPos);
@@ -1032,7 +1032,7 @@ void BattleLevel::TimeStoneUpdate(float _DeltaTime)
 				}
 				for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
 				{
-					if ((*RIter).BeforeSubjectUnit.UnitCode == _Unit->GetUnitData().UnitCode)
+					if ((*RIter).BeforeSubjectUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
 					{
 						_Unit->SetUnitData((*RIter).BeforeSubjectUnit);
 						_Unit->SetMapPos((*RIter).BeforeSubjectUnitPos);
@@ -1055,7 +1055,7 @@ void BattleLevel::TimeStoneUpdate(float _DeltaTime)
 
 					for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
 					{
-						if ((*NewRIter).BeforeSubjectUnit.UnitCode == _Unit->GetUnitCode())
+						if ((*NewRIter).BeforeSubjectUnit.GetUnitCode() == _Unit->GetUnitCode())
 						{
 							_Unit->SetIsTurnEnd(true);
 							break;
@@ -1081,7 +1081,7 @@ void BattleLevel::TimeStoneUpdate(float _DeltaTime)
 
 					for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
 					{
-						if ((*NewRIter).BeforeSubjectUnit.UnitCode == _Unit->GetUnitCode())
+						if ((*NewRIter).BeforeSubjectUnit.GetUnitCode() == _Unit->GetUnitCode())
 						{
 							_Unit->SetIsTurnEnd(true);
 							break;
@@ -1125,24 +1125,24 @@ void BattleLevel::TimeStoneUpdate(float _DeltaTime)
 			{
 				for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
 				{
-					if ((*RIter).AfterSubjectUnit.UnitCode == _Unit->GetUnitData().UnitCode)
+					if ((*RIter).AfterSubjectUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
 					{
 						_Unit->SetUnitData((*RIter).AfterSubjectUnit);
 						_Unit->SetMapPos((*RIter).AfterSubjectUnitPos);
 					}
-					else if ((*RIter).AfterTargetUnit.UnitCode == _Unit->GetUnitData().UnitCode)
+					else if ((*RIter).AfterTargetUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
 					{
 						_Unit->SetUnitData((*RIter).AfterTargetUnit);
 					}
 				}
 				for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
 				{
-					if ((*RIter).AfterSubjectUnit.UnitCode == _Unit->GetUnitData().UnitCode)
+					if ((*RIter).AfterSubjectUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
 					{
 						_Unit->SetUnitData((*RIter).AfterSubjectUnit);
 						_Unit->SetMapPos((*RIter).AfterSubjectUnitPos);
 					}
-					else if ((*RIter).AfterTargetUnit.UnitCode == _Unit->GetUnitData().UnitCode)
+					else if ((*RIter).AfterTargetUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
 					{
 						_Unit->SetUnitData((*RIter).AfterTargetUnit);
 					}
@@ -1155,7 +1155,7 @@ void BattleLevel::TimeStoneUpdate(float _DeltaTime)
 			{
 				for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
 				{
-					if ((*RIter).AfterSubjectUnit.UnitCode == _Unit->GetUnitData().UnitCode)
+					if ((*RIter).AfterSubjectUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
 					{
 						_Unit->SetUnitData((*RIter).AfterSubjectUnit);
 						_Unit->SetMapPos((*RIter).AfterSubjectUnitPos);
@@ -1163,7 +1163,7 @@ void BattleLevel::TimeStoneUpdate(float _DeltaTime)
 				}
 				for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
 				{
-					if ((*RIter).AfterSubjectUnit.UnitCode == _Unit->GetUnitData().UnitCode)
+					if ((*RIter).AfterSubjectUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
 					{
 						_Unit->SetUnitData((*RIter).AfterSubjectUnit);
 						_Unit->SetMapPos((*RIter).AfterSubjectUnitPos);
@@ -1227,24 +1227,24 @@ void BattleLevel::TimeStoneUpdate(float _DeltaTime)
 			{
 				for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
 				{
-					if ((*RIter).AfterSubjectUnit.UnitCode == _Unit->GetUnitData().UnitCode)
+					if ((*RIter).AfterSubjectUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
 					{
 						_Unit->SetUnitData((*RIter).AfterSubjectUnit);
 						_Unit->SetMapPos((*RIter).AfterSubjectUnitPos);
 					}
-					else if ((*RIter).AfterTargetUnit.UnitCode == _Unit->GetUnitData().UnitCode)
+					else if ((*RIter).AfterTargetUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
 					{
 						_Unit->SetUnitData((*RIter).AfterTargetUnit);
 					}
 				}
 				for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
 				{
-					if ((*RIter).AfterSubjectUnit.UnitCode == _Unit->GetUnitData().UnitCode)
+					if ((*RIter).AfterSubjectUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
 					{
 						_Unit->SetUnitData((*RIter).AfterSubjectUnit);
 						_Unit->SetMapPos((*RIter).AfterSubjectUnitPos);
 					}
-					else if ((*RIter).AfterTargetUnit.UnitCode == _Unit->GetUnitData().UnitCode)
+					else if ((*RIter).AfterTargetUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
 					{
 						_Unit->SetUnitData((*RIter).AfterTargetUnit);
 					}
@@ -1257,7 +1257,7 @@ void BattleLevel::TimeStoneUpdate(float _DeltaTime)
 			{
 				for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
 				{
-					if ((*RIter).AfterSubjectUnit.UnitCode == _Unit->GetUnitData().UnitCode)
+					if ((*RIter).AfterSubjectUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
 					{
 						_Unit->SetUnitData((*RIter).AfterSubjectUnit);
 						_Unit->SetMapPos((*RIter).AfterSubjectUnitPos);
@@ -1265,7 +1265,7 @@ void BattleLevel::TimeStoneUpdate(float _DeltaTime)
 				}
 				for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
 				{
-					if ((*RIter).AfterSubjectUnit.UnitCode == _Unit->GetUnitData().UnitCode)
+					if ((*RIter).AfterSubjectUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
 					{
 						_Unit->SetUnitData((*RIter).AfterSubjectUnit);
 						_Unit->SetMapPos((*RIter).AfterSubjectUnitPos);

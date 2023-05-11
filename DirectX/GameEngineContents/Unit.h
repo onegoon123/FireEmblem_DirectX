@@ -5,6 +5,7 @@
 #include "BattleMap.h"
 class Unit : public GameEngineNameObject
 {
+	friend class BattleUnit;
 public:
 
 	Unit();
@@ -21,6 +22,7 @@ public:
 		IsDie = _Other.IsDie;
 		Items = _Other.Items;
 		Weapons = _Other.Weapons;
+		CurWeapon = _Other.CurWeapon;
 	}
 	void operator=(const Unit& _Other)
 	{
@@ -34,12 +36,13 @@ public:
 		IsDie = _Other.IsDie;
 		Items = _Other.Items;
 		Weapons = _Other.Weapons;
+		CurWeapon = _Other.CurWeapon;
 	}
 	std::string ToString() const
 	{
 		std::string Str;
 		Str += "체력 : " + std::to_string(CurrentHP) + " / " + std::to_string(UnitStat.MainStatValue.HP) + '\n';
-		Str += "공격력 : " + std::to_string(UnitStat.GetAttackPoint());
+		Str += "공격력 : " + std::to_string(GetAttackPoint());
 		return Str;
 	}
 
@@ -63,6 +66,14 @@ public:
 		}
 	}
 
+	int GetUnitCode()
+	{
+		return UnitCode;
+	}
+
+	// 체력 관련
+
+	// 회복
 	void Recover(int _Value)
 	{
 		CurrentHP += _Value;
@@ -71,42 +82,130 @@ public:
 			CurrentHP = UnitStat.MainStatValue.HP;
 		}
 	}
-
+	// 비율 회복
 	void RecoverPersent(float _Value)
 	{
 		Recover(static_cast<int>(std::roundf(UnitStat.MainStatValue.HP * _Value)));
 	}
+	// 현재 체력
+	int GetHP()
+	{
+		return CurrentHP;
+	}
+	// 최대 체력
+	int GetMaxHP()
+	{
+		return UnitStat.MainStatValue.HP;
+	}
+	// 대미지
+	bool Damage(int _Value)
+	{
+		CurrentHP -= _Value;
+		if (0 >= CurrentHP)
+		{
+			CurrentHP = 0;
+			IsDie = true;
+			return true;
+		}
+		return false;
+	}
 
+
+	// 스텟
 	int GetRangeStat();
+	// 배틀클래스
+	BattleClass GetClassValue()
+	{
+		return UnitStat.ClassValue;
+	}
+
+	// 상태
+
+	// 죽었는가
+	bool GetIsDie()
+	{
+		return IsDie;
+	}
+	// 턴 종료 했는가
+	void SetIsTurnEnd(bool _Value)
+	{
+		IsTurnEnd = _Value;
+	}
+	bool GetIsTurnEnd()
+	{
+		return IsTurnEnd;
+	}
+
+
+	// 지형정보
+
+	Terrain GetTerrainData()
+	{
+		return TerrainData;
+	}
+
+	// 아이템함수들
+
+	// 아이템 추가
+	void NewItem(ItemCode _Code);
+	// 아이템 사용
+	void UseItem(std::list<std::shared_ptr<Item>>::iterator& _ItemIter);
+	// 아이템 버리기
+	void DropItem(std::list<std::shared_ptr<Item>>::iterator& _ItemIter);
+	// 아이템 장비
+	void EquipWeapon(std::shared_ptr<Weapon> _Weapon);
+	// 무기 리스트받기
 	const std::list<std::shared_ptr<Weapon>>& GetWeapons()
 	{
 		return Weapons;
 	}
+	// 아이템 리스트 받기
 	std::list<std::shared_ptr<Item>>& GetItems()
 	{
 		return Items;
 	}
-	void EquipWeapon(std::shared_ptr<Weapon> _Weapon);
-	void UseItem(std::list<std::shared_ptr<Item>>::iterator& _ItemIter);
-	void DropItem(std::list<std::shared_ptr<Item>>::iterator& _ItemIter);
+	// 장비중인 무기
+	std::shared_ptr<Weapon> GetCurWeapon()
+	{
+		return CurWeapon;
+	}
 
-	int UnitCode = -1;
-	int CurrentHP = 0;
-	Terrain TerrainData = Terrain::None;
-	int TerrainDeffence = 0;
-	int TerrainDodge = 0;
-	bool IsTurnEnd = false;
-	bool IsDie = false;
-	bool IsPlayer = false;
-	Stat UnitStat;
-
-	void NewItem(ItemCode _Code);
-	
+	int GetAttackPoint() const;
+	int GetAttackPoint(BattleClass _TargetClass) const;
+	int GetAttackPoint(const class Unit& _Other) const;
+	int GetDefPoint() const;
+	int GetMagicAttackPoint() const;
+	int GetHitPoint() const;
+	int GetHitPoint(const class Unit& _Other) const;
+	int GetCriticalPoint() const;
+	int GetCriticalPoint(const class Unit& _Other) const;
+	int GetAttackSpeedPoint() const;
+	int GetDodgePoint() const;
+	int GetCriticalDodgePoint() const;
+	bool IsDoubleAttack(const class Unit& _Other) const;
 
 private:
 
+
+	// 유닛 데이터
+	int UnitCode = -1;
+	int CurrentHP = 0;
+	Stat UnitStat;
+
+	// 지형 데이터
+	Terrain TerrainData = Terrain::None;
+	int TerrainDeffence = 0;
+	int TerrainDodge = 0;
+	
+	// 상태
+	bool IsTurnEnd = false;
+	bool IsDie = false;
+	bool IsPlayer = false;
+
+	// 아이템
 	std::list<std::shared_ptr<Item>> Items = std::list<std::shared_ptr<Item>>();
 	std::list<std::shared_ptr<Weapon>> Weapons = std::list<std::shared_ptr<Weapon>>();
-	
+	std::shared_ptr<Weapon> CurWeapon = nullptr;		// 장비한 무기
+
 };
 
