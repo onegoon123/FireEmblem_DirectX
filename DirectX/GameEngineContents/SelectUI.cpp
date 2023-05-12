@@ -1,6 +1,7 @@
 #include "PrecompileHeader.h"
 #include "SelectUI.h"
 #include <GameEnginePlatform/GameEngineInput.h>
+#include <GameEngineCore/GameEngineLevel.h>
 #include "SpriteRenderer.h"
 #include "ContentsEnum.h"
 #include "BattleUnit.h"
@@ -92,7 +93,7 @@ void SelectUI::Off()
 void SelectUI::SetHPBar(float _Value)
 {
 	HPBarRender->GetTransform()->SetWorldScale({ 168 * _Value, 8 });
-	HPBarRender->GetTransform()->SetLocalPosition({ -20 + (84 * _Value), -48});
+	HPBarRender->GetTransform()->SetLocalPosition(float4(-20 + (84 * _Value), -48));
 }
 
 void SelectUI::SetUnitData(std::shared_ptr<BattleUnit> _Unit)
@@ -166,14 +167,15 @@ void SelectUI::Start()
 	UnitData.CurDir = UIDir::None;
 	UnitData.NextDir = UIDir::None;
 
-	HPBarRender = CreateComponent<SpriteRenderer>();
+	std::shared_ptr<GameEngineActor> _Actor = GetLevel()->CreateActor<GameEngineActor>();
+	_Actor->GetTransform()->SetParent(UnitData.Render->GetTransform());
+	_Actor->GetTransform()->SetLocalPosition(float4::Zero);
+	HPBarRender = _Actor->CreateComponent<SpriteRenderer>();
 	HPBarRender->SetTexture("HPBar.png");
-	//HPBarRender->GetTransform()->SetParent(UnitData.Render->GetTransform());
 	HPBarRender->GetTransform()->SetWorldScale({ 168, 8 });
 	HPBarRender->GetTransform()->SetLocalPosition({ 64, -48 });
 
-	
-	PortraitRender = CreateComponent<SpriteRenderer>();
+	PortraitRender = _Actor->CreateComponent<SpriteRenderer>();
 	PortraitRender->SetTexture("BattleIcon_Lyn.png");
 	//PortraitRender->GetTransform()->SetParent(UnitData.Render->GetTransform());
 	PortraitRender->GetTransform()->SetWorldScale({ 128, 128 });
@@ -188,9 +190,6 @@ void SelectUI::Update(float _DeltaTiime)
 	Goal.Update(_DeltaTiime);
 	Terrain.Update(_DeltaTiime);
 	UnitData.Update(_DeltaTiime);
-
-	HPBarRender->GetTransform()->SetLocalPosition(UnitData.Render->GetTransform()->GetLocalPosition() + float4(64, -48));
-	PortraitRender->GetTransform()->SetLocalPosition(UnitData.Render->GetTransform()->GetLocalPosition() + float4(-96, 0));
 }
 
 

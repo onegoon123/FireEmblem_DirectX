@@ -148,8 +148,8 @@ void BattleUnit::SetUnitCode(UnitIdentityCode _Code)
 	}
 
 
-	Renderer->CreateAnimation({ "Idle", MapSpriteName, 0, 2, 0.2f, true, false });
-	Renderer->CreateAnimation({ "Select", MapSpriteName, 3, 5, 0.2f, true, false });
+	Renderer->CreateAnimation({ .AnimationName = "Idle",.SpriteName = MapSpriteName, .FrameIndex = {0, 1, 2, 1}, .FrameTime = {0.5f, 0.1f, 0.5f, 0.1f} });
+	Renderer->CreateAnimation({ .AnimationName = "Select",.SpriteName = MapSpriteName, .FrameIndex = {3, 4, 5, 4}, .FrameTime = {0.3f, 0.1f, 0.3f, 0.1f} });
 	if (true == IsShortWalk)
 	{
 		Renderer->CreateAnimation({ "Left", MapSpriteName, 6, 8, 0.2f, true, false });

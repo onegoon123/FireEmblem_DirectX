@@ -28,6 +28,8 @@ public:
 	float Inter = 0.1f;
 	bool Loop = true;
 	bool ScaleToTexture = false;
+	std::vector<size_t> FrameIndex = std::vector<size_t>();
+	std::vector<float> FrameTime = std::vector<float>();
 
 	bool IsEnd();
 };
@@ -43,6 +45,8 @@ public:
 	float FrameInter = 0.1f;
 	bool Loop = true;
 	bool ScaleToTexture = false;
+	std::vector<size_t> FrameIndex = std::vector<size_t>();
+	std::vector<float> FrameTime = std::vector<float>();
 };
 
 

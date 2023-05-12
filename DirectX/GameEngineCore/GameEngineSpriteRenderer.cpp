@@ -4,7 +4,7 @@
 
 const SpriteInfo& AnimationInfo::CurSpriteInfo()
 {
-	const SpriteInfo& Info = Sprite->GetSpriteInfo(CurFrame);
+	const SpriteInfo& Info = Sprite->GetSpriteInfo(FrameIndex[CurFrame]);
 	return Info;
 }
 
@@ -15,8 +15,8 @@ bool AnimationInfo::IsEnd()
 
 void AnimationInfo::Reset()
 {
-	CurFrame = StartFrame;
-	CurTime = Inter;
+	CurFrame = 0;
+	CurTime = FrameTime[CurFrame];
 	IsEndValue = false;
 }
 
@@ -31,24 +31,24 @@ void AnimationInfo::Update(float _DeltaTime)
 	if (0.0f >= CurTime)
 	{
 		++CurFrame;
-		CurTime += Inter;
-
-		// 0 ~ 9
-
-		// 9
-		if (CurFrame > EndFrame)
+		if (FrameIndex.size() <= CurFrame)
 		{
 			IsEndValue = true;
 
 			if (true == Loop)
 			{
-				CurFrame = StartFrame;
+				CurFrame = 0;
 			}
 			else
 			{
 				--CurFrame;
 			}
 		}
+		CurTime += FrameTime[CurFrame];
+
+		// 0 ~ 9
+
+		// 9
 	}
 }
 
@@ -144,40 +144,72 @@ std::shared_ptr<AnimationInfo> GameEngineSpriteRenderer::CreateAnimation(const A
 	std::shared_ptr<AnimationInfo> NewAnimation = std::make_shared<AnimationInfo>();
 	Animations[_Paramter.AnimationName.data()] = NewAnimation;
 
-	if (-1 != _Paramter.Start)
+	if (0 != _Paramter.FrameIndex.size())
 	{
-		if (_Paramter.Start < 0)
-		{
-			MsgAssert("스프라이트 범위를 초과하는 인덱스로 애니메이션을 마들려고 했습니다." + std::string(_Paramter.AnimationName));
-			return nullptr;
-		}
-
-		NewAnimation->StartFrame = _Paramter.Start;
+		// 프레임 데이터가 들어있을 시
+		NewAnimation->FrameIndex = _Paramter.FrameIndex;
+		
 	}
 	else
 	{
-		NewAnimation->StartFrame = 0;
-	}
+		// 프레임 데이터가 안들어 있을 시
 
-	if (-1 != _Paramter.End)
-	{
-		if (_Paramter.End >= Sprite->GetSpriteCount())
+		// 시작 프레임 지정
+		if (-1 != _Paramter.Start)
 		{
-			MsgAssert("스프라이트 범위를 초과하는 인덱스로 애니메이션을 마들려고 했습니다." + std::string(_Paramter.AnimationName));
-			return nullptr;
+			if (_Paramter.Start < 0)
+			{
+				MsgAssert("스프라이트 범위를 초과하는 인덱스로 애니메이션을 마들려고 했습니다." + std::string(_Paramter.AnimationName));
+				return nullptr;
+			}
+
+			NewAnimation->StartFrame = _Paramter.Start;
+		}
+		else
+		{
+			NewAnimation->StartFrame = 0;
+		}
+		// 끝 프레임 지정
+		if (-1 != _Paramter.End)
+		{
+			if (_Paramter.End >= Sprite->GetSpriteCount())
+			{
+				MsgAssert("스프라이트 범위를 초과하는 인덱스로 애니메이션을 마들려고 했습니다." + std::string(_Paramter.AnimationName));
+				return nullptr;
+			}
+
+			NewAnimation->EndFrame = _Paramter.End;
+		}
+		else
+		{
+			NewAnimation->EndFrame = Sprite->GetSpriteCount() - 1;
 		}
 
-		NewAnimation->EndFrame = _Paramter.End;
+		for (size_t i = NewAnimation->StartFrame; i <= NewAnimation->EndFrame; ++i)
+		{
+			NewAnimation->FrameIndex.push_back(i);
+		}
+	}
+
+	// 타임 데이터가 있다면
+	if (0 != _Paramter.FrameTime.size())
+	{
+		NewAnimation->FrameTime = _Paramter.FrameTime;
+		
 	}
 	else
 	{
-		NewAnimation->EndFrame = Sprite->GetSpriteCount() - 1;
+		for (size_t i = 0; i < NewAnimation->FrameIndex.size(); ++i)
+		{
+			NewAnimation->FrameTime.push_back(_Paramter.FrameInter);
+		}
 	}
+
+
 
 	NewAnimation->Sprite = Sprite;
 	NewAnimation->Parent = this;
 	NewAnimation->Loop = _Paramter.Loop;
-	NewAnimation->Inter = _Paramter.FrameInter;
 	NewAnimation->ScaleToTexture = _Paramter.ScaleToTexture;
 
 	return NewAnimation;

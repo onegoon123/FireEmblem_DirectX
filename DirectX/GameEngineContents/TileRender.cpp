@@ -35,7 +35,7 @@ void TileRender::Create(int2 _Scale)
 			Renders[y][x]->GetTransform()->SetLocalPosition(float4(x * 64.f, y * 64.f));
 			Renders[y][x]->CreateAnimation({ "Move", "Tile.png", 0, 15, 0.1f, true, false });
 			Renders[y][x]->CreateAnimation({ "Attack", "Tile.png", 16, 31, 0.1f, true, false });
-			Renders[y][x]->CreateAnimation({ "Enemy", "Tile.png", 32, 47, 0.1f, true, false });
+			//Renders[y][x]->CreateAnimation({ "Enemy", "Tile.png", 32, 47, 0.1f, true, false });
 			Renders[y][x]->SetOpacity(0.8f);
 			Renders[y][x]->Off();
 		}
