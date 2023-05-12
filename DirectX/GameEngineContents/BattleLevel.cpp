@@ -57,20 +57,20 @@ void BattleLevel::Start()
 	NewActor->NewItem(ItemCode::Vulnerary);
 	PlayerUnits.push_back(NewActor);
 
-	NewActor = CreateActor<BattleUnit>();
-	NewActor->SetUnitCode(UnitIdentityCode::Dorcas);
-	NewActor->SetMapPos({ 5, 4 });
-	NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
-	NewActor->NewItem(ItemCode::IronAxe);
-	NewActor->NewItem(ItemCode::Vulnerary);
-	PlayerUnits.push_back(NewActor);
+	//NewActor = CreateActor<BattleUnit>();
+	//NewActor->SetUnitCode(UnitIdentityCode::Dorcas);
+	//NewActor->SetMapPos({ 5, 4 });
+	//NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
+	//NewActor->NewItem(ItemCode::IronAxe);
+	//NewActor->NewItem(ItemCode::Vulnerary);
+	//PlayerUnits.push_back(NewActor);
 
-	NewActor = CreateActor<BattleUnit>();
-	NewActor->SetUnitCode(UnitIdentityCode::Wallace);
-	NewActor->SetMapPos({ 6, 5 });
-	NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
-	NewActor->NewItem(ItemCode::KillerLance);
-	PlayerUnits.push_back(NewActor);
+	//NewActor = CreateActor<BattleUnit>();
+	//NewActor->SetUnitCode(UnitIdentityCode::Wallace);
+	//NewActor->SetMapPos({ 6, 5 });
+	//NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
+	//NewActor->NewItem(ItemCode::KillerLance);
+	//PlayerUnits.push_back(NewActor);
 
 	NewActor = CreateActor<BattleUnit>();
 	NewActor->SetUnitCode(UnitIdentityCode::Kent);

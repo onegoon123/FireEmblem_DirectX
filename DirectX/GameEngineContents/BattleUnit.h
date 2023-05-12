@@ -93,7 +93,8 @@ protected:
 	void Update(float _DeltaTime) override;
 
 	std::shared_ptr<class SpriteRenderer> Renderer = nullptr;
-	std::string_view ImageName = "";
+	std::string_view MapSpriteName = "";
+	bool IsShortWalk = false;
 private:
 	Unit UnitData;
 

@@ -43,13 +43,13 @@ void BattleUnit::SetUnitCode(UnitIdentityCode _Code)
 	UnitData.UnitCode = static_cast<int>(_Code);
 	UnitData.UnitStat.SetIdentity(_Code);
 	UnitData.CurrentHP = UnitData.UnitStat.MainStatValue.HP;
-
+	IsShortWalk = false;
 	switch (_Code)
 	{
 	case UnitIdentityCode::Lyn:
 		SetName("린");
 		UnitData.SetName("Lyn");
-		ImageName = "Map_LynTest.png";
+		MapSpriteName = "Map_Lyn.png";
 		UnitData.IsPlayer = true;
 		break;
 	case UnitIdentityCode::Sain:
@@ -57,7 +57,7 @@ void BattleUnit::SetUnitCode(UnitIdentityCode _Code)
 	case UnitIdentityCode::Kent:
 		SetName("켄트");
 		UnitData.SetName("Kent");
-		ImageName = "Map_LynTest.png";
+		MapSpriteName = "Map_Cavalier.png";
 		UnitData.IsPlayer = true;
 		break;
 	case UnitIdentityCode::Florina:
@@ -67,7 +67,7 @@ void BattleUnit::SetUnitCode(UnitIdentityCode _Code)
 	case UnitIdentityCode::Dorcas:
 		SetName("돌카스");
 		UnitData.SetName("Dorcas");
-		ImageName = "Map_LynTest.png";
+		MapSpriteName = "Map_Dorcas.png";
 		UnitData.IsPlayer = true;
 		break;
 	case UnitIdentityCode::Serra:
@@ -85,14 +85,15 @@ void BattleUnit::SetUnitCode(UnitIdentityCode _Code)
 	case UnitIdentityCode::Wallace:
 		SetName("월레스");
 		UnitData.SetName("Wallace");
-		ImageName = "Map_LynTest.png";
+		MapSpriteName = "Map_Wallace.png";
 		UnitData.IsPlayer = true;
 		break;
 	case UnitIdentityCode::Brigand:
 		UnitData.UnitCode += EnemyNum++;
 		SetName("산적");
 		UnitData.SetName("Enemy");
-		ImageName = "Map_EnemyBrigandTest.png";
+		MapSpriteName = "Map_EnemyBrigand.png";
+		IsShortWalk = true;
 		UnitData.IsPlayer = false;
 		break;
 	case UnitIdentityCode::Soldier:
@@ -108,20 +109,80 @@ void BattleUnit::SetUnitCode(UnitIdentityCode _Code)
 	default:
 		break;
 	}
-	Renderer->SetTexture(ImageName);
+
+	//std::string_view AnimationName = "";
+	//std::string_view SpriteName = "";
+	//size_t Start = static_cast<size_t>(-1);
+	//size_t End = static_cast<size_t>(-1);
+	//float FrameInter = 0.1f;
+	//bool Loop = true;
+	//bool ScaleToTexture = false;
+	if (nullptr == GameEngineSprite::Find(MapSpriteName))
+	{
+		GameEngineDirectory Dir;
+		Dir.MoveParentToDirectory("ContentResources");
+		Dir.Move("ContentResources");
+		Dir.Move("Character");
+		Dir.Move("Map");
+		if (true == IsShortWalk)
+		{
+			GameEngineSprite::LoadSheet(Dir.GetPlusFileName(MapSpriteName).GetFullPath(), 3, 5);
+		}
+		else
+		{
+			GameEngineSprite::LoadSheet(Dir.GetPlusFileName(MapSpriteName).GetFullPath(), 3, 6);
+		}
+	}
+
+
+	Renderer->CreateAnimation({ "Idle", MapSpriteName, 0, 2, 0.2f, true, false});
+	Renderer->CreateAnimation({ "Select", MapSpriteName, 3, 5, 0.2f, true, false});
+	if (true == IsShortWalk)
+	{
+		Renderer->CreateAnimation({ "Left", MapSpriteName, 6, 8, 0.2f, true, false });
+		Renderer->CreateAnimation({ "Down", MapSpriteName, 9, 11, 0.2f, true, false });
+		Renderer->CreateAnimation({ "Up", MapSpriteName, 12, 14, 0.2f, true, false });
+
+	}
+	else
+	{
+		Renderer->CreateAnimation({ "Left", MapSpriteName, 6, 9, 0.2f, true, false });
+		Renderer->CreateAnimation({ "Down", MapSpriteName, 10, 13, 0.2f, true, false });
+		Renderer->CreateAnimation({ "Up", MapSpriteName, 14, 17, 0.2f, true, false });
+	} 
+
+	Renderer->ChangeAnimation("Idle");
 }
 
 
 void BattleUnit::Start()
 {
 	Renderer = CreateComponent<SpriteRenderer>();
-	ImageName = "Map_LynTest.png";
-	Renderer->SetTexture(ImageName);
-	Renderer->SetWorldScale({ 128,128 });
+	Renderer->SetWorldScale({ 192,192 });
 	SetMapPos({ 0,0 });
 }
 
 void BattleUnit::Update(float _DeltaTime)
 {
+	if (GameEngineInput::IsDown("ButtonA"))
+	{
+		Renderer->ChangeAnimation("Select");
+	}
+	if (GameEngineInput::IsDown("ButtonB"))
+	{
+		Renderer->ChangeAnimation("Idle");
+	}
+	if (GameEngineInput::IsDown("Left"))
+	{
+		Renderer->ChangeAnimation("Left");
+	}
+	if (GameEngineInput::IsDown("Up"))
+	{
+		Renderer->ChangeAnimation("Up");
+	}
+	if (GameEngineInput::IsDown("Down"))
+	{
+		Renderer->ChangeAnimation("Down");
+	}
 }
 
