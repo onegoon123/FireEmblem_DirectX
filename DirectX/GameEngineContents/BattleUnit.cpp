@@ -19,7 +19,7 @@ void BattleUnit::Select()
 	Renderer->ChangeAnimation("Select");
 }
 
-void BattleUnit::Cancel()
+void BattleUnit::SetIdle()
 {
 	GetTransform()->SetLocalPositiveScaleX();
 	Renderer->ChangeAnimation("Idle");
@@ -31,11 +31,11 @@ void BattleUnit::SetIsTurnEnd(bool _Value)
 
 	if (_Value == true)
 	{
-		Renderer->SetGrayScale(true);
+		Renderer->SetSaturation(0);
 	}
 	else
 	{
-		Renderer->SetGrayScale(false);
+		Renderer->SetSaturation(1);
 	}
 }
 

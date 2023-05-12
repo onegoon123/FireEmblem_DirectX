@@ -8,13 +8,16 @@ struct OutPut
 };
 cbuffer EffectData : register(b0)
 {
+    float4 Scale;
     float4 LerpColor;
     float LerpT;
-    float BlurLevel;
     bool IsBlur;
-    bool IsGrayScale;
-    float4 Scale;
-    
+    float BlurLevel;
+    float Hue;
+    float Saturation;
+    float Brightness;
+    float Opacity;
+    float None;
 }
 
 Texture2D DiffuseTex : register(t0);
@@ -69,11 +72,19 @@ float4 Texture_PS(OutPut _Value) : SV_Target0
         Out = DiffuseTex.Sample(CLAMPSAMPLER, _Value.UV.xy);
     }
     
-    if (true == IsGrayScale)
-    {
-        float GrayValue = 0.299f * Out.r + 0.587f * Out.g + 0.114f * Out.b;
-        Out.rgb = float3(GrayValue, GrayValue, GrayValue);
-    }
+
+    float angle = radians(Hue);
+    float3 k = float3(0.57735, 0.57735, 0.57735);
+    float cosAngle = cos(angle);
+    Out.rgb = Out.rgb * cosAngle + cross(k, Out.rgb) * sin(angle) + k * dot(k, Out.rgb) * (1 - cosAngle);
+    
+    float3 intensity = dot(Out.rgb, float3(0.299, 0.587, 0.114));
+    Out.rgb = lerp(intensity, Out.rgb, Saturation);
+    
+    Out.rgb = Out.rgb + Brightness;
+    
+    Out.a = lerp(0, Out.a, Opacity);
+    
     if (LerpColor.a != 0)
     {
         if (0 < Out.a)
@@ -83,5 +94,7 @@ float4 Texture_PS(OutPut _Value) : SV_Target0
             Out = lerp(Out, ChangeColor, LerpT);
         }
     }
+    
+    
     return Out;
 }

@@ -21,3 +21,10 @@ void SpriteRenderer::Start()
 	GetShaderResHelper().SetConstantBufferLink("AtlasData", AtlasData);
 	GetShaderResHelper().SetConstantBufferLink("EffectData", EffectDataValue);
 }
+
+void SpriteRenderer::Update(float _Delta)
+{
+	GameEngineSpriteRenderer::Update(_Delta);
+	//EffectDataValue.Saturation = 0;
+
+}

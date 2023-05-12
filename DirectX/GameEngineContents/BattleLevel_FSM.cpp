@@ -110,6 +110,7 @@ void BattleLevel::PlayerPhaseStart()
 	{
 		if (true == _Unit->GetIsDie()) { continue; }
 		_Unit->SetIsTurnEnd(false);
+		_Unit->SetIdle();
 	}
 
 	// 지형에 따른 체력회복
@@ -278,7 +279,7 @@ void BattleLevel::MoveEnd()
 	// Move State 종료시 화살표와 이동타일을 제거
 	Arrows->Clear();
 	Tiles->Clear();
-	SelectUnit->Cancel();
+	SelectUnit->SetIdle();
 
 }
 
@@ -422,7 +423,7 @@ void BattleLevel::UnitCommandEnd()
 {
 	UI_UnitCommand->Off();
 	Tiles->Clear();
-	SelectUnit->Cancel();
+	SelectUnit->SetIdle();
 }
 
 void BattleLevel::FieldCommandStart()
@@ -542,6 +543,7 @@ void BattleLevel::EnemyPhaseStart()
 	{
 		if (true == _Unit->GetIsDie()) { continue; }
 		_Unit->SetIsTurnEnd(false);
+		_Unit->SetIdle();
 	}
 	MainCursor->Off();
 	Tiles->EnemyTileClear();
@@ -702,7 +704,7 @@ void BattleLevel::EnemyMoveEnd()
 	SelectUnit->SetMapPos(ArrowPos.back());
 	Terrain TerrainData = MainMap->TerrainData[SelectUnit->GetMapPos().y][SelectUnit->GetMapPos().x];
 	SelectUnit->SetTerrain(TerrainData);
-	SelectUnit->Cancel();
+	SelectUnit->SetIdle();
 }
 
 void BattleLevel::EnemyBattleStart()

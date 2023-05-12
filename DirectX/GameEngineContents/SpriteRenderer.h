@@ -14,10 +14,6 @@ public:
 	SpriteRenderer& operator=(const SpriteRenderer& _Other) = delete;
 	SpriteRenderer& operator=(SpriteRenderer&& _Other) noexcept = delete;
 
-	void SetGrayScale(bool _Value)
-	{
-		EffectDataValue.IsGrayScale = _Value;
-	}
 	void SetIsBlur(bool _Value)
 	{
 		EffectDataValue.IsBlur = _Value;
@@ -26,6 +22,7 @@ public:
 	{
 		EffectDataValue.BlurLevel = _Value;
 	}
+
 	void SetLerp(float4 _Color, float _t)
 	{
 		EffectDataValue.LerpColor = _Color;
@@ -51,17 +48,69 @@ public:
 		GetTransform()->SetWorldScale(_Scale);
 		EffectDataValue.Scale = _Scale;
 	}
+
+
+	// 색조 지정
+	void SetHue(float _Value)
+	{
+		EffectDataValue.Hue = _Value;
+	}
+	// 색조 더하기
+	void AddHue(float _Value)
+	{
+		EffectDataValue.Hue += _Value;
+	}
+
+	// 채도 지정
+	void SetSaturation(float _Value)
+	{
+		EffectDataValue.Saturation = _Value;
+	}
+	// 채도 더하기
+	void AddSaturation(float _Value)
+	{
+		EffectDataValue.Saturation += _Value;
+	}
+
+	// 밝기 지정
+	void SetBrightness(float _Value)
+	{
+		EffectDataValue.Brightness = _Value;
+	}
+	// 밝기 더하기
+	void AddBrightness(float _Value)
+	{
+		EffectDataValue.Brightness += _Value;
+	}
+
+	// 불투명도 지정
+	void SetOpacity(float _Value)
+	{
+		EffectDataValue.Opacity = _Value;
+	}
+	// 불투명도 더하기
+	void AddOpacity(float _Value)
+	{
+		EffectDataValue.Opacity += _Value;
+	}
+
+
 protected:
 	void Start() override;
+	void Update(float _Delta) override;
 private:
 	struct EffectData
 	{
-		float4 LerpColor = float4::Zero;
-		float LerpT = 0;
-		float BlurLevel = 0;
-		int IsBlur = false;
-		int IsGrayScale = false;
 		float4 Scale;
+		float4 LerpColor = float4::Null;
+		float LerpT = 0.0f;
+		int IsBlur = false;
+		float BlurLevel = 0;
+		float Hue = 0.0f;			// 색조
+		float Saturation = 1.0f;	// 채도
+		float Brightness = 0.0f;	// 밝기
+		float Opacity = 1.0f;		// 불투명도
+		float None;
 	};
 	EffectData EffectDataValue;
 };

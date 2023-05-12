@@ -16,7 +16,7 @@ public:
 	BattleUnit& operator=(BattleUnit&& _Other) noexcept = delete;
 
 	void Select();
-	void Cancel();
+	void SetIdle();
 
 	void SetIsTurnEnd(bool _Value);
 	bool GetIsTurnEnd();

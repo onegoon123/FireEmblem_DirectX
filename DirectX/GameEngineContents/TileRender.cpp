@@ -13,6 +13,15 @@ TileRender::~TileRender()
 
 void TileRender::Create(int2 _Scale)
 {
+	GameEngineDirectory Dir;
+	Dir.MoveParentToDirectory("ContentResources");
+	Dir.Move("ContentResources");
+	Dir.Move("Map");
+	if (nullptr == GameEngineSprite::Find(Dir.GetPlusFileName("Tile.png").GetFullPath()))
+	{
+		GameEngineSprite::LoadSheet(Dir.GetPlusFileName("Tile.png").GetFullPath(), 16, 3);
+	}
+
 	EnemyTileValue = std::vector<std::vector<bool>>(_Scale.y, std::vector<bool>(_Scale.x, false));
 	Renders.resize(_Scale.y);
 
@@ -24,7 +33,10 @@ void TileRender::Create(int2 _Scale)
 			Renders[y][x] = CreateComponent<SpriteRenderer>();
 			Renders[y][x]->GetTransform()->SetLocalScale({ 64,64 });
 			Renders[y][x]->GetTransform()->SetLocalPosition(float4(x * 64.f, y * 64.f));
-			Renders[y][x]->SetTexture("MoveTile.png");
+			Renders[y][x]->CreateAnimation({ "Move", "Tile.png", 0, 15, 0.1f, true, false });
+			Renders[y][x]->CreateAnimation({ "Attack", "Tile.png", 16, 31, 0.1f, true, false });
+			Renders[y][x]->CreateAnimation({ "Enemy", "Tile.png", 32, 47, 0.1f, true, false });
+			Renders[y][x]->SetOpacity(0.8f);
 			Renders[y][x]->Off();
 		}
 	}
@@ -38,7 +50,8 @@ void TileRender::Clear()
 		{
 			if (true == EnemyTileValue[y][x]) { 
 				Renders[y][x]->OffLerp();
-				Renders[y][x]->SetTexture("EnemyAttackTile.png");
+				Renders[y][x]->ChangeAnimation("Move", false);
+				Renders[y][x]->SetLerp(float4(0.3f, 0, 0.8f), 0.5f);
 				continue;
 			}
 			Renders[y][x]->Off();
@@ -69,7 +82,7 @@ void TileRender::SetTile(const std::vector<std::vector<bool>>& _Move, const std:
 			if (true == _Move[y][x])
 			{
 				Renders[y][x]->On();
-				Renders[y][x]->SetTexture("MoveTile.png");
+				Renders[y][x]->ChangeAnimation("Move");
 				if (true == EnemyTileValue[y][x])
 				{
 					Renders[y][x]->SetLerp(float4(0.3f, 0, 0.8f), 0.5f);
@@ -78,7 +91,7 @@ void TileRender::SetTile(const std::vector<std::vector<bool>>& _Move, const std:
 			else if (true == _Attack[y][x])
 			{
 				Renders[y][x]->On();
-				Renders[y][x]->SetTexture("AttackTile.png");
+				Renders[y][x]->ChangeAnimation("Attack");
 				if (true == EnemyTileValue[y][x])
 				{
 					Renders[y][x]->SetLerp(float4(0.3f, 0, 0.8f), 0.5f);
@@ -87,7 +100,8 @@ void TileRender::SetTile(const std::vector<std::vector<bool>>& _Move, const std:
 			else if (true == EnemyTileValue[y][x])
 			{
 				Renders[y][x]->On();
-				Renders[y][x]->SetTexture("EnemyAttackTile.png");
+				Renders[y][x]->ChangeAnimation("Move");
+				Renders[y][x]->SetLerp(float4(0.3f, 0, 0.8f), 0.5f);
 			}
 			else
 			{
@@ -106,7 +120,7 @@ void TileRender::SetTileAttack(const std::vector<std::vector<bool>>& _Value)
 			if (true == _Value[y][x])
 			{
 				Renders[y][x]->On();
-				Renders[y][x]->SetTexture("AttackTile.png");
+				Renders[y][x]->ChangeAnimation("Attack");
 				if (true == EnemyTileValue[y][x])
 				{
 					Renders[y][x]->SetLerp(float4(0.3f, 0, 0.8f), 0.5f);
@@ -128,7 +142,8 @@ void TileRender::SetEnemyTile(const std::vector<std::vector<bool>>& _Value)
 			if (true == EnemyTileValue[y][x])
 			{
 				Renders[y][x]->On();
-				Renders[y][x]->SetTexture("EnemyAttackTile.png");
+				Renders[y][x]->ChangeAnimation("Move");
+				Renders[y][x]->SetLerp(float4(0.3f, 0, 0.8f), 0.5f);
 			}
 			else
 			{
