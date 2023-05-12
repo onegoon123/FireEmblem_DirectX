@@ -168,14 +168,14 @@ void SelectUI::Start()
 
 	HPBarRender = CreateComponent<SpriteRenderer>();
 	HPBarRender->SetTexture("HPBar.png");
-	HPBarRender->GetTransform()->SetParent(UnitData.Render->GetTransform());
+	//HPBarRender->GetTransform()->SetParent(UnitData.Render->GetTransform());
 	HPBarRender->GetTransform()->SetWorldScale({ 168, 8 });
 	HPBarRender->GetTransform()->SetLocalPosition({ 64, -48 });
 
 	
 	PortraitRender = CreateComponent<SpriteRenderer>();
 	PortraitRender->SetTexture("BattleIcon_Lyn.png");
-	PortraitRender->GetTransform()->SetParent(UnitData.Render->GetTransform());
+	//PortraitRender->GetTransform()->SetParent(UnitData.Render->GetTransform());
 	PortraitRender->GetTransform()->SetWorldScale({ 128, 128 });
 	PortraitRender->GetTransform()->SetLocalPosition({ -96, 0 });
 	CursorDir = UIDir::None;
@@ -189,7 +189,8 @@ void SelectUI::Update(float _DeltaTiime)
 	Terrain.Update(_DeltaTiime);
 	UnitData.Update(_DeltaTiime);
 
-
+	HPBarRender->GetTransform()->SetLocalPosition(UnitData.Render->GetTransform()->GetLocalPosition() + float4(64, -48));
+	PortraitRender->GetTransform()->SetLocalPosition(UnitData.Render->GetTransform()->GetLocalPosition() + float4(-96, 0));
 }
 
 

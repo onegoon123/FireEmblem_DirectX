@@ -9,6 +9,7 @@ class GameEngineActor;
 class GameEngineCamera;
 class GameEngineLevel : public GameEngineUpdateObject
 {
+	friend class GameEngineTransform;
 	friend class GameEngineCore;
 
 public:

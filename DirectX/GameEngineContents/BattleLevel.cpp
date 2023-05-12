@@ -112,7 +112,6 @@ void BattleLevel::Start()
 		IsAttack[i].resize(MainMap->MapScaleInt2.x);
 	}
 
-
 	UI_Select = CreateActor<SelectUI>();
 	//UI_Select->GetTransform()->SetParent(GetMainCamera()->GetTransform());
 	UI_Select->GetTransform()->SetLocalPosition({ 448, 288, 0 });
@@ -143,8 +142,6 @@ void BattleLevel::Start()
 	//UI_Window->GetTransform()->SetParent(&UITransform);
 	//UI_Window->GetTransform()->SetLocalPosition(float4::Zero);
 	//UI_Window->Setting();
-	
-
 
 	UI_UnitCommand->Setting(this);
 	UI_FieldCommand->Setting(this);

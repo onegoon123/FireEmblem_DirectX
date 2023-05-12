@@ -121,6 +121,7 @@ public:
 			float w;
 		};
 
+
 		float Arr1D[4];
 
 
@@ -129,12 +130,22 @@ public:
 		DirectX::XMFLOAT3 DirectFloat3;
 		DirectX::XMFLOAT4 DirectFloat4;
 		DirectX::XMVECTOR DirectVector;
+
+
+		struct
+		{
+			float PosX;
+			float PosY;
+			float SizeX;
+			float SizeY;
+		};
+
 	};
 
 	float4()
 		: x(0.0f), y(0.0f), z(0.0f), w(1.0f)
 	{
-		
+
 	}
 
 	float4(float _x, float _y)
