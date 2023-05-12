@@ -4,12 +4,25 @@
 #include "Stat.h"
 #include "Weapon.h"
 #include "SpriteRenderer.h"
-BattleUnit::BattleUnit() 
+BattleUnit::BattleUnit()
+{
+	MoveSpeed = 15.0f;
+}
+
+BattleUnit::~BattleUnit()
 {
 }
 
-BattleUnit::~BattleUnit() 
+void BattleUnit::Select()
 {
+	GetTransform()->SetLocalPositiveScaleX();
+	Renderer->ChangeAnimation("Select");
+}
+
+void BattleUnit::Cancel()
+{
+	GetTransform()->SetLocalPositiveScaleX();
+	Renderer->ChangeAnimation("Idle");
 }
 
 void BattleUnit::SetIsTurnEnd(bool _Value)
@@ -135,8 +148,8 @@ void BattleUnit::SetUnitCode(UnitIdentityCode _Code)
 	}
 
 
-	Renderer->CreateAnimation({ "Idle", MapSpriteName, 0, 2, 0.2f, true, false});
-	Renderer->CreateAnimation({ "Select", MapSpriteName, 3, 5, 0.2f, true, false});
+	Renderer->CreateAnimation({ "Idle", MapSpriteName, 0, 2, 0.2f, true, false });
+	Renderer->CreateAnimation({ "Select", MapSpriteName, 3, 5, 0.2f, true, false });
 	if (true == IsShortWalk)
 	{
 		Renderer->CreateAnimation({ "Left", MapSpriteName, 6, 8, 0.2f, true, false });
@@ -149,7 +162,7 @@ void BattleUnit::SetUnitCode(UnitIdentityCode _Code)
 		Renderer->CreateAnimation({ "Left", MapSpriteName, 6, 9, 0.2f, true, false });
 		Renderer->CreateAnimation({ "Down", MapSpriteName, 10, 13, 0.2f, true, false });
 		Renderer->CreateAnimation({ "Up", MapSpriteName, 14, 17, 0.2f, true, false });
-	} 
+	}
 
 	Renderer->ChangeAnimation("Idle");
 }
@@ -158,31 +171,40 @@ void BattleUnit::SetUnitCode(UnitIdentityCode _Code)
 void BattleUnit::Start()
 {
 	Renderer = CreateComponent<SpriteRenderer>();
-	Renderer->SetWorldScale({ 192,192 });
+	Renderer->SetLocalScale({ 192,192 });
 	SetMapPos({ 0,0 });
 }
 
 void BattleUnit::Update(float _DeltaTime)
 {
-	if (GameEngineInput::IsDown("ButtonA"))
-	{
-		Renderer->ChangeAnimation("Select");
-	}
-	if (GameEngineInput::IsDown("ButtonB"))
-	{
-		Renderer->ChangeAnimation("Idle");
-	}
-	if (GameEngineInput::IsDown("Left"))
+	MapUnit::Update(_DeltaTime);
+}
+
+void BattleUnit::SetMoveDir(int2 _Dir)
+{
+	if (_Dir == int2::Right)
 	{
 		Renderer->ChangeAnimation("Left");
+		GetTransform()->SetLocalNegativeScaleX();
+		return;
 	}
-	if (GameEngineInput::IsDown("Up"))
+
+	GetTransform()->SetLocalPositiveScaleX();
+
+	if (_Dir == int2::Left)
 	{
-		Renderer->ChangeAnimation("Up");
+		Renderer->ChangeAnimation("Left");
+		return;
 	}
-	if (GameEngineInput::IsDown("Down"))
+	if (_Dir == int2::Down)
 	{
 		Renderer->ChangeAnimation("Down");
+		return;
+	}
+	if (_Dir == int2::Up)
+	{
+		Renderer->ChangeAnimation("Up");
+		return;
 	}
 }
 

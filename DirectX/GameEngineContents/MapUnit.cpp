@@ -13,7 +13,6 @@ static const float TileScale = 64.0f;
 
 void MapUnit::SetMapPos(int2 _Value)
 {
-	BeforeMapPos = MapPos;
 	MapPos = _Value;
 	EndPos = MapPos * TileScale;
 	GetTransform()->SetWorldPosition(MapPos * TileScale);
@@ -27,19 +26,21 @@ void MapUnit::MoveMapPos(int2 _Value)
 void MapUnit::SetMapPosLerp(int2 _Value)
 {
 	IsMove = true;
+	int2 StartIntPos = MapPos;
 	StartPos = GetTransform()->GetLocalPosition();
 	MapPos = _Value;
 	EndPos = MapPos * TileScale;
 	MoveTimer = 0;
+
+	int2 Dir = (MapPos - StartIntPos).Normalize();
+	
+	SetMoveDir(Dir);
+
 }
 
 void MapUnit::MoveMapPosLerp(int2 _Value)
 {
-	IsMove = true;
-	StartPos = GetTransform()->GetLocalPosition();
-	MapPos += _Value;
-	EndPos = MapPos * TileScale;
-	MoveTimer = 0;
+	SetMapPosLerp(MapPos + _Value);
 }
 
 void MapUnit::Update(float _DeltaTime)

@@ -71,7 +71,6 @@ protected:
 	ItemType TypeValue = ItemType::None;
 	int Uses = 0;		// ³»±¸µµ
 	int MaxUses = 0;
-private:
 
 };
 

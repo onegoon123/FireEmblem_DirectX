@@ -541,6 +541,7 @@ int Weapon::GetWeaponeTriangle(std::shared_ptr<Weapon> _SubjectWeapon, std::shar
 	return 0;
 }
 
+
 bool Weapon::IsUseWeapon(BattleClass _Class)
 {
 	switch (_Class)

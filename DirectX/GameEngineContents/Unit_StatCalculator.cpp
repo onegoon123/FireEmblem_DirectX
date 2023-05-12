@@ -1,5 +1,8 @@
 #include "PrecompileHeader.h"
 #include "Unit.h"
+
+
+
 int Unit::GetAttackPoint() const
 {
 	int Result = UnitStat.MainStatValue.Strength + CurWeapon->Damage;

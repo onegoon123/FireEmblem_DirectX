@@ -11,19 +11,16 @@
 
 bool BattleLevel::UnitMoveAnim()
 {
-	if (1 < MoveTimer)
+	if (false == SelectUnit->GetIsMove())
 	{
 		if (ArrowPos.size() == ++MoveIndex)
 		{
 			return true;
 		}
-		MoveStartPos = SelectUnit->GetTransform()->GetWorldPosition();	// 현재 위치 저장
-		float4 _ArrowPos = ArrowPos[MoveIndex];	
-		MoveEndPos = _ArrowPos * TileScale; // 다음 이동위치 저장
-		MoveTimer = 0; // 타이머 리셋
+		SelectUnit->SetMapPosLerp(ArrowPos[MoveIndex]);
 	}
 
-	SelectUnit->GetTransform()->SetLocalPosition(float4::LerpClamp(MoveStartPos, MoveEndPos, MoveTimer));
+	
 	return false;
 }
 

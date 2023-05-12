@@ -42,7 +42,7 @@ void Unit::EquipWeapon(std::shared_ptr<Weapon> _Weapon)
 
 void Unit::UseItem(std::list<std::shared_ptr<Item>>::iterator& _ItemIter)
 {
-	
+
 	if (Items.end() == _ItemIter)
 	{
 		MsgAssert("잘못된 Iterator 값입니다.");
@@ -82,12 +82,12 @@ void Unit::DropItem(std::list<std::shared_ptr<Item>>::iterator& _ItemIter)
 	{
 		MsgAssert("잘못된 Iterator 값입니다.");
 	}
-	Items.erase(_ItemIter);
 	if ((*_ItemIter)->GetItemType() == ItemType::Weapon)
 	{
 		std::list<std::shared_ptr<Weapon>>::iterator WeaponIter = std::find(Weapons.begin(), Weapons.end(), *_ItemIter);
 		Weapons.erase(WeaponIter);
 	}
+	Items.erase(_ItemIter);
 }
 
 
@@ -98,12 +98,45 @@ void Unit::NewItem(ItemCode _Code)
 	if (NewItem->GetItemType() == ItemType::Weapon)
 	{
 		std::shared_ptr<Weapon> NewWeapon = std::dynamic_pointer_cast<Weapon>(NewItem);
-		Weapons.push_back(NewWeapon);
-		if (nullptr == CurWeapon && NewWeapon->IsUseWeapon(UnitStat.ClassValue))
+
+		if (NewWeapon->IsUseWeapon(UnitStat.ClassValue))
 		{
-			EquipWeapon(NewWeapon);
+			Weapons.push_back(NewWeapon);
+			if (nullptr == CurWeapon)
+			{
+				EquipWeapon(NewWeapon);
+			}
 		}
+
 	}
 	return;
 }
 
+void Unit::LoadItemData(std::list<Item>& _Data)
+{
+	Items.clear();
+	Weapons.clear();
+	CurWeapon = nullptr;
+
+	for (Item _Item : _Data)
+	{
+
+		std::shared_ptr<Item> NewItem = Item::CreateItem(_Item.GetItemCode());
+		NewItem->operator=(_Item);
+		Items.push_back(NewItem);
+		if (NewItem->GetItemType() == ItemType::Weapon)
+		{
+			std::shared_ptr<Weapon> NewWeapon = std::dynamic_pointer_cast<Weapon>(NewItem);
+			if (NewWeapon->IsUseWeapon(UnitStat.ClassValue))
+			{
+				Weapons.push_back(NewWeapon);
+				if (nullptr == CurWeapon)
+				{
+					EquipWeapon(NewWeapon);
+				}
+			}
+		}
+
+	}
+
+}

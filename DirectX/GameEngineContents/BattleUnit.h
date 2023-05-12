@@ -15,6 +15,9 @@ public:
 	BattleUnit& operator=(const BattleUnit& _Other) = delete;
 	BattleUnit& operator=(BattleUnit&& _Other) noexcept = delete;
 
+	void Select();
+	void Cancel();
+
 	void SetIsTurnEnd(bool _Value);
 	bool GetIsTurnEnd();
 	void SetIsDie(bool _Value)
@@ -91,6 +94,8 @@ public:
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
+
+	void SetMoveDir(int2 _Dir) override;
 
 	std::shared_ptr<class SpriteRenderer> Renderer = nullptr;
 	std::string_view MapSpriteName = "";

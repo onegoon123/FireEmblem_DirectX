@@ -235,6 +235,9 @@ void BattleLevel::MoveStart()
 
 	// Move State시 필요한 UI
 	MainCursor->On();
+
+	// 유닛 선택 애니메이션
+	SelectUnit->Select();
 }
 
 void BattleLevel::MoveUpdate(float _DeltaTime)
@@ -275,19 +278,21 @@ void BattleLevel::MoveEnd()
 	// Move State 종료시 화살표와 이동타일을 제거
 	Arrows->Clear();
 	Tiles->Clear();
+	SelectUnit->Cancel();
+
 }
 
 void BattleLevel::MoveWaitStart()
 {
 	// MoveWait State가 시작시 값을 초기화
 	MainCursor->Off();
-	MoveTimer = 9999;
-	MoveIndex = -1;
+	MoveIndex = 0;
+	SelectUnit->SetBeforeMapPos();
+	SelectUnit->SetMapPosLerp(ArrowPos[0]);
 }
 
 void BattleLevel::MoveWaitUpdate(float _DeltaTime)
 {
-	MoveTimer += _DeltaTime * MoveSpeed;
 	if (true == UnitMoveAnim())
 	{
 		// 이동 종료
@@ -417,6 +422,7 @@ void BattleLevel::UnitCommandEnd()
 {
 	UI_UnitCommand->Off();
 	Tiles->Clear();
+	SelectUnit->Cancel();
 }
 
 void BattleLevel::FieldCommandStart()
@@ -611,6 +617,7 @@ void BattleLevel::EnemySelectEnd()
 void BattleLevel::EnemyMoveStart()
 {
 	int2 EnemyPos = SelectUnit->GetMapPos();
+	SelectUnit->SetBeforeMapPos();
 	int Min = 9999;
 
 	MoveSearchForEnemy();
@@ -658,8 +665,7 @@ void BattleLevel::EnemyMoveStart()
 		}
 		MainCursor->SetMapPos(MovePos);
 		MoveCalculationForEnemy();
-		MoveTimer = 9999;
-		MoveIndex = -1;
+		MoveIndex = 0;
 		return;
 	}
 
@@ -671,8 +677,7 @@ void BattleLevel::EnemyMoveStart()
 	int2 MovePos = ArrowPos.back();
 	MainCursor->SetMapPos(MovePos);
 
-	MoveTimer = 9999;
-	MoveIndex = -1;
+	MoveIndex = 0;
 }
 
 void BattleLevel::EnemyMoveUpdate(float _DeltaTime)
@@ -686,7 +691,6 @@ void BattleLevel::EnemyMoveUpdate(float _DeltaTime)
 		ChangeState(BattleState::EnemyBattle);
 		return;
 	}
-	MoveTimer += _DeltaTime * MoveSpeed;
 	if (true == UnitMoveAnim())
 	{
 		ChangeState(BattleState::EnemyBattle);
@@ -698,6 +702,7 @@ void BattleLevel::EnemyMoveEnd()
 	SelectUnit->SetMapPos(ArrowPos.back());
 	Terrain TerrainData = MainMap->TerrainData[SelectUnit->GetMapPos().y][SelectUnit->GetMapPos().x];
 	SelectUnit->SetTerrain(TerrainData);
+	SelectUnit->Cancel();
 }
 
 void BattleLevel::EnemyBattleStart()
@@ -998,12 +1003,14 @@ void BattleLevel::TimeStoneUpdate(float _DeltaTime)
 					{
 						_Unit->SetUnitData((*RIter).BeforeSubjectUnit);
 						_Unit->SetMapPos((*RIter).BeforeSubjectUnitPos);
-						Item::LoadItemDataList(_Unit->GetUnitData().GetItems(), (*RIter).BeforeSubjectItems);
+						//Item::LoadItemDataList(_Unit->GetUnitData().GetItems(), (*RIter).BeforeSubjectItems);
+						_Unit->GetUnitData().LoadItemData((*RIter).BeforeSubjectItems);
 					}
 					else if ((*RIter).BeforeTargetUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
 					{
 						_Unit->SetUnitData((*RIter).BeforeTargetUnit);
-						Item::LoadItemDataList(_Unit->GetUnitData().GetItems(), (*RIter).BeforeTargetItems);
+						//Item::LoadItemDataList(_Unit->GetUnitData().GetItems(), (*RIter).BeforeTargetItems);
+						_Unit->GetUnitData().LoadItemData((*RIter).BeforeTargetItems);
 					}
 				}
 				for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
@@ -1012,12 +1019,14 @@ void BattleLevel::TimeStoneUpdate(float _DeltaTime)
 					{
 						_Unit->SetUnitData((*RIter).BeforeSubjectUnit);
 						_Unit->SetMapPos((*RIter).BeforeSubjectUnitPos);
-						Item::LoadItemDataList(_Unit->GetUnitData().GetItems(), (*RIter).BeforeSubjectItems);
+						//Item::LoadItemDataList(_Unit->GetUnitData().GetItems(), (*RIter).BeforeSubjectItems);
+						_Unit->GetUnitData().LoadItemData((*RIter).BeforeSubjectItems);
 					}
 					else if ((*RIter).BeforeTargetUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
 					{
 						_Unit->SetUnitData((*RIter).BeforeTargetUnit);
-						Item::LoadItemDataList(_Unit->GetUnitData().GetItems(), (*RIter).BeforeTargetItems);
+						//Item::LoadItemDataList(_Unit->GetUnitData().GetItems(), (*RIter).BeforeTargetItems);
+						_Unit->GetUnitData().LoadItemData((*RIter).BeforeTargetItems);
 					}
 				}
 				break;
@@ -1154,6 +1163,7 @@ void BattleLevel::TimeStoneUpdate(float _DeltaTime)
 						_Unit->SetUnitData((*RIter).AfterSubjectUnit);
 						_Unit->SetMapPos((*RIter).AfterSubjectUnitPos);
 						Item::LoadItemDataList(_Unit->GetUnitData().GetItems(), (*RIter).AfterSubjectItems);
+
 					}
 					else if ((*RIter).AfterTargetUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
 					{

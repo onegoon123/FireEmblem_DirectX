@@ -102,10 +102,7 @@ private:
 	std::shared_ptr <UIWindow> UI_Window = nullptr;
 
 	const float MoveSpeed = 10;
-	float MoveTimer = 0;
 	int MoveIndex = 0;
-	float4 MoveStartPos = float4::Zero;
-	float4 MoveEndPos = float4::Zero;
 
 	int2 BeforePos = int2::Zero;
 

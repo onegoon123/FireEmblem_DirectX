@@ -6,7 +6,6 @@ struct OutPut
     float4 Pos : SV_Position;
     float4 UV : TEXCOORD;
 };
-
 cbuffer EffectData : register(b0)
 {
     float4 LerpColor;
@@ -41,6 +40,9 @@ float4 Texture_PS(OutPut _Value) : SV_Target0
             for (int i = -6; i < 6; i++)
             {
                 uv.xy = t.xy + float2(0, tv * i);
+                
+                float2 AtlasUV;
+                    
                 Out += Weight[6 + i] * DiffuseTex.Sample(CLAMPSAMPLER, uv.xy);;
             }
             Out /= Total;

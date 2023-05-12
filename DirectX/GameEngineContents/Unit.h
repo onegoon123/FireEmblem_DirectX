@@ -170,6 +170,8 @@ public:
 		return CurWeapon;
 	}
 
+	void LoadItemData(std::list<Item>& _Data);
+
 	int GetAttackPoint() const;
 	int GetAttackPoint(BattleClass _TargetClass) const;
 	int GetAttackPoint(const class Unit& _Other) const;

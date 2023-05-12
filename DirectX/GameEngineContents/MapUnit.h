@@ -29,6 +29,10 @@ public:
 		return IsMove;
 	}
 
+	void SetBeforeMapPos()
+	{
+		BeforeMapPos = MapPos;
+	}
 	int2 GetBeforeMapPos()
 	{
 		return BeforeMapPos;
@@ -37,10 +41,13 @@ public:
 
 protected:
 	void Update(float _DeltaTime) override;
+	float MoveSpeed = 15.0f;
+
+	virtual void SetMoveDir(int2 _Dir) {}
+
 private:
 	int2 MapPos = { 0 };
 	int2 BeforeMapPos = { 0 };
-	const float MoveSpeed = 15.0f;
 	bool IsMove = false;
 	float MoveTimer = 0;
 	float4 StartPos;
