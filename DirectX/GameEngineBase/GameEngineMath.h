@@ -11,8 +11,7 @@
 #include <d3d11_4.h>
 #include <d3dcompiler.h>
 #include <DirectXPackedVector.h>
-
-
+#include <DirectXCollision.h>
 
 
 
@@ -551,11 +550,11 @@ public:
 
 };
 
-class CollisionData
+class CollisionDataAPI
 {
 public:
 	float4 Position;
-	float4 Scale; // x만 원의 반지름으로 보겠습니다.
+	float4 Scale; // x만 원의 반지름
 
 	float Left() const
 	{
