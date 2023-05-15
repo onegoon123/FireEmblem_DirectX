@@ -48,15 +48,7 @@ void BattleLevel::Start()
 	MainCursor = CreateActor<MapCursor>();
 	MainCursor->SetMapPos({ 0,0 });
 
-	std::shared_ptr<BattleUnit> NewActor = CreateActor<BattleUnit>();
-	NewActor->SetUnitCode(UnitIdentityCode::Lyn);
-	NewActor->SetMapPos({ 4, 5 });
-	NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
-	NewActor->NewItem(ItemCode::IronSword);
-	NewActor->NewItem(ItemCode::KillingSword);
-	NewActor->NewItem(ItemCode::Vulnerary);
-	NewActor->NewItem(ItemCode::Vulnerary);
-	PlayerUnits.push_back(NewActor);
+
 
 	//NewActor = CreateActor<BattleUnit>();
 	//NewActor->SetUnitCode(UnitIdentityCode::Dorcas);
@@ -73,17 +65,29 @@ void BattleLevel::Start()
 	//NewActor->NewItem(ItemCode::KillerLance);
 	//PlayerUnits.push_back(NewActor);
 
-	NewActor = CreateActor<BattleUnit>();
-	NewActor->SetUnitCode(UnitIdentityCode::Kent);
-	NewActor->SetMapPos({ 3, 5 });
+	//NewActor = CreateActor<BattleUnit>();
+	//NewActor->SetUnitCode(UnitIdentityCode::Kent);
+	//NewActor->SetMapPos({ 3, 5 });
+	//NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
+	//NewActor->NewItem(ItemCode::KillerLance);
+	//PlayerUnits.push_back(NewActor);
+
+	std::shared_ptr<BattleUnit> NewActor = CreateActor<BattleUnit>();
+	NewActor->SetUnitCode(UnitIdentityCode::Lyn);
+	NewActor->SetMapPos({ 4, 5 });
 	NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
-	NewActor->NewItem(ItemCode::KillerLance);
+	NewActor->NewItem(ItemCode::IronSword);
+	NewActor->NewItem(ItemCode::KillingSword);
+	NewActor->NewItem(ItemCode::Vulnerary);
+	NewActor->NewItem(ItemCode::Vulnerary);
+	NewActor->GetUnitData().LevelUp(99);
 	PlayerUnits.push_back(NewActor);
 
 	NewActor = CreateActor<BattleUnit>();
 	NewActor->SetUnitCode(UnitIdentityCode::Brigand);
 	NewActor->NewItem(ItemCode::IronAxe);
 	NewActor->SetMapPos({ 5, 5 });
+	//NewActor->GetUnitData().LevelUp(99);
 	NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
 	EnemyUnits.push_back(NewActor);
 

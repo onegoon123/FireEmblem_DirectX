@@ -2,8 +2,18 @@
 #include <GameEngineCore/GameEngineActor.h>
 #include "ContentsEnum.h"
 
-// 설명 :
 class SpriteRenderer;
+struct BattleAnimation
+{
+	std::shared_ptr<SpriteRenderer> Renderer = nullptr;
+	float AttackTime = 0.0f;
+	float AttackEffectTime = 0.0f;
+	float CriticalTime = 0.0f;
+	float CriticalEffectTime = 0.0f;
+	float DodgeTime = 0.0f;
+};
+
+// 설명 :
 class BattleUnit;
 class BattleAnimationUnit : public GameEngineActor
 {
@@ -21,15 +31,14 @@ public:
 	void SetAnimation(std::shared_ptr<BattleUnit> _Unit);
 	void SetAnimation(BattleClass _ClassValue);
 
-	void SetLeft();
-	void SetRight();
-
 	void SetAttack();
+	void SetCritical();
+	void SetDodge();
 
-	float GetAttackTime() { return AttackTime; }
-	float GetAttackEffectTime() { return AttackEffectTime; }
-	float GetCriticalTime() { return CriticalTime; }
-	float GetCriticalEffectTime() { return CriticalEffectTime; }
+	float GetAttackTime() { return CurAnimation.AttackTime; }
+	float GetAttackEffectTime() { return CurAnimation.AttackEffectTime; }
+	float GetCriticalTime() { return CurAnimation.CriticalTime; }
+	float GetCriticalEffectTime() { return CurAnimation.CriticalEffectTime; }
 
 protected:
 	void Update(float _DeltaTime) override;
@@ -37,13 +46,9 @@ protected:
 private:
 	BattleClass ClassValue = BattleClass::Lord;
 
-	std::map<BattleClass, std::shared_ptr<SpriteRenderer>> Animations;
-	std::shared_ptr<SpriteRenderer> CurAnimation;
-	float AttackTime = 0.0f;
-	float AttackEffectTime = 0.0f;
-	float CriticalTime = 0.0f;
-	float CriticalEffectTime = 0.0f;
-	float DodgeTime = 0.0f;
-	std::shared_ptr<SpriteRenderer> CreateAnimation(BattleClass _ClassValue);
+	BattleAnimation CurAnimation;
+	std::map<BattleClass, BattleAnimation> Animations;
+
+	BattleAnimation CreateAnimation(BattleClass _ClassValue);
 };
 

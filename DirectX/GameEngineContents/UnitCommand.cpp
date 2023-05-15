@@ -123,7 +123,7 @@ AttackCommand UnitCommand::AttackCalculation(Unit& _SubjectUnit, Unit& _TargetUn
 	int CriticalPercentage = _SubjectUnit.GetCriticalPoint() - _TargetUnit.GetCriticalDodgePoint();
 
 	NewAttack.IsHit = FERandom::RandomInt() < HitPercentage;
-	NewAttack.IsCritical = FERandom::RandomInt() < CriticalPercentage;
+	NewAttack.IsCritical = FERandom::RandomInt() < CriticalPercentage && NewAttack.IsHit;
 
 	// 공격력 계산
 	int Damage = _SubjectUnit.GetAttackPoint(_TargetUnit.GetClassValue()) + TriangleDamage;	// 상성에 따른 대미지 적용

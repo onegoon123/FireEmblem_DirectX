@@ -46,8 +46,9 @@ void BattleAnimationLevel::Start()
 	TerrainRight->SetWorldScale({ -480, 160 });
 	TerrainRight->GetTransform()->SetWorldPosition({ 240, -112 });
 
-	UnitLeft = CreateActor<BattleAnimationUnit>();
-	UnitRight = CreateActor<BattleAnimationUnit>();
+	LeftUnit = CreateActor<BattleAnimationUnit>();
+	LeftUnit->GetTransform()->SetLocalNegativeScaleX();
+	RightUnit = CreateActor<BattleAnimationUnit>();
 
 	UIRender = NewActor->CreateComponent<SpriteRenderer>();
 	UIRender->SetTexture("BattleUI.png");
@@ -67,25 +68,25 @@ void BattleAnimationLevel::Update(float _DeltaTime)
 	if (10.0f < Timer)
 	{
 		return;
-		
+
 	}
 }
 
 void BattleAnimationLevel::LevelChangeStart()
 {
-	IsPlayerSubject = SubjectUnit->GetIsPlayer();
-	if (true == IsPlayerSubject)
+	if (SubjectUnit->GetIsPlayer())
 	{
-		UnitLeft->SetAnimation(SubjectUnit->GetUnitData().GetClassValue());
-		UnitRight->SetAnimation(TargetUnit->GetUnitData().GetClassValue());
+		SubjectAnimation = LeftUnit;
+		TargetAnimation = RightUnit;
 	}
 	else
 	{
-		UnitLeft->SetAnimation(TargetUnit->GetUnitData().GetClassValue());
-		UnitRight->SetAnimation(SubjectUnit->GetUnitData().GetClassValue());
+		SubjectAnimation = RightUnit;
+		TargetAnimation = LeftUnit;
 	}
-	UnitLeft->SetLeft();
-	UnitRight->SetRight();
+
+	SubjectAnimation->SetAnimation(SubjectUnit->GetUnitData().GetClassValue());
+	TargetAnimation->SetAnimation(TargetUnit->GetUnitData().GetClassValue());
 
 	Test();
 }
@@ -97,32 +98,53 @@ void BattleAnimationLevel::Test()
 		TimeEvent.AddEvent(0.5f, std::bind(&BattleAnimationLevel::End, this));
 		return;
 	}
-	if (true == (*BattleIter).SubjectAttack)
+
+	AttackCommand& Command = (*BattleIter);
+
+	if (Command.IsCritical)
 	{
-		if (true == IsPlayerSubject)
+		if (true == (*BattleIter).SubjectAttack)
 		{
-			UnitLeft->SetAttack();
-			TimeEvent.AddEvent(UnitLeft->GetAttackTime(), std::bind(&BattleAnimationLevel::Test, this));
+			SubjectAnimation->SetCritical();
+			float time = SubjectAnimation->GetCriticalTime();
+			TimeEvent.AddEvent(SubjectAnimation->GetCriticalTime(), std::bind(&BattleAnimationLevel::Test, this));
 		}
 		else
 		{
-			UnitRight->SetAttack();
-			TimeEvent.AddEvent(UnitRight->GetAttackTime(), std::bind(&BattleAnimationLevel::Test, this));
+			TargetAnimation->SetCritical();
+			TimeEvent.AddEvent(TargetAnimation->GetCriticalTime(), std::bind(&BattleAnimationLevel::Test, this));
+		}
+	}
+	else if (Command.IsHit)
+	{
+		if (true == (*BattleIter).SubjectAttack)
+		{
+			SubjectAnimation->SetAttack();
+			TimeEvent.AddEvent(SubjectAnimation->GetAttackTime(), std::bind(&BattleAnimationLevel::Test, this));
+		}
+		else
+		{
+			TargetAnimation->SetAttack();
+			TimeEvent.AddEvent(TargetAnimation->GetAttackTime(), std::bind(&BattleAnimationLevel::Test, this));
 		}
 	}
 	else
 	{
-		if (true == IsPlayerSubject)
+		if (true == (*BattleIter).SubjectAttack)
 		{
-			UnitRight->SetAttack();
-			TimeEvent.AddEvent(UnitRight->GetAttackTime(), std::bind(&BattleAnimationLevel::Test, this));
+			SubjectAnimation->SetAttack();
+			TimeEvent.AddEvent(SubjectAnimation->GetAttackTime(), std::bind(&BattleAnimationLevel::Test, this));
+			TimeEvent.AddEvent(SubjectAnimation->GetAttackEffectTime(), std::bind(&BattleAnimationUnit::SetDodge, TargetAnimation));
 		}
 		else
 		{
-			UnitLeft->SetAttack();
-			TimeEvent.AddEvent(UnitLeft->GetAttackTime(), std::bind(&BattleAnimationLevel::Test, this));
+			TargetAnimation->SetAttack();
+			SubjectAnimation->SetDodge();
+			TimeEvent.AddEvent(TargetAnimation->GetAttackTime(), std::bind(&BattleAnimationLevel::Test, this));
+			TimeEvent.AddEvent(TargetAnimation->GetAttackEffectTime(), std::bind(&BattleAnimationUnit::SetDodge, SubjectAnimation));
 		}
 	}
+	
 	BattleIter++;
 }
 

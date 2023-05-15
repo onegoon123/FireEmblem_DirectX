@@ -35,12 +35,11 @@ private:
 	std::shared_ptr<SpriteRenderer> BackgroundRender;
 	std::shared_ptr<SpriteRenderer> TerrainLeft;
 	std::shared_ptr<SpriteRenderer> TerrainRight;
-	std::shared_ptr<BattleAnimationUnit> UnitLeft;
-	std::shared_ptr<BattleAnimationUnit> UnitRight;
+	std::shared_ptr<BattleAnimationUnit> SubjectAnimation;
+	std::shared_ptr<BattleAnimationUnit> TargetAnimation;
+	std::shared_ptr<BattleAnimationUnit> LeftUnit;
+	std::shared_ptr<BattleAnimationUnit> RightUnit;
 	std::shared_ptr<SpriteRenderer> UIRender;
-
-	bool IsPlayerSubject = true;
-	
 
 	void Test();
 	void End();

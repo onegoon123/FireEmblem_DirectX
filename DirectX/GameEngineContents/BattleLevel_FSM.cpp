@@ -712,6 +712,7 @@ void BattleLevel::EnemyBattleStart()
 	if (nullptr != TargetUnit)
 	{
 		std::list<AttackCommand> AttackDetail = UnitCommand::Attack(SelectUnit, TargetUnit);
+		BattleAnimationLevel::SetBattleData(SelectUnit, TargetUnit, AttackDetail);
 		SelectUnit->SetUnitData(Unit(AttackDetail.back().SubjectUnit));
 		TargetUnit->SetUnitData(Unit(AttackDetail.back().TargetUnit));
 	}
