@@ -17,6 +17,7 @@
 #include "UICursor.h"
 #include "AttackUI.h"
 #include "ItemUI.h"
+
 BattleLevel::BattleLevel()
 {
 	StateUpdate = std::bind(&BattleLevel::PlayerPhaseUpdate, this, std::placeholders::_1);
@@ -82,7 +83,7 @@ void BattleLevel::Start()
 	NewActor = CreateActor<BattleUnit>();
 	NewActor->SetUnitCode(UnitIdentityCode::Brigand);
 	NewActor->NewItem(ItemCode::IronAxe);
-	NewActor->SetMapPos({ 8, 5 });
+	NewActor->SetMapPos({ 5, 5 });
 	NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
 	EnemyUnits.push_back(NewActor);
 

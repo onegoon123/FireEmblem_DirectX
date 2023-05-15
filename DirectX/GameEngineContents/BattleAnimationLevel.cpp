@@ -4,9 +4,11 @@
 #include <GameEngineCore/GameEngineCamera.h>
 #include "BattleAnimationLevel.h"
 #include "SpriteRenderer.h"
+#include "BattleAnimationUnit.h"
 std::shared_ptr<BattleUnit> BattleAnimationLevel::SubjectUnit = nullptr;
 std::shared_ptr<BattleUnit> BattleAnimationLevel::TargetUnit = nullptr;
 std::list<AttackCommand> BattleAnimationLevel::BattleData = std::list<AttackCommand>();
+std::list<AttackCommand>::iterator BattleAnimationLevel::BattleIter = std::list<AttackCommand>::iterator();
 
 BattleAnimationLevel::BattleAnimationLevel()
 {
@@ -21,6 +23,7 @@ void BattleAnimationLevel::SetBattleData(std::shared_ptr<BattleUnit> _SubjectUni
 	SubjectUnit = _SubjectUnit;
 	TargetUnit = _TargetUnit;
 	BattleData = _Data;
+	BattleIter = BattleData.begin();
 }
 
 static float Timer = 0;
@@ -43,15 +46,8 @@ void BattleAnimationLevel::Start()
 	TerrainRight->SetWorldScale({ -480, 160 });
 	TerrainRight->GetTransform()->SetWorldPosition({ 240, -112 });
 
-	UnitLeft = NewActor->CreateComponent<SpriteRenderer>();
-	UnitLeft->SetTexture("TestBattleLyn.png");
-	UnitLeft->SetWorldScale({ -768, 512 });
-	UnitLeft->GetTransform()->SetWorldPosition({ 0, 64 });
-
-	UnitRight = NewActor->CreateComponent<SpriteRenderer>();
-	UnitRight->SetTexture("TestBattleBrigand.png");
-	UnitRight->SetWorldScale({ -768, 512 });
-	UnitRight->GetTransform()->SetWorldPosition({ 0, 64 });
+	UnitLeft = CreateActor<BattleAnimationUnit>();
+	UnitRight = CreateActor<BattleAnimationUnit>();
 
 	UIRender = NewActor->CreateComponent<SpriteRenderer>();
 	UIRender->SetTexture("BattleUI.png");
@@ -60,19 +56,77 @@ void BattleAnimationLevel::Start()
 
 void BattleAnimationLevel::Update(float _DeltaTime)
 {
+	TimeEvent.Update(_DeltaTime);
+
 	if (GameEngineInput::IsDown("ButtonB") || GameEngineInput::IsDown("Start") || GameEngineInput::IsUp("RightClick"))
 	{
 		GameEngineCore::ChangeLevel("BattleLevel");
 		return;
 	}
 	Timer += _DeltaTime;
-	if (1.5f < Timer)
+	if (10.0f < Timer)
 	{
-		GameEngineCore::ChangeLevel("BattleLevel");
+		return;
+		
 	}
 }
 
 void BattleAnimationLevel::LevelChangeStart()
 {
-	Timer = 0;
+	IsPlayerSubject = SubjectUnit->GetIsPlayer();
+	if (true == IsPlayerSubject)
+	{
+		UnitLeft->SetAnimation(SubjectUnit->GetUnitData().GetClassValue());
+		UnitRight->SetAnimation(TargetUnit->GetUnitData().GetClassValue());
+	}
+	else
+	{
+		UnitLeft->SetAnimation(TargetUnit->GetUnitData().GetClassValue());
+		UnitRight->SetAnimation(SubjectUnit->GetUnitData().GetClassValue());
+	}
+	UnitLeft->SetLeft();
+	UnitRight->SetRight();
+
+	Test();
+}
+
+void BattleAnimationLevel::Test()
+{
+	if (BattleIter == BattleData.end())
+	{
+		TimeEvent.AddEvent(0.5f, std::bind(&BattleAnimationLevel::End, this));
+		return;
+	}
+	if (true == (*BattleIter).SubjectAttack)
+	{
+		if (true == IsPlayerSubject)
+		{
+			UnitLeft->SetAttack();
+			TimeEvent.AddEvent(UnitLeft->GetAttackTime(), std::bind(&BattleAnimationLevel::Test, this));
+		}
+		else
+		{
+			UnitRight->SetAttack();
+			TimeEvent.AddEvent(UnitRight->GetAttackTime(), std::bind(&BattleAnimationLevel::Test, this));
+		}
+	}
+	else
+	{
+		if (true == IsPlayerSubject)
+		{
+			UnitRight->SetAttack();
+			TimeEvent.AddEvent(UnitRight->GetAttackTime(), std::bind(&BattleAnimationLevel::Test, this));
+		}
+		else
+		{
+			UnitLeft->SetAttack();
+			TimeEvent.AddEvent(UnitLeft->GetAttackTime(), std::bind(&BattleAnimationLevel::Test, this));
+		}
+	}
+	BattleIter++;
+}
+
+void BattleAnimationLevel::End()
+{
+	GameEngineCore::ChangeLevel("BattleLevel");
 }

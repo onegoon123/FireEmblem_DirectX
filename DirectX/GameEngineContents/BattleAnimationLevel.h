@@ -1,9 +1,10 @@
 #pragma once
+#include <GameEngineBase/GameEngineTimeEvent.h>
 #include <GameEngineCore/GameEngineLevel.h>
 #include "UnitCommand.h"
-
 // Ό³Έν :
 class SpriteRenderer;
+class BattleAnimationUnit;
 class BattleAnimationLevel : public GameEngineLevel
 {
 public:
@@ -28,13 +29,20 @@ private:
 	static std::shared_ptr<BattleUnit> SubjectUnit;
 	static std::shared_ptr<BattleUnit> TargetUnit;
 	static std::list<AttackCommand> BattleData;
+	static std::list<AttackCommand>::iterator BattleIter;
+	GameEngineTimeEvent TimeEvent;
 
 	std::shared_ptr<SpriteRenderer> BackgroundRender;
 	std::shared_ptr<SpriteRenderer> TerrainLeft;
 	std::shared_ptr<SpriteRenderer> TerrainRight;
-	std::shared_ptr<SpriteRenderer> UnitLeft;
-	std::shared_ptr<SpriteRenderer> UnitRight;
+	std::shared_ptr<BattleAnimationUnit> UnitLeft;
+	std::shared_ptr<BattleAnimationUnit> UnitRight;
 	std::shared_ptr<SpriteRenderer> UIRender;
 
+	bool IsPlayerSubject = true;
+	
+
+	void Test();
+	void End();
 };
 

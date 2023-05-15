@@ -30,7 +30,9 @@ std::list<AttackCommand> UnitCommand::Attack(std::shared_ptr<BattleUnit> _Subjec
 
 	if (nullptr != SubjectUnit.GetCurWeapon())
 	{
-		AttackList.push_back(AttackCalculation(SubjectUnit, TargetUnit));
+		AttackCommand NewAttack = AttackCalculation(SubjectUnit, TargetUnit);
+		NewAttack.SubjectAttack = true;
+		AttackList.push_back(NewAttack);
 		CommandRecord.RandomNum += 2;
 
 		if (true == TargetUnit.GetIsDie())
@@ -47,7 +49,9 @@ std::list<AttackCommand> UnitCommand::Attack(std::shared_ptr<BattleUnit> _Subjec
 
 	if (nullptr != TargetUnit.GetCurWeapon())
 	{
-		AttackList.push_back(AttackCalculation(TargetUnit, SubjectUnit).ChangeOrder());
+		AttackCommand NewAttack = AttackCalculation(TargetUnit, SubjectUnit);
+		NewAttack.ChangeOrder();
+		AttackList.push_back(NewAttack);
 		CommandRecord.RandomNum += 2;
 
 		if (true == SubjectUnit.GetIsDie())
@@ -67,7 +71,9 @@ std::list<AttackCommand> UnitCommand::Attack(std::shared_ptr<BattleUnit> _Subjec
 	{
 		if (nullptr != SubjectUnit.GetCurWeapon())
 		{
-			AttackList.push_back(AttackCalculation(SubjectUnit, TargetUnit));
+			AttackCommand NewAttack = AttackCalculation(SubjectUnit, TargetUnit);
+			NewAttack.SubjectAttack = true;
+			AttackList.push_back(NewAttack);
 			CommandRecord.RandomNum += 2;
 		}
 	}
@@ -75,7 +81,9 @@ std::list<AttackCommand> UnitCommand::Attack(std::shared_ptr<BattleUnit> _Subjec
 	{
 		if (nullptr != TargetUnit.GetCurWeapon())
 		{
-			AttackList.push_back(AttackCalculation(TargetUnit, SubjectUnit).ChangeOrder());
+			AttackCommand NewAttack = AttackCalculation(TargetUnit, SubjectUnit);
+			NewAttack.ChangeOrder();
+			AttackList.push_back(NewAttack);
 			CommandRecord.RandomNum += 2;
 		}
 	}

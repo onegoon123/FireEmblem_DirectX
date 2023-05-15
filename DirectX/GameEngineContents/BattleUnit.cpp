@@ -145,6 +145,7 @@ void BattleUnit::SetUnitCode(UnitIdentityCode _Code)
 		{
 			GameEngineSprite::LoadSheet(Dir.GetPlusFileName(MapSpriteName).GetFullPath(), 3, 6);
 		}
+		
 	}
 
 

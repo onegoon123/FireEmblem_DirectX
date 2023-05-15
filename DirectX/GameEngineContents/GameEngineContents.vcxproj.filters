@@ -99,6 +99,9 @@
     <ClCompile Include="Unit_StatCalculator.cpp">
       <Filter>Battle\Unit</Filter>
     </ClCompile>
+    <ClCompile Include="BattleAnimationUnit.cpp">
+      <Filter>Battle\System\Animation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FECore.h" />
@@ -178,6 +181,9 @@
     </ClInclude>
     <ClInclude Include="ItemUI.h">
       <Filter>Battle\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="BattleAnimationUnit.h">
+      <Filter>Battle\System\Animation</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

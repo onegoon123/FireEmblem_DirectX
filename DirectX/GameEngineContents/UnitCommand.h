@@ -17,6 +17,7 @@ struct AttackCommand
 	Unit TargetUnit = Unit();
 	bool IsCritical = false;
 	bool IsHit = false;
+	bool SubjectAttack = false;
 
 	AttackCommand& ChangeOrder()
 	{

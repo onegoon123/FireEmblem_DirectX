@@ -16,7 +16,7 @@ bool AnimationInfo::IsEnd()
 void AnimationInfo::Reset()
 {
 	CurFrame = 0;
-	CurTime = FrameTime[CurFrame];
+	CurTime = FrameTime[0];
 	IsEndValue = false;
 }
 
@@ -113,6 +113,25 @@ void GameEngineSpriteRenderer::SetScaleToTexture(const std::string_view& _Name)
 	GetTransform()->SetLocalScale(Scale);
 }
 
+void GameEngineSpriteRenderer::SetSprite(const std::string_view& _SpriteName, size_t _Frame/* = 0*/)
+{
+	Sprite = GameEngineSprite::Find(_SpriteName);
+	Frame = _Frame;
+
+	const SpriteInfo& Info = Sprite->GetSpriteInfo(Frame);
+	GetShaderResHelper().SetTexture("DiffuseTex", Info.Texture);
+	AtlasData = Info.CutData;
+}
+
+void GameEngineSpriteRenderer::SetFrame(size_t _Frame)
+{
+	Frame = _Frame;
+
+	const SpriteInfo& Info = Sprite->GetSpriteInfo(Frame);
+	GetShaderResHelper().SetTexture("DiffuseTex", Info.Texture);
+	AtlasData = Info.CutData;
+}
+
 std::shared_ptr<AnimationInfo> GameEngineSpriteRenderer::FindAnimation(const std::string_view& _Name)
 {
 	std::map<std::string, std::shared_ptr<AnimationInfo>>::iterator FindIter = Animations.find(_Name.data());
@@ -146,13 +165,13 @@ std::shared_ptr<AnimationInfo> GameEngineSpriteRenderer::CreateAnimation(const A
 
 	if (0 != _Paramter.FrameIndex.size())
 	{
-		// 프레임 데이터가 들어있을 시
+		// 프레임 인덱스 입력시
 		NewAnimation->FrameIndex = _Paramter.FrameIndex;
 		
 	}
 	else
 	{
-		// 프레임 데이터가 안들어 있을 시
+		// 프레임 인덱스 미 입력시
 
 		// 시작 프레임 지정
 		if (-1 != _Paramter.Start)
@@ -167,6 +186,7 @@ std::shared_ptr<AnimationInfo> GameEngineSpriteRenderer::CreateAnimation(const A
 		}
 		else
 		{
+			// -1 입력시 시작프레임 0
 			NewAnimation->StartFrame = 0;
 		}
 		// 끝 프레임 지정
@@ -182,9 +202,18 @@ std::shared_ptr<AnimationInfo> GameEngineSpriteRenderer::CreateAnimation(const A
 		}
 		else
 		{
+			// -1 입력시 끝프레임은 마지막
 			NewAnimation->EndFrame = Sprite->GetSpriteCount() - 1;
 		}
 
+		if (NewAnimation->EndFrame < NewAnimation->StartFrame)
+		{
+			MsgAssert("애니메이션을 생성할때 End가 Start보다 클 수 없습니다");
+			return nullptr;
+		}
+		NewAnimation->FrameIndex.reserve(NewAnimation->EndFrame - NewAnimation->StartFrame + 1);
+
+		// StartFrame 부터 EndFrame까지 순서대로 FrameIndex에 푸시
 		for (size_t i = NewAnimation->StartFrame; i <= NewAnimation->EndFrame; ++i)
 		{
 			NewAnimation->FrameIndex.push_back(i);
@@ -267,6 +296,5 @@ void GameEngineSpriteRenderer::Render(float _Delta)
 		}
 
 	}
-
 	GameEngineRenderer::Render(_Delta);
 }

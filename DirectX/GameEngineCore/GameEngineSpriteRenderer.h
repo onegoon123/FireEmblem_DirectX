@@ -99,11 +99,13 @@ public:
 		return CurAnimation->CurFrame;
 	}
 
+	void SetSprite(const std::string_view& _SpriteName, size_t _Frame = 0);
+
+	void SetFrame(size_t _Frame);
 
 protected:
-	void Start() override;
-
 	float4 AtlasData;
+
 private:
 	void Render(float _Delta) override;
 
@@ -112,7 +114,12 @@ private:
 	std::shared_ptr<AnimationInfo> CurAnimation;
 
 
+	std::shared_ptr<GameEngineSprite> Sprite = nullptr;
+	size_t Frame = -1;
+
+
 	float ScaleRatio = 1.0f;
 
+	void Start() override;
 };
 
