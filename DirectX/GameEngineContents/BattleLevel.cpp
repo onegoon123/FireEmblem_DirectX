@@ -73,15 +73,18 @@ void BattleLevel::Start()
 	//PlayerUnits.push_back(NewActor);
 
 	std::shared_ptr<BattleUnit> NewActor = CreateActor<BattleUnit>();
-	NewActor->SetUnitCode(UnitIdentityCode::Lyn);
+	NewActor->SetUnitCode(UnitIdentityCode::Kent);
 	NewActor->SetMapPos({ 4, 5 });
 	NewActor->NewItem(ItemCode::IronSword);
+	NewActor->NewItem(ItemCode::IronLance);
 	NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
 	NewActor->GetUnitData().LevelUp(99);
 	PlayerUnits.push_back(NewActor);
 
 	NewActor = CreateActor<BattleUnit>();
 	NewActor->SetUnitCode(UnitIdentityCode::Sain);
+	NewActor->NewItem(ItemCode::IronSword);
+	NewActor->NewItem(ItemCode::IronLance);
 	NewActor->SetMapPos({ 5, 6 });
 	NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
 	NewActor->GetUnitData().LevelUp(99);
@@ -89,7 +92,7 @@ void BattleLevel::Start()
 
 
 	NewActor = CreateActor<BattleUnit>();
-	NewActor->SetUnitCode(UnitIdentityCode::Soldier);
+	NewActor->SetUnitCode(UnitIdentityCode::Brigand);
 	NewActor->NewItem(ItemCode::IronLance);
 	NewActor->SetMapPos({ 5, 5 });
 	///NewActor->GetUnitData().LevelUp(999);
@@ -97,14 +100,14 @@ void BattleLevel::Start()
 	EnemyUnits.push_back(NewActor);
 
 	NewActor = CreateActor<BattleUnit>();
-	NewActor->SetUnitCode(UnitIdentityCode::Soldier);
+	NewActor->SetUnitCode(UnitIdentityCode::Brigand);
 	NewActor->NewItem(ItemCode::IronLance);
 	NewActor->SetMapPos({ 9, 6 });
 	NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
 	EnemyUnits.push_back(NewActor);
 
 	NewActor = CreateActor<BattleUnit>();
-	NewActor->SetUnitCode(UnitIdentityCode::Mercenary);
+	NewActor->SetUnitCode(UnitIdentityCode::Brigand);
 	NewActor->NewItem(ItemCode::KillingSword);
 	NewActor->SetMapPos({ 9, 4 });
 	NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);

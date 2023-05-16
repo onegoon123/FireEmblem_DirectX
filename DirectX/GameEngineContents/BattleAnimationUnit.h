@@ -21,7 +21,7 @@ public:
 	BattleAnimationUnit& operator=(BattleAnimationUnit&& _Other) noexcept = delete;
 
 	void SetAnimation(std::shared_ptr<BattleUnit> _Unit);
-	void SetAnimation(BattleClass _ClassValue);
+	void SetAnimation(UnitIdentityCode _IdentityValue);
 
 	void Attack();
 	void Critical();
@@ -35,14 +35,16 @@ protected:
 	
 private:
 	BattleAnimationLevel* Level = nullptr;
+	std::shared_ptr<BattleUnit> UnitValue = nullptr;
+
 	std::weak_ptr<BattleAnimationUnit> EnemyUnit;
 
-	BattleClass ClassValue = BattleClass::Lord;
+	UnitIdentityCode IdentityValue = UnitIdentityCode::Lyn;
 	std::shared_ptr<SpriteRenderer> CurAnimation;
-	std::map<BattleClass, std::shared_ptr<SpriteRenderer>> Animations;
+	std::map<UnitIdentityCode, std::shared_ptr<SpriteRenderer>> Animations;
 	std::shared_ptr<SpriteRenderer> EffectAnimation = nullptr;
 
-	std::shared_ptr<SpriteRenderer> CreateAnimation(BattleClass _ClassValue);
+	std::shared_ptr<SpriteRenderer> CreateAnimation(UnitIdentityCode _UnitIdentity);
 
 };
 

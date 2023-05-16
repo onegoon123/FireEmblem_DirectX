@@ -5,7 +5,7 @@
 #include "BattleAnimationLevel.h"
 BattleAnimationUnit::BattleAnimationUnit()
 {
-	Animations = std::map<BattleClass, std::shared_ptr<SpriteRenderer>>();
+	Animations = std::map<UnitIdentityCode, std::shared_ptr<SpriteRenderer>>();
 }
 
 BattleAnimationUnit::~BattleAnimationUnit()
@@ -14,12 +14,13 @@ BattleAnimationUnit::~BattleAnimationUnit()
 
 void BattleAnimationUnit::SetAnimation(std::shared_ptr<BattleUnit> _Unit)
 {
-	SetAnimation(_Unit->GetUnitData().GetClassValue());
+	UnitValue = _Unit;
+	SetAnimation(_Unit->GetUnitData().GetIdentityCode());
 }
 
-void BattleAnimationUnit::SetAnimation(BattleClass _ClassValue)
+void BattleAnimationUnit::SetAnimation(UnitIdentityCode _IdentityValue)
 {
-	ClassValue = _ClassValue;
+	IdentityValue = _IdentityValue;
 
 	if (CurAnimation != nullptr)
 	{
@@ -27,14 +28,22 @@ void BattleAnimationUnit::SetAnimation(BattleClass _ClassValue)
 		CurAnimation->Off();
 	}
 
+	if (IdentityValue == UnitIdentityCode::Sain || IdentityValue == UnitIdentityCode::Kent)
+	{
+		if (UnitValue->GetUnitData().GetCurWeapon()->GetWeaponTypeValue() == WeaponType::Sword)
+		{
+ 			IdentityValue = static_cast<UnitIdentityCode>(static_cast<int>(IdentityValue) + 1);
+		}
+	}
+
 	// 클래스 값에 따른 애니메이션을 찾는다
-	std::map<BattleClass, std::shared_ptr<SpriteRenderer>>::iterator AnimationIter;
-	AnimationIter = Animations.find(ClassValue);
+	std::map<UnitIdentityCode, std::shared_ptr<SpriteRenderer>>::iterator AnimationIter;
+	AnimationIter = Animations.find(IdentityValue);
 	if (AnimationIter == Animations.end())
 	{
 		// 해당 애니메이션이 없다면 생성
-		CurAnimation = CreateAnimation(ClassValue);
-		Animations.emplace(std::pair<BattleClass, std::shared_ptr<SpriteRenderer>>(ClassValue, CurAnimation));
+		CurAnimation = CreateAnimation(IdentityValue);
+		Animations.emplace(std::pair<UnitIdentityCode, std::shared_ptr<SpriteRenderer>>(IdentityValue, CurAnimation));
 	}
 	else
 	{
@@ -125,7 +134,7 @@ void BattleAnimationUnit::Update(float _DeltaTime)
 	}
 }
 
-std::shared_ptr<SpriteRenderer> BattleAnimationUnit::CreateAnimation(BattleClass _ClassValue)
+std::shared_ptr<SpriteRenderer> BattleAnimationUnit::CreateAnimation(UnitIdentityCode _UnitIdentity)
 {
 	std::shared_ptr<SpriteRenderer> NewAnim;
 	NewAnim = CreateComponent<SpriteRenderer>();
@@ -151,12 +160,9 @@ std::shared_ptr<SpriteRenderer> BattleAnimationUnit::CreateAnimation(BattleClass
 
 
 
-
-
-
-	switch (_ClassValue)
+	switch (_UnitIdentity)
 	{
-	case BattleClass::Lord:
+	case UnitIdentityCode::Lyn:
 	{
 		if (nullptr == GameEngineSprite::Find("Battle_Lyn.png"))
 		{
@@ -175,24 +181,97 @@ std::shared_ptr<SpriteRenderer> BattleAnimationUnit::CreateAnimation(BattleClass
 		NewAnim->CreateAnimation({ .AnimationName = "Dodge", .SpriteName = "Battle_Lyn.png", .FrameIndex = {51, 0}, .FrameTime = {.6f, 1.0f} });
 		break;
 	}
-	case BattleClass::BladeLord:
-	case BattleClass::Cavalier:
-	case BattleClass::PegasusKnight:
-	case BattleClass::Archer:
-	case BattleClass::Fighter:
-	case BattleClass::Warrior:
-	case BattleClass::Cleric:
-	case BattleClass::Mage:
-	case BattleClass::Nomad:
-	case BattleClass::Thief:
-	case BattleClass::Assassin:
-	case BattleClass::Dancer:
-	case BattleClass::Monk:
-	case BattleClass::Knight:
-	case BattleClass::General:
-	case BattleClass::Soldier:
-	case BattleClass::Mercenary:
-	case BattleClass::Brigand:
+	case UnitIdentityCode::BladeLoadLyn:
+	case UnitIdentityCode::Sain:
+	{
+		if (nullptr == GameEngineSprite::Find("Battle_SainLance.png"))
+		{
+			GameEngineSprite::LoadSheet(Dir.GetPlusFileName("Battle_SainLance.png").GetFullPath(), 5, 7);
+		}
+
+		NewAnim->CreateAnimation({ "Idle", "Battle_SainLance.png", 0, 0 });
+		NewAnim->CreateAnimation({ .AnimationName = "Attack", .SpriteName = "Battle_SainLance.png", .Start = 0, .End = 16, .FrameTime = {.2f, .04f, .04f, .2f, .03f, .03f, .04f, .04f, .04f, .2f, .03f, .04f, .06f , .06f, .06f, .06f, .06f ,.06f, .06f ,.06f, .06f ,.06f, .06f ,.06f, .06f} });
+		NewAnim->SetAnimationStartEvent("Attack", 5, std::bind(&BattleAnimationLevel::HitEvent, Level));
+		NewAnim->SetAnimationStartEvent("Attack", 16, std::bind(&BattleAnimationLevel::TurnEnd, Level));
+		NewAnim->CreateAnimation({ .AnimationName = "Critical", .SpriteName = "Battle_SainLance.png", .Start = 0, .End = 16, .FrameTime = {.2f, .04f, .04f, .2f, .03f, .03f, .04f, .04f, .04f, .2f, .03f, .04f, .06f , .06f, .06f, .06f, .06f ,.06f, .06f ,.06f, .06f ,.06f, .06f ,.06f, .06f} });
+		NewAnim->SetAnimationStartEvent("Critical", 5, std::bind(&BattleAnimationLevel::HitEvent, Level));
+		NewAnim->SetAnimationStartEvent("Critical", 16, std::bind(&BattleAnimationLevel::TurnEnd, Level));
+
+		NewAnim->CreateAnimation({ .AnimationName = "Dodge", .SpriteName = "Battle_SainLance.png", .FrameIndex = {30, 31}, .FrameTime = {.3f, .3f} });
+
+		break;
+	}
+	case UnitIdentityCode::SainSword:
+	{
+		if (nullptr == GameEngineSprite::Find("Battle_SainSword.png"))
+		{
+			GameEngineSprite::LoadSheet(Dir.GetPlusFileName("Battle_SainSword.png").GetFullPath(), 5, 7);
+		}
+
+		NewAnim->CreateAnimation({ "Idle", "Battle_SainSword.png", 0, 0 });
+		NewAnim->CreateAnimation({ .AnimationName = "Attack", .SpriteName = "Battle_SainSword.png", .Start = 0, .End = 16, .FrameTime = {.2f, .04f, .04f, .2f, .03f, .03f, .04f, .04f, .04f, .2f, .03f, .04f, .06f , .06f, .06f, .06f, .06f ,.06f, .06f ,.06f, .06f ,.06f, .06f ,.06f, .06f} });
+		NewAnim->SetAnimationStartEvent("Attack", 5, std::bind(&BattleAnimationLevel::HitEvent, Level));
+		NewAnim->SetAnimationStartEvent("Attack", 16, std::bind(&BattleAnimationLevel::TurnEnd, Level));
+		NewAnim->CreateAnimation({ .AnimationName = "Critical", .SpriteName = "Battle_SainSword.png", .Start = 0, .End = 16, .FrameTime = {.2f, .04f, .04f, .2f, .03f, .03f, .04f, .04f, .04f, .2f, .03f, .04f, .06f , .06f, .06f, .06f, .06f ,.06f, .06f ,.06f, .06f ,.06f, .06f ,.06f, .06f} });
+		NewAnim->SetAnimationStartEvent("Critical", 5, std::bind(&BattleAnimationLevel::HitEvent, Level));
+		NewAnim->SetAnimationStartEvent("Critical", 16, std::bind(&BattleAnimationLevel::TurnEnd, Level));
+
+		NewAnim->CreateAnimation({ .AnimationName = "Dodge", .SpriteName = "Battle_SainSword.png", .FrameIndex = {30, 31}, .FrameTime = {.3f, .3f} });
+
+		break;
+	}
+	case UnitIdentityCode::Kent:
+	{
+		if (nullptr == GameEngineSprite::Find("Battle_KentLance.png"))
+		{
+			GameEngineSprite::LoadSheet(Dir.GetPlusFileName("Battle_KentLance.png").GetFullPath(), 5, 7);
+		}
+
+		NewAnim->CreateAnimation({ "Idle", "Battle_KentLance.png", 0, 0 });
+		NewAnim->CreateAnimation({ .AnimationName = "Attack", .SpriteName = "Battle_KentLance.png", .Start = 0, .End = 16, .FrameTime = {.2f, .04f, .04f, .2f, .03f, .03f, .04f, .04f, .04f, .2f, .03f, .04f, .06f , .06f, .06f, .06f, .06f ,.06f, .06f ,.06f, .06f ,.06f, .06f ,.06f, .06f} });
+		NewAnim->SetAnimationStartEvent("Attack", 5, std::bind(&BattleAnimationLevel::HitEvent, Level));
+		NewAnim->SetAnimationStartEvent("Attack", 16, std::bind(&BattleAnimationLevel::TurnEnd, Level));
+		NewAnim->CreateAnimation({ .AnimationName = "Critical", .SpriteName = "Battle_KentLance.png", .Start = 0, .End = 16, .FrameTime = {.2f, .04f, .04f, .2f, .03f, .03f, .04f, .04f, .04f, .2f, .03f, .04f, .06f , .06f, .06f, .06f, .06f ,.06f, .06f ,.06f, .06f ,.06f, .06f ,.06f, .06f} });
+		NewAnim->SetAnimationStartEvent("Critical", 5, std::bind(&BattleAnimationLevel::HitEvent, Level));
+		NewAnim->SetAnimationStartEvent("Critical", 16, std::bind(&BattleAnimationLevel::TurnEnd, Level));
+
+		NewAnim->CreateAnimation({ .AnimationName = "Dodge", .SpriteName = "Battle_KentLance.png", .FrameIndex = {30, 31}, .FrameTime = {.3f, .3f} });
+
+		break;
+	}
+	case UnitIdentityCode::KentSword:
+	{
+		if (nullptr == GameEngineSprite::Find("Battle_KentSword.png"))
+		{
+			GameEngineSprite::LoadSheet(Dir.GetPlusFileName("Battle_KentSword.png").GetFullPath(), 5, 7);
+		}
+
+		NewAnim->CreateAnimation({ "Idle", "Battle_KentSword.png", 0, 0 });
+		NewAnim->CreateAnimation({ .AnimationName = "Attack", .SpriteName = "Battle_KentSword.png", .Start = 0, .End = 16, .FrameTime = {.2f, .04f, .04f, .2f, .03f, .03f, .04f, .04f, .04f, .2f, .03f, .04f, .06f , .06f, .06f, .06f, .06f ,.06f, .06f ,.06f, .06f ,.06f, .06f ,.06f, .06f} });
+		NewAnim->SetAnimationStartEvent("Attack", 5, std::bind(&BattleAnimationLevel::HitEvent, Level));
+		NewAnim->SetAnimationStartEvent("Attack", 16, std::bind(&BattleAnimationLevel::TurnEnd, Level));
+		NewAnim->CreateAnimation({ .AnimationName = "Critical", .SpriteName = "Battle_KentSword.png", .Start = 0, .End = 16, .FrameTime = {.2f, .04f, .04f, .2f, .03f, .03f, .04f, .04f, .04f, .2f, .03f, .04f, .06f , .06f, .06f, .06f, .06f ,.06f, .06f ,.06f, .06f ,.06f, .06f ,.06f, .06f} });
+		NewAnim->SetAnimationStartEvent("Critical", 5, std::bind(&BattleAnimationLevel::HitEvent, Level));
+		NewAnim->SetAnimationStartEvent("Critical", 16, std::bind(&BattleAnimationLevel::TurnEnd, Level));
+
+		NewAnim->CreateAnimation({ .AnimationName = "Dodge", .SpriteName = "Battle_KentSword.png", .FrameIndex = {30, 31}, .FrameTime = {.3f, .3f} });
+
+		break;
+	}
+	case UnitIdentityCode::Florina:
+	case UnitIdentityCode::Wil:
+	case UnitIdentityCode::Dorcas:
+	case UnitIdentityCode::WarriorDorcas:
+	case UnitIdentityCode::Serra:
+	case UnitIdentityCode::Erk:
+	case UnitIdentityCode::Rath:
+	case UnitIdentityCode::Matthew:
+	case UnitIdentityCode::AssassinMatthew:
+	case UnitIdentityCode::Ninian:
+	case UnitIdentityCode::Lucius:
+	case UnitIdentityCode::Wallace:
+	case UnitIdentityCode::GeneralWallace:
+	case UnitIdentityCode::Brigand:
 	{
 		if (nullptr == GameEngineSprite::Find("Battle_EnemyBrigand.png"))
 		{
@@ -211,12 +290,15 @@ std::shared_ptr<SpriteRenderer> BattleAnimationUnit::CreateAnimation(BattleClass
 		NewAnim->CreateAnimation({ .AnimationName = "Dodge", .SpriteName = "Battle_EnemyBrigand.png", .FrameIndex = {2, 0}, .FrameTime = {.6f, 1.0f} });
 		break;
 	}
+	case UnitIdentityCode::Soldier:
+	case UnitIdentityCode::Mercenary:
+	case UnitIdentityCode::Archer:
+	case UnitIdentityCode::Knight:
+	case UnitIdentityCode::Mage:
 	default:
 		break;
 	}
 
 	return NewAnim;
-
-
 
 }

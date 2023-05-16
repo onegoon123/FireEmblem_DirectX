@@ -70,6 +70,10 @@ public:
 	{
 		return UnitCode;
 	}
+	UnitIdentityCode GetIdentityCode()
+	{
+		return IdentityCode;
+	}
 
 	// 체력 관련
 
@@ -191,6 +195,7 @@ private:
 
 	// 유닛 데이터
 	int UnitCode = -1;
+	UnitIdentityCode IdentityCode;
 	int CurrentHP = 0;
 	Stat UnitStat;
 

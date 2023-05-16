@@ -14,7 +14,7 @@ int Unit::GetRangeStat()
 	int Return = 0;
 	for (std::shared_ptr<Weapon> _Weapon : Weapons)
 	{
-		Return = Return > _Weapon->Range ? Return : _Weapon->Range;
+		Return = Return > _Weapon->GetRange() ? Return : _Weapon->GetRange();
 	}
 	return Return;
 }

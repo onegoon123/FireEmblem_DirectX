@@ -431,7 +431,10 @@ void Weapon::SetWeapon_Lightning()
 
 int Weapon::GetWeaponeTriangle(std::shared_ptr<Weapon> _SubjectWeapon, std::shared_ptr<Weapon> _TargetWeapon)
 {
-
+	if (_SubjectWeapon == nullptr || _TargetWeapon == nullptr)
+	{
+		return 0;
+	}
 	switch (_SubjectWeapon->WeaponTypeValue)
 	{
 	case WeaponType::Sword:

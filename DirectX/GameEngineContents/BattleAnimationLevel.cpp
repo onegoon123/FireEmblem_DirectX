@@ -131,8 +131,8 @@ void BattleAnimationLevel::LevelChangeStart()
 		TargetAnimation = LeftUnit;
 	}
 
-	SubjectAnimation->SetAnimation(SubjectUnit->GetUnitData().GetClassValue());
-	TargetAnimation->SetAnimation(TargetUnit->GetUnitData().GetClassValue());
+	SubjectAnimation->SetAnimation(SubjectUnit);
+	TargetAnimation->SetAnimation(TargetUnit);
 
 	Test();
 }

@@ -53,6 +53,7 @@ void BattleUnit::SetUnitCode(int _Code)
 static int EnemyNum = 13;
 void BattleUnit::SetUnitCode(UnitIdentityCode _Code)
 {
+	UnitData.IdentityCode = _Code;
 	UnitData.UnitCode = static_cast<int>(_Code);
 	UnitData.UnitStat.SetIdentity(_Code);
 	UnitData.CurrentHP = UnitData.UnitStat.MainStatValue.HP;

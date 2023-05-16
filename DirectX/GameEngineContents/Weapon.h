@@ -56,6 +56,54 @@ public:
 	// 해당 클래스가 이 무기를 사용 가능한가?
 	bool IsUseWeapon(BattleClass _Class);
 
+	WeaponType GetWeaponTypeValue()
+	{
+		return WeaponTypeValue;
+	}
+
+	int GetDamage() 
+	{
+		return Damage;
+	}
+
+	int GetHit()
+	{
+		return Hit;
+	}
+
+	int GetCritical()
+	{
+		return Critical;
+	}
+
+	int GetWeight()
+	{
+		return Weight;
+	}
+
+	int GetRange()
+	{
+		return Range;
+	}
+
+	bool GetValidArmour()
+	{
+		return ValidArmour;
+	}
+
+	bool GetValidHorse()
+	{
+		return ValidHorse;
+	}
+
+	bool GetIsReaver()
+	{
+		return IsReaver;
+	}
+
+protected:
+
+private:
 	WeaponType WeaponTypeValue = WeaponType::None;
 
 	int Damage = 0;		// 공격력
@@ -68,10 +116,6 @@ public:
 	bool ValidArmour = false;
 	bool ValidHorse = false;
 	bool IsReaver = false;
-
-protected:
-
-private:
 
 	void SetWeapon_SlimSword();
 	void SetWeapon_IronSword();
