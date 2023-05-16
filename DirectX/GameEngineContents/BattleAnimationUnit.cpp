@@ -90,24 +90,25 @@ void BattleAnimationUnit::Start()
 		GameEngineSprite::LoadSheet(Dir.GetPlusFileName("Effect_Hit.png").GetFullPath(), 3, 9);
 	}
 
+	std::function<void()> SetBright0 = [this] {
+		CurAnimation.Renderer->SetBrightness(0);
+	};
+	std::function<void()> SetBright1 = [this] {
+		CurAnimation.Renderer->SetBrightness(1);
+	};
+
 	EffectAnimation = CreateComponent<SpriteRenderer>();
 	EffectAnimation->GetTransform()->SetLocalScale({ 960,640 });
 	EffectAnimation->GetTransform()->SetLocalNegativeScaleX();
 	EffectAnimation->CreateAnimation({ "Idle", "Effect_Hit.png", 8, 8 });
+
 	EffectAnimation->CreateAnimation({ .AnimationName = "Hit", .SpriteName = "Effect_Hit.png", .Start = 0, .End = 8, .Loop = false, .FrameTime = {.04f, .02f, .02f, .02f, .02f, .02f, .02f, .02f, .02f} });
-	EffectAnimation->SetAnimationStartEvent("Hit", 0, [this] {
-		CurAnimation.Renderer->SetBrightness(1);
-		});
-	EffectAnimation->SetAnimationStartEvent("Hit", 5, [this] {
-		CurAnimation.Renderer->SetBrightness(0);
-		});
+	EffectAnimation->SetAnimationStartEvent("Hit", 0, SetBright1);
+	EffectAnimation->SetAnimationStartEvent("Hit", 5, SetBright0);
+
 	EffectAnimation->CreateAnimation({ .AnimationName = "Critical", .SpriteName = "Effect_Hit.png", .Start = 9, .End = 17, .Loop = false, .FrameTime = {.06f, .04f, .04f, .03f, .03f, .03f, .03f, .03f, .03f} });
-	EffectAnimation->SetAnimationStartEvent("Critical", 9, [this] {
-		CurAnimation.Renderer->SetBrightness(1);
-		});
-	EffectAnimation->SetAnimationStartEvent("Critical", 14, [this] {
-		CurAnimation.Renderer->SetBrightness(0);
-		});
+	EffectAnimation->SetAnimationStartEvent("Critical", 9, SetBright1);
+	EffectAnimation->SetAnimationStartEvent("Critical", 14, SetBright0);
 	EffectAnimation->ChangeAnimation("Idle");
 }
 
@@ -192,6 +193,8 @@ BattleAnimation BattleAnimationUnit::CreateAnimation(BattleClass _ClassValue)
 	case BattleClass::Monk:
 	case BattleClass::Knight:
 	case BattleClass::General:
+	case BattleClass::Soldier:
+	case BattleClass::Mercenary:
 	case BattleClass::Brigand:
 	{
 		if (nullptr == GameEngineSprite::Find("Battle_EnemyBrigand.png"))
@@ -213,8 +216,6 @@ BattleAnimation BattleAnimationUnit::CreateAnimation(BattleClass _ClassValue)
 		NewAnim.AttackEffectTime = 0.78f;
 		break;
 	}
-	case BattleClass::Soldier:
-	case BattleClass::Mercenary:
 	default:
 		break;
 	}

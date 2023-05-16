@@ -50,13 +50,13 @@ void BattleUnit::SetUnitCode(int _Code)
 	SetUnitCode(static_cast<UnitIdentityCode>(_Code));
 }
 
-static int EnemyNum = 0;
+static int EnemyNum = 13;
 void BattleUnit::SetUnitCode(UnitIdentityCode _Code)
 {
 	UnitData.UnitCode = static_cast<int>(_Code);
 	UnitData.UnitStat.SetIdentity(_Code);
 	UnitData.CurrentHP = UnitData.UnitStat.MainStatValue.HP;
-	IsShortWalk = false;
+	bool IsShortWalk = false;
 	switch (_Code)
 	{
 	case UnitIdentityCode::Lyn:
@@ -74,8 +74,18 @@ void BattleUnit::SetUnitCode(UnitIdentityCode _Code)
 		UnitData.IsPlayer = true;
 		break;
 	case UnitIdentityCode::Florina:
+		SetName("플로리나");
+		UnitData.SetName("Florina");
+		MapSpriteName = "Map_Florina.png";
+		UnitData.IsPlayer = true;
 		break;
 	case UnitIdentityCode::Wil:
+		SetName("윌");
+		UnitData.SetName("Wil");
+		MapSpriteName = "Map_Wil.png";
+		IsShortWalk = true;
+		UnitData.IsPlayer = true;
+		break;
 		break;
 	case UnitIdentityCode::Dorcas:
 		SetName("돌카스");
@@ -84,16 +94,41 @@ void BattleUnit::SetUnitCode(UnitIdentityCode _Code)
 		UnitData.IsPlayer = true;
 		break;
 	case UnitIdentityCode::Serra:
+		SetName("세라");
+		UnitData.SetName("Serra");
+		MapSpriteName = "Map_Serra.png";
+		UnitData.IsPlayer = true;
 		break;
 	case UnitIdentityCode::Erk:
+		SetName("에릭");
+		UnitData.SetName("Erk");
+		MapSpriteName = "Map_Erk.png";
+		UnitData.IsPlayer = true;
 		break;
 	case UnitIdentityCode::Rath:
+		SetName("라스");
+		UnitData.SetName("Rath");
+		MapSpriteName = "Map_Rath.png";
+		IsShortWalk = true;
+		UnitData.IsPlayer = true;
 		break;
 	case UnitIdentityCode::Matthew:
+		SetName("메튜");
+		UnitData.SetName("Matthew");
+		MapSpriteName = "Map_Matthew.png";
+		UnitData.IsPlayer = true;
 		break;
 	case UnitIdentityCode::Ninian:
+		SetName("니니안");
+		UnitData.SetName("Ninian");
+		MapSpriteName = "Map_Ninian.png";
+		UnitData.IsPlayer = true;
 		break;
 	case UnitIdentityCode::Lucius:
+		SetName("루시우스");
+		UnitData.SetName("Lucius");
+		MapSpriteName = "Map_Lucius.png";
+		UnitData.IsPlayer = true;
 		break;
 	case UnitIdentityCode::Wallace:
 		SetName("월레스");
@@ -102,7 +137,7 @@ void BattleUnit::SetUnitCode(UnitIdentityCode _Code)
 		UnitData.IsPlayer = true;
 		break;
 	case UnitIdentityCode::Brigand:
-		UnitData.UnitCode += EnemyNum++;
+		UnitData.UnitCode = EnemyNum++;
 		SetName("산적");
 		UnitData.SetName("Enemy");
 		MapSpriteName = "Map_EnemyBrigand.png";
@@ -110,8 +145,19 @@ void BattleUnit::SetUnitCode(UnitIdentityCode _Code)
 		UnitData.IsPlayer = false;
 		break;
 	case UnitIdentityCode::Soldier:
+		UnitData.UnitCode = EnemyNum++;
+		SetName("병사");
+		UnitData.SetName("Enemy");
+		MapSpriteName = "Map_EnemySoldier.png";
+		UnitData.IsPlayer = false;
 		break;
 	case UnitIdentityCode::Mercenary:
+		UnitData.UnitCode = EnemyNum++;
+		SetName("용병");
+		UnitData.SetName("Enemy");
+		MapSpriteName = "Map_EnemyMercenary.png";
+		UnitData.IsPlayer = false;
+		break;
 		break;
 	case UnitIdentityCode::Archer:
 		break;
@@ -153,10 +199,9 @@ void BattleUnit::SetUnitCode(UnitIdentityCode _Code)
 	Renderer->CreateAnimation({ .AnimationName = "Select",.SpriteName = MapSpriteName, .FrameIndex = {3, 4, 5, 4}, .FrameTime = {0.3f, 0.1f, 0.3f, 0.1f} });
 	if (true == IsShortWalk)
 	{
-		Renderer->CreateAnimation({ "Left", MapSpriteName, 6, 8, 0.2f, true, false });
-		Renderer->CreateAnimation({ "Down", MapSpriteName, 9, 11, 0.2f, true, false });
-		Renderer->CreateAnimation({ "Up", MapSpriteName, 12, 14, 0.2f, true, false });
-
+		Renderer->CreateAnimation({ .AnimationName = "Left", .SpriteName = MapSpriteName, .FrameInter = 0.2f, .FrameIndex = {6, 7, 8, 7} });
+		Renderer->CreateAnimation({ .AnimationName = "Down", .SpriteName = MapSpriteName, .FrameInter = 0.2f, .FrameIndex = {9, 10, 11, 10} });
+		Renderer->CreateAnimation({ .AnimationName = "Up", .SpriteName = MapSpriteName, .FrameInter = 0.2f, .FrameIndex = {12, 13, 14, 13} });
 	}
 	else
 	{

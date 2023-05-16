@@ -12,7 +12,7 @@ enum class Diraction
 };
 
 // Ό³Έν :
-class GameEngineSpriteRenderer;
+class SpriteRenderer;
 class ArrowRender : public GameEngineActor
 {
 public:
@@ -33,7 +33,7 @@ public:
 protected:
 	void Start() override;
 private:
-	std::vector <std::vector<std::shared_ptr<GameEngineSpriteRenderer>>> Renders;
+	std::vector <std::vector<std::shared_ptr<SpriteRenderer>>> Renders;
 
 	Diraction DiractionCheck(int2 _BeforePos, int2 _CurPos);
 };

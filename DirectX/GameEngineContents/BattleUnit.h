@@ -99,7 +99,6 @@ protected:
 
 	std::shared_ptr<class SpriteRenderer> Renderer = nullptr;
 	std::string_view MapSpriteName = "";
-	bool IsShortWalk = false;
 private:
 	Unit UnitData;
 
