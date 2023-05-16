@@ -35,7 +35,7 @@ void BattleLevel::Start()
 {
 	// 카메라 세팅
 	GetMainCamera()->SetProjectionType(CameraType::Perspective);
-	GetMainCamera()->GetTransform()->SetWorldPosition({ 448, 288, -554.0f });
+	GetMainCamera()->GetTransform()->SetLocalPosition({ 448, 288, -554.0f });
 	// 맵을 생성
 	MainMap = CreateActor<BattleMap>();
 

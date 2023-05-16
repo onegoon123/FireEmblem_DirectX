@@ -510,12 +510,12 @@ void BattleLevel::BattleUpdate(float _DeltaTime)
 		_Unit->GetRenderer()->SetBlurLevel(CloseUpTimer * 5);
 	}
 	MainMap->GetRenderer()->SetBlurLevel(CloseUpTimer * 5);
-	GetMainCamera()->GetTransform()->SetWorldPosition(float4::LerpClamp(GetMainCamera()->GetTransform()->GetWorldPosition(), TargetUnit->GetTransform()->GetWorldPosition(), _DeltaTime * 5));
+	GetMainCamera()->GetTransform()->SetLocalPosition(float4::LerpClamp(GetMainCamera()->GetTransform()->GetWorldPosition(), TargetUnit->GetTransform()->GetWorldPosition(), _DeltaTime * 5));
 }
 
 void BattleLevel::BattleEnd()
 {
-	GetMainCamera()->GetTransform()->SetWorldPosition({ 448, 288, -554.0f });
+	GetMainCamera()->GetTransform()->SetLocalPosition({ 448, 288, -554.0f });
 	for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
 	{
 		_Unit->GetRenderer()->SetIsBlur(false);
@@ -777,12 +777,12 @@ void BattleLevel::EnemyBattleUpdate(float _DeltaTime)
 		_Unit->GetRenderer()->SetBlurLevel(CloseUpTimer * 5);
 	}
 	MainMap->GetRenderer()->SetBlurLevel(CloseUpTimer * 5);
-	GetMainCamera()->GetTransform()->SetWorldPosition(float4::LerpClamp(GetMainCamera()->GetTransform()->GetWorldPosition(), TargetUnit->GetTransform()->GetWorldPosition(), _DeltaTime * 5));
+	GetMainCamera()->GetTransform()->SetLocalPosition(float4::LerpClamp(GetMainCamera()->GetTransform()->GetWorldPosition(), TargetUnit->GetTransform()->GetWorldPosition(), _DeltaTime * 5));
 }
 
 void BattleLevel::EnemyBattleEnd()
 {
-	GetMainCamera()->GetTransform()->SetWorldPosition({ 448, 288, -554.0f });
+	GetMainCamera()->GetTransform()->SetLocalPosition({ 448, 288, -554.0f });
 	for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
 	{
 		_Unit->GetRenderer()->SetIsBlur(false);

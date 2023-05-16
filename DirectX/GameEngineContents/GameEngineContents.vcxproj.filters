@@ -102,6 +102,9 @@
     <ClCompile Include="BattleAnimationUnit.cpp">
       <Filter>Battle\System\Animation</Filter>
     </ClCompile>
+    <ClCompile Include="TestLevel.cpp">
+      <Filter>Levels</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FECore.h" />
@@ -184,6 +187,9 @@
     </ClInclude>
     <ClInclude Include="BattleAnimationUnit.h">
       <Filter>Battle\System\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="TestLevel.h">
+      <Filter>Levels</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

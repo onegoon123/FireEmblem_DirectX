@@ -106,14 +106,16 @@ BattleAnimation BattleAnimationUnit::CreateAnimation(BattleClass _ClassValue)
 		}
 		NewAnim.Renderer->CreateAnimation({ "Idle", "Battle_Lyn.png", 0, 0 });
 		NewAnim.Renderer->CreateAnimation({ .AnimationName = "Attack", .SpriteName = "Battle_Lyn.png", .Start = 0, .End = 24, .FrameTime = {.3f, .06f, .06f,.3f, .04f, .04f, .2f, .06f, .06f, .25f, .03f, .08f, .08f , .08f, .08f, .08f, .06f ,.06f, .06f ,.06f, .06f ,.06f, .06f ,.06f, .06f} });
+		/*NewAnim.Renderer->CreateAnimation({ .AnimationName = "Critical", .SpriteName = "Battle_Lyn.png",
+			.FrameIndex = {0, 1, 2, 3, 25, 26, 27, 28, 29, 30, 31, 43 , 32,}
+			, .FrameTime = {.5f, .1f, .1f, .1f, .1f, .05f, .1f, .1f, .1f, .1f, .1f, .03f, .1f} });*/
 		NewAnim.Renderer->CreateAnimation({ .AnimationName = "Critical", .SpriteName = "Battle_Lyn.png",
-			.FrameIndex = {0, 1, 2, 3, 25, 26, 27, 28, 29}
-			, .FrameTime = {.5f, .1f, .1f, .1f, .1f, .05f, .1f, .1f, .1f} });
+			.Start = 25, .End = 50, .FrameInter = 0.05f });
 
-		NewAnim.Renderer->CreateAnimation({ .AnimationName = "Dodge", .SpriteName = "Battle_Lyn.png", .FrameIndex = {51, 0}, .FrameTime = {.4f, 1.0f} });
+		NewAnim.Renderer->CreateAnimation({ .AnimationName = "Dodge", .SpriteName = "Battle_Lyn.png", .FrameIndex = {51, 0}, .FrameTime = {.8f, 1.0f} });
 		NewAnim.AttackTime = 2.5f;
 		NewAnim.AttackEffectTime = 1.18f;
-		NewAnim.CriticalTime = 2.5f;
+		NewAnim.CriticalTime = 1.9f;
 		break;
 	}
 	case BattleClass::BladeLord:
@@ -143,7 +145,7 @@ BattleAnimation BattleAnimationUnit::CreateAnimation(BattleClass _ClassValue)
 		NewAnim.Renderer->CreateAnimation({ .AnimationName = "Critical", .SpriteName = "Battle_EnemyBrigand.png",
 			.FrameIndex = {0, 1, 2, 3, 25, 26, 27, 28, 29}
 			, .FrameTime = {.5f, .1f, .1f, .1f, .1f, .05f, .1f, .1f, .1f} });
-		NewAnim.Renderer->CreateAnimation({ .AnimationName = "Dodge", .SpriteName = "Battle_EnemyBrigand.png", .FrameIndex = {2, 0}, .FrameTime = {.4f, 1.0f} });
+		NewAnim.Renderer->CreateAnimation({ .AnimationName = "Dodge", .SpriteName = "Battle_EnemyBrigand.png", .FrameIndex = {2, 0}, .FrameTime = {.8f, 1.0f} });
 		NewAnim.AttackTime = 2.1f;
 		NewAnim.AttackEffectTime = 0.78f;
 		break;

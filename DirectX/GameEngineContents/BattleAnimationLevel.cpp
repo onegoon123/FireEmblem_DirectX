@@ -26,49 +26,52 @@ void BattleAnimationLevel::SetBattleData(std::shared_ptr<BattleUnit> _SubjectUni
 	BattleIter = BattleData.begin();
 }
 
-static float Timer = 0;
 void BattleAnimationLevel::Start()
 {
-	GetMainCamera()->SetProjectionType(CameraType::Orthogonal);
-
+	GetMainCamera()->SetProjectionType(CameraType::Perspective);
+	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -554.0f });
 	std::shared_ptr<GameEngineActor> NewActor = CreateActor<GameEngineActor>();
 	BackgroundRender = NewActor->CreateComponent<SpriteRenderer>();
 	BackgroundRender->SetTexture("BattleBackground_Plains.png");
-	BackgroundRender->SetWorldScale({ 960, 640 });
+	BackgroundRender->SetLocalScale({ 960, 640 });
 
 	TerrainLeft = NewActor->CreateComponent<SpriteRenderer>();
 	TerrainLeft->SetTexture("Plain_Close.png");
-	TerrainLeft->SetWorldScale({ 480, 160 });
-	TerrainLeft->GetTransform()->SetWorldPosition({ -240, -112 });
+	TerrainLeft->SetLocalScale({ 480, 160 });
+	TerrainLeft->GetTransform()->SetLocalPosition({ -240, -112 });
 
 	TerrainRight = NewActor->CreateComponent<SpriteRenderer>();
 	TerrainRight->SetTexture("Plain_Close.png");
-	TerrainRight->SetWorldScale({ -480, 160 });
-	TerrainRight->GetTransform()->SetWorldPosition({ 240, -112 });
+	TerrainRight->SetLocalScale({ -480, 160 });
+	TerrainRight->GetTransform()->SetLocalPosition({ 240, -112 });
 
+	RightUnit = CreateActor<BattleAnimationUnit>();
 	LeftUnit = CreateActor<BattleAnimationUnit>();
 	LeftUnit->GetTransform()->SetLocalNegativeScaleX();
-	RightUnit = CreateActor<BattleAnimationUnit>();
 
 	UIRender = NewActor->CreateComponent<SpriteRenderer>();
 	UIRender->SetTexture("BattleUI.png");
-	UIRender->SetWorldScale({ 1024, 640 });
+	UIRender->SetLocalScale({ 1024, 640 });
 }
 
 void BattleAnimationLevel::Update(float _DeltaTime)
 {
 	TimeEvent.Update(_DeltaTime);
-
+	if (GameEngineInput::IsPress("Right"))
+	{
+		LeftUnit->GetTransform()->AddLocalPosition(float4::Right * 100 * _DeltaTime);
+	}
+	if (GameEngineInput::IsPress("Up"))
+	{
+		LeftUnit->GetTransform()->AddLocalPosition(float4::Forward * 100 * _DeltaTime);
+	}
+	if (GameEngineInput::IsPress("Down"))
+	{
+		LeftUnit->GetTransform()->AddLocalPosition(float4::Back * 100 * _DeltaTime);
+	}
 	if (GameEngineInput::IsDown("ButtonB") || GameEngineInput::IsDown("Start") || GameEngineInput::IsUp("RightClick"))
 	{
 		GameEngineCore::ChangeLevel("BattleLevel");
-		return;
-	}
-	Timer += _DeltaTime;
-	if (10.0f < Timer)
-	{
-		return;
-
 	}
 }
 
@@ -103,7 +106,7 @@ void BattleAnimationLevel::Test()
 
 	if (Command.IsCritical)
 	{
-		if (true == (*BattleIter).SubjectAttack)
+		if (true == Command.SubjectAttack)
 		{
 			SubjectAnimation->SetCritical();
 			float time = SubjectAnimation->GetCriticalTime();
@@ -117,7 +120,7 @@ void BattleAnimationLevel::Test()
 	}
 	else if (Command.IsHit)
 	{
-		if (true == (*BattleIter).SubjectAttack)
+		if (true == Command.SubjectAttack)
 		{
 			SubjectAnimation->SetAttack();
 			TimeEvent.AddEvent(SubjectAnimation->GetAttackTime(), std::bind(&BattleAnimationLevel::Test, this));
@@ -130,7 +133,7 @@ void BattleAnimationLevel::Test()
 	}
 	else
 	{
-		if (true == (*BattleIter).SubjectAttack)
+		if (true == Command.SubjectAttack)
 		{
 			SubjectAnimation->SetAttack();
 			TimeEvent.AddEvent(SubjectAnimation->GetAttackTime(), std::bind(&BattleAnimationLevel::Test, this));
