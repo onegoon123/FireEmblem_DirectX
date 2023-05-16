@@ -5,7 +5,7 @@
 #include "BattleAnimationLevel.h"
 BattleAnimationUnit::BattleAnimationUnit()
 {
-	Animations = std::map<BattleClass, BattleAnimation>();
+	Animations = std::map<BattleClass, std::shared_ptr<SpriteRenderer>>();
 }
 
 BattleAnimationUnit::~BattleAnimationUnit()
@@ -21,43 +21,43 @@ void BattleAnimationUnit::SetAnimation(BattleClass _ClassValue)
 {
 	ClassValue = _ClassValue;
 
-	if (CurAnimation.Renderer != nullptr)
+	if (CurAnimation != nullptr)
 	{
 		// 이전 애니메이션이 있다면 Off
-		CurAnimation.Renderer->Off();
+		CurAnimation->Off();
 	}
 
 	// 클래스 값에 따른 애니메이션을 찾는다
-	std::map<BattleClass, BattleAnimation>::iterator AnimationIter;
+	std::map<BattleClass, std::shared_ptr<SpriteRenderer>>::iterator AnimationIter;
 	AnimationIter = Animations.find(ClassValue);
 	if (AnimationIter == Animations.end())
 	{
 		// 해당 애니메이션이 없다면 생성
 		CurAnimation = CreateAnimation(ClassValue);
-		Animations.emplace(std::pair<BattleClass, BattleAnimation>(ClassValue, CurAnimation));
+		Animations.emplace(std::pair<BattleClass, std::shared_ptr<SpriteRenderer>>(ClassValue, CurAnimation));
 	}
 	else
 	{
 		CurAnimation = AnimationIter->second;
 	}
 
-	CurAnimation.Renderer->On();
-	CurAnimation.Renderer->ChangeAnimation("Idle");
+	CurAnimation->On();
+	CurAnimation->ChangeAnimation("Idle");
 }
 
 void BattleAnimationUnit::Attack()
 {
-	CurAnimation.Renderer->ChangeAnimation("Attack");
+	CurAnimation->ChangeAnimation("Attack");
 }
 
 void BattleAnimationUnit::Critical()
 {
-	CurAnimation.Renderer->ChangeAnimation("Critical");
+	CurAnimation->ChangeAnimation("Critical");
 }
 
 void BattleAnimationUnit::Dodge()
 {
-	CurAnimation.Renderer->ChangeAnimation("Dodge");
+	CurAnimation->ChangeAnimation("Dodge");
 }
 
 void BattleAnimationUnit::Damage()
@@ -91,10 +91,10 @@ void BattleAnimationUnit::Start()
 	}
 
 	std::function<void()> SetBright0 = [this] {
-		CurAnimation.Renderer->SetBrightness(0);
+		CurAnimation->SetBrightness(0);
 	};
 	std::function<void()> SetBright1 = [this] {
-		CurAnimation.Renderer->SetBrightness(1);
+		CurAnimation->SetBrightness(1);
 	};
 
 	EffectAnimation = CreateComponent<SpriteRenderer>();
@@ -114,9 +114,9 @@ void BattleAnimationUnit::Start()
 
 void BattleAnimationUnit::Update(float _DeltaTime)
 {
-	if (true == CurAnimation.Renderer->IsAnimationEnd())
+	if (true == CurAnimation->IsAnimationEnd())
 	{
-		CurAnimation.Renderer->ChangeAnimation("Idle");
+		CurAnimation->ChangeAnimation("Idle");
 	}
 
 	if (true == EffectAnimation->IsAnimationEnd())
@@ -125,12 +125,12 @@ void BattleAnimationUnit::Update(float _DeltaTime)
 	}
 }
 
-BattleAnimation BattleAnimationUnit::CreateAnimation(BattleClass _ClassValue)
+std::shared_ptr<SpriteRenderer> BattleAnimationUnit::CreateAnimation(BattleClass _ClassValue)
 {
-	BattleAnimation NewAnim;
-	NewAnim.Renderer = CreateComponent<SpriteRenderer>();
-	NewAnim.Renderer->GetTransform()->SetLocalScale({ 768, 512 });
-	NewAnim.Renderer->GetTransform()->SetLocalPosition({ 0, 64 });
+	std::shared_ptr<SpriteRenderer> NewAnim;
+	NewAnim = CreateComponent<SpriteRenderer>();
+	NewAnim->GetTransform()->SetLocalScale({ 768, 512 });
+	NewAnim->GetTransform()->SetLocalPosition({ 0, 64 });
 
 	//std::string_view AnimationName = "";
 	//std::string_view SpriteName = "";
@@ -162,20 +162,17 @@ BattleAnimation BattleAnimationUnit::CreateAnimation(BattleClass _ClassValue)
 		{
 			GameEngineSprite::LoadSheet(Dir.GetPlusFileName("Battle_Lyn.png").GetFullPath(), 6, 9);
 		}
-		NewAnim.Renderer->CreateAnimation({ "Idle", "Battle_Lyn.png", 0, 0 });
-		NewAnim.Renderer->CreateAnimation({ .AnimationName = "Attack", .SpriteName = "Battle_Lyn.png", .Start = 0, .End = 24, .FrameTime = {.2f, .04f, .04f, .2f, .03f, .03f, .04f, .04f, .04f, .2f, .03f, .04f, .06f , .06f, .06f, .06f, .06f ,.06f, .06f ,.06f, .06f ,.06f, .06f ,.06f, .06f} });
-		NewAnim.Renderer->SetAnimationStartEvent("Attack", 5, std::bind(&BattleAnimationLevel::HitEvent, Level));
-		NewAnim.Renderer->SetAnimationStartEvent("Attack", 24, std::bind(&BattleAnimationLevel::TurnEnd, Level));
-		NewAnim.Renderer->CreateAnimation({ .AnimationName = "Critical", .SpriteName = "Battle_Lyn.png",
+		NewAnim->CreateAnimation({ "Idle", "Battle_Lyn.png", 0, 0 });
+		NewAnim->CreateAnimation({ .AnimationName = "Attack", .SpriteName = "Battle_Lyn.png", .Start = 0, .End = 24, .FrameTime = {.2f, .04f, .04f, .2f, .03f, .03f, .04f, .04f, .04f, .2f, .03f, .04f, .06f , .06f, .06f, .06f, .06f ,.06f, .06f ,.06f, .06f ,.06f, .06f ,.06f, .06f} });
+		NewAnim->SetAnimationStartEvent("Attack", 5, std::bind(&BattleAnimationLevel::HitEvent, Level));
+		NewAnim->SetAnimationStartEvent("Attack", 24, std::bind(&BattleAnimationLevel::TurnEnd, Level));
+		NewAnim->CreateAnimation({ .AnimationName = "Critical", .SpriteName = "Battle_Lyn.png",
 			.FrameIndex = {0, 1, 2, 3, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 43, 45, 43, 46, 43, 47, 48, 49, 50, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24  }
 			, .FrameTime = {.2f, .06f, .06f, .06f, .24f, .06f, .06f, .06f, .06f, .06f, .06f, .06f, .06f, .06f, .06f, .06f, .06f, .06f, .06f, .06f, .06f,.06f, .24f, .06f,.06f, .06f, .06f, .06f, 1.0f, .06f, .06f, .06f, .06f, .06f, .06f, .06f, .06f, .06f, .06f, .06f, .06f, .06f, .06f, .06f} });
-		NewAnim.Renderer->SetAnimationStartEvent("Critical", 46, std::bind(&BattleAnimationLevel::HitEvent, Level));
-		NewAnim.Renderer->SetAnimationStartEvent("Critical", 24, std::bind(&BattleAnimationLevel::TurnEnd, Level));
+		NewAnim->SetAnimationStartEvent("Critical", 46, std::bind(&BattleAnimationLevel::HitEvent, Level));
+		NewAnim->SetAnimationStartEvent("Critical", 24, std::bind(&BattleAnimationLevel::TurnEnd, Level));
 
-		NewAnim.Renderer->CreateAnimation({ .AnimationName = "Dodge", .SpriteName = "Battle_Lyn.png", .FrameIndex = {51, 0}, .FrameTime = {.6f, 1.0f} });
-		NewAnim.AttackTime = 2.5f;
-		NewAnim.AttackEffectTime = 1.18f;
-		NewAnim.CriticalTime = 1.9f;
+		NewAnim->CreateAnimation({ .AnimationName = "Dodge", .SpriteName = "Battle_Lyn.png", .FrameIndex = {51, 0}, .FrameTime = {.6f, 1.0f} });
 		break;
 	}
 	case BattleClass::BladeLord:
@@ -201,19 +198,17 @@ BattleAnimation BattleAnimationUnit::CreateAnimation(BattleClass _ClassValue)
 		{
 			GameEngineSprite::LoadSheet(Dir.GetPlusFileName("Battle_EnemyBrigand.png").GetFullPath(), 5, 7);
 		}
-		NewAnim.Renderer->CreateAnimation({ "Idle", "Battle_EnemyBrigand.png", 0, 0 });
-		NewAnim.Renderer->CreateAnimation({ .AnimationName = "Attack", .SpriteName = "Battle_EnemyBrigand.png", .Start = 0, .End = 19,
+		NewAnim->CreateAnimation({ "Idle", "Battle_EnemyBrigand.png", 0, 0 });
+		NewAnim->CreateAnimation({ .AnimationName = "Attack", .SpriteName = "Battle_EnemyBrigand.png", .Start = 0, .End = 19,
 			.FrameTime = { .3f, .06f, .06f, .06f, .03f, .06f, .06f, .06f, .06f, .03f, .5f, .06f, .06f, .06f, .06f, .06f, .06f, .06f, .06f, .06f, } });
-		NewAnim.Renderer->SetAnimationStartEvent("Attack", 9, std::bind(&BattleAnimationLevel::HitEvent, Level));
-		NewAnim.Renderer->SetAnimationStartEvent("Attack", 19, std::bind(&BattleAnimationLevel::TurnEnd, Level));
+		NewAnim->SetAnimationStartEvent("Attack", 9, std::bind(&BattleAnimationLevel::HitEvent, Level));
+		NewAnim->SetAnimationStartEvent("Attack", 19, std::bind(&BattleAnimationLevel::TurnEnd, Level));
 		//NewAnim->CreateAnimation({ .AnimationName = "RangeAttack", .SpriteName = "Battle_EnemyBrigand.png", .Start = 0, .End = 19, .FrameTime = {} });
-		NewAnim.Renderer->CreateAnimation({ .AnimationName = "Critical", .SpriteName = "Battle_EnemyBrigand.png", .Start = 0, .End = 19,
+		NewAnim->CreateAnimation({ .AnimationName = "Critical", .SpriteName = "Battle_EnemyBrigand.png", .Start = 0, .End = 19,
 				.FrameTime = { .3f, .06f, .06f, .06f, .03f, .06f, .06f, .06f, .06f, .03f, .5f, .06f, .06f, .06f, .06f, .06f, .06f, .06f, .06f, .06f, } });
-		NewAnim.Renderer->SetAnimationStartEvent("Critical", 9, std::bind(&BattleAnimationLevel::HitEvent, Level));
-		NewAnim.Renderer->SetAnimationStartEvent("Critical", 19, std::bind(&BattleAnimationLevel::TurnEnd, Level));
-		NewAnim.Renderer->CreateAnimation({ .AnimationName = "Dodge", .SpriteName = "Battle_EnemyBrigand.png", .FrameIndex = {2, 0}, .FrameTime = {.6f, 1.0f} });
-		NewAnim.AttackTime = 2.1f;
-		NewAnim.AttackEffectTime = 0.78f;
+		NewAnim->SetAnimationStartEvent("Critical", 9, std::bind(&BattleAnimationLevel::HitEvent, Level));
+		NewAnim->SetAnimationStartEvent("Critical", 19, std::bind(&BattleAnimationLevel::TurnEnd, Level));
+		NewAnim->CreateAnimation({ .AnimationName = "Dodge", .SpriteName = "Battle_EnemyBrigand.png", .FrameIndex = {2, 0}, .FrameTime = {.6f, 1.0f} });
 		break;
 	}
 	default:

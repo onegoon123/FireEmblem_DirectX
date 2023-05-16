@@ -5,15 +5,6 @@
 class SpriteRenderer;
 class BattleUnit;
 class BattleAnimationLevel;
-struct BattleAnimation
-{
-	std::shared_ptr<SpriteRenderer> Renderer = nullptr;
-	float AttackTime = 0.0f;
-	float AttackEffectTime = 0.0f;
-	float CriticalTime = 0.0f;
-	float CriticalEffectTime = 0.0f;
-	float DodgeTime = 0.0f;
-};
 
 // Ό³Έν :
 class BattleAnimationUnit : public GameEngineActor
@@ -38,11 +29,6 @@ public:
 	void Damage();
 	void CriticalDamage();
 
-	float GetAttackTime() { return CurAnimation.AttackTime; }
-	float GetAttackEffectTime() { return CurAnimation.AttackEffectTime; }
-	float GetCriticalTime() { return CurAnimation.CriticalTime; }
-	float GetCriticalEffectTime() { return CurAnimation.CriticalEffectTime; }
-
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -52,11 +38,11 @@ private:
 	std::weak_ptr<BattleAnimationUnit> EnemyUnit;
 
 	BattleClass ClassValue = BattleClass::Lord;
-	BattleAnimation CurAnimation;
-	std::map<BattleClass, BattleAnimation> Animations;
+	std::shared_ptr<SpriteRenderer> CurAnimation;
+	std::map<BattleClass, std::shared_ptr<SpriteRenderer>> Animations;
 	std::shared_ptr<SpriteRenderer> EffectAnimation = nullptr;
 
-	BattleAnimation CreateAnimation(BattleClass _ClassValue);
+	std::shared_ptr<SpriteRenderer> CreateAnimation(BattleClass _ClassValue);
 
 };
 

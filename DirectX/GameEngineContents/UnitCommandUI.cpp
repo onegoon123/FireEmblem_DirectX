@@ -21,7 +21,7 @@ void UnitCommandUI::Setting(BattleLevel* _Level)
 	Cursor = _Level->GetUICursor();
 }
 
-void UnitCommandUI::SetCommand(bool _IsAttackable, bool _IsItem, bool _IsCloseUnit)
+void UnitCommandUI::SetCommand(bool _IsAttackable, bool _IsCloseUnit, bool _IsItem)
 {
 	CommandFunctions.clear();
 	if (true == _IsAttackable)

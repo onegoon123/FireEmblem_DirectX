@@ -403,7 +403,7 @@ void BattleLevel::UnitCommandStart()
 
 	// 커맨드 UI 켜기
 	UI_UnitCommand->On();
-	UI_UnitCommand->SetCommand(IsAttackable, IsItem, IsCloseUnit);
+	UI_UnitCommand->SetCommand(IsAttackable, IsCloseUnit, IsItem);
 	std::shared_ptr<DebugWindow> Window = GameEngineGUI::FindGUIWindowConvert<DebugWindow>("DebugWindow");
 	Window->Text = "";
 	if (true == IsAttackable) 
