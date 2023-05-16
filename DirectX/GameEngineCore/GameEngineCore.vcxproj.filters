@@ -129,6 +129,9 @@
     <ClCompile Include="GameEngineSprite.cpp">
       <Filter>Resources\Texture</Filter>
     </ClCompile>
+    <ClCompile Include="GameEngineCollision.cpp">
+      <Filter>Object\Collision</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngineCore.h" />
@@ -263,6 +266,9 @@
     <ClInclude Include="GameEngineSprite.h">
       <Filter>Resources\Texture</Filter>
     </ClInclude>
+    <ClInclude Include="GameEngineCollision.h">
+      <Filter>Object\Collision</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Resources">
@@ -324,6 +330,9 @@
     </Filter>
     <Filter Include="UI\SubWindow">
       <UniqueIdentifier>{8b0c3fc0-e94b-47fd-bfdc-688f3082b8d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Collision">
+      <UniqueIdentifier>{0ebe6887-62fc-4cb1-bd35-5d90211c9b04}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

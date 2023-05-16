@@ -268,7 +268,7 @@ void GameEngineTransform::WorldDecompose()
 	ColData.OBB.Orientation = TransData.WorldQuaternion.DirectFloat4;
 }
 
-void GameEngineTransform::SetParent(GameEngineTransform* _Parent)
+void GameEngineTransform::SetParent(GameEngineTransform* _Parent, bool _IsParentWorld /*= true*/)
 {
 	if (IsDebug())
 	{
@@ -311,7 +311,10 @@ void GameEngineTransform::SetParent(GameEngineTransform* _Parent)
 
 	if (nullptr != Parent)
 	{
-		TransData.LocalWorldMatrix = TransData.WorldMatrix * Parent->TransData.WorldMatrix.InverseReturn();
+		if (true == _IsParentWorld)
+		{
+			TransData.LocalWorldMatrix = TransData.WorldMatrix * Parent->TransData.WorldMatrix.InverseReturn();
+		}
 
 		LocalDecompose();
 
@@ -527,7 +530,7 @@ void GameEngineTransform::ChildRelease()
 
 		if (nullptr == Trans->Master)
 		{
-			MsgAssert("Master가 nullptr입니다.");
+			MsgAssert("몬가 잘못됨 도라에몽을 부르자.");
 		}
 
 		if (false == Trans->Master->IsDeath())

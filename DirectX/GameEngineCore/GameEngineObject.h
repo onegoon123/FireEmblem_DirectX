@@ -37,7 +37,7 @@ public:
 	}
 
 	template<typename PtrType>
-	std::shared_ptr<PtrType> Shared_This_dynamic_pointer()
+	std::shared_ptr<PtrType> DynamicThis()
 	{
 		return std::dynamic_pointer_cast<PtrType>(std::enable_shared_from_this<GameEngineObject>::shared_from_this());
 	}

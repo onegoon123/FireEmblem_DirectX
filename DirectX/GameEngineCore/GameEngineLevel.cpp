@@ -3,6 +3,7 @@
 #include "GameEngineActor.h"
 #include "GameEngineCamera.h"
 #include "GameEngineGUI.h"
+#include "GameEngineCollision.h"
 
 GameEngineLevel::GameEngineLevel()
 {
@@ -99,31 +100,65 @@ void GameEngineLevel::ActorRender(float _DeltaTime)
 
 void GameEngineLevel::ActorRelease()
 {
-	std::map<int, std::list<std::shared_ptr<GameEngineActor>>>::iterator GroupStartIter = Actors.begin();
-	std::map<int, std::list<std::shared_ptr<GameEngineActor>>>::iterator GroupEndIter = Actors.end();
+	//// 랜더러를 릴리즈 한다.
+	//{
+	//	MainCamera->RenderRelease();
+	//}
 
-	for (; GroupStartIter != GroupEndIter; ++GroupStartIter)
 	{
-		std::list<std::shared_ptr<GameEngineActor>>& ActorList = GroupStartIter->second;
+		std::map<int, std::list<std::shared_ptr<GameEngineCollision>>>::iterator GroupStartIter = Collisions.begin();
+		std::map<int, std::list<std::shared_ptr<GameEngineCollision>>>::iterator GroupEndIter = Collisions.end();
 
-		std::list<std::shared_ptr<GameEngineActor>>::iterator ActorStart = ActorList.begin();
-		std::list<std::shared_ptr<GameEngineActor>>::iterator ActorEnd = ActorList.end();
-
-		for (; ActorStart != ActorEnd; )
+		for (; GroupStartIter != GroupEndIter; ++GroupStartIter)
 		{
-			std::shared_ptr<GameEngineActor> RelaseActor = (*ActorStart);
+			std::list<std::shared_ptr<GameEngineCollision>>& ObjectList = GroupStartIter->second;
 
-			if (nullptr != RelaseActor && false == RelaseActor->IsDeath())
+			std::list<std::shared_ptr<GameEngineCollision>>::iterator ObjectStart = ObjectList.begin();
+			std::list<std::shared_ptr<GameEngineCollision>>::iterator ObjectEnd = ObjectList.end();
+
+			for (; ObjectStart != ObjectEnd; )
 			{
-				RelaseActor->AllRelease();
-				//GameEngineTransform* Transform = RelaseActor->GetTransform();
-				//Transform->AllRelease();
-				++ActorStart;
-				continue;
-			}
+				std::shared_ptr<GameEngineCollision> RelaseObject = (*ObjectStart);
 
-			RelaseActor->Release();
-			ActorStart = ActorList.erase(ActorStart);
+				if (nullptr != RelaseObject && false == RelaseObject->IsDeath())
+				{
+					RelaseObject->AllRelease();
+					++ObjectStart;
+					continue;
+				}
+
+				RelaseObject->Release();
+				ObjectStart = ObjectList.erase(ObjectStart);
+			}
+		}
+	}
+
+
+	{
+		std::map<int, std::list<std::shared_ptr<GameEngineActor>>>::iterator GroupStartIter = Actors.begin();
+		std::map<int, std::list<std::shared_ptr<GameEngineActor>>>::iterator GroupEndIter = Actors.end();
+
+		for (; GroupStartIter != GroupEndIter; ++GroupStartIter)
+		{
+			std::list<std::shared_ptr<GameEngineActor>>& ActorList = GroupStartIter->second;
+
+			std::list<std::shared_ptr<GameEngineActor>>::iterator ActorStart = ActorList.begin();
+			std::list<std::shared_ptr<GameEngineActor>>::iterator ActorEnd = ActorList.end();
+
+			for (; ActorStart != ActorEnd; )
+			{
+				std::shared_ptr<GameEngineActor> RelaseActor = (*ActorStart);
+
+				if (nullptr != RelaseActor && false == RelaseActor->IsDeath())
+				{
+					RelaseActor->AllRelease();
+					++ActorStart;
+					continue;
+				}
+
+				RelaseActor->Release();
+				ActorStart = ActorList.erase(ActorStart);
+			}
 		}
 	}
 
@@ -144,8 +179,12 @@ void GameEngineLevel::ActorInit(std::shared_ptr<GameEngineActor> _Actor, int _Or
 	_Actor->SetOrder(_Order);
 	_Actor->Start();
 
-	// Level이 관리하고 있는 액터를 관리하는 리스트에 들어간다.
-	Actors[_Order].push_back(_Actor);
+	// Actors[_Order].push_back(_Actor);
+}
+
+void GameEngineLevel::PushCollision(std::shared_ptr<GameEngineCollision> _Collision)
+{
+	Collisions[_Collision->GetOrder()].push_back(_Collision);
 }
 
 void GameEngineLevel::LevelChangeStart()

@@ -7,10 +7,13 @@
 // Ό³Έν :
 class GameEngineActor;
 class GameEngineCamera;
+class GameEngineCollision;
 class GameEngineLevel : public GameEngineUpdateObject
 {
+	friend class GameEngineCollision;
 	friend class GameEngineTransform;
 	friend class GameEngineCore;
+	friend class GameEngineActor;
 
 public:
 	GameEngineTimeEvent TimeEvent;
@@ -58,7 +61,7 @@ public:
 
 	std::shared_ptr<GameEngineLevel> GetSharedThis()
 	{
-		return Shared_This_dynamic_pointer<GameEngineLevel>();
+		return DynamicThis<GameEngineLevel>();
 	}
 
 protected:
@@ -75,6 +78,10 @@ private:
 	std::shared_ptr<GameEngineCamera> UICamera;
 
 	std::map<int, std::list<std::shared_ptr<GameEngineActor>>> Actors;
+
+	std::map<int, std::list<std::shared_ptr<GameEngineCollision>>> Collisions;
+
+	void PushCollision(std::shared_ptr<GameEngineCollision> _Collision);
 
 	void ActorInit(std::shared_ptr<GameEngineActor> _Actor, int _Order, GameEngineLevel* _Level);
 

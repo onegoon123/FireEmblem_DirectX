@@ -23,7 +23,7 @@ public:
 		return Order;
 	}
 
-	void SetOrder(int _Order)
+	virtual void SetOrder(int _Order)
 	{
 		Order = _Order;
 	}
