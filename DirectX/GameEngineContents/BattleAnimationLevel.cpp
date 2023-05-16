@@ -28,7 +28,18 @@ void BattleAnimationLevel::SetBattleData(std::shared_ptr<BattleUnit> _SubjectUni
 
 void BattleAnimationLevel::HitEvent()
 {
-	if ((*BattleIter).IsHit)
+	if ((*BattleIter).IsCritical)
+	{
+		if (true == (*BattleIter).SubjectAttack)
+		{
+			TargetAnimation->CriticalDamage();
+		}
+		else
+		{
+			SubjectAnimation->CriticalDamage();
+		}
+	}
+	else if ((*BattleIter).IsHit)
 	{
 		if (true == (*BattleIter).SubjectAttack)
 		{

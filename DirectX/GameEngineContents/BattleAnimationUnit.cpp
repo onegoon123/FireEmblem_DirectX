@@ -65,6 +65,12 @@ void BattleAnimationUnit::Damage()
 	EffectAnimation->ChangeAnimation("Hit");
 }
 
+void BattleAnimationUnit::CriticalDamage()
+{
+	EffectAnimation->ChangeAnimation("Critical");
+}
+
+
 void BattleAnimationUnit::Start()
 {
 	Level = dynamic_cast<BattleAnimationLevel*>(GetLevel());
@@ -85,6 +91,8 @@ void BattleAnimationUnit::Start()
 	}
 
 	EffectAnimation = CreateComponent<SpriteRenderer>();
+	EffectAnimation->GetTransform()->SetLocalScale({ 960,640 });
+	EffectAnimation->GetTransform()->SetLocalNegativeScaleX();
 	EffectAnimation->CreateAnimation({ "Idle", "Effect_Hit.png", 8, 8 });
 	EffectAnimation->CreateAnimation({ .AnimationName = "Hit", .SpriteName = "Effect_Hit.png", .Start = 0, .End = 8, .Loop = false, .FrameTime = {.04f, .02f, .02f, .02f, .02f, .02f, .02f, .02f, .02f} });
 	EffectAnimation->SetAnimationStartEvent("Hit", 0, [this] {
@@ -93,9 +101,14 @@ void BattleAnimationUnit::Start()
 	EffectAnimation->SetAnimationStartEvent("Hit", 5, [this] {
 		CurAnimation.Renderer->SetBrightness(0);
 		});
+	EffectAnimation->CreateAnimation({ .AnimationName = "Critical", .SpriteName = "Effect_Hit.png", .Start = 9, .End = 17, .Loop = false, .FrameTime = {.06f, .04f, .04f, .03f, .03f, .03f, .03f, .03f, .03f} });
+	EffectAnimation->SetAnimationStartEvent("Critical", 9, [this] {
+		CurAnimation.Renderer->SetBrightness(1);
+		});
+	EffectAnimation->SetAnimationStartEvent("Critical", 14, [this] {
+		CurAnimation.Renderer->SetBrightness(0);
+		});
 	EffectAnimation->ChangeAnimation("Idle");
-	EffectAnimation->GetTransform()->SetLocalScale({ 960,640 });
-	EffectAnimation->GetTransform()->SetLocalNegativeScaleX();
 }
 
 void BattleAnimationUnit::Update(float _DeltaTime)
@@ -158,7 +171,7 @@ BattleAnimation BattleAnimationUnit::CreateAnimation(BattleClass _ClassValue)
 		NewAnim.Renderer->SetAnimationStartEvent("Critical", 46, std::bind(&BattleAnimationLevel::HitEvent, Level));
 		NewAnim.Renderer->SetAnimationStartEvent("Critical", 24, std::bind(&BattleAnimationLevel::TurnEnd, Level));
 
-		NewAnim.Renderer->CreateAnimation({ .AnimationName = "Dodge", .SpriteName = "Battle_Lyn.png", .FrameIndex = {51, 0}, .FrameTime = {.8f, 1.0f} });
+		NewAnim.Renderer->CreateAnimation({ .AnimationName = "Dodge", .SpriteName = "Battle_Lyn.png", .FrameIndex = {51, 0}, .FrameTime = {.6f, 1.0f} });
 		NewAnim.AttackTime = 2.5f;
 		NewAnim.AttackEffectTime = 1.18f;
 		NewAnim.CriticalTime = 1.9f;
@@ -191,10 +204,11 @@ BattleAnimation BattleAnimationUnit::CreateAnimation(BattleClass _ClassValue)
 		NewAnim.Renderer->SetAnimationStartEvent("Attack", 9, std::bind(&BattleAnimationLevel::HitEvent, Level));
 		NewAnim.Renderer->SetAnimationStartEvent("Attack", 19, std::bind(&BattleAnimationLevel::TurnEnd, Level));
 		//NewAnim->CreateAnimation({ .AnimationName = "RangeAttack", .SpriteName = "Battle_EnemyBrigand.png", .Start = 0, .End = 19, .FrameTime = {} });
-		NewAnim.Renderer->CreateAnimation({ .AnimationName = "Critical", .SpriteName = "Battle_EnemyBrigand.png",
-			.FrameIndex = {0, 1, 2, 3, 25, 26, 27, 28, 29}
-			, .FrameTime = {.5f, .1f, .1f, .1f, .1f, .05f, .1f, .1f, .1f} });
-		NewAnim.Renderer->CreateAnimation({ .AnimationName = "Dodge", .SpriteName = "Battle_EnemyBrigand.png", .FrameIndex = {2, 0}, .FrameTime = {.8f, 1.0f} });
+		NewAnim.Renderer->CreateAnimation({ .AnimationName = "Critical", .SpriteName = "Battle_EnemyBrigand.png", .Start = 0, .End = 19,
+				.FrameTime = { .3f, .06f, .06f, .06f, .03f, .06f, .06f, .06f, .06f, .03f, .5f, .06f, .06f, .06f, .06f, .06f, .06f, .06f, .06f, .06f, } });
+		NewAnim.Renderer->SetAnimationStartEvent("Critical", 9, std::bind(&BattleAnimationLevel::HitEvent, Level));
+		NewAnim.Renderer->SetAnimationStartEvent("Critical", 19, std::bind(&BattleAnimationLevel::TurnEnd, Level));
+		NewAnim.Renderer->CreateAnimation({ .AnimationName = "Dodge", .SpriteName = "Battle_EnemyBrigand.png", .FrameIndex = {2, 0}, .FrameTime = {.6f, 1.0f} });
 		NewAnim.AttackTime = 2.1f;
 		NewAnim.AttackEffectTime = 0.78f;
 		break;

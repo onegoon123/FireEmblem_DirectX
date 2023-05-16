@@ -36,6 +36,7 @@ public:
 	void Critical();
 	void Dodge();
 	void Damage();
+	void CriticalDamage();
 
 	float GetAttackTime() { return CurAnimation.AttackTime; }
 	float GetAttackEffectTime() { return CurAnimation.AttackEffectTime; }

@@ -76,18 +76,18 @@ void BattleLevel::Start()
 	NewActor->SetUnitCode(UnitIdentityCode::Lyn);
 	NewActor->SetMapPos({ 4, 5 });
 	NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
-	NewActor->NewItem(ItemCode::KillingSword);
 	NewActor->NewItem(ItemCode::IronSword);
+	NewActor->NewItem(ItemCode::KillingSword);
 	NewActor->NewItem(ItemCode::Vulnerary);
 	NewActor->NewItem(ItemCode::Vulnerary);
-	NewActor->GetUnitData().LevelUp(99);
+	NewActor->GetUnitData().LevelUp(999);
 	PlayerUnits.push_back(NewActor);
 
 	NewActor = CreateActor<BattleUnit>();
 	NewActor->SetUnitCode(UnitIdentityCode::Brigand);
 	NewActor->NewItem(ItemCode::IronAxe);
 	NewActor->SetMapPos({ 5, 5 });
-	//NewActor->GetUnitData().LevelUp(99);
+	///NewActor->GetUnitData().LevelUp(999);
 	NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
 	EnemyUnits.push_back(NewActor);
 
