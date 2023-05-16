@@ -26,6 +26,38 @@ void BattleAnimationLevel::SetBattleData(std::shared_ptr<BattleUnit> _SubjectUni
 	BattleIter = BattleData.begin();
 }
 
+void BattleAnimationLevel::HitEvent()
+{
+	if ((*BattleIter).IsHit)
+	{
+		if (true == (*BattleIter).SubjectAttack)
+		{
+			TargetAnimation->Damage();
+		}
+		else
+		{
+			SubjectAnimation->Damage();
+		}
+	}
+	else
+	{
+		if (true == (*BattleIter).SubjectAttack)
+		{
+			TargetAnimation->Dodge();
+		}
+		else
+		{
+			SubjectAnimation->Dodge();
+		}
+	}
+}
+
+void BattleAnimationLevel::TurnEnd()
+{
+	BattleIter++;
+	Test();
+}
+
 void BattleAnimationLevel::Start()
 {
 	GetMainCamera()->SetProjectionType(CameraType::Perspective);
@@ -108,47 +140,36 @@ void BattleAnimationLevel::Test()
 	{
 		if (true == Command.SubjectAttack)
 		{
-			SubjectAnimation->SetCritical();
-			float time = SubjectAnimation->GetCriticalTime();
-			TimeEvent.AddEvent(SubjectAnimation->GetCriticalTime(), std::bind(&BattleAnimationLevel::Test, this));
+			SubjectAnimation->Critical();
 		}
 		else
 		{
-			TargetAnimation->SetCritical();
-			TimeEvent.AddEvent(TargetAnimation->GetCriticalTime(), std::bind(&BattleAnimationLevel::Test, this));
+			TargetAnimation->Critical();
 		}
 	}
 	else if (Command.IsHit)
 	{
 		if (true == Command.SubjectAttack)
 		{
-			SubjectAnimation->SetAttack();
-			TimeEvent.AddEvent(SubjectAnimation->GetAttackTime(), std::bind(&BattleAnimationLevel::Test, this));
+			SubjectAnimation->Attack();
 		}
 		else
 		{
-			TargetAnimation->SetAttack();
-			TimeEvent.AddEvent(TargetAnimation->GetAttackTime(), std::bind(&BattleAnimationLevel::Test, this));
+			TargetAnimation->Attack();
 		}
 	}
 	else
 	{
 		if (true == Command.SubjectAttack)
 		{
-			SubjectAnimation->SetAttack();
-			TimeEvent.AddEvent(SubjectAnimation->GetAttackTime(), std::bind(&BattleAnimationLevel::Test, this));
-			TimeEvent.AddEvent(SubjectAnimation->GetAttackEffectTime(), std::bind(&BattleAnimationUnit::SetDodge, TargetAnimation));
+			SubjectAnimation->Attack();
 		}
 		else
 		{
-			TargetAnimation->SetAttack();
-			SubjectAnimation->SetDodge();
-			TimeEvent.AddEvent(TargetAnimation->GetAttackTime(), std::bind(&BattleAnimationLevel::Test, this));
-			TimeEvent.AddEvent(TargetAnimation->GetAttackEffectTime(), std::bind(&BattleAnimationUnit::SetDodge, SubjectAnimation));
+			TargetAnimation->Attack();
 		}
 	}
 	
-	BattleIter++;
 }
 
 void BattleAnimationLevel::End()

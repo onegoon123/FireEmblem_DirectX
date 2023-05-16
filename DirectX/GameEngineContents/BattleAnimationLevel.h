@@ -20,6 +20,9 @@ public:
 
 	static void SetBattleData(std::shared_ptr<BattleUnit> _SubjectUnit, std::shared_ptr<BattleUnit> _TargetUnit, const std::list<AttackCommand>& _Data);
 
+	void HitEvent();
+	void TurnEnd();
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;

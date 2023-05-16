@@ -3,6 +3,8 @@
 #include "ContentsEnum.h"
 
 class SpriteRenderer;
+class BattleUnit;
+class BattleAnimationLevel;
 struct BattleAnimation
 {
 	std::shared_ptr<SpriteRenderer> Renderer = nullptr;
@@ -14,7 +16,6 @@ struct BattleAnimation
 };
 
 // Ό³Έν :
-class BattleUnit;
 class BattleAnimationUnit : public GameEngineActor
 {
 public:
@@ -31,9 +32,10 @@ public:
 	void SetAnimation(std::shared_ptr<BattleUnit> _Unit);
 	void SetAnimation(BattleClass _ClassValue);
 
-	void SetAttack();
-	void SetCritical();
-	void SetDodge();
+	void Attack();
+	void Critical();
+	void Dodge();
+	void Damage();
 
 	float GetAttackTime() { return CurAnimation.AttackTime; }
 	float GetAttackEffectTime() { return CurAnimation.AttackEffectTime; }
@@ -41,14 +43,19 @@ public:
 	float GetCriticalEffectTime() { return CurAnimation.CriticalEffectTime; }
 
 protected:
+	void Start() override;
 	void Update(float _DeltaTime) override;
 	
 private:
-	BattleClass ClassValue = BattleClass::Lord;
+	BattleAnimationLevel* Level = nullptr;
+	std::weak_ptr<BattleAnimationUnit> EnemyUnit;
 
+	BattleClass ClassValue = BattleClass::Lord;
 	BattleAnimation CurAnimation;
 	std::map<BattleClass, BattleAnimation> Animations;
+	std::shared_ptr<SpriteRenderer> EffectAnimation = nullptr;
 
 	BattleAnimation CreateAnimation(BattleClass _ClassValue);
+
 };
 
