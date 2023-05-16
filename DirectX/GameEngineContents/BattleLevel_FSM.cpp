@@ -337,6 +337,7 @@ void BattleLevel::UnitCommandStart()
 
 	bool IsAttackable = false;
 	bool IsCloseUnit = false;
+	bool IsItem = false;
 
 	// 공격 범위 이내에 적이 있는지 판단
 	AttackableUnits.clear();
@@ -395,10 +396,14 @@ void BattleLevel::UnitCommandStart()
 		IsCloseUnit = true;
 	}
 
+	if (0 != SelectUnit->GetUnitData().GetItems().size())
+	{
+		IsItem = true;
+	}
 
 	// 커맨드 UI 켜기
 	UI_UnitCommand->On();
-	UI_UnitCommand->SetCommand(IsAttackable, IsCloseUnit);
+	UI_UnitCommand->SetCommand(IsAttackable, IsItem, IsCloseUnit);
 	std::shared_ptr<DebugWindow> Window = GameEngineGUI::FindGUIWindowConvert<DebugWindow>("DebugWindow");
 	Window->Text = "";
 	if (true == IsAttackable) 

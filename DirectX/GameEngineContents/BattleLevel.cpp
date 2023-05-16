@@ -75,15 +75,14 @@ void BattleLevel::Start()
 	std::shared_ptr<BattleUnit> NewActor = CreateActor<BattleUnit>();
 	NewActor->SetUnitCode(UnitIdentityCode::Lyn);
 	NewActor->SetMapPos({ 4, 5 });
-	NewActor->NewItem(ItemCode::IronAxe);
+	NewActor->NewItem(ItemCode::IronSword);
 	NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
 	NewActor->GetUnitData().LevelUp(99);
 	PlayerUnits.push_back(NewActor);
 
 	NewActor = CreateActor<BattleUnit>();
-	NewActor->SetUnitCode(UnitIdentityCode::Lucius);
+	NewActor->SetUnitCode(UnitIdentityCode::Sain);
 	NewActor->SetMapPos({ 5, 6 });
-	NewActor->NewItem(ItemCode::IronBow);
 	NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
 	NewActor->GetUnitData().LevelUp(99);
 	PlayerUnits.push_back(NewActor);

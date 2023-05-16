@@ -66,6 +66,10 @@ void BattleUnit::SetUnitCode(UnitIdentityCode _Code)
 		UnitData.IsPlayer = true;
 		break;
 	case UnitIdentityCode::Sain:
+		SetName("¼¼ÀÎ");
+		UnitData.SetName("Sain");
+		MapSpriteName = "Map_Cavalier.png";
+		UnitData.IsPlayer = true;
 		break;
 	case UnitIdentityCode::Kent:
 		SetName("ÄËÆ®");

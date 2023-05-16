@@ -18,7 +18,7 @@ public:
 	UnitCommandUI& operator=(UnitCommandUI&& _Other) = delete;
 
 	void Setting(BattleLevel* _Level);
-	void SetCommand(bool _IsAttackable, bool _IsCloseUnit);
+	void SetCommand(bool _IsAttackable, bool _IsItem, bool _IsCloseUnit);
 
 	void On();
 	void Off();

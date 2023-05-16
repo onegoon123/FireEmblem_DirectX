@@ -21,14 +21,17 @@ void UnitCommandUI::Setting(BattleLevel* _Level)
 	Cursor = _Level->GetUICursor();
 }
 
-void UnitCommandUI::SetCommand(bool _IsAttackable, bool _IsCloseUnit)
+void UnitCommandUI::SetCommand(bool _IsAttackable, bool _IsItem, bool _IsCloseUnit)
 {
 	CommandFunctions.clear();
 	if (true == _IsAttackable)
 	{
 		CommandFunctions.push_back(std::bind(&BattleLevel::UnitCommand_Attack, LevelPtr));	// 공격 커맨드
 	}
-	CommandFunctions.push_back(std::bind(&BattleLevel::UnitCommand_Item, LevelPtr));		// 소지품 커맨드
+	if (true == _IsItem)
+	{
+		CommandFunctions.push_back(std::bind(&BattleLevel::UnitCommand_Item, LevelPtr));		// 소지품 커맨드
+	}
 	if (true == _IsCloseUnit)
 	{
 		CommandFunctions.push_back(std::bind(&BattleLevel::UnitCommand_Exchange, LevelPtr));// 교환 커맨드
@@ -38,6 +41,9 @@ void UnitCommandUI::SetCommand(bool _IsAttackable, bool _IsCloseUnit)
 
 	switch (CommandFunctions.size())
 	{
+	case 1:
+		WindowRender->SetTexture("Select1.png");
+		break;
 	case 2:
 		WindowRender->SetTexture("Select2.png");
 		break;
