@@ -26,13 +26,11 @@ public:
 	void Attack();
 	void Critical();
 	void Dodge();
-	void Damage();
-	void CriticalDamage();
+	void HitEffect(const std::string_view& _Name);
 
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
-	
 private:
 	BattleAnimationLevel* Level = nullptr;
 	std::shared_ptr<BattleUnit> UnitValue = nullptr;
@@ -46,5 +44,8 @@ private:
 
 	std::shared_ptr<SpriteRenderer> CreateAnimation(UnitIdentityCode _UnitIdentity);
 
+	void AttackLoop(float _Timer);
+	void AttackLoopEnd();
+	void AttackEnd();
 };
 

@@ -34,6 +34,10 @@ public:
 
 	void Update(float _DeltaTime);
 
+	void Clear()
+	{
+		Events.clear();
+	}
 private:
 
 	// [event1][      ][event3]

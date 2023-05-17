@@ -28,39 +28,41 @@ void BattleAnimationLevel::SetBattleData(std::shared_ptr<BattleUnit> _SubjectUni
 
 void BattleAnimationLevel::HitEvent()
 {
-	if ((*BattleIter).IsCritical)
+	std::shared_ptr<BattleAnimationUnit> DamageUnit = nullptr;
+	std::shared_ptr<BattleUnit> AttackUnit = nullptr;
+	std::string EffectName = "";
+
+	if (true == (*BattleIter).SubjectAttack)
 	{
-		if (true == (*BattleIter).SubjectAttack)
-		{
-			TargetAnimation->CriticalDamage();
-		}
-		else
-		{
-			SubjectAnimation->CriticalDamage();
-		}
-	}
-	else if ((*BattleIter).IsHit)
-	{
-		if (true == (*BattleIter).SubjectAttack)
-		{
-			TargetAnimation->Damage();
-		}
-		else
-		{
-			SubjectAnimation->Damage();
-		}
+		DamageUnit = TargetAnimation;
+		AttackUnit = SubjectUnit;
 	}
 	else
 	{
-		if (true == (*BattleIter).SubjectAttack)
-		{
-			TargetAnimation->Dodge();
-		}
-		else
-		{
-			SubjectAnimation->Dodge();
-		}
+		DamageUnit = SubjectAnimation;
+		AttackUnit = TargetUnit;
 	}
+
+	if (AttackUnit->GetUnitData().GetClassValue() == BattleClass::Mage)
+	{
+		EffectName = "Fire";
+	}
+
+	if ((*BattleIter).IsCritical)
+	{
+		EffectName += "Critical";
+	}
+	else if ((*BattleIter).IsHit)
+	{
+		EffectName += "Hit";
+	}
+	else
+	{
+		EffectName += "Dodge";
+	}
+
+
+	DamageUnit->HitEffect(EffectName);
 }
 
 void BattleAnimationLevel::TurnEnd()
@@ -134,6 +136,7 @@ void BattleAnimationLevel::LevelChangeStart()
 	SubjectAnimation->SetAnimation(SubjectUnit);
 	TargetAnimation->SetAnimation(TargetUnit);
 
+	TimeEvent.Clear();
 	Test();
 }
 
@@ -180,7 +183,7 @@ void BattleAnimationLevel::Test()
 			TargetAnimation->Attack();
 		}
 	}
-	
+
 }
 
 void BattleAnimationLevel::End()

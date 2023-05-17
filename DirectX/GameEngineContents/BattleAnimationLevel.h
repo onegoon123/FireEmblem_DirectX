@@ -23,6 +23,7 @@ public:
 	void HitEvent();
 	void TurnEnd();
 
+	GameEngineTimeEvent TimeEvent;
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -33,7 +34,6 @@ private:
 	static std::shared_ptr<BattleUnit> TargetUnit;
 	static std::list<AttackCommand> BattleData;
 	static std::list<AttackCommand>::iterator BattleIter;
-	GameEngineTimeEvent TimeEvent;
 
 	std::shared_ptr<SpriteRenderer> BackgroundRender;
 	std::shared_ptr<SpriteRenderer> TerrainLeft;

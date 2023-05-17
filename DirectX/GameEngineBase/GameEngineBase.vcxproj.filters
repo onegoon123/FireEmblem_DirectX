@@ -82,5 +82,8 @@
     <Filter Include="Time">
       <UniqueIdentifier>{ebf27950-46c5-45d6-9e1e-a2a9f3cfe95b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Time\EffectActor">
+      <UniqueIdentifier>{c604244e-ff93-4e57-a217-e0205c7529af}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>
