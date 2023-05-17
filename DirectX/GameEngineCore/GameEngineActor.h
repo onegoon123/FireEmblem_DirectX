@@ -1,8 +1,8 @@
 #pragma once
-#include "GameEngineUpdateObject.h"
+#include "GameEngineObject.h"
 
 // Ό³Έν :
-class GameEngineActor : public GameEngineUpdateObject
+class GameEngineActor : public GameEngineObject
 {
 	friend class GameEngineLevel;
 

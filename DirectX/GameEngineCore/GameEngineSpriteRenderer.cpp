@@ -351,3 +351,10 @@ void GameEngineSpriteRenderer::SetAnimationStartEvent(const std::string_view& _A
 
 	Info->StartEventFunction[_Frame] = _Event;
 }
+
+std::string GameEngineSpriteRenderer::GetTexName()
+{
+	GameEngineTextureSetter* Tex = GetShaderResHelper().GetTextureSetter("DiffuseTex");
+	std::string Name = Tex->Res->GetNameToString();
+	return Name;
+}

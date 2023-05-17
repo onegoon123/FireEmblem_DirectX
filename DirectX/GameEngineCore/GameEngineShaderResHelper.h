@@ -47,6 +47,10 @@ private:
 	std::multimap<std::string, GameEngineSamplerSetter> SamplerSetters;
 
 public:
+	GameEngineTextureSetter* GetTextureSetter(const std::string_view& _View);
+
+	std::vector<GameEngineTextureSetter*> GetTextureSetters(const std::string_view& _View);
+
 	void CreateTextureSetter(const GameEngineTextureSetter& _Setter)
 	{
 		TextureSetters.insert(std::make_pair(_Setter.Name, _Setter));

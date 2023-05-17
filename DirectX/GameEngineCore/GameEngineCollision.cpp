@@ -55,6 +55,11 @@ bool GameEngineCollision::CollisionAll(int _TargetGroup, ColType _ThisColType, C
 
 	std::list<std::shared_ptr<GameEngineCollision>>& Group = GetLevel()->Collisions[_TargetGroup];
 
+	if (0 == Group.size())
+	{
+		return false;
+	}
+
 	for (std::shared_ptr<GameEngineCollision>& _OtherCol : Group)
 	{
 		if (false == _OtherCol->IsUpdate())

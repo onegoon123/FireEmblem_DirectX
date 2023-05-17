@@ -29,9 +29,6 @@
     <ClCompile Include="GameEngineObjectBase.cpp">
       <Filter>Object</Filter>
     </ClCompile>
-    <ClCompile Include="GameEngineUpdateObject.cpp">
-      <Filter>Object</Filter>
-    </ClCompile>
     <ClCompile Include="GameEngineRenderer.cpp">
       <Filter>Object\Rendering\Component</Filter>
     </ClCompile>
@@ -160,9 +157,6 @@
       <Filter>Object</Filter>
     </ClInclude>
     <ClInclude Include="GameEngineObjectBase.h">
-      <Filter>Object</Filter>
-    </ClInclude>
-    <ClInclude Include="GameEngineUpdateObject.h">
       <Filter>Object</Filter>
     </ClInclude>
     <ClInclude Include="GameEngineRenderer.h">

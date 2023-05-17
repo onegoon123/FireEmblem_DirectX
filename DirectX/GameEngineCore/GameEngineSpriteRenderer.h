@@ -63,7 +63,6 @@ public:
 	std::vector<float> FrameTime = std::vector<float>();
 };
 
-
 // Ό³Έν :
 class GameEngineSpriteRenderer : public GameEngineRenderer
 {
@@ -116,6 +115,11 @@ public:
 		return AtlasData;
 	}
 
+	inline float GetScaleRatio() const
+	{
+		return ScaleRatio;
+	}
+
 	void SetSprite(const std::string_view& _SpriteName, size_t _Frame = 0);
 
 	void SetFrame(size_t _Frame);
@@ -134,17 +138,22 @@ public:
 
 	void SetAnimationStartEvent(const std::string_view& _AnimationName, size_t _Frame, std::function<void()> _Event);
 
-protected:
-	float4 AtlasData;
+	std::string GetTexName();
 
-private:
+
+protected:
+	void Start() override;
+	void Render(float _Delta) override;
 	void Update(float _Delta) override;
 
-	void Render(float _Delta) override;
+	float4 AtlasData;
+private:
+
 
 	std::map<std::string, std::shared_ptr<AnimationInfo>> Animations;
 
 	std::shared_ptr<AnimationInfo> CurAnimation;
+
 
 
 	std::shared_ptr<GameEngineSprite> Sprite = nullptr;
@@ -153,6 +162,5 @@ private:
 
 	float ScaleRatio = 1.0f;
 
-	void Start() override;
 };
 

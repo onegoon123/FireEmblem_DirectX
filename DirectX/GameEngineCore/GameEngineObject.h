@@ -64,6 +64,10 @@ public:
 		return Level;
 	}
 
+	bool IsDeath() override;
+	bool IsUpdate() override;
+
+
 
 protected:
 	virtual void Start() {}
