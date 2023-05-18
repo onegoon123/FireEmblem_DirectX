@@ -410,7 +410,7 @@ std::shared_ptr<SpriteRenderer> BattleAnimationUnit::CreateAnimation(UnitIdentit
 	{
 		if (nullptr == GameEngineSprite::Find("Battle_Ninian.png"))
 		{
-			GameEngineSprite::LoadSheet(Dir.GetPlusFileName("Battle_Ninian.png").GetFullPath(), 3, 3);
+			GameEngineSprite::LoadSheet(Dir.GetPlusFileName("Battle_Ninian.png").GetFullPath(), 6, 8);
 		}
 		NewAnim->CreateAnimation({ "Idle", "Battle_Ninian.png", 0, 0 });
 		NewAnim->CreateAnimation({ .AnimationName = "Heal", .SpriteName = "Battle_Ninian.png", .Start = 0, .End = 45, .FrameInter = 0.06f, .Loop = false, });
@@ -418,7 +418,47 @@ std::shared_ptr<SpriteRenderer> BattleAnimationUnit::CreateAnimation(UnitIdentit
 		break;
 	}
 	case UnitIdentityCode::Lucius:
+	{
+		if (nullptr == GameEngineSprite::Find("Battle_Lucius.png"))
+		{
+			GameEngineSprite::LoadSheet(Dir.GetPlusFileName("Battle_Lucius.png").GetFullPath(), 4, 5);
+		}
+		NewAnim->CreateAnimation({ "Idle", "Battle_Lucius.png", 0, 0 });
+		NewAnim->CreateAnimation({ .AnimationName = "Attack", .SpriteName = "Battle_Lucius.png", .Start = 0, .End = 16, .Loop = false, 
+			.FrameTime = {.08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .05f, .6f, .08f, .08f, .08f, .08f, } });
+		NewAnim->SetAnimationStartEvent("Attack", 11, std::bind(&BattleAnimationLevel::HitEvent, Level));
+		NewAnim->SetAnimationStartEvent("Attack", 16, std::bind(&BattleAnimationUnit::AttackEnd, this));
+		NewAnim->CreateAnimation({ .AnimationName = "Critical", .SpriteName = "Battle_Lucius.png", .Start = 0, .End = 16, .Loop = false,
+			.FrameTime = {.08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .05f, .6f, .08f, .08f, .08f, .08f, } });
+		NewAnim->SetAnimationStartEvent("Critical", 11, std::bind(&BattleAnimationLevel::HitEvent, Level));
+		NewAnim->SetAnimationStartEvent("Critical", 16, std::bind(&BattleAnimationUnit::AttackEnd, this));
+
+		NewAnim->CreateAnimation({ .AnimationName = "Dodge", .SpriteName = "Battle_Lucius.png", .Loop = false, .FrameIndex = {17, 18, 17, 0}, .FrameTime = {.04f, .6f, .04f, 1.0f} });
+		break;
+	}
 	case UnitIdentityCode::Wallace:
+	{
+		if (nullptr == GameEngineSprite::Find("Battle_Wallace.png"))
+		{
+			GameEngineSprite::LoadSheet(Dir.GetPlusFileName("Battle_Wallace.png").GetFullPath(), 5, 5);
+		}
+		NewAnim->CreateAnimation({ "Idle", "Battle_Wallace.png", 0, 0 });
+
+		NewAnim->CreateAnimation({ .AnimationName = "Attack", .SpriteName = "Battle_Wallace.png", .Loop = false,
+			.FrameIndex = {0, 1, 2, 3, 4, 5, 6, 7, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24},
+			.FrameTime = { .08f, .08f, .08f, .08f, .08f, .08f, .08f, .6f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f} });
+		NewAnim->SetAnimationStartEvent("Attack", 6, std::bind(&BattleAnimationLevel::HitEvent, Level));
+		NewAnim->SetAnimationStartEvent("Attack", 24, std::bind(&BattleAnimationUnit::AttackEnd, this));
+
+		NewAnim->CreateAnimation({ .AnimationName = "Critical", .SpriteName = "Battle_Wallace.png", .Loop = false,
+			.FrameIndex = {0, 1, 2, 3, 4, 5, 6, 7, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24},
+			.FrameTime = { .08f, .08f, .08f, .08f, .08f, .08f, .08f, .6f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f} });
+		NewAnim->SetAnimationStartEvent("Critical", 6, std::bind(&BattleAnimationLevel::HitEvent, Level));
+		NewAnim->SetAnimationStartEvent("Critical", 24, std::bind(&BattleAnimationUnit::AttackEnd, this));
+
+		NewAnim->CreateAnimation({ .AnimationName = "Dodge", .SpriteName = "Battle_Wallace.png", .Loop = false, .FrameIndex = {1, 0}, .FrameTime = {.68f, 1.0f} });
+		break;
+	}
 	case UnitIdentityCode::GeneralWallace:
 	case UnitIdentityCode::Brigand:
 	{
