@@ -172,6 +172,11 @@ void BattleUnit::SetUnitCode(UnitIdentityCode _Code)
 		UnitData.IsPlayer = false;
 		break;
 	case UnitIdentityCode::Knight:
+		UnitData.UnitCode = EnemyNum++;
+		SetName("±â»ç");
+		UnitData.SetName("Enemy");
+		MapSpriteName = "Map_EnemyKnight.png";
+		UnitData.IsPlayer = false;
 		break;
 	case UnitIdentityCode::Mage:
 		UnitData.UnitCode = EnemyNum++;

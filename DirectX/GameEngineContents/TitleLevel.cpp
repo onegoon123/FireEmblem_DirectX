@@ -57,7 +57,7 @@ void TitleLevel::Start()
 
 
 	// 타이틀 이미지
-	std::shared_ptr<GameEngineActor> TitleActor = CreateActor<GameEngineActor>("TitleActor");
+	std::shared_ptr<GameEngineActor> TitleActor = CreateActor<GameEngineActor>();
 	std::shared_ptr<GameEngineSpriteRenderer> TitleRender = TitleActor->CreateComponent<GameEngineSpriteRenderer>();
 	TitleRender->SetTexture("TitleImage.png");
 	TitleRender->GetTransform()->SetWorldScale({ 960, 640 });

@@ -73,14 +73,17 @@ void BattleLevel::Start()
 	//PlayerUnits.push_back(NewActor);
 
 	std::shared_ptr<BattleUnit> NewActor = CreateActor<BattleUnit>();
-	NewActor->SetUnitCode(UnitIdentityCode::Lyn);
+	NewActor->SetUnitCode(UnitIdentityCode::Florina);
+	NewActor->GetUnitData().LevelUp(99);
 	NewActor->SetMapPos({ 4, 5 });
-	NewActor->NewItem(ItemCode::IronSword);
+	NewActor->NewItem(ItemCode::KillingSword);
+	NewActor->NewItem(ItemCode::KillerLance);
 	NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
 	PlayerUnits.push_back(NewActor);
 
 	NewActor = CreateActor<BattleUnit>();
 	NewActor->SetUnitCode(UnitIdentityCode::Sain);
+	NewActor->GetUnitData().LevelUp(999);
 	NewActor->SetMapPos({ 4, 4 });
 	NewActor->NewItem(ItemCode::IronSword);
 	NewActor->NewItem(ItemCode::IronLance);
@@ -117,13 +120,20 @@ void BattleLevel::Start()
 	//EnemyUnits.push_back(NewActor);
 
 	NewActor = CreateActor<BattleUnit>();
-	NewActor->SetUnitCode(UnitIdentityCode::Mage);
-	NewActor->NewItem(ItemCode::Fire);
-	NewActor->GetUnitData().LevelUp(999);
+	NewActor->SetUnitCode(UnitIdentityCode::Knight);
+	NewActor->NewItem(ItemCode::IronLance);
+	//NewActor->GetUnitData().LevelUp(999);
 	NewActor->SetMapPos({ 6, 6 });
 	NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
 	EnemyUnits.push_back(NewActor);
 
+	NewActor = CreateActor<BattleUnit>();
+	NewActor->SetUnitCode(UnitIdentityCode::Knight);
+	NewActor->NewItem(ItemCode::IronLance);
+	//NewActor->GetUnitData().LevelUp(999);
+	NewActor->SetMapPos({ 5, 4 });
+	NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
+	EnemyUnits.push_back(NewActor);
 	
 	IsMove.resize(MainMap->MapScaleInt2.y);
 	for (int i = 0; i < IsMove.size(); i++)
