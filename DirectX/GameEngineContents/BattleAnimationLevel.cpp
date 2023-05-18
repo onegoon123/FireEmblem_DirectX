@@ -46,6 +46,7 @@ void BattleAnimationLevel::HitEvent()
 	if (AttackUnit->GetUnitData().GetClassValue() == BattleClass::Mage)
 	{
 		EffectName = "Fire";
+		// 마법사, 어쌔신 경우 다른 이펙트
 	}
 
 	if ((*BattleIter).IsCritical)

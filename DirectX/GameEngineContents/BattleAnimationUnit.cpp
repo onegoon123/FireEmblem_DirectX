@@ -442,6 +442,24 @@ std::shared_ptr<SpriteRenderer> BattleAnimationUnit::CreateAnimation(UnitIdentit
 		break;
 	}
 	case UnitIdentityCode::AssassinMatthew:
+	{
+		if (nullptr == GameEngineSprite::Find("Battle_AssassinMatthew.png"))
+		{
+			GameEngineSprite::LoadSheet(Dir.GetPlusFileName("Battle_AssassinMatthew.png").GetFullPath(), 6, 14);
+		}
+		NewAnim->CreateAnimation({ "Idle", "Battle_AssassinMatthew.png", 0, 0 });
+		NewAnim->CreateAnimation({ .AnimationName = "Attack", .SpriteName = "Battle_AssassinMatthew.png", .Start = 0, .End = 34, .Loop = false,
+			.FrameTime = {.08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .05f, .05f, .05f, .04f, .04f, .04f, .04f, .08f, .6f, .06f, .06f, .06f, .06f, .06f, .06f, .06f, .06f, .06f, .06f, .06f, .06f, .06f, .06f, .06f, .06f, .06f, .06f, } });
+		NewAnim->SetAnimationStartEvent("Attack", 15, std::bind(&BattleAnimationLevel::HitEvent, Level));
+		NewAnim->SetAnimationStartEvent("Attack", 34, std::bind(&BattleAnimationUnit::AttackEnd, this));
+		NewAnim->CreateAnimation({ .AnimationName = "Critical", .SpriteName = "Battle_AssassinMatthew.png", .Loop = false,
+			.FrameIndex = {34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 50, 49,  51, 49, 51, 49, 51, 49, 51, 49, 52, 49, 54, 55, 56, 57,  58, 49, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77},
+			.FrameTime = { .06f, .06f, .06f, .06f, .06f, .06f, .06f, .06f, .06f, .06f, .06f, .06f, .06f, .2f, .06f, .06f, .2f, .06f, .06f, .06f, .06f, .06f, .06f, .06f, .06f, .06f, .06f, .06f, .06f, .06f, .2f, .06f, .6f, .06f, .06f, .06f, .06f, .06f, .06f, .06f, .06f, .06f, .06f, .06f, .06f, .06f, .06f, .06f, .06f, .06f, .06f, } });
+		NewAnim->SetAnimationStartEvent("Critical", 58, std::bind(&BattleAnimationLevel::HitEvent, Level));
+		NewAnim->SetAnimationStartEvent("Critical", 77, std::bind(&BattleAnimationUnit::AttackEnd, this));
+		NewAnim->CreateAnimation({ .AnimationName = "Dodge", .SpriteName = "Battle_AssassinMatthew.png", .Loop = false, .FrameIndex = {78, 79, 78, 0}, .FrameTime = {.08f, .6f, .04f, 1.0f} });
+		break;
+	}
 	case UnitIdentityCode::Ninian:
 	{
 		if (nullptr == GameEngineSprite::Find("Battle_Ninian.png"))
