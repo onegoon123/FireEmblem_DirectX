@@ -58,8 +58,11 @@ void Stat::SetIdentity(UnitIdentityCode _IdentityCode)
 		SetStat_Lucius();
 		break;
 	case UnitIdentityCode::Wallace:
+		SetStat_Wallace();
+		break;
 	case UnitIdentityCode::GeneralWallace:
 		SetStat_Wallace();
+		ClassChange_General();
 		break;
 	case UnitIdentityCode::Brigand:
 		SetStat_Brigand();

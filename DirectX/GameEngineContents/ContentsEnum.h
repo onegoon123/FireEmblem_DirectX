@@ -39,6 +39,7 @@ enum class UnitIdentityCode
 	Lucius,
 	Wallace,
 	GeneralWallace,
+	GeneralWallaceAxe,
 
 	Brigand,
 	Soldier,

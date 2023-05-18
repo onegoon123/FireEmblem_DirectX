@@ -35,6 +35,14 @@ void BattleAnimationUnit::SetAnimation(UnitIdentityCode _IdentityValue)
 			IdentityValue = static_cast<UnitIdentityCode>(static_cast<int>(IdentityValue) + 1);
 		}
 	}
+	if (IdentityValue == UnitIdentityCode::GeneralWallace)
+	{
+		if (UnitValue->GetUnitData().GetCurWeapon()->GetWeaponTypeValue() == WeaponType::Axe)
+		{
+			IdentityValue = static_cast<UnitIdentityCode>(static_cast<int>(IdentityValue) + 1);
+		}
+	}
+
 
 	// 클래스 값에 따른 애니메이션을 찾는다
 	std::map<UnitIdentityCode, std::shared_ptr<SpriteRenderer>>::iterator AnimationIter;
@@ -514,6 +522,47 @@ std::shared_ptr<SpriteRenderer> BattleAnimationUnit::CreateAnimation(UnitIdentit
 		break;
 	}
 	case UnitIdentityCode::GeneralWallace:
+	{
+		if (nullptr == GameEngineSprite::Find("Battle_GeneralWallace.png"))
+		{
+			GameEngineSprite::LoadSheet(Dir.GetPlusFileName("Battle_GeneralWallace.png").GetFullPath(), 5, 12);
+		}
+		NewAnim->CreateAnimation({ "Idle", "Battle_GeneralWallace.png", 0, 0 });
+
+		NewAnim->CreateAnimation({ .AnimationName = "Attack", .SpriteName = "Battle_GeneralWallace.png", .Start = 0, .End = 28, .Loop = false,
+			.FrameTime = { .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, } });
+		NewAnim->SetAnimationStartEvent("Attack", 9, std::bind(&BattleAnimationLevel::HitEvent, Level));
+		NewAnim->SetAnimationStartEvent("Attack", 28, std::bind(&BattleAnimationUnit::AttackEnd, this));
+
+		NewAnim->CreateAnimation({ .AnimationName = "Critical", .SpriteName = "Battle_GeneralWallace.png", .Start = 0, .End = 28, .Loop = false,
+			.FrameTime = { .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, } });
+		NewAnim->SetAnimationStartEvent("Critical", 9, std::bind(&BattleAnimationLevel::HitEvent, Level));
+		NewAnim->SetAnimationStartEvent("Critical", 28, std::bind(&BattleAnimationUnit::AttackEnd, this));
+
+		NewAnim->CreateAnimation({ .AnimationName = "Dodge", .SpriteName = "Battle_GeneralWallace.png", .Loop = false, .FrameIndex = {1, 2, 1, 0}, .FrameTime = {.08f, .7f, .08f, 1.0f} });
+		break;
+	}
+	case UnitIdentityCode::GeneralWallaceAxe:
+	{
+		if (nullptr == GameEngineSprite::Find("Battle_GeneralWallace.png"))
+		{
+			GameEngineSprite::LoadSheet(Dir.GetPlusFileName("Battle_GeneralWallace.png").GetFullPath(), 5, 12);
+		}
+		NewAnim->CreateAnimation({ "Idle", "Battle_GeneralWallace.png", 29, 29 });
+
+		NewAnim->CreateAnimation({ .AnimationName = "Attack", .SpriteName = "Battle_GeneralWallace.png", .Start = 29, .End = 56, .Loop = false,
+			.FrameTime = { .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, } });
+		NewAnim->SetAnimationStartEvent("Attack", 38, std::bind(&BattleAnimationLevel::HitEvent, Level));
+		NewAnim->SetAnimationStartEvent("Attack", 57, std::bind(&BattleAnimationUnit::AttackEnd, this));
+
+		NewAnim->CreateAnimation({ .AnimationName = "Critical", .SpriteName = "Battle_GeneralWallace.png", .Start = 29, .End = 56, .Loop = false,
+			.FrameTime = { .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, } });
+		NewAnim->SetAnimationStartEvent("Critical", 38, std::bind(&BattleAnimationLevel::HitEvent, Level));
+		NewAnim->SetAnimationStartEvent("Critical", 57, std::bind(&BattleAnimationUnit::AttackEnd, this));
+
+		NewAnim->CreateAnimation({ .AnimationName = "Dodge", .SpriteName = "Battle_GeneralWallace.png", .Loop = false, .FrameIndex = {30, 31, 30, 0}, .FrameTime = {.08f, .7f, .08f, 1.0f} });
+		break;
+	}
 	case UnitIdentityCode::Brigand:
 	{
 		if (nullptr == GameEngineSprite::Find("Battle_EnemyBrigand.png"))
