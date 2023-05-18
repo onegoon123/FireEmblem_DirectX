@@ -19,6 +19,7 @@ void Stat::SetIdentity(UnitIdentityCode _IdentityCode)
 	switch (_IdentityCode)
 	{
 	case UnitIdentityCode::Lyn:
+	case UnitIdentityCode::BladeLordLyn:
 		SetStat_Lyn();
 		break;
 	case UnitIdentityCode::Sain:
@@ -34,6 +35,7 @@ void Stat::SetIdentity(UnitIdentityCode _IdentityCode)
 		SetStat_Wil();
 		break;
 	case UnitIdentityCode::Dorcas:
+	case UnitIdentityCode::WarriorDorcas:
 		SetStat_Dorcas();
 		break;
 	case UnitIdentityCode::Serra:
@@ -46,6 +48,7 @@ void Stat::SetIdentity(UnitIdentityCode _IdentityCode)
 		SetStat_Rath();
 		break;
 	case UnitIdentityCode::Matthew:
+	case UnitIdentityCode::AssassinMatthew:
 		SetStat_Matthew();
 		break;
 	case UnitIdentityCode::Ninian:
@@ -55,6 +58,7 @@ void Stat::SetIdentity(UnitIdentityCode _IdentityCode)
 		SetStat_Lucius();
 		break;
 	case UnitIdentityCode::Wallace:
+	case UnitIdentityCode::GeneralWallace:
 		SetStat_Wallace();
 		break;
 	case UnitIdentityCode::Brigand:

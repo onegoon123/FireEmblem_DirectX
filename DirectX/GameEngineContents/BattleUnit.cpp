@@ -50,7 +50,7 @@ void BattleUnit::SetUnitCode(int _Code)
 	SetUnitCode(static_cast<UnitIdentityCode>(_Code));
 }
 
-static int EnemyNum = 13;
+static int EnemyNum = static_cast<int>(UnitIdentityCode::Brigand);
 void BattleUnit::SetUnitCode(UnitIdentityCode _Code)
 {
 	UnitData.IdentityCode = _Code;
@@ -64,6 +64,12 @@ void BattleUnit::SetUnitCode(UnitIdentityCode _Code)
 		SetName("린");
 		UnitData.SetName("Lyn");
 		MapSpriteName = "Map_Lyn.png";
+		UnitData.IsPlayer = true;
+		break;
+	case UnitIdentityCode::BladeLordLyn:
+		SetName("린");
+		UnitData.SetName("Lyn");
+		MapSpriteName = "Map_BladeLyn.png";
 		UnitData.IsPlayer = true;
 		break;
 	case UnitIdentityCode::Sain:
@@ -98,6 +104,12 @@ void BattleUnit::SetUnitCode(UnitIdentityCode _Code)
 		MapSpriteName = "Map_Dorcas.png";
 		UnitData.IsPlayer = true;
 		break;
+	case UnitIdentityCode::WarriorDorcas:
+		SetName("돌카스");
+		UnitData.SetName("Dorcas");
+		MapSpriteName = "Map_WarriorDorcas.png";
+		UnitData.IsPlayer = true;
+		break;
 	case UnitIdentityCode::Serra:
 		SetName("세라");
 		UnitData.SetName("Serra");
@@ -123,6 +135,12 @@ void BattleUnit::SetUnitCode(UnitIdentityCode _Code)
 		MapSpriteName = "Map_Matthew.png";
 		UnitData.IsPlayer = true;
 		break;
+	case UnitIdentityCode::AssassinMatthew:
+		SetName("메튜");
+		UnitData.SetName("Matthew");
+		MapSpriteName = "Map_AssassinMatthew.png";
+		UnitData.IsPlayer = true;
+		break;
 	case UnitIdentityCode::Ninian:
 		SetName("니니안");
 		UnitData.SetName("Ninian");
@@ -139,6 +157,12 @@ void BattleUnit::SetUnitCode(UnitIdentityCode _Code)
 		SetName("월레스");
 		UnitData.SetName("Wallace");
 		MapSpriteName = "Map_Wallace.png";
+		UnitData.IsPlayer = true;
+		break;
+	case UnitIdentityCode::GeneralWallace:
+		SetName("월레스");
+		UnitData.SetName("Wallace");
+		MapSpriteName = "Map_GeneralWallace.png";
 		UnitData.IsPlayer = true;
 		break;
 	case UnitIdentityCode::Brigand:

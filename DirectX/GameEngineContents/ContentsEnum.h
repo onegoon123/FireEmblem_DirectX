@@ -21,7 +21,7 @@ enum class Faction
 enum class UnitIdentityCode
 {
 	Lyn,
-	BladeLoadLyn,
+	BladeLordLyn,
 	Sain,
 	SainSword,
 	Kent,
