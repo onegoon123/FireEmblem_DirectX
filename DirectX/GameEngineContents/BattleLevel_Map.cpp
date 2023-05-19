@@ -97,7 +97,7 @@ void BattleLevel::MoveSearch()
 	}
 
 
-	if (false/*SelectUnit->GetClass() == 1*/)
+	if (SelectUnit->GetUnitData().GetCurWeapon()->GetWeaponTypeValue() == WeaponType::Bow)
 	{
 		AttackSearchBow();
 		return;
@@ -455,6 +455,69 @@ void BattleLevel::MoveCalculation()
 	}
 }
 
+void BattleLevel::MoveCalculationForEnemyAttack()
+{
+	int2 StartPos = SelectUnit->GetMapPos();
+	int2 TargetPos = MainCursor->GetMapPos();
+
+	if (true == IsMapOut(TargetPos))
+	{
+		return;
+	}
+
+	CalData NewData = CalData();
+	NewData.Pos = StartPos;
+	NewData.MoveStat = SelectUnit->GetMoveStat();
+
+	std::queue<CalData> Queue;
+	Queue.push(NewData);
+
+	while (false == Queue.empty())
+	{
+		CalData CurrentData = Queue.front();
+		Queue.pop();
+
+		for (int i = 0; i < 4; i++)
+		{
+			CalData NextMove = CurrentData;
+			NextMove.Pos += int2(DirX[i], DirY[i]);
+			NextMove.History.push_back(CurrentData.Pos);
+
+			if (true == IsMapOut(NextMove.Pos))
+			{
+				continue;
+			}
+			if (false == IsMove[NextMove.Pos.y][NextMove.Pos.x])
+			{
+				for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
+				{
+					if (true == _Unit->GetIsDie()) { continue; }
+					if (SelectUnit->GetUnitCode() == _Unit->GetUnitCode()) { continue; }
+					if (NextMove.Pos == _Unit->GetMapPos())
+					{
+						Queue.push(NextMove);
+						break;
+					}
+				}
+				continue;
+			}
+			NextMove.MoveStat -= GetTerrainCostFoot(NextMove.Pos);
+			if (NextMove.MoveStat < 0)
+			{
+				continue;
+			}
+			if (SelectUnit->IsAttackable(NextMove.Pos.GetDistance(TargetPos)))
+			{
+				ArrowPos = NextMove.History;
+				ArrowPos.push_back(NextMove.Pos);
+				return;
+			}
+			Queue.push(NextMove);
+			continue;
+		}
+	}
+}
+
 void BattleLevel::MoveCalculationForEnemy()
 {
 	int2 StartPos = SelectUnit->GetMapPos();
@@ -488,27 +551,6 @@ void BattleLevel::MoveCalculationForEnemy()
 			}
 			if (false == IsMove[NextMove.Pos.y][NextMove.Pos.x])
 			{
-				if (NextMove.Pos == TargetPos)
-				{
-					
-					bool Check = false;
-					for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
-					{
-						if (true == _Unit->GetIsDie()) { continue; }
-						if (SelectUnit->GetUnitCode() == _Unit->GetUnitCode()) { continue; }
-						if (NextMove.History.back() == _Unit->GetMapPos())
-						{
-							Check = true;
-							break;
-						}
-					}
-					if (Check == true)
-					{
-						continue;
-					}
-					ArrowPos = NextMove.History;
-					return;
-				}
 				for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
 				{
 					if (true == _Unit->GetIsDie()) { continue; }
@@ -516,8 +558,14 @@ void BattleLevel::MoveCalculationForEnemy()
 					if (NextMove.Pos == _Unit->GetMapPos())
 					{
 						Queue.push(NextMove);
+						break;
 					}
 				}
+				continue;
+			}
+			NextMove.MoveStat -= GetTerrainCostFoot(NextMove.Pos);
+			if (NextMove.MoveStat < 0)
+			{
 				continue;
 			}
 			if (NextMove.Pos == TargetPos)
@@ -526,13 +574,8 @@ void BattleLevel::MoveCalculationForEnemy()
 				ArrowPos = NextMove.History;
 				return;
 			}
-			NextMove.MoveStat -= GetTerrainCostFoot(NextMove.Pos);
-			if (NextMove.MoveStat < 0)
-			{
-				continue;
-			}
-
 			Queue.push(NextMove);
+			continue;
 		}
 	}
 }

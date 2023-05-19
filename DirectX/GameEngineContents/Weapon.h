@@ -2,6 +2,7 @@
 
 #include "Item.h"
 #include "ContentsEnum.h"
+#include "Int2.h"
 enum class WeaponType
 {
 	None,
@@ -55,6 +56,8 @@ public:
 
 	// 해당 클래스가 이 무기를 사용 가능한가?
 	bool IsUseWeapon(BattleClass _Class);
+
+	bool IsAttackable(int2 _LeftPos, int2 _RightPos);
 
 	WeaponType GetWeaponTypeValue()
 	{

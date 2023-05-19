@@ -48,8 +48,11 @@ void Stat::SetIdentity(UnitIdentityCode _IdentityCode)
 		SetStat_Rath();
 		break;
 	case UnitIdentityCode::Matthew:
+		SetStat_Matthew();
+		break;
 	case UnitIdentityCode::AssassinMatthew:
 		SetStat_Matthew();
+		ClassChange_Assassin();
 		break;
 	case UnitIdentityCode::Ninian:
 		SetStat_Ninian();

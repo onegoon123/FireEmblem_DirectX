@@ -193,13 +193,14 @@ void Weapon::SetWeapon_KillingSword()
 
 void Weapon::SetWeapon_ManiKatti()
 {
+	MsgTextBox("임시로 마니카티의 사거리를 늘려놓았습니다.");
 	WeaponTypeValue = WeaponType::Sword;
 	SetName("마니 카티");
 	Damage = 8;
 	Hit = 80;
 	Critical = 20;
 	Weight = 3;
-	Range = 1;
+	Range = 3;
 	Uses = 45;
 	MaxUses = 45;
 }
@@ -571,8 +572,8 @@ bool Weapon::IsUseWeapon(BattleClass _Class)
 	}
 	case BattleClass::PegasusKnight:
 	{
-		if (WeaponTypeValue == WeaponType::Lance) { return true; }
-		if (WeaponTypeValue == WeaponType::AxeReaver) { return true; }
+		if (WeaponTypeValue == WeaponType::Sword) { return true; }
+		if (WeaponTypeValue == WeaponType::SwordReaver) { return true; }
 		return false;
 	}
 	case BattleClass::Archer:
@@ -663,4 +664,24 @@ bool Weapon::IsUseWeapon(BattleClass _Class)
 		break;
 	}
 	return false;
+}
+
+bool Weapon::IsAttackable(int2 _LeftPos, int2 _RightPos)
+{
+	int Distance = _LeftPos.GetDistance(_RightPos);
+
+	if (WeaponTypeValue == WeaponType::Bow)
+	{
+		if (Distance == 1)
+		{
+			return false;
+		}
+		if (Distance <= Range)
+		{
+			return true;
+		}
+		return false;
+	}
+
+	return Distance <= Range;
 }

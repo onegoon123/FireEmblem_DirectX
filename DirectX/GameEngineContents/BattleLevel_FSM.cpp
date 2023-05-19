@@ -17,6 +17,7 @@
 #include "PhaseUI.h"
 #include "FieldCommandUI.h"
 #include "DebugWindow.h" // 임시
+
 void BattleLevel::ChangeState(BattleState _State)
 {
 
@@ -324,8 +325,8 @@ void BattleLevel::UnitCommandStart()
 	}
 	IsMove[SelectUnit->GetMapPos().y][SelectUnit->GetMapPos().x] = true;
 
-	// 클래스에 따라 현재 위치에서 공격 할 수 있는 범위 표시
-	if (false/*SelectUnit->GetClass() == 1*/)
+	// 활은 별도의 범위계산이 필요
+	if (SelectUnit->GetUnitData().GetCurWeapon()->GetWeaponTypeValue() == WeaponType::Bow)
 	{
 		AttackSearchBow();
 	}
@@ -345,7 +346,7 @@ void BattleLevel::UnitCommandStart()
 	{
 		if (true == _Unit->GetIsDie()) { continue; }
 		int2 EnemyPos = _Unit->GetMapPos();
-		if (true == IsAttack[EnemyPos.y][EnemyPos.x])
+		if (true == IsAttack[EnemyPos.y][EnemyPos.x] && true == SelectUnit->IsAttackable(EnemyPos))
 		{
 			// 공격 범위 내의 적을 발견 시 리스트 저장
 			AttackableUnits.push_back(_Unit);
@@ -679,7 +680,7 @@ void BattleLevel::EnemyMoveStart()
 	// 공격범위내 적 포착
 	MainCursor->SetMapPos(TargetUnit->GetMapPos());
 	ArrowPos.clear();
-	MoveCalculationForEnemy();
+	MoveCalculationForEnemyAttack();
 
 	int2 MovePos = ArrowPos.back();
 	MainCursor->SetMapPos(MovePos);
@@ -727,7 +728,7 @@ void BattleLevel::EnemyBattleStart()
 		ChangeState(BattleState::EnemySelect);
 		return;
 	}
-	//ChangeState(BattleState::EnemySelect);
+
 	for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
 	{
 		_Unit->GetRenderer()->SetIsBlur(true);

@@ -31,13 +31,22 @@ public:
 
 	float TimeCheck();
 
-	float GetFloatDeltaTime() 
+	float GetDeltaTime()
 	{
 		return floatDeltaTime;
 	}
 
+	float GetTimeScleDeltaTime()
+	{
+		return floatDeltaTime * TimeScale;
+	}
+
+	void SetTimeScale(float _TimeScale)
+	{
+		TimeScale = _TimeScale;
+	}
+
 protected:
-	
 
 private:
 	__int64 Tick = 0;
@@ -46,5 +55,6 @@ private:
 	LARGE_INTEGER Second = LARGE_INTEGER();
 	double DoubleDeltaTime = 0.0;
 	float floatDeltaTime = 0.0;
+	float TimeScale = 1.0f;
 };
 

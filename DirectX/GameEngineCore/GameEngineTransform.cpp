@@ -177,8 +177,6 @@ bool GameEngineTransform::OBB2DToOBB2D(GameEngineTransform* _Left, GameEngineTra
 	return LeftData.OBB.Intersects(RightData.OBB);
 }
 
-
-
 GameEngineTransform::GameEngineTransform()
 {
 	TransformUpdate();
@@ -266,6 +264,7 @@ void GameEngineTransform::WorldDecompose()
 	ColData.OBB.Center = TransData.WorldPosition.DirectFloat3;
 	ColData.OBB.Extents = (TransData.WorldScale * 0.5f).DirectFloat3;
 	ColData.OBB.Orientation = TransData.WorldQuaternion.DirectFloat4;
+	ColData.ScaleABS();
 }
 
 void GameEngineTransform::SetParent(GameEngineTransform* _Parent, bool _IsParentWorld /*= true*/)

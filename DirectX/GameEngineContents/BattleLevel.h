@@ -181,6 +181,9 @@ private:
 	void AddArrow(int2 _TargetPos);
 	// 유닛이 커서에 위치까지 이동하는 경로를 화살표로 표시하는 기능 (AddArrow 실행시 조건에 따라 자동으로 실행)
 	void MoveCalculation();
+	// 적이 공격을 위해 이동경로를 계산하는 기능
+	void MoveCalculationForEnemyAttack();
+	// 적이 이동을 위한 경로를 계산하는 기능
 	void MoveCalculationForEnemy();
 
 	// 다음턴의 적이 공격 가능한 범위를 표시하는 기능 (IsCheckTile가 true인 적 한정)

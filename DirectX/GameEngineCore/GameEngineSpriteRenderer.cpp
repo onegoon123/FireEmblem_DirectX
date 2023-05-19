@@ -23,7 +23,10 @@ void AnimationInfo::Reset()
 
 void AnimationInfo::Update(float _DeltaTime)
 {
-	IsEndValue = false;
+	if (true == Loop)
+	{
+		IsEndValue = false;
+	}
 
 	// 1;
 	// 
@@ -47,12 +50,6 @@ void AnimationInfo::Update(float _DeltaTime)
 	{
 		++CurFrame;
 
-
-		if (StartEventFunction.end() != StartEventFunction.find(CurFrameIndex))
-		{
-			StartEventFunction[CurFrameIndex]();
-		}
-
 		if (FrameIndex.size() <= CurFrame)
 		{
 			IsEndValue = true;
@@ -63,9 +60,24 @@ void AnimationInfo::Update(float _DeltaTime)
 			}
 			else
 			{
+				IsEndValue = true;
 				--CurFrame;
 			}
 		}
+
+		//다음프레임이 존재하면서
+		else
+		{
+			CurFrameIndex = FrameIndex[CurFrame];
+
+			//Start콜백이 있다면 콜백을 호출
+			if (StartEventFunction.end() != StartEventFunction.find(CurFrameIndex))
+			{
+				StartEventFunction[CurFrameIndex]();
+			}
+		}
+
+
 		CurTime += FrameTime[CurFrame];
 
 		// 0 ~ 9
@@ -97,8 +109,6 @@ void GameEngineSpriteRenderer::Start()
 	AtlasData.w = 1.0f;
 
 	GetShaderResHelper().SetConstantBufferLink("AtlasData", AtlasData);
-
-	// AtlasData
 }
 
 void GameEngineSpriteRenderer::SetTexture(const std::string_view& _Name)
@@ -277,7 +287,7 @@ void GameEngineSpriteRenderer::ChangeAnimation(const std::string_view& _Name, si
 		return;
 	}
 
-	if (CurAnimation == Find && false == _Force)
+	if (CurAnimation.get() == Find.get() && false == _Force)
 	{
 		return;
 	}

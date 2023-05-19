@@ -257,6 +257,35 @@ void BattleUnit::SetUnitCode(UnitIdentityCode _Code)
 	Renderer->ChangeAnimation("Idle");
 }
 
+bool BattleUnit::IsAttackable(int _Distance)
+{
+
+	if (UnitData.CurWeapon->GetWeaponTypeValue() == WeaponType::Bow)
+	{
+		if (_Distance == 1)
+		{
+			return false;
+		}
+		if (_Distance <= UnitData.CurWeapon->GetRange())
+		{
+			return true;
+		}
+		return false;
+	}
+
+	return _Distance <= UnitData.CurWeapon->GetRange();
+}
+
+bool BattleUnit::IsAttackable(std::shared_ptr<BattleUnit> _Other)
+{
+	return IsAttackable(GetMapPos().GetDistance(_Other->GetMapPos()));
+}
+
+bool BattleUnit::IsAttackable(int2 _Other)
+{
+	return IsAttackable(GetMapPos().GetDistance(_Other));
+}
+
 
 void BattleUnit::Start()
 {

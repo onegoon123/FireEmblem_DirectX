@@ -73,65 +73,44 @@ void BattleLevel::Start()
 	//PlayerUnits.push_back(NewActor);
 
 	std::shared_ptr<BattleUnit> NewActor = CreateActor<BattleUnit>();
-	NewActor->SetUnitCode(UnitIdentityCode::GeneralWallace);
-	NewActor->GetUnitData().LevelUp();
-	NewActor->SetMapPos({ 4, 5 });
+	NewActor->SetUnitCode(UnitIdentityCode::Erk);
+	NewActor->GetUnitData().LevelUp(999);
+	NewActor->SetMapPos({ 3, 5 });
+	NewActor->NewItem(ItemCode::SteelSword);
 	NewActor->NewItem(ItemCode::IronLance);
 	NewActor->NewItem(ItemCode::IronAxe);
+	NewActor->NewItem(ItemCode::Fire);
+	NewActor->NewItem(ItemCode::IronBow);
 	NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
 	PlayerUnits.push_back(NewActor);
 
 	NewActor = CreateActor<BattleUnit>();
-	NewActor->SetUnitCode(UnitIdentityCode::Sain);
+	NewActor->SetUnitCode(UnitIdentityCode::Lyn);
+	NewActor->GetUnitData().LevelUp(99);
+	NewActor->SetMapPos({ 5, 4 });
+	NewActor->NewItem(ItemCode::ManiKatti);
+	NewActor->NewItem(ItemCode::IronLance);
+	NewActor->NewItem(ItemCode::IronAxe);
+	NewActor->NewItem(ItemCode::Fire);
+	NewActor->NewItem(ItemCode::IronBow);
+	NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
+	PlayerUnits.push_back(NewActor);
+
+	NewActor = CreateActor<BattleUnit>();
+	NewActor->SetUnitCode(UnitIdentityCode::Mage);
+	NewActor->NewItem(ItemCode::Fire);
+	NewActor->NewItem(ItemCode::IronAxe);
 	NewActor->GetUnitData().LevelUp(999);
-	NewActor->SetMapPos({ 4, 4 });
-	NewActor->NewItem(ItemCode::IronSword);
-	NewActor->NewItem(ItemCode::IronLance);
-	NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
-	PlayerUnits.push_back(NewActor);
-
-
-	//NewActor = CreateActor<BattleUnit>();
-	//NewActor->SetUnitCode(UnitIdentityCode::Brigand);
-	//NewActor->NewItem(ItemCode::IronAxe);
-	//NewActor->SetMapPos({ 5, 5 });
-	//NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
-	//EnemyUnits.push_back(NewActor);
-
-	//NewActor = CreateActor<BattleUnit>();
-	//NewActor->SetUnitCode(UnitIdentityCode::Soldier);
-	//NewActor->NewItem(ItemCode::IronLance);
-	//NewActor->SetMapPos({ 5, 4 });
-	//NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
-	//EnemyUnits.push_back(NewActor);
-
-	//NewActor = CreateActor<BattleUnit>();
-	//NewActor->SetUnitCode(UnitIdentityCode::Mercenary);
-	//NewActor->NewItem(ItemCode::KillingSword);
-	//NewActor->SetMapPos({ 5, 3 });
-	//NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
-	//EnemyUnits.push_back(NewActor);
-
-	//NewActor = CreateActor<BattleUnit>();
-	//NewActor->SetUnitCode(UnitIdentityCode::Archer);
-	//NewActor->NewItem(ItemCode::IronBow);
-	//NewActor->SetMapPos({ 5, 6 });
-	//NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
-	//EnemyUnits.push_back(NewActor);
-
-	NewActor = CreateActor<BattleUnit>();
-	NewActor->SetUnitCode(UnitIdentityCode::Knight);
-	NewActor->NewItem(ItemCode::IronLance);
-	//NewActor->GetUnitData().LevelUp(999);
-	NewActor->SetMapPos({ 6, 6 });
+	NewActor->SetMapPos({ 10, 5 });
 	NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
 	EnemyUnits.push_back(NewActor);
 
 	NewActor = CreateActor<BattleUnit>();
-	NewActor->SetUnitCode(UnitIdentityCode::Knight);
+	NewActor->SetUnitCode(UnitIdentityCode::Soldier);
+	NewActor->NewItem(ItemCode::IronSword);
 	NewActor->NewItem(ItemCode::IronLance);
-	//NewActor->GetUnitData().LevelUp(999);
-	NewActor->SetMapPos({ 5, 4 });
+	NewActor->NewItem(ItemCode::IronAxe);
+	NewActor->SetMapPos({ 10, 4 });
 	NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
 	EnemyUnits.push_back(NewActor);
 	

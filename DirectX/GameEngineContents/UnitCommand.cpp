@@ -28,7 +28,7 @@ std::list<AttackCommand> UnitCommand::Attack(std::shared_ptr<BattleUnit> _Subjec
 	CommandRecord.BeforeSubjectItems = Item::SaveItemDataList(SubjectUnit.GetItems());
 	CommandRecord.BeforeTargetItems = Item::SaveItemDataList(TargetUnit.GetItems());
 
-	if (nullptr != SubjectUnit.GetCurWeapon())
+	if (nullptr != SubjectUnit.GetCurWeapon() && SubjectUnit.GetCurWeapon()->IsAttackable(_SubjectUnit->GetMapPos(), _TargetUnit->GetMapPos()))
 	{
 		AttackCommand NewAttack = AttackCalculation(SubjectUnit, TargetUnit);
 		NewAttack.SubjectAttack = true;
@@ -47,7 +47,7 @@ std::list<AttackCommand> UnitCommand::Attack(std::shared_ptr<BattleUnit> _Subjec
 		}
 	}
 
-	if (nullptr != TargetUnit.GetCurWeapon())
+	if (nullptr != TargetUnit.GetCurWeapon() && TargetUnit.GetCurWeapon()->IsAttackable(_SubjectUnit->GetMapPos(), _TargetUnit->GetMapPos()))
 	{
 		AttackCommand NewAttack = AttackCalculation(TargetUnit, SubjectUnit);
 		NewAttack.ChangeOrder();
@@ -69,7 +69,7 @@ std::list<AttackCommand> UnitCommand::Attack(std::shared_ptr<BattleUnit> _Subjec
 
 	if (TargetUnit.GetAttackSpeedPoint() + 4 <= SubjectUnit.GetAttackSpeedPoint())
 	{
-		if (nullptr != SubjectUnit.GetCurWeapon())
+		if (nullptr != SubjectUnit.GetCurWeapon() && SubjectUnit.GetCurWeapon()->IsAttackable(_SubjectUnit->GetMapPos(), _TargetUnit->GetMapPos()))
 		{
 			AttackCommand NewAttack = AttackCalculation(SubjectUnit, TargetUnit);
 			NewAttack.SubjectAttack = true;
@@ -79,7 +79,7 @@ std::list<AttackCommand> UnitCommand::Attack(std::shared_ptr<BattleUnit> _Subjec
 	}
 	else if (SubjectUnit.GetAttackSpeedPoint() + 4 <= TargetUnit.GetAttackSpeedPoint())
 	{
-		if (nullptr != TargetUnit.GetCurWeapon())
+		if (nullptr != TargetUnit.GetCurWeapon() && TargetUnit.GetCurWeapon()->IsAttackable(_SubjectUnit->GetMapPos(), _TargetUnit->GetMapPos()))
 		{
 			AttackCommand NewAttack = AttackCalculation(TargetUnit, SubjectUnit);
 			NewAttack.ChangeOrder();

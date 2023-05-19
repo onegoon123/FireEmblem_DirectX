@@ -1,4 +1,5 @@
 #include "PrecompileHeader.h"	
+#include <GameEngineBase/GameEngineTime.h>
 #include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEngineCore/GameEngineCore.h>
 #include <GameEngineCore/GameEngineCamera.h>
@@ -46,7 +47,7 @@ void BattleAnimationLevel::HitEvent()
 	if (AttackUnit->GetUnitData().GetClassValue() == BattleClass::Mage)
 	{
 		EffectName = "Fire";
-		// 마법사, 어쌔신 경우 다른 이펙트
+		// 마법사 경우 다른 이펙트
 	}
 
 	if ((*BattleIter).IsCritical)
@@ -102,23 +103,20 @@ void BattleAnimationLevel::Start()
 
 void BattleAnimationLevel::Update(float _DeltaTime)
 {
-	TimeEvent.Update(_DeltaTime);
-	if (GameEngineInput::IsPress("Right"))
+	if (GameEngineInput::IsPress("ButtonA") || GameEngineInput::IsPress("LeftClick"))
 	{
-		LeftUnit->GetTransform()->AddLocalPosition(float4::Right * 100 * _DeltaTime);
+		GameEngineTime::GlobalTime.SetTimeScale(2.0f);
 	}
-	if (GameEngineInput::IsPress("Up"))
+	if (GameEngineInput::IsFree("ButtonA") && GameEngineInput::IsFree("LeftClick"))
 	{
-		LeftUnit->GetTransform()->AddLocalPosition(float4::Forward * 100 * _DeltaTime);
+		GameEngineTime::GlobalTime.SetTimeScale(1.0f);
 	}
-	if (GameEngineInput::IsPress("Down"))
-	{
-		LeftUnit->GetTransform()->AddLocalPosition(float4::Back * 100 * _DeltaTime);
-	}
+
 	if (GameEngineInput::IsDown("ButtonB") || GameEngineInput::IsDown("Start") || GameEngineInput::IsUp("RightClick"))
 	{
 		GameEngineCore::ChangeLevel("BattleLevel");
 	}
+	TimeEvent.Update(_DeltaTime);
 }
 
 void BattleAnimationLevel::LevelChangeStart()
@@ -189,5 +187,6 @@ void BattleAnimationLevel::Test()
 
 void BattleAnimationLevel::End()
 {
+	GameEngineTime::GlobalTime.SetTimeScale(1.0f);
 	GameEngineCore::ChangeLevel("BattleLevel");
 }
