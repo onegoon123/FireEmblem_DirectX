@@ -37,7 +37,12 @@ public:
 
 
 	static std::list<AttackCommand> Attack(std::shared_ptr<BattleUnit> _SubjectUnit, std::shared_ptr<BattleUnit> _TargetUnit);
+	// 공격시 결과를 미리 계산하는 기능
+	static AttackCommand AttackSimulation(std::shared_ptr<BattleUnit> _SubjectUnit, std::shared_ptr<BattleUnit> _TargetUnit);
+	// 일반적인 공격
 	static AttackCommand AttackCalculation(Unit& _SubjectUnit, Unit& _TargetUnit);
+	// 시뮬레이션용 랜덤을 사용하지 않는 공격
+	static AttackCommand AttackCalculationNoRandom(Unit& _SubjectUnit, Unit& _TargetUnit);
 	static void Wait(std::shared_ptr<BattleUnit> _SubjectUnit);
 	static void ItemUse(std::shared_ptr<BattleUnit> _SubjectUnit, std::list<std::shared_ptr<Item>>::iterator& _ItemIter);
 	static void PhaseStart(Faction _Faction);

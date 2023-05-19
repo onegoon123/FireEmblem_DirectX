@@ -108,6 +108,8 @@ public:
 		return Str;
 	}
 
+
+
 	// (적 전용) 공격범위 표시여부 반환
 	bool GetIsCheckTile() { return IsCheckTile; }
 	// (적 전용) 공격범위 표시여부 지정

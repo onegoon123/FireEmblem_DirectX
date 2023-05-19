@@ -8,7 +8,7 @@
 #include "BattleUnit.h"
 #include "TileRender.h"
 #include "BattleMap.h"
-
+#include "UnitCommand.h"
 bool BattleLevel::UnitMoveAnim()
 {
 	if (false == SelectUnit->GetIsMove())
@@ -455,6 +455,78 @@ void BattleLevel::MoveCalculation()
 	}
 }
 
+void BattleLevel::EnemyFindTarget()
+{
+	// 공격가능한 유닛들
+	std::vector<std::shared_ptr<BattleUnit>> Targets;
+	Targets.reserve(PlayerUnits.size());
+
+	for (std::shared_ptr<BattleUnit> _Player : PlayerUnits)
+	{
+		if (true == _Player->GetIsDie()) { continue; }
+		int2 PlayerPos = _Player->GetMapPos();
+		if (true == IsAttack[PlayerPos.y][PlayerPos.x])
+		{
+			Targets.push_back(_Player);
+		}
+	}
+
+	if (Targets.size() == 0)
+	{
+		TargetUnit = nullptr;
+		return;
+	}
+	if (Targets.size() == 1)
+	{
+		TargetUnit = Targets.front();
+		return;
+	}
+
+	int TargetPriority = -99;	// 타겟의 우선도
+
+	// 타겟 우선도에 의한 결정
+	for (int i = 0; i < Targets.size(); i++)
+	{
+		int Priority = 0;
+		int BeforeTargetHP = Targets[i]->GetUnitData().GetHP();
+		AttackCommand AttackData = UnitCommand::AttackSimulation(SelectUnit, Targets[i]);
+
+		if (AttackData.TargetUnit.GetIsDie() == true)
+		{
+			// 적을 사망시키면 우선도 상승
+			Priority += 2;
+		}
+		if (AttackData.SubjectUnit.GetIsDie() == false)
+		{
+			// 내가 안죽으면 우선도 상승
+			Priority += 1;
+		}
+		if (BeforeTargetHP == AttackData.TargetUnit.GetHP())
+		{
+			// 대미지를 넣지 못하면 우선도 하락
+			Priority -= 1;
+		}
+		if (AttackData.TargetUnit.GetClassValue() == BattleClass::Cleric)
+		{
+			// 타겟이 힐러라면 우선도 상승
+			Priority += 1;
+		}
+		if (Targets[i]->GetUnitData().GetRangeStat() < SelectUnit->GetUnitData().GetRangeStat())
+		{
+			// 상대보다 공격 사거리가 길면 우선도 상승
+			Priority += 1;
+		}
+
+		if (TargetPriority < Priority)
+		{
+			TargetUnit = Targets[i];
+			TargetPriority = Priority;
+		}
+	}
+	
+
+}
+
 void BattleLevel::MoveCalculationForEnemyAttack()
 {
 	int2 StartPos = SelectUnit->GetMapPos();
@@ -464,6 +536,12 @@ void BattleLevel::MoveCalculationForEnemyAttack()
 	{
 		return;
 	}
+	if (SelectUnit->IsAttackable(StartPos.GetDistance(TargetPos)))
+	{
+		ArrowPos.clear();
+		return;
+	}
+
 
 	CalData NewData = CalData();
 	NewData.Pos = StartPos;

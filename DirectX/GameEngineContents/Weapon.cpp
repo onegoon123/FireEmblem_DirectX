@@ -193,14 +193,13 @@ void Weapon::SetWeapon_KillingSword()
 
 void Weapon::SetWeapon_ManiKatti()
 {
-	MsgTextBox("임시로 마니카티의 사거리를 늘려놓았습니다.");
 	WeaponTypeValue = WeaponType::Sword;
 	SetName("마니 카티");
 	Damage = 8;
 	Hit = 80;
 	Critical = 20;
 	Weight = 3;
-	Range = 3;
+	Range = 1;
 	Uses = 45;
 	MaxUses = 45;
 }

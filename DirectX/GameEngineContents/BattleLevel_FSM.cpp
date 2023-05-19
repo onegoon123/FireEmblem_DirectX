@@ -629,7 +629,8 @@ void BattleLevel::EnemyMoveStart()
 	int Min = 9999;
 
 	MoveSearchForEnemy();
-
+	EnemyFindTarget();
+	/*
 	TargetUnit = nullptr;
 
 	for (std::shared_ptr<BattleUnit> _Player : PlayerUnits)
@@ -642,6 +643,7 @@ void BattleLevel::EnemyMoveStart()
 			break;
 		}
 	}
+	*/
 
 	if (TargetUnit == nullptr)
 	{
@@ -681,7 +683,11 @@ void BattleLevel::EnemyMoveStart()
 	MainCursor->SetMapPos(TargetUnit->GetMapPos());
 	ArrowPos.clear();
 	MoveCalculationForEnemyAttack();
-
+	if (ArrowPos.size() == 0)
+	{
+		MoveIndex = -1;
+		return;
+	}
 	int2 MovePos = ArrowPos.back();
 	MainCursor->SetMapPos(MovePos);
 
@@ -707,7 +713,10 @@ void BattleLevel::EnemyMoveUpdate(float _DeltaTime)
 
 void BattleLevel::EnemyMoveEnd()
 {
-	SelectUnit->SetMapPos(ArrowPos.back());
+	if (ArrowPos.size() != 0)
+	{
+		SelectUnit->SetMapPos(ArrowPos.back());
+	}
 	Terrain TerrainData = MainMap->TerrainData[SelectUnit->GetMapPos().y][SelectUnit->GetMapPos().x];
 	SelectUnit->SetTerrain(TerrainData);
 	SelectUnit->SetIdle();

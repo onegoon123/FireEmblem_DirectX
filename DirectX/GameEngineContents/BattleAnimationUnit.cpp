@@ -60,6 +60,7 @@ void BattleAnimationUnit::SetAnimation(UnitIdentityCode _IdentityValue)
 
 	CurAnimation->On();
 	CurAnimation->ChangeAnimation("Idle");
+	EffectAnimation->ChangeAnimation("Idle");
 }
 
 void BattleAnimationUnit::Attack()
