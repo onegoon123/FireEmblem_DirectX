@@ -30,7 +30,7 @@ void TileRender::Create(int2 _Scale)
 		Renders[y].resize(_Scale.x);
 		for (int x = 0; x < _Scale.x; x++)
 		{
-			Renders[y][x] = CreateComponent<SpriteRenderer>();
+			Renders[y][x] = CreateComponent<SpriteRenderer>(RenderOrder::Tile);
 			Renders[y][x]->GetTransform()->SetLocalScale({ 64,64 });
 			Renders[y][x]->GetTransform()->SetLocalPosition(float4(x * 64.f, y * 64.f));
 			Renders[y][x]->CreateAnimation({ "Move", "Tile.png", 0, 15, 0.1f, true, false });

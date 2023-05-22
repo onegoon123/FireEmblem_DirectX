@@ -2,14 +2,11 @@
 #include "BattleLevel.h"
 #include "BattleUnit.h"
 #include "UnitCommand.h"
-#include "UnitCommandUI.h"
-#include "AttackUI.h"
-#include "ItemUI.h"
 #include "Item.h"
+#include "BattleLevelUI.h"
 void BattleLevel::UnitCommand_Item()
 {
-	UI_UnitCommand->Off();
-	UI_Item->On(SelectUnit);
+	BattleUI->ItemOn(SelectUnit);
 }
 
 void BattleLevel::UnitCommand_Wait()
@@ -21,8 +18,7 @@ void BattleLevel::UnitCommand_Wait()
 
 void BattleLevel::UnitCommand_Attack()
 {
-	UI_UnitCommand->Off();
-	UI_Attack->On(SelectUnit, AttackableUnits);
+	BattleUI->AttackOn(SelectUnit, AttackableUnits);
 }
 
 void BattleLevel::UnitCommand_Exchange()
@@ -40,9 +36,7 @@ void BattleLevel::UnitCommand_Cancel()
 
 void BattleLevel::UnitCommand_CommandCancel()
 {
-	UI_Attack->Off();
-	UI_Item->Off();
-	UI_UnitCommand->On();
+	BattleUI->UnitCommandOn();
 }
 
 void BattleLevel::UnitCommand_TargetAttack(std::shared_ptr<BattleUnit> _Target)
@@ -55,7 +49,7 @@ void BattleLevel::UnitCommand_TargetAttack(std::shared_ptr<BattleUnit> _Target)
 void BattleLevel::UnitCommand_ItemUse(std::list<std::shared_ptr<Item>>::iterator& _ItemIter)
 {
 	ItemCode _ItemCode = (*_ItemIter)->GetItemCode();
-	UI_Item->Off();
+	BattleUI->AllOff();
 	UnitCommand::ItemUse(SelectUnit, _ItemIter);
 	SelectUnit->SetIsTurnEnd(true);
 	ChangeState(BattleState::Select);

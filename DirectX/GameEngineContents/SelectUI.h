@@ -1,16 +1,7 @@
 #pragma once
 #include <GameEngineCore/GameEngineActor.h>
-
-enum class UIDir
-{
-	None,
-	LeftUp,
-	LeftDown,
-	RightUp,
-	RightDown
-};
-
-class SpriteRenderer;
+#include "ContentsEnum.h"
+class GameEngineUIRenderer;
 class BattleUnit;
 class SelectUIObject
 {
@@ -18,7 +9,7 @@ public:
 	SelectUIObject() {}
 	~SelectUIObject() {}
 
-	std::shared_ptr<SpriteRenderer> Render = nullptr;
+	std::shared_ptr<GameEngineUIRenderer> Render = nullptr;
 	UIDir CurDir = UIDir::None;
 	UIDir NextDir = UIDir::None;
 
@@ -65,8 +56,8 @@ private:
 	SelectUIObject Terrain;	// 지형 표시UI
 	SelectUIObject UnitData;	// 유닛 표시UI
 
-	std::shared_ptr<SpriteRenderer> HPBarRender = nullptr;
-	std::shared_ptr<SpriteRenderer> PortraitRender = nullptr;
+	std::shared_ptr<GameEngineUIRenderer> HPBarRender = nullptr;
+	std::shared_ptr<GameEngineUIRenderer> PortraitRender = nullptr;
 	bool UnitDataOn = false;
 	UIDir CursorDir = UIDir::LeftUp;
 };

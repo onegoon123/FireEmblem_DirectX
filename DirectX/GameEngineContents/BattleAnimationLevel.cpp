@@ -3,6 +3,7 @@
 #include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEngineCore/GameEngineCore.h>
 #include <GameEngineCore/GameEngineCamera.h>
+#include <GameEngineCore/GameEngineUIRenderer.h>
 #include "BattleAnimationLevel.h"
 #include "SpriteRenderer.h"
 #include "BattleAnimationUnit.h"
@@ -78,27 +79,27 @@ void BattleAnimationLevel::Start()
 	GetMainCamera()->SetProjectionType(CameraType::Perspective);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -554.0f });
 	std::shared_ptr<GameEngineActor> NewActor = CreateActor<GameEngineActor>();
-	BackgroundRender = NewActor->CreateComponent<SpriteRenderer>();
+	BackgroundRender = NewActor->CreateComponent<SpriteRenderer>(RenderOrder::Map);
 	BackgroundRender->SetTexture("BattleBackground_Plains.png");
 	BackgroundRender->SetLocalScale({ 960, 640 });
 
-	TerrainLeft = NewActor->CreateComponent<SpriteRenderer>();
+	TerrainLeft = NewActor->CreateComponent<SpriteRenderer>(RenderOrder::Tile);
 	TerrainLeft->SetTexture("Plain_Close.png");
 	TerrainLeft->SetLocalScale({ 480, 160 });
 	TerrainLeft->GetTransform()->SetLocalPosition({ -240, -112 });
 
-	TerrainRight = NewActor->CreateComponent<SpriteRenderer>();
+	TerrainRight = NewActor->CreateComponent<SpriteRenderer>(RenderOrder::Tile);
 	TerrainRight->SetTexture("Plain_Close.png");
 	TerrainRight->SetLocalScale({ -480, 160 });
 	TerrainRight->GetTransform()->SetLocalPosition({ 240, -112 });
 
-	RightUnit = CreateActor<BattleAnimationUnit>();
-	LeftUnit = CreateActor<BattleAnimationUnit>();
+	RightUnit = CreateActor<BattleAnimationUnit>(RenderOrder::Unit);
+	LeftUnit = CreateActor<BattleAnimationUnit>(RenderOrder::Unit);
 	LeftUnit->GetTransform()->SetLocalNegativeScaleX();
 
-	UIRender = NewActor->CreateComponent<SpriteRenderer>();
+	UIRender = NewActor->CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
 	UIRender->SetTexture("BattleUI.png");
-	UIRender->SetLocalScale({ 1024, 640 });
+	UIRender->GetTransform()->SetLocalScale({ 1024, 640 });
 }
 
 void BattleAnimationLevel::Update(float _DeltaTime)

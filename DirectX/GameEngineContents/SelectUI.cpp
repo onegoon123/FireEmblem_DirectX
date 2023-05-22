@@ -2,7 +2,7 @@
 #include "SelectUI.h"
 #include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEngineCore/GameEngineLevel.h>
-#include "SpriteRenderer.h"
+#include <GameEngineCore/GameEngineUIRenderer.h>
 #include "ContentsEnum.h"
 #include "BattleUnit.h"
 SelectUI::SelectUI()
@@ -143,7 +143,7 @@ void SelectUI::UnitUIOff()
 
 void SelectUI::Start()
 {
-	Goal.Render = CreateComponent<SpriteRenderer>();
+	Goal.Render = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
 	Goal.Render->SetTexture("ClearGoal.png"); 
 	Goal.Render->GetTransform()->SetWorldScale({ 344, 100 });
 	Goal.BenchmarkHidePos = { -300, 370 };
@@ -151,7 +151,7 @@ void SelectUI::Start()
 	Goal.CurDir = UIDir::None;
 	Goal.NextDir = UIDir::None;
 
-	Terrain.Render = CreateComponent<SpriteRenderer>();
+	Terrain.Render = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
 	Terrain.Render->SetTexture("terrainUI.png");
 	Terrain.Render->GetTransform()->SetWorldScale({ 192, 212 });
 	Terrain.BenchmarkHidePos = { -576, 214 };
@@ -159,7 +159,7 @@ void SelectUI::Start()
 	Terrain.CurDir = UIDir::None;
 	Terrain.NextDir = UIDir::None;
 
-	UnitData.Render = CreateComponent<SpriteRenderer>();
+	UnitData.Render = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
 	UnitData.Render->SetTexture("ActorUI.png");
 	UnitData.Render->GetTransform()->SetWorldScale({ 344, 152, 100 });
 	UnitData.BenchmarkHidePos = { -652, 228 };
@@ -167,15 +167,15 @@ void SelectUI::Start()
 	UnitData.CurDir = UIDir::None;
 	UnitData.NextDir = UIDir::None;
 
-	std::shared_ptr<GameEngineActor> _Actor = GetLevel()->CreateActor<GameEngineActor>();
+	std::shared_ptr<GameEngineActor> _Actor = GetLevel()->CreateActor<GameEngineActor>(RenderOrder::UI);
 	_Actor->GetTransform()->SetParent(UnitData.Render->GetTransform());
 	_Actor->GetTransform()->SetLocalPosition(float4::Zero);
-	HPBarRender = _Actor->CreateComponent<SpriteRenderer>();
+	HPBarRender = _Actor->CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
 	HPBarRender->SetTexture("HPBar.png");
 	HPBarRender->GetTransform()->SetWorldScale({ 168, 8 });
 	HPBarRender->GetTransform()->SetLocalPosition({ 64, -48 });
 
-	PortraitRender = _Actor->CreateComponent<SpriteRenderer>();
+	PortraitRender = _Actor->CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
 	PortraitRender->SetTexture("BattleIcon_Lyn.png");
 	//PortraitRender->GetTransform()->SetParent(UnitData.Render->GetTransform());
 	PortraitRender->GetTransform()->SetWorldScale({ 128, 128 });

@@ -2,15 +2,25 @@
 
 enum class RenderOrder
 {
-	Map,
-	Tile,
-	Arrow,
-	Player,
-	Monster,
-	UI,
-	UICursor,
-};
+	Map,	// 맵 (배경)
+	Tile,	// 타일 (이동, 공격 범위)
+	Arrow,	// 화살표 (이동 방향)
+	Unit,	// 유닛
+	MapCursor,
+	Effect, // 효과
 
+	UI,		// UI
+	UICursor,	// UI위 표시되는 이미지
+
+};
+enum class UIDir
+{
+	None,
+	LeftUp,
+	LeftDown,
+	RightUp,
+	RightDown
+};
 enum class Faction
 {
 	None,

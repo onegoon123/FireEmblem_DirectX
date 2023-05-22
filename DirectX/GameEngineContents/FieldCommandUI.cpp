@@ -1,8 +1,8 @@
 #include "PrecompileHeader.h"
 #include "FieldCommandUI.h"
 #include <GameEnginePlatform/GameEngineInput.h>
+#include <GameEngineCore/GameEngineUIRenderer.h>
 #include "BattleLevel.h"
-#include "SpriteRenderer.h"
 #include "UICursor.h"
 
 FieldCommandUI::FieldCommandUI() 
@@ -14,7 +14,7 @@ FieldCommandUI::~FieldCommandUI()
 {
 }
 
-void FieldCommandUI::Setting(BattleLevel* _Level)
+void FieldCommandUI::Setting(BattleLevel* _Level, std::shared_ptr<UICursor> _Cursor)
 {
 	LevelPtr = _Level;
 	CancelFunction = std::bind(&BattleLevel::FieldCommand_Cancel, LevelPtr);
@@ -24,7 +24,7 @@ void FieldCommandUI::Setting(BattleLevel* _Level)
 	CommandFunctions.push_back(std::bind(&BattleLevel::FieldCommand_Exit, LevelPtr));
 	CommandFunctions.push_back(std::bind(&BattleLevel::FieldCommand_PhaseEnd, LevelPtr));
 	CurrentCursor = 0;
-	Cursor = _Level->GetUICursor();
+	Cursor = _Cursor;
 }
 
 void FieldCommandUI::On()
@@ -47,12 +47,12 @@ void FieldCommandUI::Off()
 
 void FieldCommandUI::Start()
 {
-	WindowRender = CreateComponent<SpriteRenderer>();
+	WindowRender = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
 	WindowRender->GetTransform()->SetWorldScale({ 196, 356 });
 	WindowRender->GetTransform()->SetLocalPosition({ 334, 36 });
 	WindowRender->SetTexture("Select5.png");
 
-	SelectRender = CreateComponent<SpriteRenderer>();
+	SelectRender = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
 	SelectRender->GetTransform()->SetWorldScale({ 144, 20 });
 	SelectRender->GetTransform()->SetLocalPosition(StartSelectPos);
 	SelectRender->SetTexture("CommandSelect.png");

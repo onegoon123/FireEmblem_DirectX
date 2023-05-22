@@ -183,6 +183,10 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="BattleLevelUI.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="BattleLevel_Battle.cpp" />
     <ClCompile Include="BattleLevel_FieldCommand.cpp">
       <SubType>
@@ -304,6 +308,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="BattleLevel.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="BattleLevelUI.h">
       <SubType>
       </SubType>
     </ClInclude>

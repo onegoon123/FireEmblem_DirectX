@@ -21,7 +21,7 @@ cbuffer EffectData : register(b0)
 }
 
 Texture2D DiffuseTex : register(t0);
-SamplerState CLAMPSAMPLER : register(s0);
+SamplerState WRAPSAMPLER : register(s0);
 
 static const float Weight[13] =
 {
@@ -46,7 +46,7 @@ float4 Texture_PS(OutPut _Value) : SV_Target0
                 
                 float2 AtlasUV;
                     
-                Out += Weight[6 + i] * DiffuseTex.Sample(CLAMPSAMPLER, uv.xy);;
+                Out += Weight[6 + i] * DiffuseTex.Sample(WRAPSAMPLER, uv.xy);;
             }
             Out /= Total;
         }
@@ -59,17 +59,16 @@ float4 Texture_PS(OutPut _Value) : SV_Target0
             for (int i = -6; i < 6; i++)
             {
                 uv.xy = t.xy + float2(tu * i, 0);
-                Out2 += Weight[6 + i] * DiffuseTex.Sample(CLAMPSAMPLER, uv.xy);;
+                Out2 += Weight[6 + i] * DiffuseTex.Sample(WRAPSAMPLER, uv.xy);;
             }
             Out2 /= Total;
         }
         Out += Out2;
         Out /= 2;
-
     }
     else
     {
-        Out = DiffuseTex.Sample(CLAMPSAMPLER, _Value.UV.xy);
+        Out = DiffuseTex.Sample(WRAPSAMPLER, _Value.UV.xy);
     }
     
 

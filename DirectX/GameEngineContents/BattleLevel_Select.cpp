@@ -5,12 +5,12 @@
 #include "MapCursor.h"
 #include "ArrowRender.h"
 #include "BattleMap.h"
-#include "SelectUI.h"
 #include "BattleUnit.h"
 #include "TileRender.h"
 #include "SpriteRenderer.h"
 #include "UnitCommand.h"
 #include "FERandom.h"
+#include "BattleLevelUI.h"
 const float PreesTime = 0.2f;
 bool PressOK = false;
 void BattleLevel::CursorMove()
@@ -128,7 +128,8 @@ void BattleLevel::CursorUnitSelect()
 		}
 	}
 	Tiles->Clear();
-	UI_Select->UnitUIOff();
+	BattleUI->AllOff();
+	BattleUI->UnitUIOff();
 }
 
 void BattleLevel::CursorAndArrowMove()
@@ -308,7 +309,7 @@ void BattleLevel::CursorDirCheck()
 		}
 	}
 
-	UI_Select->SetCursorDir(CursorDir);
+	BattleUI->SetCursorDir(CursorDir);
 }
 
 void BattleLevel::UnitSelect()
@@ -458,6 +459,6 @@ void BattleLevel::UnitSelect()
 
 void BattleLevel::SetUI_UnitData()
 {
-	UI_Select->SetUnitData(SelectUnit);
+	BattleUI->SetUnitData(SelectUnit);
 }
 

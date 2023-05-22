@@ -4,6 +4,7 @@
 #include "UnitCommand.h"
 // Ό³Έν :
 class SpriteRenderer;
+class GameEngineUIRenderer;
 class BattleAnimationUnit;
 class BattleAnimationLevel : public GameEngineLevel
 {
@@ -42,7 +43,7 @@ private:
 	std::shared_ptr<BattleAnimationUnit> TargetAnimation;
 	std::shared_ptr<BattleAnimationUnit> LeftUnit;
 	std::shared_ptr<BattleAnimationUnit> RightUnit;
-	std::shared_ptr<SpriteRenderer> UIRender;
+	std::shared_ptr<GameEngineUIRenderer> UIRender;
 
 	void Test();
 	void End();

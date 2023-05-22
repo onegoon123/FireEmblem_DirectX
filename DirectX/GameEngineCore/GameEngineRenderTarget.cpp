@@ -28,6 +28,7 @@ void GameEngineRenderTarget::ResCreate(std::shared_ptr<GameEngineTexture> _Textu
 
 void GameEngineRenderTarget::ResCreate(DXGI_FORMAT _Format, float4 _Scale, float4 _Color)
 {
+	Color = _Color;
 	D3D11_TEXTURE2D_DESC Desc = { 0 };
 	Desc.ArraySize = 1;
 	Desc.Width = _Scale.uix();

@@ -144,6 +144,7 @@ public:
 
 
 protected:
+	void Start() override;
 	void SpriteRenderInit();
 	float4 AtlasData;
 
@@ -164,6 +165,5 @@ private:
 
 	float ScaleRatio = 1.0f;
 
-	void Start() override;
 };
 

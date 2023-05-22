@@ -3,7 +3,7 @@
 
 class MapCursor;
 class UICursor;
-class SpriteRenderer;
+class GameEngineUIRenderer;
 class BattleLevel;
 class Weapon;
 class BattleUnit;
@@ -20,7 +20,7 @@ public:
 	AttackUI& operator=(const AttackUI& _Other) = delete;
 	AttackUI& operator=(AttackUI&& _Other) noexcept = delete;
 
-	void Setting(BattleLevel* _Level);
+	void Setting(BattleLevel* _Level, std::shared_ptr<UICursor> _Cursor);
 	void On(std::shared_ptr<BattleUnit> _SelectUnit, std::list<std::shared_ptr<BattleUnit>>& _TargetUnits);
 	//void On();
 	void Off();
@@ -40,14 +40,14 @@ private:
 	std::function<void(std::shared_ptr<BattleUnit>)> AttackFunction;
 	std::function<void()> CancelFunction;
 
-	std::shared_ptr<MapCursor> Cursor = nullptr;	// 커서
-	std::shared_ptr<UICursor> UICursor = nullptr;	// 커서
-	std::shared_ptr<SpriteRenderer> SelectRender = nullptr; // 선택배경
-	std::shared_ptr<SpriteRenderer> WindowRender = nullptr;	// 배경창
-	std::shared_ptr<SpriteRenderer> InfoRender = nullptr;	// 스탯 정보
-	std::shared_ptr<SpriteRenderer> Portrait = nullptr;		// 초상화
-	std::shared_ptr<SpriteRenderer> BattleEx = nullptr;		// 전투 예상
-	std::list<std::shared_ptr<SpriteRenderer>> WeaponeIcon;
+	std::shared_ptr<MapCursor> Cursor_Map = nullptr;	// 커서
+	std::shared_ptr<UICursor> Cursor_UI = nullptr;	// 커서
+	std::shared_ptr<GameEngineUIRenderer> SelectRender = nullptr; // 선택배경
+	std::shared_ptr<GameEngineUIRenderer> WindowRender = nullptr;	// 배경창
+	std::shared_ptr<GameEngineUIRenderer> InfoRender = nullptr;	// 스탯 정보
+	std::shared_ptr<GameEngineUIRenderer> Portrait = nullptr;		// 초상화
+	std::shared_ptr<GameEngineUIRenderer> BattleEx = nullptr;		// 전투 예상
+	std::list<std::shared_ptr<GameEngineUIRenderer>> WeaponeIcon;
 
 
 	std::shared_ptr<BattleUnit> SelectUnit = nullptr;;

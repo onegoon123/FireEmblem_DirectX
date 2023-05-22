@@ -3,20 +3,6 @@
 #include "ContentsEnum.h"
 #include "Int2.h"
 
-class BattleMap;
-class MapCursor;
-class BattleUnit;
-class TileRender;
-class ArrowRender;
-class SelectUI;
-class UnitCommandUI;
-class PhaseUI;
-class AttackUI;
-class ItemUI;
-class FieldCommandUI;
-class UICursor;
-class UIWindow;
-class Item;
 class BattleLevel : public GameEngineLevel
 {
 public:
@@ -30,11 +16,7 @@ public:
 	BattleLevel& operator=(const BattleLevel& _Other) = delete;
 	BattleLevel& operator=(BattleLevel&& _Other) = delete;
 
-	std::shared_ptr <UICursor> GetUICursor()
-	{
-		return UI_Cursor;
-	}
-	std::shared_ptr <MapCursor> GetMapCursor()
+	std::shared_ptr <class MapCursor> GetMapCursor()
 	{
 		return MainCursor;
 	}
@@ -71,9 +53,9 @@ private:
 	//void (BattleLevel::* StateEnd)() = nullptr;		// 스테이트 엔드
 
 	// Actor
-	std::shared_ptr<BattleMap> MainMap = nullptr;
-	std::shared_ptr <MapCursor> MainCursor = nullptr;
-	std::list<std::shared_ptr <BattleUnit>> PlayerUnits = std::list< std::shared_ptr <BattleUnit>>();		// 플레이어 유닛 리스트
+	std::shared_ptr<class BattleMap> MainMap = nullptr;
+	std::shared_ptr <class MapCursor> MainCursor = nullptr;
+	std::list<std::shared_ptr <class BattleUnit>> PlayerUnits = std::list< std::shared_ptr <BattleUnit>>();		// 플레이어 유닛 리스트
 	std::list< std::shared_ptr <BattleUnit>> EnemyUnits = std::list< std::shared_ptr <BattleUnit>>();		// 적 유닛 리스트
 	std::list< std::shared_ptr <BattleUnit>> AttackableUnits = std::list< std::shared_ptr <BattleUnit>>();	// 공격 가능한 유닛 리스트
 	std::list< std::shared_ptr <BattleUnit>> CloseUnits = std::list< std::shared_ptr <BattleUnit>>();		// 주변에 있는 유닛 리스트
@@ -81,8 +63,8 @@ private:
 	std::shared_ptr <BattleUnit> TargetUnit = nullptr;
 
 	// Map 관련
-	std::shared_ptr <TileRender> Tiles = nullptr;
-	std::shared_ptr <ArrowRender> Arrows = nullptr;
+	std::shared_ptr <class TileRender> Tiles = nullptr;
+	std::shared_ptr <class ArrowRender> Arrows = nullptr;
 	std::vector<int2> ArrowPos = std::vector<int2>();
 	std::vector<std::vector<bool>> IsMove = std::vector<std::vector<bool>>();
 	std::vector<std::vector<bool>> IsAttack = std::vector<std::vector<bool>>();
@@ -92,14 +74,7 @@ private:
 	bool IsSkip = false;
 
 	// UI
-	std::shared_ptr <SelectUI> UI_Select = nullptr;
-	std::shared_ptr <UnitCommandUI> UI_UnitCommand = nullptr;
-	std::shared_ptr <FieldCommandUI> UI_FieldCommand = nullptr;
-	std::shared_ptr <AttackUI> UI_Attack = nullptr;
-	std::shared_ptr <ItemUI> UI_Item = nullptr;
-	std::shared_ptr <PhaseUI> UI_Phase = nullptr;
-	std::shared_ptr <UICursor> UI_Cursor = nullptr;
-	std::shared_ptr <UIWindow> UI_Window = nullptr;
+	std::shared_ptr<class BattleLevelUI> BattleUI = nullptr;
 
 	const float MoveSpeed = 10;
 	int MoveIndex = 0;
@@ -227,7 +202,7 @@ public:
 	void UnitCommand_Cancel();
 	void UnitCommand_CommandCancel();
 	void UnitCommand_TargetAttack(std::shared_ptr<BattleUnit> _Target);
-	void UnitCommand_ItemUse(std::list<std::shared_ptr<Item>>::iterator& _ItemIter);
+	void UnitCommand_ItemUse(std::list<std::shared_ptr<class Item>>::iterator& _ItemIter);
 private:
 
 #pragma endregion

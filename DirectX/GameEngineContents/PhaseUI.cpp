@@ -1,6 +1,6 @@
 #include"PrecompileHeader.h"
 #include "PhaseUI.h"
-#include "SpriteRenderer.h"
+#include <GameEngineCore/GameEngineUIRenderer.h>
 PhaseUI::PhaseUI() 
 {
 }
@@ -51,7 +51,7 @@ void PhaseUI::PhaseOff()
 
 void PhaseUI::Start()
 {
-	Renderer = CreateComponent<SpriteRenderer>();
+	Renderer = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
 	Renderer->GetTransform()->SetWorldScale({ 712, 76 });
 	Renderer->Off();
 

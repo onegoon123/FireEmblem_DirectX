@@ -3,7 +3,7 @@
 #include "ContentsEnum.h"
 class MapCursor;
 class UICursor;
-class SpriteRenderer;
+class GameEngineUIRenderer;
 class BattleLevel;
 class Weapon;
 class BattleUnit;
@@ -21,7 +21,7 @@ public:
 	ItemUI& operator=(const ItemUI& _Other) = delete;
 	ItemUI& operator=(ItemUI&& _Other) noexcept = delete;
 
-	void Setting(BattleLevel* _Level);
+	void Setting(BattleLevel* _Level, std::shared_ptr<UICursor> _Cursor);
 	void On(std::shared_ptr<BattleUnit> _SelectUnit);
 	void Off();
 
@@ -42,14 +42,14 @@ private:
 	std::function<void()> CancelFunction;
 	std::vector<std::function<void()>> UseFunctions;
 
-	std::shared_ptr<UICursor> UICursor = nullptr;	// 커서
-	std::shared_ptr<SpriteRenderer> SelectRender = nullptr; // 선택배경
-	std::shared_ptr<SpriteRenderer> WindowRender = nullptr;	// 배경창
-	std::shared_ptr<SpriteRenderer> InfoRender = nullptr;	// 아이템 정보
-	std::shared_ptr<SpriteRenderer> Portrait = nullptr;		// 초상화
-	std::shared_ptr<SpriteRenderer> ItemUseWindow = nullptr;	// 아이템 사용 창
-	std::shared_ptr<SpriteRenderer> ItemUseSelect = nullptr;	// 아이템 사용 선택
-	std::list<std::shared_ptr<SpriteRenderer>> Icons;
+	std::shared_ptr<UICursor> Cursor = nullptr;	// 커서
+	std::shared_ptr<GameEngineUIRenderer> SelectRender = nullptr; // 선택배경
+	std::shared_ptr<GameEngineUIRenderer> WindowRender = nullptr;	// 배경창
+	std::shared_ptr<GameEngineUIRenderer> InfoRender = nullptr;	// 아이템 정보
+	std::shared_ptr<GameEngineUIRenderer> Portrait = nullptr;		// 초상화
+	std::shared_ptr<GameEngineUIRenderer> ItemUseWindow = nullptr;	// 아이템 사용 창
+	std::shared_ptr<GameEngineUIRenderer> ItemUseSelect = nullptr;	// 아이템 사용 선택
+	std::list<std::shared_ptr<GameEngineUIRenderer>> Icons;
 	size_t ItemSize = 0;
 	std::list<std::shared_ptr<Item>>::iterator ItemIter;
 	std::shared_ptr<BattleUnit> SelectUnit = nullptr;;

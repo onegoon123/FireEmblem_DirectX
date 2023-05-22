@@ -1,7 +1,7 @@
 #include "PrecompileHeader.h"
 #include "ItemUI.h"
 #include <GameEnginePlatform/GameEngineInput.h>
-#include "SpriteRenderer.h"
+#include <GameEngineCore/GameEngineUIRenderer.h>
 #include "UICursor.h"
 #include "BattleLevel.h"
 #include "BattleUnit.h"
@@ -14,10 +14,10 @@ ItemUI::~ItemUI()
 {
 }
 
-void ItemUI::Setting(BattleLevel* _Level)
+void ItemUI::Setting(BattleLevel* _Level, std::shared_ptr<UICursor> _Cursor)
 {
 	LevelPtr = _Level;
-	UICursor = _Level->GetUICursor();
+	Cursor = _Cursor;
 	CancelFunction = std::bind(&BattleLevel::UnitCommand_CommandCancel, _Level);
 	UseFunction = std::bind(&BattleLevel::UnitCommand_ItemUse, _Level, std::placeholders::_1);
 }
@@ -60,9 +60,9 @@ void ItemUI::On(std::shared_ptr<BattleUnit> _SelectUnit)
 	SelectRender->GetTransform()->SetLocalPosition(StartSelectPos);
 
 	CurrentCursor = 0;
-	UICursor->On();
+	Cursor->On();
 	CursorPos = StartCursorPos;
-	UICursor->GetTransform()->SetLocalPosition(StartCursorPos);
+	Cursor->GetTransform()->SetLocalPosition(StartCursorPos);
 
 	ItemUseWindow->Off();
 	ItemUseSelect->Off();
@@ -84,36 +84,36 @@ void ItemUI::On(std::shared_ptr<BattleUnit> _SelectUnit)
 void ItemUI::Off()
 {
 	GameEngineActor::Off();
-	UICursor->Off();
+	Cursor->Off();
 }
 
 void ItemUI::Start()
 {
-	WindowRender = CreateComponent<SpriteRenderer>();
+	WindowRender = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
 	WindowRender->GetTransform()->SetWorldScale({ 420, 356 });
 	WindowRender->GetTransform()->SetLocalPosition({ -224, 64 });
 	WindowRender->SetTexture("ItemListUI3.png");
 
-	SelectRender = CreateComponent<SpriteRenderer>();
+	SelectRender = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
 	SelectRender->GetTransform()->SetWorldScale({ 368, 20 });
 	SelectRender->GetTransform()->SetLocalPosition(StartSelectPos);
 	SelectRender->SetTexture("ItemSelect.png");
 
-	InfoRender = CreateComponent<SpriteRenderer>();
+	InfoRender = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
 	InfoRender->GetTransform()->SetWorldScale({ 420, 356 });
 	InfoRender->GetTransform()->SetLocalPosition({ 224, -224 });
 	InfoRender->SetTexture("ItemListUI3.png");
 
-	Portrait = CreateComponent<SpriteRenderer>();
+	Portrait = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
 	Portrait->GetTransform()->SetWorldScale({ 384, 320 });
 	Portrait->GetTransform()->SetLocalPosition({ 224, 114 });
 	Portrait->SetTexture("Portrait_Lyn.png");
 
-	ItemUseWindow = CreateComponent<SpriteRenderer>();
+	ItemUseWindow = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
 	ItemUseWindow->GetTransform()->SetWorldScale({ 160, 192 });
 	ItemUseWindow->SetTexture("ItemUse.png");
 
-	ItemUseSelect = CreateComponent<SpriteRenderer>();
+	ItemUseSelect = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
 	ItemUseSelect->GetTransform()->SetWorldScale({ 76, 20 });
 	ItemUseSelect->SetTexture("ItemUseSelect.png");
 
@@ -150,7 +150,7 @@ void ItemUI::ItemSelectUpdate(float _DeltaTime)
 	}
 
 	CursorTimer += _DeltaTime * 10;
-	UICursor->GetTransform()->SetLocalPosition(float4::Lerp(UICursor->GetTransform()->GetLocalPosition(), CursorPos, _DeltaTime * 20));
+	Cursor->GetTransform()->SetLocalPosition(float4::Lerp(Cursor->GetTransform()->GetLocalPosition(), CursorPos, _DeltaTime * 20));
 
 	if (CursorTimer < 1) { return; }
 
@@ -205,7 +205,7 @@ void ItemUI::ItemSelectUpdate(float _DeltaTime)
 
 void ItemUI::ItemSelect()
 {
-	UICursor->GetTransform()->SetLocalPosition(CursorPos);
+	Cursor->GetTransform()->SetLocalPosition(CursorPos);
 	IsItemSelect = true;
 	ItemIter = SelectUnit->GetUnitData().GetItems().begin();
 	std::advance(ItemIter, CurrentCursor);
@@ -218,7 +218,7 @@ void ItemUI::ItemSelect()
 	StartUseCursorPos = float4(-158.0f, 198.0f) + float4::Down * static_cast<float>(CurrentCursor) * 64;
 
 	ItemUseSelect->GetTransform()->SetLocalPosition(StartUseSelectPos);
-	UICursor->GetTransform()->SetLocalPosition(StartUseCursorPos);
+	Cursor->GetTransform()->SetLocalPosition(StartUseCursorPos);
 	UseCursorPos = StartUseCursorPos;
 
 	ItemUseWindow->On();
@@ -275,12 +275,12 @@ void ItemUI::ItemUseUpdate(float _DeltaTime)
 		ItemUseWindow->Off();
 		ItemUseSelect->Off();
 		IsItemSelect = false;
-		UICursor->GetTransform()->SetLocalPosition(StartCursorPos + float4::Down * (64.0f * CurrentCursor));
+		Cursor->GetTransform()->SetLocalPosition(StartCursorPos + float4::Down * (64.0f * CurrentCursor));
 		return;
 	}
 
 	CursorTimer += _DeltaTime * 10;
-	UICursor->GetTransform()->SetLocalPosition(float4::Lerp(UICursor->GetTransform()->GetLocalPosition(), UseCursorPos, _DeltaTime * 20));
+	Cursor->GetTransform()->SetLocalPosition(float4::Lerp(Cursor->GetTransform()->GetLocalPosition(), UseCursorPos, _DeltaTime * 20));
 
 	if (CursorTimer < 1) { return; }
 
@@ -344,7 +344,7 @@ void ItemUI::Equipment()
 	ItemUseWindow->Off();
 	ItemUseSelect->Off();
 	IsItemSelect = false;
-	UICursor->GetTransform()->SetLocalPosition(StartCursorPos + float4::Down * (64.0f * CurrentCursor));
+	Cursor->GetTransform()->SetLocalPosition(StartCursorPos + float4::Down * (64.0f * CurrentCursor));
 }
 
 void ItemUI::Drop()
@@ -354,7 +354,7 @@ void ItemUI::Drop()
 	ItemUseWindow->Off();
 	ItemUseSelect->Off();
 	IsItemSelect = false;
-	UICursor->GetTransform()->SetLocalPosition(StartCursorPos + float4::Down * (64.0f * CurrentCursor));
+	Cursor->GetTransform()->SetLocalPosition(StartCursorPos + float4::Down * (64.0f * CurrentCursor));
 
 	On(SelectUnit);
 }

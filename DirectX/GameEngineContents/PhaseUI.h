@@ -2,7 +2,7 @@
 #include <GameEngineCore/GameEngineActor.h>
 #include "ContentsEnum.h"
 // Ό³Έν :
-class SpriteRenderer;
+class GameEngineUIRenderer;
 class PhaseUI : public GameEngineActor
 {
 public:
@@ -33,7 +33,7 @@ private:
 	};
 	PhaseState CurState = PhaseState::Start;
 
-	std::shared_ptr<SpriteRenderer> Renderer;
+	std::shared_ptr<GameEngineUIRenderer> Renderer;
 	float Timer = 0;
 	bool IsEnd = false;
 

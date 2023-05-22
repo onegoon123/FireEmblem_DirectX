@@ -10,13 +10,7 @@
 #include "TileRender.h"
 #include "ArrowRender.h"
 #include "ContentsEnum.h"
-#include "SelectUI.h"
-#include "UnitCommandUI.h"
-#include "FieldCommandUI.h"
-#include "PhaseUI.h"
-#include "UICursor.h"
-#include "AttackUI.h"
-#include "ItemUI.h"
+#include "BattleLevelUI.h"
 
 BattleLevel::BattleLevel()
 {
@@ -124,41 +118,7 @@ void BattleLevel::Start()
 		IsAttack[i].resize(MainMap->MapScaleInt2.x);
 	}
 
-	UI_Select = CreateActor<SelectUI>();
-	//UI_Select->GetTransform()->SetParent(GetMainCamera()->GetTransform());
-	UI_Select->GetTransform()->SetLocalPosition({ 448, 288, 0 });
-
-	UI_UnitCommand = CreateActor<UnitCommandUI>();
-	//UI_UnitCommand->GetTransform()->SetParent(GetMainCamera()->GetTransform());
-	UI_UnitCommand->GetTransform()->SetLocalPosition({ 448, 288, 0 });
-
-	UI_Attack = CreateActor<AttackUI>();
-	//UI_Attack->GetTransform()->SetParent(GetMainCamera()->GetTransform());
-	UI_Attack->GetTransform()->SetLocalPosition({ 448, 288, 0 });
-
-	UI_Item = CreateActor<ItemUI>();
-	//UI_Attack->GetTransform()->SetParent(GetMainCamera()->GetTransform());
-	UI_Item->GetTransform()->SetLocalPosition({ 448, 288, 0 });
-
-	UI_FieldCommand = CreateActor<FieldCommandUI>();
-	//UI_FieldCommand->GetTransform()->SetParent(GetMainCamera()->GetTransform());
-	UI_FieldCommand->GetTransform()->SetLocalPosition({ 448, 288, 0 });
-
-	UI_Phase = CreateActor<PhaseUI>();
-	//UI_Phase->GetTransform()->SetParent(GetMainCamera()->GetTransform());
-	UI_Phase->GetTransform()->SetLocalPosition({ 448, 288, 0 });
-
-	UI_Cursor = CreateActor<UICursor>();
-
-	//UI_Window = CreateActor<UIWindow>();
-	//UI_Window->GetTransform()->SetParent(&UITransform);
-	//UI_Window->GetTransform()->SetLocalPosition(float4::Zero);
-	//UI_Window->Setting();
-
-	UI_UnitCommand->Setting(this);
-	UI_FieldCommand->Setting(this);
-	UI_Attack->Setting(this);
-	UI_Item->Setting(this);
+	BattleUI = CreateActor<BattleLevelUI>();
 
 	CursorDirCheck();
 	ChangeState(BattleState::PlayerPhase);

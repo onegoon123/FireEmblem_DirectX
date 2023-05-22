@@ -1,7 +1,7 @@
 #pragma once
 #include <GameEngineCore/GameEngineActor.h>
 // Ό³Έν :
-class SpriteRenderer;
+class GameEngineUIRenderer;
 class UICursor : public GameEngineActor
 {
 public:
@@ -19,7 +19,7 @@ protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
 private:
-	std::shared_ptr<SpriteRenderer> CursorRender = nullptr;
+	std::shared_ptr<GameEngineUIRenderer> CursorRender = nullptr;
 
 };
 

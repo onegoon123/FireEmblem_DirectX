@@ -2,7 +2,7 @@
 #include <GameEngineCore/GameEngineActor.h>
 
 class UICursor;
-class SpriteRenderer;
+class GameEngineUIRenderer;
 class BattleLevel;
 class UnitCommandUI : public GameEngineActor
 {
@@ -17,7 +17,7 @@ public:
 	UnitCommandUI& operator=(const UnitCommandUI& _Other) = delete;
 	UnitCommandUI& operator=(UnitCommandUI&& _Other) = delete;
 
-	void Setting(BattleLevel* _Level);
+	void Setting(BattleLevel* _Level, std::shared_ptr<UICursor> _Cursor);
 	void SetCommand(bool _IsAttackable, bool _IsCloseUnit, bool _IsItem);
 
 	void On();
@@ -29,8 +29,8 @@ protected:
 private:
 	BattleLevel* LevelPtr = nullptr;
 	std::shared_ptr<UICursor> Cursor = nullptr;
-	std::shared_ptr<SpriteRenderer> SelectRender = nullptr;
-	std::shared_ptr<SpriteRenderer> WindowRender = nullptr;
+	std::shared_ptr<GameEngineUIRenderer> SelectRender = nullptr;
+	std::shared_ptr<GameEngineUIRenderer> WindowRender = nullptr;
 
 	std::vector<std::function<void()>> CommandFunctions;
 	std::function<void()> CancelFunction;

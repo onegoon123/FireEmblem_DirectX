@@ -289,7 +289,7 @@ bool BattleUnit::IsAttackable(int2 _Other)
 
 void BattleUnit::Start()
 {
-	Renderer = CreateComponent<SpriteRenderer>();
+	Renderer = CreateComponent<SpriteRenderer>(RenderOrder::Unit);
 	Renderer->SetLocalScale({ 192,192 });
 	SetMapPos({ 0,0 });
 }

@@ -1,7 +1,7 @@
 #include "PrecompileHeader.h"
 #include "UnitCommandUI.h"
 #include <GameEnginePlatform/GameEngineInput.h>
-#include "SpriteRenderer.h"
+#include <GameEngineCore/GameEngineUIRenderer.h>
 #include "BattleLevel.h"
 #include "UICursor.h"
 UnitCommandUI::UnitCommandUI()
@@ -14,11 +14,11 @@ UnitCommandUI::~UnitCommandUI()
 	LevelPtr = nullptr;
 }
 
-void UnitCommandUI::Setting(BattleLevel* _Level)
+void UnitCommandUI::Setting(BattleLevel* _Level, std::shared_ptr<UICursor> _Cursor)
 {
 	LevelPtr = _Level;
 	CancelFunction = std::bind(&BattleLevel::UnitCommand_Cancel, LevelPtr);
-	Cursor = _Level->GetUICursor();
+	Cursor = _Cursor;
 }
 
 void UnitCommandUI::SetCommand(bool _IsAttackable, bool _IsCloseUnit, bool _IsItem)
@@ -77,12 +77,12 @@ void UnitCommandUI::Off()
 }
 void UnitCommandUI::Start()
 {
-	WindowRender = CreateComponent<SpriteRenderer>();
+	WindowRender = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
 	WindowRender->GetTransform()->SetWorldScale({ 196, 356 });
 	WindowRender->GetTransform()->SetLocalPosition({ 334, 36 });
 	WindowRender->SetTexture("Select4.png");
 
-	SelectRender = CreateComponent<SpriteRenderer>();
+	SelectRender = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
 	SelectRender->GetTransform()->SetWorldScale({ 144, 20 });
 	SelectRender->GetTransform()->SetLocalPosition(StartSelectPos);
 	SelectRender->SetTexture("CommandSelect.png");

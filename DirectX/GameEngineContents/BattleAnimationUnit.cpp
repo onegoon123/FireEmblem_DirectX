@@ -113,7 +113,7 @@ void BattleAnimationUnit::Start()
 		CurAnimation->SetBrightness(1);
 	};
 
-	EffectAnimation = CreateComponent<SpriteRenderer>();
+	EffectAnimation = CreateComponent<SpriteRenderer>(RenderOrder::Effect);
 	EffectAnimation->GetTransform()->SetLocalScale({ 960,640 });
 	EffectAnimation->GetTransform()->SetLocalNegativeScaleX();
 	EffectAnimation->CreateAnimation({ "Idle", "Effect_Hit.png", 8, 8 });
@@ -157,7 +157,7 @@ void BattleAnimationUnit::Update(float _DeltaTime)
 std::shared_ptr<SpriteRenderer> BattleAnimationUnit::CreateAnimation(UnitIdentityCode _UnitIdentity)
 {
 	std::shared_ptr<SpriteRenderer> NewAnim;
-	NewAnim = CreateComponent<SpriteRenderer>();
+	NewAnim = CreateComponent<SpriteRenderer>(RenderOrder::Unit);
 	NewAnim->GetTransform()->SetLocalScale({ 768, 512 });
 	NewAnim->GetTransform()->SetLocalPosition({ 0, 64 });
 

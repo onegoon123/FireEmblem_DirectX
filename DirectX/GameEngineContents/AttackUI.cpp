@@ -1,7 +1,7 @@
 #include "PrecompileHeader.h"
 #include "AttackUI.h"
 #include <GameEnginePlatform/GameEngineInput.h>
-#include "SpriteRenderer.h"
+#include <GameEngineCore/GameEngineUIRenderer.h>
 #include "UICursor.h"
 #include "BattleLevel.h"
 #include "BattleUnit.h"
@@ -15,11 +15,11 @@ AttackUI::~AttackUI()
 {
 }
 
-void AttackUI::Setting(BattleLevel* _Level)
+void AttackUI::Setting(BattleLevel* _Level, std::shared_ptr<UICursor> _Cursor)
 {
 	LevelPtr = _Level;
-	UICursor = _Level->GetUICursor();
-	Cursor = _Level->GetMapCursor();
+	Cursor_UI = _Cursor;
+	Cursor_Map = _Level->GetMapCursor();
 	AttackFunction = std::bind(&BattleLevel::UnitCommand_TargetAttack, _Level, std::placeholders::_1);
 	CancelFunction = std::bind(&BattleLevel::UnitCommand_CommandCancel, _Level);
 }
@@ -62,9 +62,9 @@ void AttackUI::On(std::shared_ptr<BattleUnit> _SelectUnit, std::list<std::shared
 	SelectRender->GetTransform()->SetLocalPosition(StartSelectPos);
 
 	CurrentCursor = 0;
-	UICursor->On();
+	Cursor_UI->On();
 	CursorPos = StartCursorPos;
-	UICursor->GetTransform()->SetLocalPosition(StartCursorPos);
+	Cursor_UI->GetTransform()->SetLocalPosition(StartCursorPos);
 
 	IsOnFrame = true;
 	IsWeaponSelect = false;
@@ -85,32 +85,32 @@ void AttackUI::On(std::shared_ptr<BattleUnit> _SelectUnit, std::list<std::shared
 void AttackUI::Off()
 {
 	GameEngineActor::Off();
-	UICursor->Off();
+	Cursor_UI->Off();
 }
 
 void AttackUI::Start()
 {
-	WindowRender = CreateComponent<SpriteRenderer>();
+	WindowRender = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
 	WindowRender->GetTransform()->SetWorldScale({ 420, 356 });
 	WindowRender->GetTransform()->SetLocalPosition({ -224, 64 });
 	WindowRender->SetTexture("ItemListUI3.png");
 
-	SelectRender = CreateComponent<SpriteRenderer>();
+	SelectRender = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
 	SelectRender->GetTransform()->SetWorldScale({ 368, 20 });
 	SelectRender->GetTransform()->SetLocalPosition(StartSelectPos);
 	SelectRender->SetTexture("ItemSelect.png");
 
-	InfoRender = CreateComponent<SpriteRenderer>();
+	InfoRender = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
 	InfoRender->GetTransform()->SetWorldScale({ 420, 356 });
 	InfoRender->GetTransform()->SetLocalPosition({ 224, -224 });
 	InfoRender->SetTexture("ItemListUI3.png");
 
-	Portrait = CreateComponent<SpriteRenderer>();
+	Portrait = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
 	Portrait->GetTransform()->SetWorldScale({ 384, 320 });
 	Portrait->GetTransform()->SetLocalPosition({ 224, 114 });
 	Portrait->SetTexture("Portrait_Lyn.png");
 
-	BattleEx = CreateComponent<SpriteRenderer>();
+	BattleEx = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
 	BattleEx->GetTransform()->SetWorldScale({ 292, 484 });
 	BattleEx->GetTransform()->SetLocalPosition({ -318, 62 });
 	BattleEx->SetTexture("BattleExUI.png");
@@ -135,7 +135,7 @@ void AttackUI::WeaponSelectStart()
 	WindowRender->On();
 	InfoRender->On();
 	Portrait->On();
-	UICursor->On();
+	Cursor_UI->On();
 	BattleEx->Off();
 }
 
@@ -160,7 +160,7 @@ void AttackUI::WeaponSelectUpdate(float _DeltaTime)
 	}
 
 	CursorTimer += _DeltaTime * 10;
-	UICursor->GetTransform()->SetLocalPosition(float4::Lerp(UICursor->GetTransform()->GetLocalPosition(), CursorPos, _DeltaTime * 20));
+	Cursor_UI->GetTransform()->SetLocalPosition(float4::Lerp(Cursor_UI->GetTransform()->GetLocalPosition(), CursorPos, _DeltaTime * 20));
 
 	if (CursorTimer < 1) { return; }
 
@@ -219,7 +219,7 @@ void AttackUI::WeaponSelectEnd()
 	WindowRender->Off();
 	InfoRender->Off();
 	Portrait->Off();
-	UICursor->Off();
+	Cursor_UI->Off();
 	BattleEx->On();
 }
 
@@ -237,7 +237,7 @@ void AttackUI::TargetSelectStart()
 	IsWeaponSelect = true;
 
 	TargetIter = TargetUnits.begin();
-	Cursor->On();
+	Cursor_Map->On();
 
 	SetTarget();
 }
@@ -247,7 +247,7 @@ void AttackUI::TargetSelectUpdate(float _DeltaTime)
 	if (GameEngineInput::IsDown("ButtonA") || GameEngineInput::IsUp("LeftClick"))
 	{
 		AttackFunction(TargetUnit);
-		Cursor->Off();
+		Cursor_Map->Off();
 		Off();
 		return;
 	}
@@ -257,7 +257,7 @@ void AttackUI::TargetSelectUpdate(float _DeltaTime)
 		WeaponSelectStart();
 		return;
 	}
-	if (Cursor->GetIsMove()) { return; }
+	if (Cursor_Map->GetIsMove()) { return; }
 
 
 	if (GameEngineInput::IsDown("Up") || GameEngineInput::IsDown("Left"))
@@ -289,7 +289,7 @@ void AttackUI::TargetSelectEnd()
 void AttackUI::SetTarget()
 {
 	TargetUnit = *TargetIter;
-	Cursor->SetMapPosLerp(TargetUnit->GetMapPos());
+	Cursor_Map->SetMapPosLerp(TargetUnit->GetMapPos());
 
 	std::shared_ptr<DebugWindow> Window = GameEngineGUI::FindGUIWindowConvert<DebugWindow>("DebugWindow");
 	Window->Text = SelectUnit->GetName();

@@ -1,6 +1,7 @@
 #include "PrecompileHeader.h"
 #include "UICursor.h"
-#include "SpriteRenderer.h"
+#include <GameEngineCore/GameEngineUIRenderer.h>
+#include "ContentsEnum.h"
 UICursor::UICursor() 
 {
 }
@@ -11,7 +12,7 @@ UICursor::~UICursor()
 
 void UICursor::Start()
 {
-	CursorRender = CreateComponent<SpriteRenderer>();
+	CursorRender = CreateComponent<GameEngineUIRenderer>(RenderOrder::UICursor);
 	CursorRender->GetTransform()->SetWorldScale({ 64, 64 });
 	CursorRender->GetTransform()->SetLocalPosition({ 448, 288, 0 });
 	CursorRender->SetTexture("CommandCursor.png");

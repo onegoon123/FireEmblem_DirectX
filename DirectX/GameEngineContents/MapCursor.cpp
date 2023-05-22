@@ -31,7 +31,7 @@ void MapCursor::Off()
 
 void MapCursor::Start()
 {
-	AnimationRender = CreateComponent<GameEngineSpriteRenderer>();
+	AnimationRender = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::MapCursor);
 	AnimationRender->SetTexture("TestCursor.png");
 	AnimationRender->GetTransform()->SetWorldScale({ 104, 104 });
 	SetMapPos({ 1, 1 });

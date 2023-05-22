@@ -12,10 +12,7 @@
 #include "TileRender.h"
 #include "ArrowRender.h"
 #include "UnitCommand.h"
-#include "SelectUI.h"
-#include "UnitCommandUI.h"
-#include "PhaseUI.h"
-#include "FieldCommandUI.h"
+#include "BattleLevelUI.h"
 #include "DebugWindow.h" // 임시
 
 void BattleLevel::ChangeState(BattleState _State)
@@ -131,12 +128,12 @@ void BattleLevel::PlayerPhaseStart()
 		}
 	}
 	MainCursor->Off();
-	UI_Phase->PhaseOn(Faction::Player);
+	BattleUI->PhaseOn(Faction::Player);
 }
 
 void BattleLevel::PlayerPhaseUpdate(float _DeltaTime)
 {
-	if (true == UI_Phase->PhaseUIEnd())
+	if (true == BattleUI->IsPhaseEnd())
 	{
 		ChangeState(BattleState::Select);
 	}
@@ -182,7 +179,7 @@ void BattleLevel::SelectStart()
 
 	// Select State시 필요한 UI
 	MainCursor->On();
-	UI_Select->On();
+	BattleUI->SelectOn();
 	CursorDirCheck();
 	// 선택된 유닛이 있다면 유닛 데이터 지정
 	if (nullptr != SelectUnit)
@@ -210,7 +207,7 @@ void BattleLevel::SelectUpdate(float _DeltaTime)
 void BattleLevel::SelectEnd()
 {
 	// Select State 종료시 끄는 UI
-	UI_Select->Off();
+	BattleUI->AllOff();
 }
 
 void BattleLevel::MoveStart()
@@ -281,7 +278,7 @@ void BattleLevel::MoveEnd()
 	Arrows->Clear();
 	Tiles->Clear();
 	SelectUnit->SetIdle();
-
+	BattleUI->AllOff();
 }
 
 void BattleLevel::MoveWaitStart()
@@ -403,8 +400,8 @@ void BattleLevel::UnitCommandStart()
 	}
 
 	// 커맨드 UI 켜기
-	UI_UnitCommand->On();
-	UI_UnitCommand->SetCommand(IsAttackable, IsCloseUnit, IsItem);
+	BattleUI->UnitCommandOn();
+	BattleUI->UnitCommandSet(IsAttackable, IsCloseUnit, IsItem);
 	std::shared_ptr<DebugWindow> Window = GameEngineGUI::FindGUIWindowConvert<DebugWindow>("DebugWindow");
 	Window->Text = "";
 	if (true == IsAttackable) 
@@ -427,15 +424,15 @@ void BattleLevel::UnitCommandUpdate(float _DeltaTime)
 
 void BattleLevel::UnitCommandEnd()
 {
-	UI_UnitCommand->Off();
 	Tiles->Clear();
 	SelectUnit->SetIdle();
+	BattleUI->AllOff();
 }
 
 void BattleLevel::FieldCommandStart()
 {
 	//UI_UnitCommand->SetCommand(false, false);
-	UI_FieldCommand->On();
+	BattleUI->FieldCommandOn();
 	MainCursor->Off();
 
 	// 커맨드 UI 켜기
@@ -449,7 +446,7 @@ void BattleLevel::FieldCommandUpdate(float _DeltaTime)
 
 void BattleLevel::FieldCommandEnd()
 {
-	UI_FieldCommand->Off();
+	//UI_FieldCommand->Off();
 	MainCursor->On();
 }
 
@@ -570,23 +567,12 @@ void BattleLevel::EnemyPhaseStart()
 			break;
 		}
 	}
-
-	UI_Phase->PhaseOn(Faction::Enemy);
+	BattleUI->PhaseOn(Faction::Enemy);
 }
 
 void BattleLevel::EnemyPhaseUpdate(float _DeltaTime)
 {
-	if (GameEngineInput::IsDown("Start"))
-	{
-		IsSkip = true;
-	}
-	if (true == IsSkip)
-	{
-		UI_Phase->PhaseOff();
-		ChangeState(BattleState::EnemySelect);
-		return;
-	}
-	if (true == UI_Phase->PhaseUIEnd())
+	if (true == BattleUI->IsPhaseEnd())
 	{
 		ChangeState(BattleState::EnemySelect);
 	}
@@ -953,7 +939,7 @@ void BattleLevel::TimeStoneUpdate(float _DeltaTime)
 
 	if (MapEffectTimer < 0.7f) {
 		MainMap->GetRenderer()->SetLerp({ 0.3f, 0.0f, 0.6f }, MapEffectTimer);
-		MainMap->GetRenderer()->SetBlurLevel(MapEffectTimer);
+		MainMap->GetRenderer()->SetBlurLevel(MapEffectTimer * 2.0f);
 	}
 
 	switch (CurTimeStoneState)
@@ -982,6 +968,15 @@ void BattleLevel::TimeStoneUpdate(float _DeltaTime)
 	{
 		if (1.0f < EffectTimer)
 		{
+			for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
+			{
+				_Unit->GetRenderer()->OffLerp();
+			}
+			for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
+			{
+				_Unit->GetRenderer()->OffLerp();
+			}
+
 			CurTimeStoneState = Control;
 			return;
 		}
