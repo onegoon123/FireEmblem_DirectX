@@ -326,7 +326,7 @@ void BattleLevel::UnitCommandStart()
 	IsMove[SelectUnit->GetMapPos().y][SelectUnit->GetMapPos().x] = true;
 
 	// 활은 별도의 범위계산이 필요
-	if (SelectUnit->GetUnitData().GetCurWeapon()->GetWeaponTypeValue() == WeaponType::Bow)
+	if (SelectUnit->GetUnitData().GetWeaponTypeValue() == WeaponType::Bow)
 	{
 		AttackSearchBow();
 	}

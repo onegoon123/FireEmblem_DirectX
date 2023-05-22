@@ -173,6 +173,15 @@ public:
 	{
 		return CurWeapon;
 	}
+	// 장비중인 무기의 타입 (장비중인 무기가 없을시 None리턴)
+	WeaponType GetWeaponTypeValue()
+	{
+		if (nullptr == CurWeapon)
+		{
+			return WeaponType::None;
+		}
+		return CurWeapon->GetWeaponTypeValue();
+	}
 
 	void LoadItemData(std::list<Item>& _Data);
 

@@ -30,14 +30,14 @@ void BattleAnimationUnit::SetAnimation(UnitIdentityCode _IdentityValue)
 
 	if (IdentityValue == UnitIdentityCode::Sain || IdentityValue == UnitIdentityCode::Kent)
 	{
-		if (UnitValue->GetUnitData().GetCurWeapon()->GetWeaponTypeValue() == WeaponType::Sword)
+		if (UnitValue->GetUnitData().GetWeaponTypeValue() == WeaponType::Sword)
 		{
 			IdentityValue = static_cast<UnitIdentityCode>(static_cast<int>(IdentityValue) + 1);
 		}
 	}
 	if (IdentityValue == UnitIdentityCode::GeneralWallace)
 	{
-		if (UnitValue->GetUnitData().GetCurWeapon()->GetWeaponTypeValue() == WeaponType::Axe)
+		if (UnitValue->GetUnitData().GetWeaponTypeValue() == WeaponType::Axe)
 		{
 			IdentityValue = static_cast<UnitIdentityCode>(static_cast<int>(IdentityValue) + 1);
 		}

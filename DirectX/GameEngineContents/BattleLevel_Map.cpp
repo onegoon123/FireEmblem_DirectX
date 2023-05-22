@@ -97,7 +97,7 @@ void BattleLevel::MoveSearch()
 	}
 
 
-	if (SelectUnit->GetUnitData().GetCurWeapon()->GetWeaponTypeValue() == WeaponType::Bow)
+	if (SelectUnit->GetUnitData().GetWeaponTypeValue() == WeaponType::Bow)
 	{
 		AttackSearchBow();
 		return;

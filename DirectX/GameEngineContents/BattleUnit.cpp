@@ -260,7 +260,7 @@ void BattleUnit::SetUnitCode(UnitIdentityCode _Code)
 bool BattleUnit::IsAttackable(int _Distance)
 {
 
-	if (UnitData.CurWeapon->GetWeaponTypeValue() == WeaponType::Bow)
+	if (UnitData.GetWeaponTypeValue() == WeaponType::Bow)
 	{
 		if (_Distance == 1)
 		{
