@@ -49,7 +49,7 @@ private:
 	std::shared_ptr<GameEngineUIRenderer> Portrait = nullptr;		// 초상화
 	std::shared_ptr<GameEngineUIRenderer> ItemUseWindow = nullptr;	// 아이템 사용 창
 	std::shared_ptr<GameEngineUIRenderer> ItemUseSelect = nullptr;	// 아이템 사용 선택
-	std::list<std::shared_ptr<GameEngineUIRenderer>> Icons;
+	std::vector<std::shared_ptr<GameEngineUIRenderer>> Icons;
 	size_t ItemSize = 0;
 	std::list<std::shared_ptr<Item>>::iterator ItemIter;
 	std::shared_ptr<BattleUnit> SelectUnit = nullptr;;

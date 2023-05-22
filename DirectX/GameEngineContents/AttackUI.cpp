@@ -70,6 +70,19 @@ void AttackUI::On(std::shared_ptr<BattleUnit> _SelectUnit, std::list<std::shared
 	IsWeaponSelect = false;
 	WeaponSelectStart();
 
+	size_t i = 0;
+	for (std::shared_ptr<Weapon> _Item : Weapons)
+	{
+		WeaponeIcon[i]->SetFrame(static_cast<size_t>(_Item->GetItemCode()) - 1);
+		WeaponeIcon[i]->On();
+		i++;
+	}
+	for (i = Weapons.size(); i < 5; i++)
+	{
+		WeaponeIcon[i]->Off();
+	}
+
+
 	std::shared_ptr<DebugWindow> Window = GameEngineGUI::FindGUIWindowConvert<DebugWindow>("DebugWindow");
 	Window->Text = "";
 	for (std::shared_ptr<Weapon> _Weapon : Weapons)
@@ -115,6 +128,27 @@ void AttackUI::Start()
 	BattleEx->GetTransform()->SetLocalPosition({ -318, 62 });
 	BattleEx->SetTexture("BattleExUI.png");
 
+	if (nullptr == GameEngineSprite::Find("items.png"))
+	{
+		GameEngineDirectory Dir;
+		Dir.MoveParentToDirectory("ContentResources");
+		Dir.Move("ContentResources");
+		Dir.Move("Item");
+		GameEngineSprite::LoadSheet(Dir.GetPlusFileName("Items.png").GetFullPath(), 7, 5);
+	}
+
+	WeaponeIcon.resize(5);
+	for (int i = 0; i < 5; i++)
+	{
+		WeaponeIcon[i] = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
+		WeaponeIcon[i]->SetSprite("Items.png", 0);
+
+		WeaponeIcon[i]->GetTransform()->SetWorldScale({ 64, 64 });
+		WeaponeIcon[i]->GetTransform()->SetLocalPosition({ -386.0f, 198.0f - (64.0f * i) });
+
+		WeaponeIcon[i]->Off();
+	}
+
 	GameEngineActor::Off();
 }
 
@@ -137,6 +171,11 @@ void AttackUI::WeaponSelectStart()
 	Portrait->On();
 	Cursor_UI->On();
 	BattleEx->Off();
+
+	for (int i = 0; i < Weapons.size(); i++)
+	{
+		WeaponeIcon[i]->On();
+	}
 }
 
 void AttackUI::WeaponSelectUpdate(float _DeltaTime)
@@ -221,6 +260,10 @@ void AttackUI::WeaponSelectEnd()
 	Portrait->Off();
 	Cursor_UI->Off();
 	BattleEx->On();
+	for (int i = 0; i < Weapons.size(); i++)
+	{
+		WeaponeIcon[i]->Off();
+	}
 }
 
 void AttackUI::TargetSelectStart()

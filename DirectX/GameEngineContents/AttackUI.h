@@ -47,7 +47,7 @@ private:
 	std::shared_ptr<GameEngineUIRenderer> InfoRender = nullptr;	// 스탯 정보
 	std::shared_ptr<GameEngineUIRenderer> Portrait = nullptr;		// 초상화
 	std::shared_ptr<GameEngineUIRenderer> BattleEx = nullptr;		// 전투 예상
-	std::list<std::shared_ptr<GameEngineUIRenderer>> WeaponeIcon;
+	std::vector<std::shared_ptr<GameEngineUIRenderer>> WeaponeIcon;
 
 
 	std::shared_ptr<BattleUnit> SelectUnit = nullptr;;

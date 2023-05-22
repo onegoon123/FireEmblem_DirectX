@@ -70,6 +70,18 @@ void ItemUI::On(std::shared_ptr<BattleUnit> _SelectUnit)
 	IsOnFrame = true;
 	IsItemSelect = false;
 
+	size_t i = 0;
+	for (std::shared_ptr<Item> _Item : SelectUnit->GetUnitData().GetItems())
+	{
+		Icons[i]->SetFrame(static_cast<size_t>(_Item->GetItemCode()) - 1);
+		Icons[i]->On();
+		i++;
+	}
+	for (i = ItemSize; i < 5; i++)
+	{
+		Icons[i]->Off();
+	}
+
 	std::shared_ptr<DebugWindow> Window = GameEngineGUI::FindGUIWindowConvert<DebugWindow>("DebugWindow");
 	Window->Text = "";
 	for (std::shared_ptr<Item> _Item : SelectUnit->GetUnitData().GetItems())
@@ -116,6 +128,27 @@ void ItemUI::Start()
 	ItemUseSelect = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
 	ItemUseSelect->GetTransform()->SetWorldScale({ 76, 20 });
 	ItemUseSelect->SetTexture("ItemUseSelect.png");
+
+	if (nullptr == GameEngineSprite::Find("items.png"))
+	{
+		GameEngineDirectory Dir;
+		Dir.MoveParentToDirectory("ContentResources");
+		Dir.Move("ContentResources");
+		Dir.Move("Item");
+		GameEngineSprite::LoadSheet(Dir.GetPlusFileName("Items.png").GetFullPath(), 7, 5);
+	}
+	
+	Icons.resize(5);
+	for (int i = 0; i < 5; i++)
+	{
+		Icons[i] = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
+		Icons[i]->SetSprite("Items.png", 0);
+
+		Icons[i]->GetTransform()->SetWorldScale({ 64, 64 });
+		Icons[i]->GetTransform()->SetLocalPosition({ -386.0f, 198.0f - (64.0f * i)});
+
+		Icons[i]->Off();
+	}
 
 	GameEngineActor::Off();
 }
