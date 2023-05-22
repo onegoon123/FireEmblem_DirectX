@@ -149,6 +149,17 @@ void AttackUI::Start()
 		WeaponeIcon[i]->Off();
 	}
 
+	SubjectWeapon = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
+	SubjectWeapon->SetSprite("Items.png", 0);
+	SubjectWeapon->GetTransform()->SetWorldScale({ 64, 64 });
+	SubjectWeapon->GetTransform()->SetLocalPosition({ -224.0f, 260.0f});
+	SubjectWeapon->Off();
+	TargetWeapon = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
+	TargetWeapon->SetSprite("Items.png", 0);
+	TargetWeapon->GetTransform()->SetWorldScale({ 64, 64 });
+	TargetWeapon->GetTransform()->SetLocalPosition({ -412.0f, -72.0f});
+	TargetWeapon->Off();
+
 	GameEngineActor::Off();
 }
 
@@ -171,11 +182,12 @@ void AttackUI::WeaponSelectStart()
 	Portrait->On();
 	Cursor_UI->On();
 	BattleEx->Off();
-
 	for (int i = 0; i < Weapons.size(); i++)
 	{
 		WeaponeIcon[i]->On();
 	}
+	SubjectWeapon->Off();
+	TargetWeapon->Off();
 }
 
 void AttackUI::WeaponSelectUpdate(float _DeltaTime)
@@ -283,6 +295,8 @@ void AttackUI::TargetSelectStart()
 	Cursor_Map->On();
 
 	SetTarget();
+	SubjectWeapon->On();
+	TargetWeapon->On();
 }
 
 void AttackUI::TargetSelectUpdate(float _DeltaTime)
@@ -333,6 +347,8 @@ void AttackUI::SetTarget()
 {
 	TargetUnit = *TargetIter;
 	Cursor_Map->SetMapPosLerp(TargetUnit->GetMapPos());
+	SubjectWeapon->SetFrame(static_cast<size_t>(SelectWeapon->GetItemCode()) - 1);
+	TargetWeapon->SetFrame(static_cast<size_t>(TargetUnit->GetUnitData().GetCurWeapon()->GetItemCode()) - 1);
 
 	std::shared_ptr<DebugWindow> Window = GameEngineGUI::FindGUIWindowConvert<DebugWindow>("DebugWindow");
 	Window->Text = SelectUnit->GetName();

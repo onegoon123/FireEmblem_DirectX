@@ -108,6 +108,9 @@
     <ClCompile Include="UnitCommandUI.cpp">
       <Filter>Battle\UI\BattleLevel</Filter>
     </ClCompile>
+    <ClCompile Include="NumberActor.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FECore.h" />
@@ -196,6 +199,9 @@
     </ClInclude>
     <ClInclude Include="UnitCommandUI.h">
       <Filter>Battle\UI\BattleLevel</Filter>
+    </ClInclude>
+    <ClInclude Include="NumberActor.h">
+      <Filter>UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
