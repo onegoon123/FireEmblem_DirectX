@@ -70,6 +70,24 @@ void GameEngineTexture::CreateRenderTargetView()
 	}
 }
 
+void GameEngineTexture::CreateShaderResourcesView()
+{
+	if (nullptr == Texture2D)
+	{
+		MsgAssert("텍스처가 존재하지 않는 쉐이더 리소스 뷰를 만들 수는 없습니다.");
+		return;
+	}
+
+	// 랜더타겟은 여러개를 만들수 있다.
+	HRESULT Result = GameEngineDevice::GetDevice()->CreateShaderResourceView(Texture2D, nullptr, &SRV);
+
+	if (S_OK != Result)
+	{
+		MsgAssert("쉐이더 리소스 뷰 생성에 실패했습니다.");
+		return;
+	}
+}
+
 void GameEngineTexture::CreateDepthStencilView()
 {
 	if (nullptr == Texture2D)
@@ -132,11 +150,23 @@ void GameEngineTexture::ResLoad(const std::string_view& _Path)
 
 void GameEngineTexture::VSSetting(UINT _Slot)
 {
+	if (nullptr == SRV)
+	{
+		MsgAssert("SRV가 존재하지 않는 텍스처를 쉐이더에 세팅할수 없습니다.");
+		return;
+	}
+
 	GameEngineDevice::GetContext()->VSSetShaderResources(_Slot, 1, &SRV);
 }
 
 void GameEngineTexture::PSSetting(UINT _Slot)
 {
+	if (nullptr == SRV)
+	{
+		MsgAssert("SRV가 존재하지 않는 텍스처를 쉐이더에 세팅할수 없습니다.");
+		return;
+	}
+
 	GameEngineDevice::GetContext()->PSSetShaderResources(_Slot, 1, &SRV);
 }
 
@@ -146,7 +176,17 @@ void GameEngineTexture::ResCreate(const D3D11_TEXTURE2D_DESC& _Value)
 
 	GameEngineDevice::GetDevice()->CreateTexture2D(&Desc, nullptr, &Texture2D);
 
-	if (D3D11_BIND_FLAG::D3D11_BIND_DEPTH_STENCIL == Desc.BindFlags)
+	if (D3D11_BIND_FLAG::D3D11_BIND_RENDER_TARGET & Desc.BindFlags)
+	{
+		CreateRenderTargetView();
+	}
+
+	if (D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE & Desc.BindFlags)
+	{
+		CreateShaderResourcesView();
+	}
+
+	if (D3D11_BIND_FLAG::D3D11_BIND_DEPTH_STENCIL & Desc.BindFlags)
 	{
 		CreateDepthStencilView();
 	}
@@ -365,7 +405,18 @@ GameEnginePixelColor GameEngineTexture::GetPixel(int _X, int _Y, GameEnginePixel
 	case DXGI_FORMAT_B8G8R8A8_UNORM:
 		break;
 	case DXGI_FORMAT_B8G8R8X8_UNORM:
-		break;
+	{
+		// 컬러1개에 4바이트인 100 * 100
+		// 10, 10
+		int Index = _Y * static_cast<int>(GetWidth()) + _X;
+		ColorPtr = ColorPtr + (Index * 4);
+		GameEnginePixelColor Return;
+		Return.r = ColorPtr[2];
+		Return.g = ColorPtr[1];
+		Return.b = ColorPtr[0];
+		Return.a = ColorPtr[3];
+		return Return;
+	}
 	case DXGI_FORMAT_R10G10B10_XR_BIAS_A2_UNORM:
 		break;
 	case DXGI_FORMAT_B8G8R8A8_TYPELESS:

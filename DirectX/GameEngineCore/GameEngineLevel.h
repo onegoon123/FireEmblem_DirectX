@@ -3,13 +3,16 @@
 #include <GameEngineBase\GameEngineTimeEvent.h>
 #include <string_view>
 #include <map>
+#include <GameEngineCore/GameEngineRenderTarget.h>
 
 // 설명 :
 class GameEngineActor;
 class GameEngineCamera;
+class GameEngineRenderer;
 class GameEngineCollision;
 class GameEngineLevel : public GameEngineObject
 {
+	friend class GameEngineRenderer;
 	friend class GameEngineCollision;
 	friend class GameEngineTransform;
 	friend class GameEngineCore;
@@ -70,6 +73,8 @@ public:
 		return DynamicThis<GameEngineLevel>();
 	}
 
+	std::shared_ptr<GameEngineCamera> GetCamera(int _CameraOrder);
+
 protected:
 	// 레벨이 바뀌어서 시작할때
 	virtual void LevelChangeStart();
@@ -80,8 +85,11 @@ protected:
 	void Render(float _DeltaTime);
 
 private:
+	// 카메라
+	std::map<int, std::shared_ptr<GameEngineCamera>> Cameras;
 	std::shared_ptr<GameEngineCamera> MainCamera;
-	std::shared_ptr<GameEngineCamera> UICamera;
+
+	void PushCameraRenderer(std::shared_ptr<GameEngineRenderer> _Renderer, int _CameraOrder);
 
 	std::map<int, std::list<std::shared_ptr<GameEngineActor>>> Actors;
 

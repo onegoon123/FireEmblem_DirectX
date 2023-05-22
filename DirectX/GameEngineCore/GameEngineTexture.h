@@ -145,6 +145,7 @@ private:
 	void ResCreate(const D3D11_TEXTURE2D_DESC& _Value);
 
 	void CreateRenderTargetView();
+	void CreateShaderResourcesView();
 	void CreateDepthStencilView();
 
 	void VSSetting(UINT _Slot);

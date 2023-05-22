@@ -50,6 +50,9 @@ void AnimationInfo::Update(float _DeltaTime)
 	{
 		++CurFrame;
 
+
+
+
 		if (FrameIndex.size() <= CurFrame)
 		{
 			IsEndValue = true;
@@ -101,14 +104,8 @@ void GameEngineSpriteRenderer::Start()
 {
 	GameEngineRenderer::Start();
 
-	SetPipeLine("2DTexture");
-
-	AtlasData.x = 0.0f;
-	AtlasData.y = 0.0f;
-	AtlasData.z = 1.0f;
-	AtlasData.w = 1.0f;
-
-	GetShaderResHelper().SetConstantBufferLink("AtlasData", AtlasData);
+	SpriteRenderInit();
+	// AtlasData
 }
 
 void GameEngineSpriteRenderer::SetTexture(const std::string_view& _Name)
@@ -367,4 +364,17 @@ std::string GameEngineSpriteRenderer::GetTexName()
 	GameEngineTextureSetter* Tex = GetShaderResHelper().GetTextureSetter("DiffuseTex");
 	std::string Name = Tex->Res->GetNameToString();
 	return Name;
+}
+
+void GameEngineSpriteRenderer::SpriteRenderInit()
+{
+
+	SetPipeLine("2DTexture");
+
+	AtlasData.x = 0.0f;
+	AtlasData.y = 0.0f;
+	AtlasData.z = 1.0f;
+	AtlasData.w = 1.0f;
+
+	GetShaderResHelper().SetConstantBufferLink("AtlasData", AtlasData);
 }

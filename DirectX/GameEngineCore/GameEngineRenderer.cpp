@@ -10,6 +10,28 @@
 #include "GameEnginePixelShader.h"
 #include "GameEngineShaderResHelper.h"
 
+void GameEngineRenderUnit::SetPipeLine(const std::string_view& _Name)
+{
+	Pipe = GameEngineRenderingPipeLine::Find(_Name);
+
+	{
+		const GameEngineShaderResHelper& Res = Pipe->GetVertexShader()->GetShaderResHelper();
+		ShaderResHelper.Copy(Res);
+	}
+
+	{
+		const GameEngineShaderResHelper& Res = Pipe->GetPixelShader()->GetShaderResHelper();
+		ShaderResHelper.Copy(Res);
+	}
+}
+
+void GameEngineRenderUnit::Render(float _DeltaTime)
+{
+	Pipe->RenderingPipeLineSetting();
+	ShaderResHelper.Setting();
+	Pipe->Render();
+}
+
 GameEngineRenderer::GameEngineRenderer()
 {
 }
@@ -18,21 +40,24 @@ GameEngineRenderer::~GameEngineRenderer()
 {
 }
 
-
-void GameEngineRenderer::Render(float _Delta)
+void GameEngineRenderer::Start()
 {
-	if (false == IsUpdate()) { return; }
-	std::shared_ptr<GameEngineCamera> MainCamera = GetLevel()->GetMainCamera();
+	PushCameraRender(0);
+}
 
-	if (nullptr == MainCamera)
+void GameEngineRenderer::RenderTransformUpdate(GameEngineCamera* _Camera)
+{
+	if (nullptr == _Camera)
 	{
 		assert(false);
 		return;
 	}
 
-	GetTransform()->SetCameraMatrix(MainCamera->GetView(), MainCamera->GetProjection());
+	GetTransform()->SetCameraMatrix(_Camera->GetView(), _Camera->GetProjection());
+}
 
-
+void GameEngineRenderer::Render(float _Delta)
+{
 	// GameEngineDevice::GetContext()->VSSetConstantBuffers();
 	// GameEngineDevice::GetContext()->PSSetConstantBuffers();
 
@@ -68,4 +93,9 @@ void GameEngineRenderer::SetPipeLine(const std::string_view& _Name)
 
 
 	GetTransform()->GetWorldMatrix();
+}
+
+void GameEngineRenderer::PushCameraRender(int _CameraOrder)
+{
+	GetLevel()->PushCameraRenderer(DynamicThis<GameEngineRenderer>(), _CameraOrder);
 }

@@ -129,6 +129,9 @@
     <ClCompile Include="GameEngineCollision.cpp">
       <Filter>Object\Collision</Filter>
     </ClCompile>
+    <ClCompile Include="GameEngineUIRenderer.cpp">
+      <Filter>Object\Rendering\Component\2D</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngineCore.h" />
@@ -262,6 +265,9 @@
     </ClInclude>
     <ClInclude Include="GameEngineCollision.h">
       <Filter>Object\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineUIRenderer.h">
+      <Filter>Object\Rendering\Component\2D</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

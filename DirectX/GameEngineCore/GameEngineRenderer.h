@@ -2,9 +2,23 @@
 #include "GameEngineComponent.h"
 #include "GameEngineShader.h"
 
+class GameEngineRenderUnit
+{
+public:
+	std::shared_ptr<class GameEngineRenderingPipeLine > Pipe;
+	GameEngineShaderResHelper ShaderResHelper;
+
+public:
+	void SetPipeLine(const std::string_view& _Name);
+	void Render(float _DeltaTime);
+};
+
+
 // 설명 :
 class GameEngineRenderer : public GameEngineComponent
 {
+	friend class GameEngineCamera;
+
 public:
 	// constrcuter destructer
 	GameEngineRenderer();
@@ -27,14 +41,30 @@ public:
 		return ShaderResHelper;
 	}
 
+	void CameraCullingOn()
+	{
+		IsCameraCulling = true;
+	}
+
+
+	// 업데이트에서 할것이기 때문에 그냥 하겠습니다. 
+	// 랜더 도중에 카메라를 바꾸거나 한다면 이상한 일이 발생할수 있다.
+
 protected:
+	void Start();
+
 	void Render(float _Delta) override;
 
-private:
-	// Pipe와
-	// GameEngineShaderResHelper 가 합쳐져야 랜더링 
-	std::shared_ptr<class GameEngineRenderingPipeLine > Pipe;
+	void PushCameraRender(int _CameraOrder);
 
+private:
+	bool IsCameraCulling = false;
+
+	// Pipe와
+	// GameEngineShaderResHelper 가 합쳐져야 랜더링 이 되는 식이 됩니다.
+	std::shared_ptr<class GameEngineRenderingPipeLine > Pipe;
 	GameEngineShaderResHelper ShaderResHelper;
+
+	void RenderTransformUpdate(GameEngineCamera* _Camera);
 };
 

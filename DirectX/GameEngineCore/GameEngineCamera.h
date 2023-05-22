@@ -1,10 +1,17 @@
 #pragma once
 #include "GameEngineActor.h"
 #include "GameEngineEnum.h"
+#include <list>
+#include <map>
 
 // Ό³Έν :
+class GameEngineRenderer;
+class GameEngineRenderTarget;
 class GameEngineCamera : public GameEngineActor
 {
+	friend GameEngineLevel;
+	friend GameEngineRenderer;
+
 public:
 	// constrcuter destructer
 	GameEngineCamera();
@@ -46,10 +53,24 @@ public:
 	void Update(float _DeltaTime) override;
 	void Render(float _DeltaTime) override;
 
+	void CameraTransformUpdate();
+
+	std::shared_ptr<GameEngineRenderTarget> GetCamTarget()
+	{
+		return CamTarget;
+	}
+
+	bool IsView(const TransformData& _TransData);
+
+
 protected:
 	void Start() override;
 
 private:
+	std::map<int, std::list<std::shared_ptr<GameEngineRenderer>>> Renderers;
+
+	DirectX::BoundingOrientedBox Box;
+
 	bool FreeCamera = false;
 
 	float4x4 View;
@@ -69,6 +90,10 @@ private:
 	float Near = 0.1f;
 	float Far = 10000.0f;
 
-	void RenderRelease();
+	void PushRenderer(std::shared_ptr<GameEngineRenderer> _Render);
+
+	void Release();
+
+	std::shared_ptr<GameEngineRenderTarget> CamTarget;
 };
 

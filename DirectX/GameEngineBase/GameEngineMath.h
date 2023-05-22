@@ -294,6 +294,12 @@ public:
 		return GetAnagleRadZ() * GameEngineMath::RadToDeg;
 	}
 
+	float MaxFloat() const
+	{
+		return (x < y) ? (y < z ? z : y) : (x < z ? z : x);
+	}
+
+
 	float4 RotaitonXDegReturn(float _Deg)
 	{
 		float4 ReturnValue = *this;
@@ -561,7 +567,7 @@ class CollisionDataAPI
 {
 public:
 	float4 Position;
-	float4 Scale; // x만 원의 반지름
+	float4 Scale; // x만 원의 반지름으로 보겠습니다.
 
 	float Left() const
 	{

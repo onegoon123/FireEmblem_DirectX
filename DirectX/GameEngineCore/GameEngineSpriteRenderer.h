@@ -63,6 +63,7 @@ public:
 	std::vector<float> FrameTime = std::vector<float>();
 };
 
+
 // Ό³Έν :
 class GameEngineSpriteRenderer : public GameEngineRenderer
 {
@@ -107,7 +108,7 @@ public:
 
 	size_t GetCurrentFrame()
 	{
-		return CurAnimation->CurFrame;
+		return CurAnimation->FrameIndex[CurAnimation->CurFrame];
 	}
 
 	float4 GetAtlasData()
@@ -134,6 +135,7 @@ public:
 		CurAnimation->PauseOff();
 	}
 
+
 	void SetAnimationUpdateEvent(const std::string_view& _AnimationName, size_t _Frame, std::function<void()> _Event);
 
 	void SetAnimationStartEvent(const std::string_view& _AnimationName, size_t _Frame, std::function<void()> _Event);
@@ -142,13 +144,13 @@ public:
 
 
 protected:
-	void Start() override;
-	void Render(float _Delta) override;
+	void SpriteRenderInit();
+	float4 AtlasData;
+
+private:
 	void Update(float _Delta) override;
 
-	float4 AtlasData;
-private:
-
+	void Render(float _Delta) override;
 
 	std::map<std::string, std::shared_ptr<AnimationInfo>> Animations;
 
@@ -162,5 +164,6 @@ private:
 
 	float ScaleRatio = 1.0f;
 
+	void Start() override;
 };
 

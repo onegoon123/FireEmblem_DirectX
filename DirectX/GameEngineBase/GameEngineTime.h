@@ -36,7 +36,7 @@ public:
 		return floatDeltaTime;
 	}
 
-	float GetTimeScleDeltaTime()
+	float GetTimeScaleDeltaTime()
 	{
 		return floatDeltaTime * TimeScale;
 	}

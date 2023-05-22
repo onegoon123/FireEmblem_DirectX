@@ -3,4 +3,7 @@
   <ItemGroup>
     <None Include="TextureShader.hlsl" />
   </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="MergeShader.hlsl" />
+  </ItemGroup>
 </Project>
