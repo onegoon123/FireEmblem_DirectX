@@ -128,7 +128,6 @@ void BattleLevel::CursorUnitSelect()
 		}
 	}
 	Tiles->Clear();
-	BattleUI->AllOff();
 	BattleUI->UnitUIOff();
 }
 

@@ -7,6 +7,7 @@
 #include "BattleUnit.h"
 #include "MapCursor.h"
 #include "DebugWindow.h"
+#include "NumberActor.h"
 AttackUI::AttackUI() 
 {
 }
@@ -27,7 +28,7 @@ void AttackUI::Setting(BattleLevel* _Level, std::shared_ptr<UICursor> _Cursor)
 void AttackUI::On(std::shared_ptr<BattleUnit> _SelectUnit, std::list<std::shared_ptr<BattleUnit>>& _TargetUnits)
 {
 	GameEngineActor::On();
-
+	WeaponDamage->On();
 	SelectUnit = _SelectUnit;
 	TargetUnits = _TargetUnits;
 	Weapons = SelectUnit->GetUnitData().GetWeapons();
@@ -99,6 +100,8 @@ void AttackUI::Off()
 {
 	GameEngineActor::Off();
 	Cursor_UI->Off();
+	WeaponDamage->Off();
+	WeaponHit->Off();
 }
 
 void AttackUI::Start()
@@ -116,7 +119,7 @@ void AttackUI::Start()
 	InfoRender = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
 	InfoRender->GetTransform()->SetWorldScale({ 420, 356 });
 	InfoRender->GetTransform()->SetLocalPosition({ 224, -224 });
-	InfoRender->SetTexture("ItemListUI3.png");
+	InfoRender->SetTexture("UnitInfo.png");
 
 	Portrait = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
 	Portrait->GetTransform()->SetWorldScale({ 384, 320 });
@@ -159,6 +162,12 @@ void AttackUI::Start()
 	TargetWeapon->GetTransform()->SetWorldScale({ 64, 64 });
 	TargetWeapon->GetTransform()->SetLocalPosition({ -412.0f, -72.0f});
 	TargetWeapon->Off();
+
+	WeaponDamage = GetLevel()->CreateActor<NumberActor>();
+	WeaponDamage->GetTransform()->SetLocalPosition({198, -156});
+
+	WeaponHit = GetLevel()->CreateActor<NumberActor>();
+	WeaponHit->GetTransform()->SetLocalPosition({ 198, -220 });
 
 	GameEngineActor::Off();
 }
@@ -345,10 +354,14 @@ void AttackUI::TargetSelectEnd()
 
 void AttackUI::SetTarget()
 {
+
 	TargetUnit = *TargetIter;
 	Cursor_Map->SetMapPosLerp(TargetUnit->GetMapPos());
+
+	// 타겟 선택시 변경되는 UI 내용들 처리
 	SubjectWeapon->SetFrame(static_cast<size_t>(SelectWeapon->GetItemCode()) - 1);
 	TargetWeapon->SetFrame(static_cast<size_t>(TargetUnit->GetUnitData().GetCurWeapon()->GetItemCode()) - 1);
+
 
 	std::shared_ptr<DebugWindow> Window = GameEngineGUI::FindGUIWindowConvert<DebugWindow>("DebugWindow");
 	Window->Text = SelectUnit->GetName();

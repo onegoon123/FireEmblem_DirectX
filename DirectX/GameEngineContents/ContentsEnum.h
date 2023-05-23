@@ -10,6 +10,7 @@ enum class RenderOrder
 	Effect, // 효과
 
 	UI,		// UI
+	UIText,		// UI
 	UICursor,	// UI위 표시되는 이미지
 
 };

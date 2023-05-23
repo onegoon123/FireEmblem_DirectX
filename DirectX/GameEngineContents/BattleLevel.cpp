@@ -67,10 +67,10 @@ void BattleLevel::Start()
 	//PlayerUnits.push_back(NewActor);
 
 	std::shared_ptr<BattleUnit> NewActor = CreateActor<BattleUnit>();
-	NewActor->SetUnitCode(UnitIdentityCode::Sain);
+	NewActor->SetUnitCode(UnitIdentityCode::Wil);
 	NewActor->GetUnitData().LevelUp(200);
 	NewActor->SetMapPos({ 3, 5 });
-	NewActor->NewItem(ItemCode::IronSword);
+	NewActor->NewItem(ItemCode::IronBow);
 	NewActor->NewItem(ItemCode::IronLance);
 	NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
 	PlayerUnits.push_back(NewActor);
@@ -101,7 +101,7 @@ void BattleLevel::Start()
 	NewActor->NewItem(ItemCode::IronSword);
 	NewActor->NewItem(ItemCode::IronLance);
 	NewActor->NewItem(ItemCode::IronAxe);
-	NewActor->SetMapPos({ 10, 4 });
+	NewActor->SetMapPos({ 4, 4 });
 	NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
 	EnemyUnits.push_back(NewActor);
 	

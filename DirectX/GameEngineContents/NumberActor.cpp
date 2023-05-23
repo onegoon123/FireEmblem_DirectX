@@ -1,6 +1,8 @@
+#include "PrecompileHeader.h"
 #include "NumberActor.h"
 #include <GameEngineBase/GameEngineDirectory.h>
 #include <GameEngineCore/GameEngineUIRenderer.h>
+#include "ContentsEnum.h"
 NumberActor::NumberActor() 
 {
 }
@@ -11,14 +13,18 @@ NumberActor::~NumberActor()
 
 void NumberActor::SetValue(int _Value)
 {
-	int NumSize = 10;
 	int i = 0;
 	while (0 < _Value)
 	{
-		int Num = _Value / 10;
+		int Num = _Value % 10;
 		_Value /= 10;
 		Renders[i]->SetFrame(Num);
+		Renders[i]->On();
 		i++;
+	}
+	for (; i < Renders.size(); i++)
+	{
+		Renders[i]->Off();
 	}
 }
 
@@ -36,10 +42,10 @@ void NumberActor::Start()
 	Renders.resize(3);
 	for (int i = 0; i < 3; i++)
 	{
-		Renders[i] = CreateComponent<GameEngineUIRenderer>();
+		Renders[i] = CreateComponent<GameEngineUIRenderer>(RenderOrder::UIText);
 		Renders[i]->SetSprite("NumFont.png", 0);
 		Renders[i]->GetTransform()->SetLocalScale({ 32, 40 });
-		Renders[i]->GetTransform()->SetLocalPosition({ 32.0f * i, 0});
+		Renders[i]->GetTransform()->SetLocalPosition({ -32.0f * i, 0});
 	}
 }
 

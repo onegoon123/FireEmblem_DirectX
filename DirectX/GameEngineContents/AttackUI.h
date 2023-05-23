@@ -48,8 +48,24 @@ private:
 	std::shared_ptr<GameEngineUIRenderer> Portrait = nullptr;		// 초상화
 	std::shared_ptr<GameEngineUIRenderer> BattleEx = nullptr;		// 전투 예상
 	std::vector<std::shared_ptr<GameEngineUIRenderer>> WeaponeIcon;
+	std::vector<std::shared_ptr<class NumberActor>> WeaponUses;
+
+	std::shared_ptr<NumberActor> WeaponDamage;
+	std::shared_ptr<NumberActor>  WeaponHit;
+	std::shared_ptr<NumberActor>  WeaponCritical;
+	std::shared_ptr<NumberActor>  WeaponWeight;
+
 	std::shared_ptr<GameEngineUIRenderer> SubjectWeapon;
 	std::shared_ptr<GameEngineUIRenderer> TargetWeapon;
+
+	std::shared_ptr<NumberActor> SubjectHP;
+	std::shared_ptr<NumberActor> SubjectDamage;
+	std::shared_ptr<NumberActor> SubjectHit;
+	std::shared_ptr<NumberActor> SubjectCritical;
+	std::shared_ptr<NumberActor> TargetHP;
+	std::shared_ptr<NumberActor> TargetDamage;
+	std::shared_ptr<NumberActor> TargetHit;
+	std::shared_ptr<NumberActor> TargetCritical;
 
 
 	std::shared_ptr<BattleUnit> SelectUnit = nullptr;;

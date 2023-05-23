@@ -46,6 +46,8 @@ public:
 		IsCameraCulling = true;
 	}
 
+	void CalSortZ(class GameEngineCamera* _Camera);
+
 
 	// 업데이트에서 할것이기 때문에 그냥 하겠습니다. 
 	// 랜더 도중에 카메라를 바꾸거나 한다면 이상한 일이 발생할수 있다.
@@ -59,6 +61,8 @@ protected:
 
 private:
 	bool IsCameraCulling = false;
+
+	float CalZ = 0.0f;
 
 	// Pipe와
 	// GameEngineShaderResHelper 가 합쳐져야 랜더링 이 되는 식이 됩니다.
