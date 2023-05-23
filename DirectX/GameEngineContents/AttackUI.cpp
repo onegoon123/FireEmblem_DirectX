@@ -8,11 +8,11 @@
 #include "MapCursor.h"
 #include "DebugWindow.h"
 #include "NumberActor.h"
-AttackUI::AttackUI() 
+AttackUI::AttackUI()
 {
 }
 
-AttackUI::~AttackUI() 
+AttackUI::~AttackUI()
 {
 }
 
@@ -28,20 +28,21 @@ void AttackUI::Setting(BattleLevel* _Level, std::shared_ptr<UICursor> _Cursor)
 void AttackUI::On(std::shared_ptr<BattleUnit> _SelectUnit, std::list<std::shared_ptr<BattleUnit>>& _TargetUnits)
 {
 	GameEngineActor::On();
-	WeaponDamage->On();
+
 	SelectUnit = _SelectUnit;
 	TargetUnits = _TargetUnits;
 	Weapons = SelectUnit->GetUnitData().GetWeapons();
 
+	// 무기 갯수만큼 UI창 지정
 	WindowRender->SetFrame(Weapons.size() - 1);
 
+	// 초상화 지정
 	std::string TextStr = "Portrait_";
 	TextStr += SelectUnit->GetUnitData().GetName();
 	TextStr += ".png";
 	Portrait->SetTexture(TextStr);
 
 	SelectRender->GetTransform()->SetLocalPosition(StartSelectPos);
-
 	CurrentCursor = 0;
 	Cursor_UI->On();
 	CursorPos = StartCursorPos;
@@ -51,6 +52,7 @@ void AttackUI::On(std::shared_ptr<BattleUnit> _SelectUnit, std::list<std::shared
 	IsWeaponSelect = false;
 	WeaponSelectStart();
 
+	// 무기 아이콘 지정
 	size_t i = 0;
 	for (std::shared_ptr<Weapon> _Item : Weapons)
 	{
@@ -82,6 +84,8 @@ void AttackUI::Off()
 	Cursor_UI->Off();
 	WeaponDamage->Off();
 	WeaponHit->Off();
+	WeaponCritical->Off();
+	WeaponWeight->Off();
 }
 
 void AttackUI::Start()
@@ -126,20 +130,79 @@ void AttackUI::Start()
 	SubjectWeapon = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
 	SubjectWeapon->SetSprite("Items.png", 0);
 	SubjectWeapon->GetTransform()->SetWorldScale({ 64, 64 });
-	SubjectWeapon->GetTransform()->SetLocalPosition({ -224.0f, 260.0f});
+	SubjectWeapon->GetTransform()->SetLocalPosition({ -224.0f, 260.0f });
 	SubjectWeapon->Off();
 	TargetWeapon = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
 	TargetWeapon->SetSprite("Items.png", 0);
 	TargetWeapon->GetTransform()->SetWorldScale({ 64, 64 });
-	TargetWeapon->GetTransform()->SetLocalPosition({ -412.0f, -72.0f});
+	TargetWeapon->GetTransform()->SetLocalPosition({ -412.0f, -72.0f });
 	TargetWeapon->Off();
 
-	WeaponDamage = GetLevel()->CreateActor<NumberActor>();
-	WeaponDamage->GetTransform()->SetLocalPosition({198, -156});
+	{
+		// 무기 수치
+		WeaponDamage = GetLevel()->CreateActor<NumberActor>();
+		WeaponDamage->GetTransform()->SetLocalPosition({ 198, -156 });
 
-	WeaponHit = GetLevel()->CreateActor<NumberActor>();
-	WeaponHit->GetTransform()->SetLocalPosition({ 198, -220 });
+		WeaponHit = GetLevel()->CreateActor<NumberActor>();
+		WeaponHit->GetTransform()->SetLocalPosition({ 198, -220 });
 
+		WeaponCritical = GetLevel()->CreateActor<NumberActor>();
+		WeaponCritical->GetTransform()->SetLocalPosition({ 384, -156 });
+
+		WeaponWeight = GetLevel()->CreateActor<NumberActor>();
+		WeaponWeight->GetTransform()->SetLocalPosition({ 384, -220 });
+	}
+	{
+		// 예상 결과 숫자
+		SubjectHP = GetLevel()->CreateActor<NumberActor>();
+		SubjectHP->GetTransform()->SetParent(BattleEx->GetTransform());
+		SubjectHP->GetTransform()->SetLocalPosition({ -68, 128, 0 });
+		SubjectHP->GetTransform()->SetWorldRotation(float4::Zero);
+		SubjectHP->GetTransform()->SetWorldScale({ 1, 1, 1 });
+
+		SubjectDamage = GetLevel()->CreateActor<NumberActor>();
+		SubjectDamage->GetTransform()->SetParent(BattleEx->GetTransform());
+		SubjectDamage->GetTransform()->SetLocalPosition({ -68, 64, 0 });
+		SubjectDamage->GetTransform()->SetWorldRotation(float4::Zero);
+		SubjectDamage->GetTransform()->SetWorldScale({ 1, 1, 1 });
+
+		SubjectHit = GetLevel()->CreateActor<NumberActor>();
+		SubjectHit->GetTransform()->SetParent(BattleEx->GetTransform());
+		SubjectHit->GetTransform()->SetLocalPosition({ -68, 0, 0 });
+		SubjectHit->GetTransform()->SetWorldRotation(float4::Zero);
+		SubjectHit->GetTransform()->SetWorldScale({ 1, 1, 1 });
+
+		SubjectCritical = GetLevel()->CreateActor<NumberActor>();
+		SubjectCritical->GetTransform()->SetParent(BattleEx->GetTransform());
+		SubjectCritical->GetTransform()->SetLocalPosition({ -68, -64, 0 });
+		SubjectCritical->GetTransform()->SetWorldRotation(float4::Zero);
+		SubjectCritical->GetTransform()->SetWorldScale({ 1, 1, 1 });
+
+		TargetHP = GetLevel()->CreateActor<NumberActor>();
+		TargetHP->GetTransform()->SetParent(BattleEx->GetTransform());
+		TargetHP->GetTransform()->SetLocalPosition({ 118, 128, 0 });
+		TargetHP->GetTransform()->SetWorldRotation(float4::Zero);
+		TargetHP->GetTransform()->SetWorldScale({ 1, 1, 1 });
+
+		TargetDamage = GetLevel()->CreateActor<NumberActor>();
+		TargetDamage->GetTransform()->SetParent(BattleEx->GetTransform());
+		TargetDamage->GetTransform()->SetLocalPosition({ 118, 64, 0 });
+		TargetDamage->GetTransform()->SetWorldRotation(float4::Zero);
+		TargetDamage->GetTransform()->SetWorldScale({ 1, 1, 1 });
+
+		TargetHit = GetLevel()->CreateActor<NumberActor>();
+		TargetHit->GetTransform()->SetParent(BattleEx->GetTransform());
+		TargetHit->GetTransform()->SetLocalPosition({ 118, 0, 0 });
+		TargetHit->GetTransform()->SetWorldRotation(float4::Zero);
+		TargetHit->GetTransform()->SetWorldScale({ 1, 1, 1 });
+
+		TargetCritical = GetLevel()->CreateActor<NumberActor>();;
+		TargetCritical->GetTransform()->SetParent(BattleEx->GetTransform());
+		TargetCritical->GetTransform()->SetLocalPosition({ 118, -64, 0 });
+		TargetCritical->GetTransform()->SetWorldRotation(float4::Zero);
+		TargetCritical->GetTransform()->SetWorldScale({ 1, 1, 1 });
+
+	}
 	GameEngineActor::Off();
 }
 
@@ -162,12 +225,25 @@ void AttackUI::WeaponSelectStart()
 	Portrait->On();
 	Cursor_UI->On();
 	BattleEx->Off();
+
+	// 무기 스펙 표기
+	WeaponDamage->On();
+	WeaponHit->On();
+	WeaponCritical->On();
+	WeaponWeight->On();
+
+	WeaponDamage->SetValue(SelectUnit->GetUnitData().GetCurWeapon()->GetDamage());
+	WeaponHit->SetValue(SelectUnit->GetUnitData().GetCurWeapon()->GetHit());
+	WeaponCritical->SetValue(SelectUnit->GetUnitData().GetCurWeapon()->GetCritical());
+	WeaponWeight->SetValue(SelectUnit->GetUnitData().GetCurWeapon()->GetWeight());
+
 	for (int i = 0; i < Weapons.size(); i++)
 	{
 		WeaponeIcon[i]->On();
 	}
 	SubjectWeapon->Off();
 	TargetWeapon->Off();
+	SetWeapon();
 }
 
 void AttackUI::WeaponSelectUpdate(float _DeltaTime)
@@ -215,12 +291,13 @@ void AttackUI::WeaponSelectUpdate(float _DeltaTime)
 			CurrentCursor = Weapons.size() - 1;
 			SelectRender->GetTransform()->SetLocalPosition(StartSelectPos + float4::Down * (64.0f * CurrentCursor));
 			CursorPos = StartCursorPos + float4::Down * (64.0f * CurrentCursor);
+			SetWeapon();
 			return;
 		}
 		CurrentCursor--;
 		SelectRender->GetTransform()->SetLocalPosition(StartSelectPos + float4::Down * (64.0f * CurrentCursor));
 		CursorPos = StartCursorPos + float4::Down * (64.0f * CurrentCursor);
-
+		SetWeapon();
 		return;
 	}
 
@@ -233,12 +310,13 @@ void AttackUI::WeaponSelectUpdate(float _DeltaTime)
 			CurrentCursor = 0;
 			SelectRender->GetTransform()->SetLocalPosition(StartSelectPos + float4::Down * (64.0f * CurrentCursor));
 			CursorPos = StartCursorPos;
+			SetWeapon();
 			return;
 		}
 		CurrentCursor++;
 		SelectRender->GetTransform()->SetLocalPosition(StartSelectPos + float4::Down * (64.0f * CurrentCursor));
 		CursorPos = StartCursorPos + float4::Down * (64.0f * CurrentCursor);
-
+		SetWeapon();
 		return;
 	}
 
@@ -258,7 +336,7 @@ void AttackUI::WeaponSelectEnd()
 	}
 }
 
-void AttackUI::TargetSelectStart()
+void AttackUI::SetWeapon()
 {
 	std::list<std::shared_ptr<Weapon>>::iterator StartIter = Weapons.begin();
 	std::advance(StartIter, CurrentCursor);
@@ -268,6 +346,15 @@ void AttackUI::TargetSelectStart()
 		return;
 	}
 	SelectWeapon = *StartIter;
+
+	WeaponDamage->SetValue(SelectWeapon->GetDamage());
+	WeaponHit->SetValue(SelectWeapon->GetHit());
+	WeaponCritical->SetValue(SelectWeapon->GetCritical());
+	WeaponWeight->SetValue(SelectWeapon->GetWeight());
+}
+
+void AttackUI::TargetSelectStart()
+{
 	SelectUnit->GetUnitData().EquipWeapon(SelectWeapon);
 	IsWeaponSelect = true;
 
@@ -277,6 +364,11 @@ void AttackUI::TargetSelectStart()
 	SetTarget();
 	SubjectWeapon->On();
 	TargetWeapon->On();
+
+	WeaponDamage->Off();
+	WeaponHit->Off();
+	WeaponCritical->Off();
+	WeaponWeight->Off();
 }
 
 void AttackUI::TargetSelectUpdate(float _DeltaTime)
@@ -333,6 +425,33 @@ void AttackUI::SetTarget()
 	SubjectWeapon->SetFrame(static_cast<size_t>(SelectWeapon->GetItemCode()) - 1);
 	TargetWeapon->SetFrame(static_cast<size_t>(TargetUnit->GetUnitData().GetCurWeapon()->GetItemCode()) - 1);
 
+	SubjectHP->SetValue(SelectUnit->GetUnitData().GetHP());
+	if (SelectUnit->IsAttackable(TargetUnit))
+	{
+		SubjectDamage->SetValue(SelectUnit->GetUnitData().GetAttackPoint(TargetUnit->GetUnitData()));
+		SubjectHit->SetValue(SelectUnit->GetUnitData().GetHitPoint(TargetUnit->GetUnitData()));
+		SubjectCritical->SetValue(SelectUnit->GetUnitData().GetCriticalPoint(TargetUnit->GetUnitData()));
+	}
+	else
+	{
+		SubjectDamage->SetValue(0);
+		SubjectHit->SetValue(0);
+		SubjectCritical->SetValue(0);
+	}
+
+	TargetHP->SetValue(TargetUnit->GetUnitData().GetHP());
+	if (TargetUnit->IsAttackable(SelectUnit))
+	{
+		TargetDamage->SetValue(TargetUnit->GetUnitData().GetAttackPoint(SelectUnit->GetUnitData()));
+		TargetHit->SetValue(TargetUnit->GetUnitData().GetHitPoint(SelectUnit->GetUnitData()));
+		TargetCritical->SetValue(TargetUnit->GetUnitData().GetCriticalPoint(SelectUnit->GetUnitData()));
+	}
+	else
+	{
+		TargetDamage->SetValue(0);
+		TargetHit->SetValue(0);
+		TargetCritical->SetValue(0);
+	}
 
 	std::shared_ptr<DebugWindow> Window = GameEngineGUI::FindGUIWindowConvert<DebugWindow>("DebugWindow");
 	Window->Text = SelectUnit->GetName();

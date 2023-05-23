@@ -32,6 +32,7 @@ private:
 	void WeaponSelectStart();
 	void WeaponSelectUpdate(float _DeltaTime);
 	void WeaponSelectEnd();
+	void SetWeapon();
 	void TargetSelectStart();
 	void TargetSelectUpdate(float _DeltaTime);
 	void TargetSelectEnd();

@@ -13,15 +13,29 @@ NumberActor::~NumberActor()
 
 void NumberActor::SetValue(int _Value)
 {
+	if (100 <= _Value)
+	{
+		for (int i = 0; i < 3; i++)
+		{
+			Renders[i]->GetTransform()->SetLocalPosition({ -24.0f * i, 0 });
+		}
+	}
+	else
+	{
+		for (int i = 0; i < 3; i++)
+		{
+			Renders[i]->GetTransform()->SetLocalPosition({ -32.0f * i, 0 });
+		}
+	}
 	int i = 0;
-	while (0 < _Value)
+	do 
 	{
 		int Num = _Value % 10;
 		_Value /= 10;
 		Renders[i]->SetFrame(Num);
 		Renders[i]->On();
 		i++;
-	}
+	} while (0 < _Value);
 	for (; i < Renders.size(); i++)
 	{
 		Renders[i]->Off();
@@ -43,7 +57,7 @@ void NumberActor::Start()
 	Renders.resize(3);
 	for (int i = 0; i < 3; i++)
 	{
-		Renders[i] = CreateComponent<GameEngineUIRenderer>(RenderOrder::UIText);
+		Renders[i] = CreateComponent<GameEngineUIRenderer>(static_cast<int>(RenderOrder::UIText));
 		Renders[i]->SetSprite("NumFont.png", 0);
 		Renders[i]->GetTransform()->SetLocalScale({ 32, 40 });
 		Renders[i]->GetTransform()->SetLocalPosition({ -32.0f * i, 0});

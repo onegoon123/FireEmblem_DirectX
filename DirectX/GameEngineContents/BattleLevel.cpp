@@ -106,6 +106,7 @@ void BattleLevel::LevelChangeStart()
 		NewActor->GetUnitData().LevelUp(99);
 		NewActor->SetMapPos({ 3, 5 });
 		NewActor->NewItem(ItemCode::IronBow);
+		NewActor->NewItem(ItemCode::ShortBow);
 		NewActor->NewItem(ItemCode::IronLance);
 		NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
 		PlayerUnits.push_back(NewActor);
@@ -115,10 +116,7 @@ void BattleLevel::LevelChangeStart()
 		NewActor->GetUnitData().LevelUp(99);
 		NewActor->SetMapPos({ 5, 4 });
 		NewActor->NewItem(ItemCode::ManiKatti);
-		NewActor->NewItem(ItemCode::IronLance);
-		NewActor->NewItem(ItemCode::IronAxe);
-		NewActor->NewItem(ItemCode::Fire);
-		NewActor->NewItem(ItemCode::IronBow);
+		NewActor->NewItem(ItemCode::KillingSword);
 		NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
 		PlayerUnits.push_back(NewActor);
 
@@ -127,7 +125,7 @@ void BattleLevel::LevelChangeStart()
 		NewActor->NewItem(ItemCode::IronBow);
 		NewActor->NewItem(ItemCode::Fire);
 		NewActor->GetUnitData().LevelUp(99);
-		NewActor->SetMapPos({ 6, 5 });
+		NewActor->SetMapPos({ 5, 5 });
 		NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
 		EnemyUnits.push_back(NewActor);
 
