@@ -8,6 +8,7 @@
 #include "MapCursor.h"
 #include "DebugWindow.h"
 #include "NumberActor.h"
+#include "DoubleIconActor.h"
 AttackUI::AttackUI()
 {
 }
@@ -64,6 +65,14 @@ void AttackUI::On(std::shared_ptr<BattleUnit> _SelectUnit, std::list<std::shared
 	{
 		WeaponeIcon[i]->Off();
 	}
+	std::list<std::shared_ptr<Weapon>>::iterator WeaponIter = Weapons.begin();
+	// 무기 내구도 표기
+	for (int i = 0; i < Weapons.size(); i++)
+	{
+		WeaponUses[i]->On();
+		WeaponUses[i]->SetValue((*WeaponIter)->GetUses());
+		WeaponIter++;
+	}
 
 
 	std::shared_ptr<DebugWindow> Window = GameEngineGUI::FindGUIWindowConvert<DebugWindow>("DebugWindow");
@@ -86,6 +95,10 @@ void AttackUI::Off()
 	WeaponHit->Off();
 	WeaponCritical->Off();
 	WeaponWeight->Off();
+	for (int i = 0; i < 5; i++)
+	{
+		WeaponUses[i]->Off();
+	}
 }
 
 void AttackUI::Start()
@@ -139,6 +152,20 @@ void AttackUI::Start()
 	TargetWeapon->Off();
 
 	{
+		// 무기 내구도
+		WeaponUses.resize(5);
+		for (int i = 0; i < 5; i++)
+		{
+			WeaponUses[i] = GetLevel()->CreateActor<NumberActor>();
+			WeaponUses[i]->GetTransform()->SetParent(WindowRender->GetTransform());
+			WeaponUses[i]->GetTransform()->SetLocalPosition({ 172, 128.0f - i * 64});
+			WeaponUses[i]->GetTransform()->SetWorldRotation(float4::Zero);
+			WeaponUses[i]->GetTransform()->SetWorldScale(float4::One);
+			WeaponUses[i]->SetValue(0);
+			WeaponUses[i]->Off();
+		}
+	}
+	{
 		// 무기 수치
 		WeaponDamage = GetLevel()->CreateActor<NumberActor>();
 		WeaponDamage->GetTransform()->SetLocalPosition({ 198, -156 });
@@ -166,6 +193,12 @@ void AttackUI::Start()
 		SubjectDamage->GetTransform()->SetWorldRotation(float4::Zero);
 		SubjectDamage->GetTransform()->SetWorldScale({ 1, 1, 1 });
 
+		SubjectDoubleAttack = GetLevel()->CreateActor<DoubleIconActor>();
+		SubjectDoubleAttack->GetTransform()->SetParent(BattleEx->GetTransform());
+		SubjectDoubleAttack->GetTransform()->SetLocalPosition({ -48, 48, 0 });
+		SubjectDoubleAttack->GetTransform()->SetWorldRotation(float4::Zero);
+		SubjectDoubleAttack->GetTransform()->SetWorldScale({ 1, 1, 1 });
+
 		SubjectHit = GetLevel()->CreateActor<NumberActor>();
 		SubjectHit->GetTransform()->SetParent(BattleEx->GetTransform());
 		SubjectHit->GetTransform()->SetLocalPosition({ -68, 0, 0 });
@@ -189,6 +222,12 @@ void AttackUI::Start()
 		TargetDamage->GetTransform()->SetLocalPosition({ 118, 64, 0 });
 		TargetDamage->GetTransform()->SetWorldRotation(float4::Zero);
 		TargetDamage->GetTransform()->SetWorldScale({ 1, 1, 1 });
+
+		TargetDoubleAttack = GetLevel()->CreateActor<DoubleIconActor>();
+		TargetDoubleAttack->GetTransform()->SetParent(BattleEx->GetTransform());
+		TargetDoubleAttack->GetTransform()->SetLocalPosition({ 138, 48, 0 });
+		TargetDoubleAttack->GetTransform()->SetWorldRotation(float4::Zero);
+		TargetDoubleAttack->GetTransform()->SetWorldScale({ 1, 1, 1 });
 
 		TargetHit = GetLevel()->CreateActor<NumberActor>();
 		TargetHit->GetTransform()->SetParent(BattleEx->GetTransform());
@@ -438,7 +477,14 @@ void AttackUI::SetTarget()
 		SubjectHit->SetValue(0);
 		SubjectCritical->SetValue(0);
 	}
-
+	if (SelectUnit->GetUnitData().IsDoubleAttack(TargetUnit->GetUnitData()))
+	{
+		SubjectDoubleAttack->On();
+	}
+	else
+	{
+		SubjectDoubleAttack->Off();
+	}
 	TargetHP->SetValue(TargetUnit->GetUnitData().GetHP());
 	if (TargetUnit->IsAttackable(SelectUnit))
 	{
@@ -452,36 +498,13 @@ void AttackUI::SetTarget()
 		TargetHit->SetValue(0);
 		TargetCritical->SetValue(0);
 	}
-
-	std::shared_ptr<DebugWindow> Window = GameEngineGUI::FindGUIWindowConvert<DebugWindow>("DebugWindow");
-	Window->Text = SelectUnit->GetName();
-	Window->Text += "\n HP : ";
-	Window->Text += std::to_string(SelectUnit->GetUnitData().GetHP());
-	Window->Text += "\n 위력 : ";
-	Window->Text += std::to_string(SelectUnit->GetUnitData().GetAttackPoint(TargetUnit->GetUnitData()));
-	if (true == SelectUnit->GetUnitData().IsDoubleAttack(TargetUnit->GetUnitData()))
+	if (TargetUnit->GetUnitData().IsDoubleAttack(SelectUnit->GetUnitData()))
 	{
-		Window->Text += " × 2";
+		TargetDoubleAttack->On();
 	}
-	Window->Text += "\n 명중 : ";
-	Window->Text += std::to_string(SelectUnit->GetUnitData().GetHitPoint(TargetUnit->GetUnitData()));
-	Window->Text += "\n 필살 : ";
-	Window->Text += std::to_string(SelectUnit->GetUnitData().GetCriticalPoint(TargetUnit->GetUnitData()));
-
-	Window->Text += "\n\n";
-
-	Window->Text += TargetUnit->GetName();
-	Window->Text += "\n HP : ";
-	Window->Text += std::to_string(TargetUnit->GetUnitData().GetHP());
-	Window->Text += "\n 위력 : ";
-	Window->Text += std::to_string(TargetUnit->GetUnitData().GetAttackPoint(SelectUnit->GetUnitData()));
-	if (true == TargetUnit->GetUnitData().IsDoubleAttack(SelectUnit->GetUnitData()))
+	else
 	{
-		Window->Text += " × 2";
+		TargetDoubleAttack->Off();
 	}
-	Window->Text += "\n 명중 : ";
-	Window->Text += std::to_string(TargetUnit->GetUnitData().GetHitPoint(SelectUnit->GetUnitData()));
-	Window->Text += "\n 필살 : ";
-	Window->Text += std::to_string(TargetUnit->GetUnitData().GetCriticalPoint(SelectUnit->GetUnitData()));
 }
 

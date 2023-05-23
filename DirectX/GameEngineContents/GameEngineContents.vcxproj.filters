@@ -111,6 +111,9 @@
     <ClCompile Include="BattleAnimationUI.cpp">
       <Filter>Battle\Animation</Filter>
     </ClCompile>
+    <ClCompile Include="DoubleIconActor.cpp">
+      <Filter>Battle\UI\Parts</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FECore.h" />
@@ -202,6 +205,9 @@
     </ClInclude>
     <ClInclude Include="BattleAnimationUI.h">
       <Filter>Battle\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="DoubleIconActor.h">
+      <Filter>Battle\UI\Parts</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

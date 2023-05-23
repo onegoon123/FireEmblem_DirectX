@@ -61,10 +61,12 @@ private:
 
 	std::shared_ptr<NumberActor> SubjectHP;
 	std::shared_ptr<NumberActor> SubjectDamage;
+	std::shared_ptr<class DoubleIconActor> SubjectDoubleAttack;
 	std::shared_ptr<NumberActor> SubjectHit;
 	std::shared_ptr<NumberActor> SubjectCritical;
 	std::shared_ptr<NumberActor> TargetHP;
 	std::shared_ptr<NumberActor> TargetDamage;
+	std::shared_ptr<class DoubleIconActor> TargetDoubleAttack;
 	std::shared_ptr<NumberActor> TargetHit;
 	std::shared_ptr<NumberActor> TargetCritical;
 

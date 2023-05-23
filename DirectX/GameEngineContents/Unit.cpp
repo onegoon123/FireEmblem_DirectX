@@ -84,8 +84,12 @@ void Unit::DropItem(std::list<std::shared_ptr<Item>>::iterator& _ItemIter)
 	}
 	if ((*_ItemIter)->GetItemType() == ItemType::Weapon)
 	{
-		std::list<std::shared_ptr<Weapon>>::iterator WeaponIter = std::find(Weapons.begin(), Weapons.end(), *_ItemIter);
-		Weapons.erase(WeaponIter);
+		std::shared_ptr<Weapon> _Weapon = std::dynamic_pointer_cast<Weapon>(*_ItemIter);
+		if (true == _Weapon->IsUseWeapon(UnitStat.ClassValue))
+		{
+			std::list<std::shared_ptr<Weapon>>::iterator WeaponIter = std::find(Weapons.begin(), Weapons.end(), *_ItemIter);
+			Weapons.erase(WeaponIter);
+		}
 	}
 	Items.erase(_ItemIter);
 }

@@ -241,7 +241,6 @@ AttackCommand UnitCommand::AttackCalculationNoRandom(Unit& _SubjectUnit, Unit& _
 	if (true == NewAttack.IsHit)
 	{
 		_TargetUnit.Damage(Damage);
-		_SubjectUnit.GetCurWeapon()->Use();
 	}
 
 	NewAttack.TargetUnit = _TargetUnit;

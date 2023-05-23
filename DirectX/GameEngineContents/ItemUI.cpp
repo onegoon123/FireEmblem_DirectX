@@ -247,10 +247,21 @@ void ItemUI::ItemSelect()
 	case ItemType::None:
 		break;
 	case ItemType::Weapon:
-		UseFunctions.push_back(std::bind(&ItemUI::Equipment, this));
-		UseFunctions.push_back(std::bind(&ItemUI::Drop, this));
-		Window->Text += "장비\n버리기";
+	{
+		std::shared_ptr<Weapon> _Weapon = std::dynamic_pointer_cast<Weapon>(*ItemIter);
+		if (true == _Weapon->IsUseWeapon(SelectUnit->GetUnitData().GetClassValue()))
+		{
+			UseFunctions.push_back(std::bind(&ItemUI::Equipment, this));
+			UseFunctions.push_back(std::bind(&ItemUI::Drop, this));
+			Window->Text += "장비\n버리기";
+		}
+		else
+		{
+			UseFunctions.push_back(std::bind(&ItemUI::Drop, this));
+			Window->Text += "버리기";
+		}
 		break;
+	}
 	case ItemType::Stave:
 		UseFunctions.push_back(std::bind(&ItemUI::Drop, this));
 		Window->Text += "버리기";
