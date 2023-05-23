@@ -376,5 +376,10 @@ void GameEngineSpriteRenderer::SpriteRenderInit()
 	AtlasData.z = 1.0f;
 	AtlasData.w = 1.0f;
 
+	ColorOptionValue.MulColor = float4::One;
+	ColorOptionValue.PlusColor = float4::Null;
+
 	GetShaderResHelper().SetConstantBufferLink("AtlasData", AtlasData);
+	GetShaderResHelper().SetConstantBufferLink("ColorOption", ColorOptionValue);
+
 }

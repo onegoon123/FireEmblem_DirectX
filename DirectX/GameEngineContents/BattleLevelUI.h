@@ -28,11 +28,12 @@ public:
 	void ItemOn(std::shared_ptr<BattleUnit> _SelectUnit);
 	void PhaseOn(Faction _Faction);
 	bool IsPhaseEnd();
-
+	void SetFadeIn(float _Timer);
+	void SetFadeOut(float _Timer);
 
 protected:
 	void Start() override;
-
+	void Update(float _DeltaTime) override;
 private:
 
 	std::shared_ptr <class SelectUI> UI_Select = nullptr;
@@ -42,5 +43,11 @@ private:
 	std::shared_ptr <class ItemUI> UI_Item = nullptr;
 	std::shared_ptr <class PhaseUI> UI_Phase = nullptr;
 	std::shared_ptr <class UICursor> UI_Cursor = nullptr;
+	std::shared_ptr <class GameEngineUIRenderer> UI_Fade = nullptr;
+
+	float FadeSpeed = 0.0f;
+	float FadeTimer = 0.0f;
+	bool IsFadeIn = false;
+	bool IsFadeOut = false;
 };
 

@@ -23,6 +23,8 @@ public:
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
+	void LevelChangeStart() override;
+	void LevelChangeEnd() override;
 
 private:
 
@@ -37,14 +39,17 @@ private:
 		UnitCommand,	// 유닛의 행동을 정하는 단계
 		FieldCommand,	// 커서로 땅을 클릭하면 나오는 행동들을 정하는 단계
 		Battle,		// 유닛끼리 전투를 하는 단계
+		BattleReturn,	// 공격레벨에서 돌아옴
 
 		EnemyPhase,	// 적의 턴이 시작
 		EnemySelect,	// 적 선택
 		EnemyMove,			// 적이 이동
 		EnemyBattle,		// 적이 공격
+		EnemyBattleReturn,	// 적 공격레벨에서 돌아옴
 
 		GameOver,			// 게임 오버
 		TimeStone,			// 시간석 사용
+		Clear,				// 클리어
 	};
 	BattleState CurState = BattleState::None;	// 스태이트
 	std::function<void(float)> StateUpdate = nullptr;
@@ -112,6 +117,10 @@ private:
 	void BattleUpdate(float _DeltaTime);
 	void BattleEnd();
 
+	void BattleReturnStart();
+	void BattleReturnUpdate(float _DeltaTime);
+	void BattleReturnEnd();
+
 	void EnemyPhaseStart();
 	void EnemyPhaseUpdate(float _DeltaTime);
 	void EnemyPhaseEnd();
@@ -128,6 +137,10 @@ private:
 	void EnemyBattleUpdate(float _DeltaTime);
 	void EnemyBattleEnd();
 
+	void EnemyBattleReturnStart();
+	void EnemyBattleReturnUpdate(float _DeltaTime);
+	void EnemyBattleReturnEnd();
+
 	void GameOverStart();
 	void GameOverUpdate(float _DeltaTime);
 	void GameOverEnd();
@@ -135,6 +148,9 @@ private:
 	void TimeStoneStart();
 	void TimeStoneUpdate(float _DeltaTime);
 	void TimeStoneEnd();
+
+	bool GameOverCheck();
+
 #pragma endregion
 
 

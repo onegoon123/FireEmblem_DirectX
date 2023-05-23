@@ -12,7 +12,7 @@ enum class RenderOrder
 	UI,		// UI
 	UIText,		// UI
 	UICursor,	// UI위 표시되는 이미지
-
+	Fade,
 };
 enum class UIDir
 {

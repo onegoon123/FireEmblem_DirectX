@@ -19,7 +19,6 @@ public:
 protected:
 
 private:
-
 	static void ResourcesCreate();
 };
 

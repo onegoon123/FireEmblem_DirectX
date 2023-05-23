@@ -3,9 +3,6 @@
 #include <GameEngineCore/GameEngineLevel.h>
 #include "UnitCommand.h"
 // Ό³Έν :
-class SpriteRenderer;
-class GameEngineUIRenderer;
-class BattleAnimationUnit;
 class BattleAnimationLevel : public GameEngineLevel
 {
 public:
@@ -31,19 +28,19 @@ protected:
 
 	void LevelChangeStart() override;
 private:
-	static std::shared_ptr<BattleUnit> SubjectUnit;
+	static std::shared_ptr<class BattleUnit> SubjectUnit;
 	static std::shared_ptr<BattleUnit> TargetUnit;
 	static std::list<AttackCommand> BattleData;
 	static std::list<AttackCommand>::iterator BattleIter;
 
-	std::shared_ptr<SpriteRenderer> BackgroundRender;
+	std::shared_ptr<class SpriteRenderer> BackgroundRender;
 	std::shared_ptr<SpriteRenderer> TerrainLeft;
 	std::shared_ptr<SpriteRenderer> TerrainRight;
-	std::shared_ptr<BattleAnimationUnit> SubjectAnimation;
+	std::shared_ptr<class BattleAnimationUnit> SubjectAnimation;
 	std::shared_ptr<BattleAnimationUnit> TargetAnimation;
 	std::shared_ptr<BattleAnimationUnit> LeftUnit;
 	std::shared_ptr<BattleAnimationUnit> RightUnit;
-	std::shared_ptr<GameEngineUIRenderer> UIRender;
+	std::shared_ptr<class BattleAnimationUI> UI;
 
 	void Test();
 	void End();

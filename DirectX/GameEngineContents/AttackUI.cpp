@@ -32,29 +32,9 @@ void AttackUI::On(std::shared_ptr<BattleUnit> _SelectUnit, std::list<std::shared
 	SelectUnit = _SelectUnit;
 	TargetUnits = _TargetUnits;
 	Weapons = SelectUnit->GetUnitData().GetWeapons();
-	switch (Weapons.size())
-	{
-	case 1:
-		WindowRender->SetTexture("ItemListUI1.png");
-		break;
-	case 2:
-		WindowRender->SetTexture("ItemListUI2.png");
-		break;
-	case 3:
-		WindowRender->SetTexture("ItemListUI3.png");
-		break;
-	case 4:
-		WindowRender->SetTexture("ItemListUI4.png");
-		break;
-	case 5:
-		WindowRender->SetTexture("ItemListUI5.png");
-		break;
-	default:
-	{
-		MsgAssert("정해진 무기 갯수의 범위를 벗어났습니다.");
-		return;
-	}
-	}
+
+	WindowRender->SetFrame(Weapons.size() - 1);
+
 	std::string TextStr = "Portrait_";
 	TextStr += SelectUnit->GetUnitData().GetName();
 	TextStr += ".png";
@@ -109,7 +89,7 @@ void AttackUI::Start()
 	WindowRender = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
 	WindowRender->GetTransform()->SetWorldScale({ 420, 356 });
 	WindowRender->GetTransform()->SetLocalPosition({ -224, 64 });
-	WindowRender->SetTexture("ItemListUI3.png");
+	WindowRender->SetSprite("ItemUI.png", 2);
 
 	SelectRender = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
 	SelectRender->GetTransform()->SetWorldScale({ 368, 20 });
@@ -130,15 +110,6 @@ void AttackUI::Start()
 	BattleEx->GetTransform()->SetWorldScale({ 292, 484 });
 	BattleEx->GetTransform()->SetLocalPosition({ -318, 62 });
 	BattleEx->SetTexture("BattleExUI.png");
-
-	if (nullptr == GameEngineSprite::Find("items.png"))
-	{
-		GameEngineDirectory Dir;
-		Dir.MoveParentToDirectory("ContentResources");
-		Dir.Move("ContentResources");
-		Dir.Move("Item");
-		GameEngineSprite::LoadSheet(Dir.GetPlusFileName("Items.png").GetFullPath(), 7, 5);
-	}
 
 	WeaponeIcon.resize(5);
 	for (int i = 0; i < 5; i++)

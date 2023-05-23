@@ -3,6 +3,12 @@
 #include "GameEngineSprite.h"
 #include <map>
 
+struct ColorOption
+{
+	float4 MulColor;
+	float4 PlusColor;
+};
+
 class AnimationInfo : public std::enable_shared_from_this<AnimationInfo>
 {
 	friend class GameEngineSpriteRenderer;
@@ -135,6 +141,8 @@ public:
 		CurAnimation->PauseOff();
 	}
 
+	ColorOption ColorOptionValue;
+
 
 	void SetAnimationUpdateEvent(const std::string_view& _AnimationName, size_t _Frame, std::function<void()> _Event);
 
@@ -144,14 +152,14 @@ public:
 
 
 protected:
-	void Start() override;
 	void SpriteRenderInit();
+	void Start() override;
+	void Update(float _Delta) override;
+	void Render(float _Delta) override;
 	float4 AtlasData;
 
 private:
-	void Update(float _Delta) override;
 
-	void Render(float _Delta) override;
 
 	std::map<std::string, std::shared_ptr<AnimationInfo>> Animations;
 

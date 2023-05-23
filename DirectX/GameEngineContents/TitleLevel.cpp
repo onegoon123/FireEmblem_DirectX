@@ -2,7 +2,7 @@
 #include "TitleLevel.h"
 #include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEngineCore/GameEngineTexture.h>
-#include <GameEngineCore/GameEngineSpriteRenderer.h>
+#include <GameEngineCore/GameEngineUIRenderer.h>
 #include <GameEngineCore/GameEngineCamera.h>
 #include <GameEngineCore/GameEngineCore.h>
 
@@ -18,21 +18,6 @@ TitleLevel::~TitleLevel()
 
 void TitleLevel::Start()
 {
-	// 리소스 로드
-	{
-		GameEngineDirectory NewDir;
-		NewDir.MoveParentToDirectory("ContentResources");
-		NewDir.Move("ContentResources");
-
-		std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png", });
-
-
-		for (size_t i = 0; i < File.size(); i++)
-		{
-			GameEngineTexture::Load(File[i].GetFullPath());
-		}
-	}
-
 	// 키 세팅
 	{
 		GameEngineInput::CreateKey("Up", VK_UP);
@@ -50,18 +35,10 @@ void TitleLevel::Start()
 		GameEngineInput::CreateKey("RightClick", VK_RBUTTON);
 		GameEngineInput::CreateKey("MiddleClick", VK_MBUTTON);
 	}
-	
+
 	// 카메라 세팅
 	GetMainCamera()->SetProjectionType(CameraType::Orthogonal);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -554.0f });
-
-
-	// 타이틀 이미지
-	std::shared_ptr<GameEngineActor> TitleActor = CreateActor<GameEngineActor>();
-	std::shared_ptr<GameEngineSpriteRenderer> TitleRender = TitleActor->CreateComponent<GameEngineSpriteRenderer>();
-	TitleRender->SetTexture("TitleImage.png");
-	TitleRender->GetTransform()->SetWorldScale({ 960, 640 });
-
 
 	std::shared_ptr<DebugWindow> Window = GameEngineGUI::FindGUIWindowConvert<DebugWindow>("DebugWindow");
 	{
@@ -80,9 +57,42 @@ void TitleLevel::Start()
 
 void TitleLevel::Update(float _DeltaTime)
 {
-
 	if (true == GameEngineInput::IsAnyKey())
 	{
 		GameEngineCore::ChangeLevel("BattleLevel");
 	}
+}
+
+void TitleLevel::LevelChangeStart()
+{
+	GameEngineLevel::LevelChangeStart();
+
+	// 타이틀 리소스 로딩
+	{
+		GameEngineDirectory Dir;
+		Dir.MoveParentToDirectory("ContentResources");
+		Dir.Move("ContentResources");
+		Dir.Move("Title");
+		std::vector<GameEngineFile> File = Dir.GetAllFile({ ".png", });
+		for (size_t i = 0; i < File.size(); i++)
+		{
+			GameEngineTexture::Load(File[i].GetFullPath());
+		}
+	}
+
+	// 타이틀 이미지 생성
+	if (nullptr == TitleRenderer)
+	{
+		std::shared_ptr<GameEngineActor> TitleActor = CreateActor<GameEngineActor>();
+		TitleRenderer = TitleActor->CreateComponent<GameEngineUIRenderer>();
+		TitleRenderer->SetTexture("TitleImage.png");
+		TitleRenderer->GetTransform()->SetWorldScale({ 960, 640 });
+	}
+}
+
+void TitleLevel::LevelChangeEnd()
+{
+	GameEngineLevel::LevelChangeEnd();
+
+	GameEngineTexture::ResourcesClear();
 }

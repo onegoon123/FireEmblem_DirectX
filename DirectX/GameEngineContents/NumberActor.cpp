@@ -35,6 +35,7 @@ void NumberActor::Start()
 		GameEngineDirectory Dir;
 		Dir.MoveParentToDirectory("ContentResources");
 		Dir.Move("ContentResources");
+		Dir.Move("Battle");
 		Dir.Move("UI");
 		GameEngineSprite::LoadSheet(Dir.GetPlusFileName("NumFont.png").GetFullPath(), 10, 1);
 	}

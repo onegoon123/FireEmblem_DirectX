@@ -30,81 +30,119 @@ void BattleLevel::Start()
 	// 카메라 세팅
 	GetMainCamera()->SetProjectionType(CameraType::Perspective);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 448, 288, -554.0f });
-	// 맵을 생성
-	MainMap = CreateActor<BattleMap>();
+	GetMainCamera()->SetSortType(0, SortType::ZSort);
+}
 
-	Tiles = CreateActor<TileRender>();
-	Tiles->Create(MainMap->MapScaleInt2);
+void BattleLevel::Update(float _DeltaTime)
+{
+	StateUpdate(_DeltaTime);
+}
 
-	Arrows = CreateActor<ArrowRender>();
-	Arrows->Create(MainMap->MapScaleInt2);
+void BattleLevel::LevelChangeStart()
+{
+	GameEngineLevel::LevelChangeStart();
 
-	MainCursor = CreateActor<MapCursor>();
-	MainCursor->SetMapPos({ 0,0 });
+	if (CurState == BattleState::BattleReturn || CurState == BattleState::EnemyBattleReturn)
+	{
+		return;
+	}
+	if (CurState == BattleState::None)
+	{
+		// 리소스 로딩
+		{
+			GameEngineDirectory Dir;
+			Dir.MoveParentToDirectory("ContentResources");
+			Dir.Move("ContentResources");
+			Dir.Move("Battle");
+			std::vector<GameEngineFile> File = Dir.GetAllFile({ ".png", });
+			for (size_t i = 0; i < File.size(); i++)
+			{
+				GameEngineTexture::Load(File[i].GetFullPath());
+			}
 
+			Dir.MoveParent();
+			Dir.Move("Character");
+			Dir.Move("BattleIcon");
+			File = Dir.GetAllFile({ ".png", });
+			for (size_t i = 0; i < File.size(); i++)
+			{
+				GameEngineTexture::Load(File[i].GetFullPath());
+			}
+			Dir.MoveParent();
+			Dir.Move("Map");
+			File = Dir.GetAllFile({ ".png", });
+			for (size_t i = 0; i < File.size(); i++)
+			{
+				GameEngineTexture::Load(File[i].GetFullPath());
+			}
+			Dir.MoveParent();
+			Dir.Move("Portrait");
+			File = Dir.GetAllFile({ ".png", });
+			for (size_t i = 0; i < File.size(); i++)
+			{
+				GameEngineTexture::Load(File[i].GetFullPath());
+			}
+		}
+	}
 
+	if (MainMap == nullptr)
+	{
+		// 맵을 생성
+		MainMap = CreateActor<BattleMap>(RenderOrder::Map);
 
-	//NewActor = CreateActor<BattleUnit>();
-	//NewActor->SetUnitCode(UnitIdentityCode::Dorcas);
-	//NewActor->SetMapPos({ 5, 4 });
-	//NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
-	//NewActor->NewItem(ItemCode::IronAxe);
-	//NewActor->NewItem(ItemCode::Vulnerary);
-	//PlayerUnits.push_back(NewActor);
+		Tiles = CreateActor<TileRender>(RenderOrder::Tile);
+		Tiles->Create(MainMap->MapScaleInt2);
 
-	//NewActor = CreateActor<BattleUnit>();
-	//NewActor->SetUnitCode(UnitIdentityCode::Wallace);
-	//NewActor->SetMapPos({ 6, 5 });
-	//NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
-	//NewActor->NewItem(ItemCode::KillerLance);
-	//PlayerUnits.push_back(NewActor);
+		Arrows = CreateActor<ArrowRender>(RenderOrder::Arrow);
+		Arrows->Create(MainMap->MapScaleInt2);
 
-	//NewActor = CreateActor<BattleUnit>();
-	//NewActor->SetUnitCode(UnitIdentityCode::Kent);
-	//NewActor->SetMapPos({ 3, 5 });
-	//NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
-	//NewActor->NewItem(ItemCode::KillerLance);
-	//PlayerUnits.push_back(NewActor);
+		MainCursor = CreateActor<MapCursor>(RenderOrder::MapCursor);
+		MainCursor->SetMapPos({ 0,0 });
 
-	std::shared_ptr<BattleUnit> NewActor = CreateActor<BattleUnit>();
-	NewActor->SetUnitCode(UnitIdentityCode::Wil);
-	NewActor->GetUnitData().LevelUp(200);
-	NewActor->SetMapPos({ 3, 5 });
-	NewActor->NewItem(ItemCode::IronBow);
-	NewActor->NewItem(ItemCode::IronLance);
-	NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
-	PlayerUnits.push_back(NewActor);
+		BattleUI = CreateActor<BattleLevelUI>(RenderOrder::UI);
 
-	NewActor = CreateActor<BattleUnit>();
-	NewActor->SetUnitCode(UnitIdentityCode::Lyn);
-	NewActor->GetUnitData().LevelUp(99);
-	NewActor->SetMapPos({ 5, 4 });
-	NewActor->NewItem(ItemCode::ManiKatti);
-	NewActor->NewItem(ItemCode::IronLance);
-	NewActor->NewItem(ItemCode::IronAxe);
-	NewActor->NewItem(ItemCode::Fire);
-	NewActor->NewItem(ItemCode::IronBow);
-	NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
-	PlayerUnits.push_back(NewActor);
+		std::shared_ptr<BattleUnit> NewActor = CreateActor<BattleUnit>(RenderOrder::Unit);
+		NewActor->SetUnitCode(UnitIdentityCode::Wil);
+		NewActor->GetUnitData().LevelUp(99);
+		NewActor->SetMapPos({ 3, 5 });
+		NewActor->NewItem(ItemCode::IronBow);
+		NewActor->NewItem(ItemCode::IronLance);
+		NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
+		PlayerUnits.push_back(NewActor);
 
-	NewActor = CreateActor<BattleUnit>();
-	NewActor->SetUnitCode(UnitIdentityCode::Mage);
-	NewActor->NewItem(ItemCode::IronBow);
-	NewActor->NewItem(ItemCode::Fire);
-	NewActor->GetUnitData().LevelUp(99);
-	NewActor->SetMapPos({ 6, 5 });
-	NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
-	EnemyUnits.push_back(NewActor);
+		NewActor = CreateActor<BattleUnit>(RenderOrder::Unit);
+		NewActor->SetUnitCode(UnitIdentityCode::Lyn);
+		NewActor->GetUnitData().LevelUp(99);
+		NewActor->SetMapPos({ 5, 4 });
+		NewActor->NewItem(ItemCode::ManiKatti);
+		NewActor->NewItem(ItemCode::IronLance);
+		NewActor->NewItem(ItemCode::IronAxe);
+		NewActor->NewItem(ItemCode::Fire);
+		NewActor->NewItem(ItemCode::IronBow);
+		NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
+		PlayerUnits.push_back(NewActor);
 
-	NewActor = CreateActor<BattleUnit>();
-	NewActor->SetUnitCode(UnitIdentityCode::Soldier);
-	NewActor->NewItem(ItemCode::IronSword);
-	NewActor->NewItem(ItemCode::IronLance);
-	NewActor->NewItem(ItemCode::IronAxe);
-	NewActor->SetMapPos({ 4, 4 });
-	NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
-	EnemyUnits.push_back(NewActor);
-	
+		NewActor = CreateActor<BattleUnit>(RenderOrder::Unit);
+		NewActor->SetUnitCode(UnitIdentityCode::Mage);
+		NewActor->NewItem(ItemCode::IronBow);
+		NewActor->NewItem(ItemCode::Fire);
+		NewActor->GetUnitData().LevelUp(99);
+		NewActor->SetMapPos({ 6, 5 });
+		NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
+		EnemyUnits.push_back(NewActor);
+
+		NewActor = CreateActor<BattleUnit>(RenderOrder::Unit);
+		NewActor->SetUnitCode(UnitIdentityCode::Soldier);
+		NewActor->NewItem(ItemCode::IronSword);
+		NewActor->NewItem(ItemCode::IronLance);
+		NewActor->NewItem(ItemCode::IronAxe);
+		NewActor->GetUnitData().LevelUp(99);
+		NewActor->SetMapPos({ 4, 4 });
+		NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
+		EnemyUnits.push_back(NewActor);
+	}
+
+	// 조건 초기화
 	IsMove.resize(MainMap->MapScaleInt2.y);
 	for (int i = 0; i < IsMove.size(); i++)
 	{
@@ -116,14 +154,15 @@ void BattleLevel::Start()
 		IsAttack[i].resize(MainMap->MapScaleInt2.x);
 	}
 
-	BattleUI = CreateActor<BattleLevelUI>();
-
-	CursorDirCheck();
+	//CursorDirCheck();
 	ChangeState(BattleState::PlayerPhase);
+
 }
 
-void BattleLevel::Update(float _DeltaTime)
+void BattleLevel::LevelChangeEnd()
 {
-	StateUpdate(_DeltaTime);
+	GameEngineLevel::LevelChangeEnd();
+
+	//GameEngineTexture::ResourcesClear();
 }
 

@@ -1,7 +1,8 @@
 #include "PrecompileHeader.h"
 #include "BattleLevelUI.h"
+#include <GameEngineCore/GameEngineSprite.h>
+#include <GameEngineCore/GameEngineUIRenderer.h>
 #include "BattleLevel.h"
-
 #include "SelectUI.h"
 #include "UnitCommandUI.h"
 #include "FieldCommandUI.h"
@@ -9,7 +10,6 @@
 #include "AttackUI.h"
 #include "ItemUI.h"
 #include "UICursor.h"
-
 BattleLevelUI::BattleLevelUI()
 {
 }
@@ -133,26 +133,91 @@ bool BattleLevelUI::IsPhaseEnd()
 	return UI_Phase->PhaseUIEnd();
 }
 
+void BattleLevelUI::SetFadeIn(float _Timer)
+{
+	FadeSpeed = 1 / _Timer;
+	FadeTimer = 1;
+	IsFadeIn = true;
+	UI_Fade->ColorOptionValue.MulColor.a = 1;
+}
+
+void BattleLevelUI::SetFadeOut(float _Timer)
+{
+	FadeSpeed = 1 / _Timer;
+	FadeTimer = 0;
+	IsFadeOut = true;
+	UI_Fade->ColorOptionValue.MulColor.a = 0;
+}
+
 
 void BattleLevelUI::Start()
 {
-	BattleLevel* CurLevel = dynamic_cast<BattleLevel*>(GetLevel());
-	if (nullptr == CurLevel)
+	GameEngineDirectory Dir;
+	Dir.MoveParentToDirectory("ContentResources");
+	Dir.Move("ContentResources");
+	Dir.Move("Battle");
+	Dir.Move("UI");
+	GameEngineSprite::LoadSheet(Dir.GetPlusFileName("ItemUI.png").GetFullPath(), 3, 2);
+	GameEngineSprite::LoadSheet(Dir.GetPlusFileName("CommandUI.png").GetFullPath(), 5, 1);
+
+	Dir.MoveParent();
+	Dir.Move("Item");
+	GameEngineSprite::LoadSheet(Dir.GetPlusFileName("Items.png").GetFullPath(), 7, 5);
+
+
+	if (nullptr == UI_Select)
 	{
-		MsgAssert("BattleLevelUI는 BattleLevel에서만 생성할 수 있습니다.");
+		BattleLevel* CurLevel = dynamic_cast<BattleLevel*>(GetLevel());
+		if (nullptr == CurLevel)
+		{
+			MsgAssert("BattleLevelUI는 BattleLevel에서만 생성할 수 있습니다.");
+		}
+		UI_Select = CurLevel->CreateActor<SelectUI>();
+		UI_UnitCommand = CurLevel->CreateActor<UnitCommandUI>();
+		UI_Attack = CurLevel->CreateActor<AttackUI>();
+		UI_Item = CurLevel->CreateActor<ItemUI>();
+		UI_FieldCommand = CurLevel->CreateActor<FieldCommandUI>();
+		UI_Phase = CurLevel->CreateActor<PhaseUI>();
+
+		UI_Cursor = CurLevel->CreateActor<UICursor>();
+
+		UI_UnitCommand->Setting(CurLevel, UI_Cursor);
+		UI_Attack->Setting(CurLevel, UI_Cursor);
+		UI_Item->Setting(CurLevel, UI_Cursor);
+		UI_FieldCommand->Setting(CurLevel, UI_Cursor);
+
+		UI_Fade = CreateComponent<GameEngineUIRenderer>(RenderOrder::Fade);
+		UI_Fade->ColorOptionValue.MulColor.a = 0;
+		UI_Fade->SetTexture("Black.png");
+		UI_Fade->GetTransform()->SetLocalScale({ 960, 640 });
+		UI_Fade->SetOrder(100);
+
 	}
-	UI_Select = CurLevel->CreateActor<SelectUI>();
-	UI_UnitCommand = CurLevel->CreateActor<UnitCommandUI>();
-	UI_Attack = CurLevel->CreateActor<AttackUI>();
-	UI_Item = CurLevel->CreateActor<ItemUI>();
-	UI_FieldCommand = CurLevel->CreateActor<FieldCommandUI>();
-	UI_Phase = CurLevel->CreateActor<PhaseUI>();
-
-	UI_Cursor = CurLevel->CreateActor<UICursor>();
-
-	UI_UnitCommand->Setting(CurLevel, UI_Cursor);
-	UI_Attack->Setting(CurLevel, UI_Cursor);
-	UI_Item->Setting(CurLevel, UI_Cursor);
-	UI_FieldCommand->Setting(CurLevel, UI_Cursor);
 }
 
+void BattleLevelUI::Update(float _DeltaTime)
+{
+	if (true == IsFadeIn)
+	{
+		FadeTimer -= _DeltaTime * FadeSpeed;
+		if (FadeTimer < 0)
+		{
+			IsFadeIn = false;
+			UI_Fade->ColorOptionValue.MulColor.a = 0;
+			return;
+		}
+		UI_Fade->ColorOptionValue.MulColor.a = FadeTimer;
+	}
+
+	if (true == IsFadeOut)
+	{
+		FadeTimer += _DeltaTime * FadeSpeed;
+		if (FadeTimer > 1)
+		{
+			IsFadeOut = false;
+			UI_Fade->ColorOptionValue.MulColor.a = 1;
+			return;
+		}
+		UI_Fade->ColorOptionValue.MulColor.a = FadeTimer;
+	}
+}

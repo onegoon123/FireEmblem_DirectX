@@ -7,6 +7,7 @@
 #include "BattleAnimationLevel.h"
 #include "SpriteRenderer.h"
 #include "BattleAnimationUnit.h"
+#include "BattleAnimationUI.h"
 std::shared_ptr<BattleUnit> BattleAnimationLevel::SubjectUnit = nullptr;
 std::shared_ptr<BattleUnit> BattleAnimationLevel::TargetUnit = nullptr;
 std::list<AttackCommand> BattleAnimationLevel::BattleData = std::list<AttackCommand>();
@@ -78,28 +79,7 @@ void BattleAnimationLevel::Start()
 {
 	GetMainCamera()->SetProjectionType(CameraType::Perspective);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -554.0f });
-	std::shared_ptr<GameEngineActor> NewActor = CreateActor<GameEngineActor>();
-	BackgroundRender = NewActor->CreateComponent<SpriteRenderer>(RenderOrder::Map);
-	BackgroundRender->SetTexture("BattleBackground_Plains.png");
-	BackgroundRender->SetLocalScale({ 960, 640 });
-
-	TerrainLeft = NewActor->CreateComponent<SpriteRenderer>(RenderOrder::Tile);
-	TerrainLeft->SetTexture("Plain_Close.png");
-	TerrainLeft->SetLocalScale({ 480, 160 });
-	TerrainLeft->GetTransform()->SetLocalPosition({ -240, -112 });
-
-	TerrainRight = NewActor->CreateComponent<SpriteRenderer>(RenderOrder::Tile);
-	TerrainRight->SetTexture("Plain_Close.png");
-	TerrainRight->SetLocalScale({ -480, 160 });
-	TerrainRight->GetTransform()->SetLocalPosition({ 240, -112 });
-
-	RightUnit = CreateActor<BattleAnimationUnit>(RenderOrder::Unit);
-	LeftUnit = CreateActor<BattleAnimationUnit>(RenderOrder::Unit);
-	LeftUnit->GetTransform()->SetLocalNegativeScaleX();
-
-	UIRender = NewActor->CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
-	UIRender->SetTexture("BattleUI.png");
-	UIRender->GetTransform()->SetLocalScale({ 1024, 640 });
+	
 }
 
 void BattleAnimationLevel::Update(float _DeltaTime)
@@ -122,6 +102,32 @@ void BattleAnimationLevel::Update(float _DeltaTime)
 
 void BattleAnimationLevel::LevelChangeStart()
 {
+	// ¿¢ÅÍ ¹× ·»´õ·¯ »ý¼º
+	if (nullptr == BackgroundRender)
+	{
+		std::shared_ptr<GameEngineActor> NewActor = CreateActor<GameEngineActor>();
+		BackgroundRender = NewActor->CreateComponent<SpriteRenderer>(RenderOrder::Map);
+		BackgroundRender->SetTexture("BattleBackground_Plains.png");
+		BackgroundRender->SetLocalScale({ 960, 640 });
+
+		TerrainLeft = NewActor->CreateComponent<SpriteRenderer>(RenderOrder::Tile);
+		TerrainLeft->SetTexture("Plain_Close.png");
+		TerrainLeft->SetLocalScale({ 480, 160 });
+		TerrainLeft->GetTransform()->SetLocalPosition({ -240, -112 });
+
+		TerrainRight = NewActor->CreateComponent<SpriteRenderer>(RenderOrder::Tile);
+		TerrainRight->SetTexture("Plain_Close.png");
+		TerrainRight->SetLocalScale({ -480, 160 });
+		TerrainRight->GetTransform()->SetLocalPosition({ 240, -112 });
+
+		RightUnit = CreateActor<BattleAnimationUnit>(RenderOrder::Unit);
+		LeftUnit = CreateActor<BattleAnimationUnit>(RenderOrder::Unit);
+		LeftUnit->GetTransform()->SetLocalNegativeScaleX();
+
+		UI = CreateActor<BattleAnimationUI>(RenderOrder::UI);
+	}
+
+	// À¯´Ö ÁöÁ¤
 	if (SubjectUnit->GetIsPlayer())
 	{
 		SubjectAnimation = LeftUnit;
@@ -138,12 +144,14 @@ void BattleAnimationLevel::LevelChangeStart()
 
 	TimeEvent.Clear();
 	Test();
+	UI->SetFadeIn(0.3f);
 }
 
 void BattleAnimationLevel::Test()
 {
 	if (BattleIter == BattleData.end())
 	{
+		UI->SetFadeOut(0.3f);
 		TimeEvent.AddEvent(0.5f, std::bind(&BattleAnimationLevel::End, this));
 		return;
 	}

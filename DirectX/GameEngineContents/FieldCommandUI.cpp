@@ -50,7 +50,7 @@ void FieldCommandUI::Start()
 	WindowRender = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
 	WindowRender->GetTransform()->SetWorldScale({ 196, 356 });
 	WindowRender->GetTransform()->SetLocalPosition({ 334, 36 });
-	WindowRender->SetTexture("Select5.png");
+	WindowRender->SetSprite("CommandUI.png", 4);
 
 	SelectRender = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
 	SelectRender->GetTransform()->SetWorldScale({ 144, 20 });

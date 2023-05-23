@@ -61,6 +61,11 @@ void BattleLevel::ChangeState(BattleState _State)
 		StateEnd = std::bind(&BattleLevel::BattleEnd, this);
 		BattleStart();
 		break;
+	case BattleLevel::BattleState::BattleReturn:
+		StateUpdate = std::bind(&BattleLevel::BattleReturnUpdate, this, std::placeholders::_1);
+		StateEnd = std::bind(&BattleLevel::BattleReturnEnd, this);
+		BattleReturnStart();
+		break;
 	case BattleLevel::BattleState::EnemyPhase:
 		StateUpdate = std::bind(&BattleLevel::EnemyPhaseUpdate, this, std::placeholders::_1);
 		StateEnd = std::bind(&BattleLevel::EnemyPhaseEnd, this);
@@ -80,6 +85,11 @@ void BattleLevel::ChangeState(BattleState _State)
 		StateUpdate = std::bind(&BattleLevel::EnemyBattleUpdate, this, std::placeholders::_1);
 		StateEnd = std::bind(&BattleLevel::EnemyBattleEnd, this);
 		EnemyBattleStart();
+		break;
+	case BattleLevel::BattleState::EnemyBattleReturn:
+		StateUpdate = std::bind(&BattleLevel::EnemyBattleReturnUpdate, this, std::placeholders::_1);
+		StateEnd = std::bind(&BattleLevel::EnemyBattleReturnEnd, this);
+		EnemyBattleReturnStart();
 		break;
 	case BattleLevel::BattleState::GameOver:
 		StateUpdate = std::bind(&BattleLevel::GameOverUpdate, this, std::placeholders::_1);
@@ -467,7 +477,7 @@ void BattleLevel::BattleStart()
 		_Unit->GetRenderer()->SetIsBlur(true);
 	}
 	MainMap->GetRenderer()->SetIsBlur(true);
-
+	BattleUI->SetFadeOut(0.3f);
 	return;
 }
 
@@ -477,30 +487,10 @@ void BattleLevel::BattleUpdate(float _DeltaTime)
 	CloseUpTimer += _DeltaTime;
 	if (0.5f < CloseUpTimer)
 	{
-		GameEngineCore::ChangeLevel("BattleAnimationLevel");
 		CloseUpTimer = 0;
+		GameEngineCore::ChangeLevel("BattleAnimationLevel");
 
-		SelectUnit->SetIsTurnEnd(true);
-		if (SelectUnit->GetIsDie())
-		{
-			SelectUnit->Off();
-			SelectUnit = nullptr;
-
-			bool IsAliveUnit = false;
-			for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
-			{
-				if (false == _Unit->GetIsDie())
-				{
-					IsAliveUnit = true;
-				}
-			}
-			if (false == IsAliveUnit)
-			{
-				ChangeState(BattleState::TimeStone);
-				return;
-			}
-		}
-		ChangeState(BattleState::Select);
+		ChangeState(BattleState::BattleReturn);
 		return;
 	}
 
@@ -518,6 +508,55 @@ void BattleLevel::BattleUpdate(float _DeltaTime)
 
 void BattleLevel::BattleEnd()
 {
+	SelectUnit->SetIsTurnEnd(true);
+	if (SelectUnit->GetIsDie())
+	{
+		SelectUnit->Off();
+		SelectUnit = nullptr;
+	}
+	if (TargetUnit->GetIsDie())
+	{
+		TargetUnit->Off();
+		TargetUnit = nullptr;
+	}
+}
+
+void BattleLevel::BattleReturnStart()
+{
+	BattleUI->SetFadeIn(0.3f);
+}
+
+void BattleLevel::BattleReturnUpdate(float _DeltaTime)
+{
+	static float ReturnTimer = 0;
+	ReturnTimer += _DeltaTime;
+
+	if (0.5f < ReturnTimer)
+	{
+		ReturnTimer = 0;
+		if (false == GameOverCheck())
+		{
+			ChangeState(BattleState::Select);
+		}
+		return;
+	}
+	
+	for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
+	{
+		_Unit->GetRenderer()->SetBlurLevel(2.5f - ReturnTimer * 5);
+	}
+	for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
+	{
+		_Unit->GetRenderer()->SetBlurLevel(2.5f - ReturnTimer * 5);
+	}
+	MainMap->GetRenderer()->SetBlurLevel(2.5f - ReturnTimer * 5);
+	GetMainCamera()->GetTransform()->SetLocalPosition(float4::LerpClamp(GetMainCamera()->GetTransform()->GetWorldPosition(), { 448, 288, -554.0f }, _DeltaTime * 10));
+
+}
+
+void BattleLevel::BattleReturnEnd()
+{
+
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 448, 288, -554.0f });
 	for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
 	{
@@ -528,12 +567,6 @@ void BattleLevel::BattleEnd()
 		_Unit->GetRenderer()->SetIsBlur(false);
 	}
 	MainMap->GetRenderer()->SetIsBlur(false);
-
-	if (TargetUnit->GetIsDie())
-	{
-		TargetUnit->Off();
-		TargetUnit = nullptr;
-	}
 }
 
 void BattleLevel::EnemyPhaseStart()
@@ -741,31 +774,12 @@ void BattleLevel::EnemyBattleUpdate(float _DeltaTime)
 	CloseUpTimer += _DeltaTime;
 	if (0.5f < CloseUpTimer || true == IsSkip)
 	{
+		CloseUpTimer = 0;
 		if (false == IsSkip)
 		{
 			GameEngineCore::ChangeLevel("BattleAnimationLevel");
 		}
-		CloseUpTimer = 0;
-		if (TargetUnit->GetIsDie())
-		{
-			TargetUnit->Off();
-			TargetUnit = nullptr;
-
-			bool IsAliveUnit = false;
-			for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
-			{
-				if (false == _Unit->GetIsDie())
-				{
-					IsAliveUnit = true;
-				}
-			}
-			if (false == IsAliveUnit)
-			{
-				ChangeState(BattleState::TimeStone);
-				return;
-			}
-		}
-		ChangeState(BattleState::EnemySelect);
+		ChangeState(BattleState::EnemyBattleReturn);
 		return;
 	}
 
@@ -783,6 +797,53 @@ void BattleLevel::EnemyBattleUpdate(float _DeltaTime)
 
 void BattleLevel::EnemyBattleEnd()
 {
+	SelectUnit->SetIsTurnEnd(true);
+	if (SelectUnit->GetIsDie())
+	{
+		SelectUnit->Off();
+		SelectUnit = nullptr;
+	}
+	if (TargetUnit->GetIsDie())
+	{
+		TargetUnit->Off();
+		TargetUnit = nullptr;
+	}
+}
+
+void BattleLevel::EnemyBattleReturnStart()
+{
+}
+
+void BattleLevel::EnemyBattleReturnUpdate(float _DeltaTime)
+{
+	static float ReturnTimer = 0;
+	ReturnTimer += _DeltaTime;
+
+	if (0.5f < ReturnTimer)
+	{
+		ReturnTimer = 0;
+		if (false == GameOverCheck())
+		{
+			ChangeState(BattleState::EnemySelect);
+		}
+		return;
+	}
+
+	for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
+	{
+		_Unit->GetRenderer()->SetBlurLevel(2.5f - ReturnTimer * 5);
+	}
+	for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
+	{
+		_Unit->GetRenderer()->SetBlurLevel(2.5f - ReturnTimer * 5);
+	}
+	MainMap->GetRenderer()->SetBlurLevel(2.5f - ReturnTimer * 5);
+	GetMainCamera()->GetTransform()->SetLocalPosition(float4::LerpClamp(GetMainCamera()->GetTransform()->GetWorldPosition(), { 448, 288, -554.0f }, _DeltaTime * 10));
+
+}
+
+void BattleLevel::EnemyBattleReturnEnd()
+{
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 448, 288, -554.0f });
 	for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
 	{
@@ -793,13 +854,6 @@ void BattleLevel::EnemyBattleEnd()
 		_Unit->GetRenderer()->SetIsBlur(false);
 	}
 	MainMap->GetRenderer()->SetIsBlur(false);
-	SelectUnit->SetIsTurnEnd(true);
-	if (SelectUnit->GetIsDie())
-	{
-		SelectUnit->Off();
-		SelectUnit = nullptr;
-	}
-
 }
 
 static std::list<UnitCommand> Command;
@@ -1406,4 +1460,52 @@ void BattleLevel::TimeStoneEnd()
 	}
 	MainMap->GetRenderer()->OffLerp();
 	MainMap->GetRenderer()->SetIsBlur(false);
+}
+
+bool BattleLevel::GameOverCheck()
+{
+	// 플레이어 유닛이 모두 죽었는지 체크
+	bool IsAliveUnit = false;
+	for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
+	{
+		if (false == _Unit->GetIsDie())
+		{
+			IsAliveUnit = true;
+		}
+	}
+	if (false == IsAliveUnit)
+	{
+		ChangeState(BattleState::TimeStone);
+		return true;
+	}
+
+	// 적 유닛이 모두 죽었는지 체크
+	IsAliveUnit = false;
+	for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
+	{
+		if (false == _Unit->GetIsDie())
+		{
+			IsAliveUnit = true;
+		}
+	}
+	if (false == IsAliveUnit)
+	{
+		GameEngineTexture::ResourcesClear();
+		GameEngineSprite::ResourcesClear();
+		CurState = BattleState::None;
+		GetMainCamera()->GetTransform()->SetLocalPosition({ 448, 288, -554.0f });
+		for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
+		{
+			_Unit->GetRenderer()->SetIsBlur(false);
+		}
+		for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
+		{
+			_Unit->GetRenderer()->SetIsBlur(false);
+		}
+		MainMap->GetRenderer()->SetIsBlur(false);
+		GameEngineCore::ChangeLevel("TitleLevel");
+		return true;
+	}
+
+	return false;
 }

@@ -6,11 +6,11 @@
 #include "BattleLevel.h"
 #include "BattleUnit.h"
 #include "DebugWindow.h"
-ItemUI::ItemUI() 
+ItemUI::ItemUI()
 {
 }
 
-ItemUI::~ItemUI() 
+ItemUI::~ItemUI()
 {
 }
 
@@ -28,30 +28,8 @@ void ItemUI::On(std::shared_ptr<BattleUnit> _SelectUnit)
 
 	SelectUnit = _SelectUnit;
 	ItemSize = SelectUnit->GetUnitData().GetItems().size();
-	switch (ItemSize)
-	{
-	case 0:
-	case 1:
-		WindowRender->SetTexture("ItemListUI1.png");
-		break;
-	case 2:
-		WindowRender->SetTexture("ItemListUI2.png");
-		break;
-	case 3:
-		WindowRender->SetTexture("ItemListUI3.png");
-		break;
-	case 4:
-		WindowRender->SetTexture("ItemListUI4.png");
-		break;
-	case 5:
-		WindowRender->SetTexture("ItemListUI5.png");
-		break;
-	default:
-	{
-		MsgAssert("정해진 아이템 갯수의 범위를 벗어났습니다.");
-		return;
-	}
-	}
+
+	WindowRender->SetFrame(ItemSize - 1);
 	std::string TextStr = "Portrait_";
 	TextStr += SelectUnit->GetUnitData().GetName();
 	TextStr += ".png";
@@ -104,7 +82,7 @@ void ItemUI::Start()
 	WindowRender = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
 	WindowRender->GetTransform()->SetWorldScale({ 420, 356 });
 	WindowRender->GetTransform()->SetLocalPosition({ -224, 64 });
-	WindowRender->SetTexture("ItemListUI3.png");
+	WindowRender->SetSprite("ItemUI.png", 0);
 
 	SelectRender = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
 	SelectRender->GetTransform()->SetWorldScale({ 368, 20 });
@@ -114,7 +92,7 @@ void ItemUI::Start()
 	InfoRender = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
 	InfoRender->GetTransform()->SetWorldScale({ 420, 356 });
 	InfoRender->GetTransform()->SetLocalPosition({ 224, -224 });
-	InfoRender->SetTexture("ItemListUI3.png");
+	InfoRender->SetSprite("ItemUI.png", 2);
 
 	Portrait = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
 	Portrait->GetTransform()->SetWorldScale({ 384, 320 });
@@ -137,7 +115,7 @@ void ItemUI::Start()
 		Dir.Move("Item");
 		GameEngineSprite::LoadSheet(Dir.GetPlusFileName("Items.png").GetFullPath(), 7, 5);
 	}
-	
+
 	Icons.resize(5);
 	for (int i = 0; i < 5; i++)
 	{
@@ -145,7 +123,7 @@ void ItemUI::Start()
 		Icons[i]->SetSprite("Items.png", 0);
 
 		Icons[i]->GetTransform()->SetWorldScale({ 64, 64 });
-		Icons[i]->GetTransform()->SetLocalPosition({ -386.0f, 198.0f - (64.0f * i)});
+		Icons[i]->GetTransform()->SetLocalPosition({ -386.0f, 198.0f - (64.0f * i) });
 
 		Icons[i]->Off();
 	}
@@ -290,7 +268,7 @@ void ItemUI::ItemSelect()
 	{
 		MsgAssert("지정되지 않은 아이템 타입입니다.");
 	}
-		break;
+	break;
 	}
 
 }

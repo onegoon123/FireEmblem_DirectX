@@ -39,23 +39,7 @@ void UnitCommandUI::SetCommand(bool _IsAttackable, bool _IsCloseUnit, bool _IsIt
 
 	CommandFunctions.push_back(std::bind(&BattleLevel::UnitCommand_Wait, LevelPtr));// 대기 커맨드
 
-	switch (CommandFunctions.size())
-	{
-	case 1:
-		WindowRender->SetTexture("Select1.png");
-		break;
-	case 2:
-		WindowRender->SetTexture("Select2.png");
-		break;
-	case 3:
-		WindowRender->SetTexture("Select3.png");
-		break;
-	case 4:
-		WindowRender->SetTexture("Select4.png");
-		break;
-	default:
-		break;
-	}
+	WindowRender->SetFrame(CommandFunctions.size() - 1);
 
 	
 }
@@ -80,7 +64,7 @@ void UnitCommandUI::Start()
 	WindowRender = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
 	WindowRender->GetTransform()->SetWorldScale({ 196, 356 });
 	WindowRender->GetTransform()->SetLocalPosition({ 334, 36 });
-	WindowRender->SetTexture("Select4.png");
+	WindowRender->SetSprite("CommandUI.png", 0);
 
 	SelectRender = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
 	SelectRender->GetTransform()->SetWorldScale({ 144, 20 });

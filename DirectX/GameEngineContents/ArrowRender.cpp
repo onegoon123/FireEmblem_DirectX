@@ -16,6 +16,7 @@ void ArrowRender::Create(int2 _Scale)
 	GameEngineDirectory Dir;
 	Dir.MoveParentToDirectory("ContentResources");
 	Dir.Move("ContentResources");
+	Dir.Move("Battle");
 	Dir.Move("Map");
 
 	if (nullptr == GameEngineSprite::Find("Arrow.png"))
