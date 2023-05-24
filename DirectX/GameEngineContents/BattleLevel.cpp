@@ -118,14 +118,14 @@ void BattleLevel::LevelChangeStart()
 		//NewActor->GetUnitData().LevelUp(10);
 		NewActor->SetMapPos({ 5, 4 });
 		NewActor->NewItem(ItemCode::ManiKatti);
-		NewActor->NewItem(ItemCode::KillingSword);
+		NewActor->NewItem(ItemCode::IronSword);
 		NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
 		PlayerUnits.push_back(NewActor);
 
 		NewActor = CreateActor<BattleUnit>(RenderOrder::Unit);
 		NewActor->SetUnitCode(UnitIdentityCode::Brigand);
 		NewActor->NewItem(ItemCode::IronAxe);
-		NewActor->GetUnitData().LevelUp(10);
+		//NewActor->GetUnitData().LevelUp(10);
 		NewActor->SetMapPos({ 5, 5 });
 		NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
 		EnemyUnits.push_back(NewActor);

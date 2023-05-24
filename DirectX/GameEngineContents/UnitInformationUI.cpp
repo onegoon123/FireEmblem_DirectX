@@ -6,6 +6,7 @@
 #include "BattleUnit.h"
 #include "BattleLevel.h"
 #include "NumberActor.h"
+#include "StatBar.h"
 
 UnitInformationUI::UnitInformationUI()
 {
@@ -80,6 +81,26 @@ void UnitInformationUI::SetUnit(std::shared_ptr<BattleUnit> _Unit)
 	Number_Luck->SetValue(StatValue.Luck);
 	Number_Move->SetValue(_Unit->GetMoveStat());
 	Number_Constitution->SetValue(StatValue.Constitution);
+
+	MainStat MaximumStat = _Unit->GetUnitData().GetMaximumStat();
+	Bar_Strength->SetSize((float)MaximumStat.Strength * 5);
+	Bar_Strength->SetValue((float)StatValue.Strength / MaximumStat.Strength);
+	Bar_Magic->SetSize((float)MaximumStat.Magic * 5);
+	Bar_Magic->SetValue((float)StatValue.Magic / MaximumStat.Magic);
+	Bar_Dexterity->SetSize((float)MaximumStat.Dexterity * 5);
+	Bar_Dexterity->SetValue((float)StatValue.Dexterity / MaximumStat.Dexterity);
+	Bar_Speed->SetSize((float)MaximumStat.Speed * 5);
+	Bar_Speed->SetValue((float)StatValue.Speed / MaximumStat.Speed);
+	Bar_Defense->SetSize((float)MaximumStat.Defense * 5);
+	Bar_Defense->SetValue((float)StatValue.Defense / MaximumStat.Defense);
+	Bar_Resistance->SetSize((float)MaximumStat.Resistance * 5);
+	Bar_Resistance->SetValue((float)StatValue.Resistance / MaximumStat.Resistance);
+	Bar_Luck->SetSize((float)MaximumStat.Luck * 5);
+	Bar_Luck->SetValue((float)StatValue.Luck / MaximumStat.Luck);
+	Bar_Move->SetSize(70.0f);
+	Bar_Move->SetValue((float)_Unit->GetMoveStat() / 10);
+	Bar_Constitution->SetSize((float)MaximumStat.Constitution * 5);
+	Bar_Constitution->SetValue((float)StatValue.Constitution / MaximumStat.Constitution);
 }
 
 void UnitInformationUI::Start()
@@ -119,22 +140,18 @@ void UnitInformationUI::Start()
 	Number_Level = CurLevel->CreateActor<NumberActor>();
 	Number_Level->GetTransform()->SetParent(GetTransform());
 	Number_Level->GetTransform()->SetLocalPosition({ -364, -196 });
-	Number_Level->SetValue(11);
 
 	Number_Exp = CurLevel->CreateActor<NumberActor>();
 	Number_Exp->GetTransform()->SetParent(GetTransform());
 	Number_Exp->GetTransform()->SetLocalPosition({ -248, -196 });
-	Number_Exp->SetValue(11);
 
 	Number_HP = CurLevel->CreateActor<NumberActor>();
 	Number_HP->GetTransform()->SetParent(GetTransform());
 	Number_HP->GetTransform()->SetLocalPosition({ -364, -258 });
-	Number_HP->SetValue(11);
 
 	Number_MaxHP = CurLevel->CreateActor<NumberActor>();
 	Number_MaxHP->GetTransform()->SetParent(GetTransform());
 	Number_MaxHP->GetTransform()->SetLocalPosition({ -248, -258 });
-	Number_MaxHP->SetValue(11);
 
 	{
 		Number_Strength = CurLevel->CreateActor<NumberActor>();
@@ -142,64 +159,112 @@ void UnitInformationUI::Start()
 		Number_Strength->GetTransform()->SetLocalPosition({ -100, 128 });
 		Number_Strength->GetTransform()->SetWorldRotation(float4::Zero);
 		Number_Strength->GetTransform()->SetWorldScale(float4::One);
-		Number_Strength->SetValue(0);
 
 		Number_Magic = CurLevel->CreateActor<NumberActor>();
 		Number_Magic->GetTransform()->SetParent(PersonalDataWindow->GetTransform());
 		Number_Magic->GetTransform()->SetLocalPosition({ -100, 40 });
 		Number_Magic->GetTransform()->SetWorldRotation(float4::Zero);
 		Number_Magic->GetTransform()->SetWorldScale(float4::One);
-		Number_Magic->SetValue(0);
 
 		Number_Dexterity = CurLevel->CreateActor<NumberActor>();
 		Number_Dexterity->GetTransform()->SetParent(PersonalDataWindow->GetTransform());
 		Number_Dexterity->GetTransform()->SetLocalPosition({ -100, -48 });
 		Number_Dexterity->GetTransform()->SetWorldRotation(float4::Zero);
 		Number_Dexterity->GetTransform()->SetWorldScale(float4::One);
-		Number_Dexterity->SetValue(0);
 
 		Number_Speed = CurLevel->CreateActor<NumberActor>();
 		Number_Speed->GetTransform()->SetParent(PersonalDataWindow->GetTransform());
 		Number_Speed->GetTransform()->SetLocalPosition({ -100, -136 });
 		Number_Speed->GetTransform()->SetWorldRotation(float4::Zero);
 		Number_Speed->GetTransform()->SetWorldScale(float4::One);
-		Number_Speed->SetValue(0);
 
 		Number_Defense = CurLevel->CreateActor<NumberActor>();
 		Number_Defense->GetTransform()->SetParent(PersonalDataWindow->GetTransform());
 		Number_Defense->GetTransform()->SetLocalPosition({ 152, 152 });
 		Number_Defense->GetTransform()->SetWorldRotation(float4::Zero);
 		Number_Defense->GetTransform()->SetWorldScale(float4::One);
-		Number_Defense->SetValue(0);
 
 		Number_Resistance = CurLevel->CreateActor<NumberActor>();
 		Number_Resistance->GetTransform()->SetParent(PersonalDataWindow->GetTransform());
 		Number_Resistance->GetTransform()->SetLocalPosition({ 152, 76 });
 		Number_Resistance->GetTransform()->SetWorldRotation(float4::Zero);
 		Number_Resistance->GetTransform()->SetWorldScale(float4::One);
-		Number_Resistance->SetValue(0);
 
 		Number_Luck = CurLevel->CreateActor<NumberActor>();
 		Number_Luck->GetTransform()->SetParent(PersonalDataWindow->GetTransform());
 		Number_Luck->GetTransform()->SetLocalPosition({ 152, 0 });
 		Number_Luck->GetTransform()->SetWorldRotation(float4::Zero);
 		Number_Luck->GetTransform()->SetWorldScale(float4::One);
-		Number_Luck->SetValue(0);
 
 		Number_Move = CurLevel->CreateActor<NumberActor>();
 		Number_Move->GetTransform()->SetParent(PersonalDataWindow->GetTransform());
 		Number_Move->GetTransform()->SetLocalPosition({ 152, -76 });
 		Number_Move->GetTransform()->SetWorldRotation(float4::Zero);
 		Number_Move->GetTransform()->SetWorldScale(float4::One);
-		Number_Move->SetValue(0);
 
 		Number_Constitution = CurLevel->CreateActor<NumberActor>();
 		Number_Constitution->GetTransform()->SetParent(PersonalDataWindow->GetTransform());
 		Number_Constitution->GetTransform()->SetLocalPosition({ 152, -152 });
 		Number_Constitution->GetTransform()->SetWorldRotation(float4::Zero);
 		Number_Constitution->GetTransform()->SetWorldScale(float4::One);
-		Number_Constitution->SetValue(0);
 	}
+
+	{
+		Bar_Strength = CurLevel->CreateActor<StatBar>();
+		Bar_Strength->GetTransform()->SetParent(PersonalDataWindow->GetTransform());
+		Bar_Strength->GetTransform()->SetLocalPosition({ -164, 116 });
+		Bar_Strength->GetTransform()->SetWorldRotation(float4::Zero);
+		Bar_Strength->GetTransform()->SetWorldScale(float4::One);
+
+		Bar_Magic = CurLevel->CreateActor<StatBar>();
+		Bar_Magic->GetTransform()->SetParent(PersonalDataWindow->GetTransform());
+		Bar_Magic->GetTransform()->SetLocalPosition({ -164, 28 });
+		Bar_Magic->GetTransform()->SetWorldRotation(float4::Zero);
+		Bar_Magic->GetTransform()->SetWorldScale(float4::One);
+
+		Bar_Dexterity = CurLevel->CreateActor<StatBar>();
+		Bar_Dexterity->GetTransform()->SetParent(PersonalDataWindow->GetTransform());
+		Bar_Dexterity->GetTransform()->SetLocalPosition({ -164, -60 });
+		Bar_Dexterity->GetTransform()->SetWorldRotation(float4::Zero);
+		Bar_Dexterity->GetTransform()->SetWorldScale(float4::One);
+
+		Bar_Speed = CurLevel->CreateActor<StatBar>();
+		Bar_Speed->GetTransform()->SetParent(PersonalDataWindow->GetTransform());
+		Bar_Speed->GetTransform()->SetLocalPosition({ -164, -148 });
+		Bar_Speed->GetTransform()->SetWorldRotation(float4::Zero);
+		Bar_Speed->GetTransform()->SetWorldScale(float4::One);
+
+		Bar_Defense = CurLevel->CreateActor<StatBar>();
+		Bar_Defense->GetTransform()->SetParent(PersonalDataWindow->GetTransform());
+		Bar_Defense->GetTransform()->SetLocalPosition({ 88, 140 });
+		Bar_Defense->GetTransform()->SetWorldRotation(float4::Zero);
+		Bar_Defense->GetTransform()->SetWorldScale(float4::One);
+
+		Bar_Resistance = CurLevel->CreateActor<StatBar>();
+		Bar_Resistance->GetTransform()->SetParent(PersonalDataWindow->GetTransform());
+		Bar_Resistance->GetTransform()->SetLocalPosition({ 88, 64 });
+		Bar_Resistance->GetTransform()->SetWorldRotation(float4::Zero);
+		Bar_Resistance->GetTransform()->SetWorldScale(float4::One);
+
+		Bar_Luck = CurLevel->CreateActor<StatBar>();
+		Bar_Luck->GetTransform()->SetParent(PersonalDataWindow->GetTransform());
+		Bar_Luck->GetTransform()->SetLocalPosition({ 88, -12 });
+		Bar_Luck->GetTransform()->SetWorldRotation(float4::Zero);
+		Bar_Luck->GetTransform()->SetWorldScale(float4::One);
+
+		Bar_Move = CurLevel->CreateActor<StatBar>();
+		Bar_Move->GetTransform()->SetParent(PersonalDataWindow->GetTransform());
+		Bar_Move->GetTransform()->SetLocalPosition({ 88, -88 });
+		Bar_Move->GetTransform()->SetWorldRotation(float4::Zero);
+		Bar_Move->GetTransform()->SetWorldScale(float4::One);
+
+		Bar_Constitution = CurLevel->CreateActor<StatBar>();
+		Bar_Constitution->GetTransform()->SetParent(PersonalDataWindow->GetTransform());
+		Bar_Constitution->GetTransform()->SetLocalPosition({ 88, -164 });
+		Bar_Constitution->GetTransform()->SetWorldRotation(float4::Zero);
+		Bar_Constitution->GetTransform()->SetWorldScale(float4::One);
+	}
+
 	Off();
 }
 

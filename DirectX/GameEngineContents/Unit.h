@@ -130,6 +130,10 @@ public:
 	{
 		return UnitStat.MainStatValue;
 	}
+	MainStat GetMaximumStat()
+	{
+		return UnitStat.MaximumStat;
+	}
 	int GetExp()
 	{
 		return UnitStat.Experience;

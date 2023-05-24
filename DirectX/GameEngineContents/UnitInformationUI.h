@@ -43,5 +43,15 @@ private:
 	std::shared_ptr<NumberActor> Number_Luck = nullptr;
 	std::shared_ptr<NumberActor> Number_Move = nullptr;
 	std::shared_ptr<NumberActor> Number_Constitution = nullptr;
+
+	std::shared_ptr<class StatBar> Bar_Strength = nullptr;
+	std::shared_ptr<StatBar> Bar_Magic = nullptr;
+	std::shared_ptr<StatBar> Bar_Dexterity = nullptr;
+	std::shared_ptr<StatBar> Bar_Speed = nullptr;
+	std::shared_ptr<StatBar> Bar_Defense = nullptr;
+	std::shared_ptr<StatBar> Bar_Resistance = nullptr;
+	std::shared_ptr<StatBar> Bar_Luck = nullptr;
+	std::shared_ptr<StatBar> Bar_Move = nullptr;
+	std::shared_ptr<StatBar> Bar_Constitution = nullptr;
 };
 

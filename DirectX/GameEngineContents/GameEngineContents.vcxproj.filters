@@ -120,6 +120,9 @@
     <ClCompile Include="BattleLevel_UnitInformation.cpp">
       <Filter>Battle\System</Filter>
     </ClCompile>
+    <ClCompile Include="StatBar.cpp">
+      <Filter>Battle\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FECore.h" />
@@ -216,6 +219,9 @@
       <Filter>Battle\UI\Parts</Filter>
     </ClInclude>
     <ClInclude Include="UnitInformationUI.h">
+      <Filter>Battle\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="StatBar.h">
       <Filter>Battle\UI</Filter>
     </ClInclude>
   </ItemGroup>
