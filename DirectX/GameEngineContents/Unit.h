@@ -122,6 +122,18 @@ public:
 	{
 		return UnitStat.ClassValue;
 	}
+	int GetLevel()
+	{
+		return UnitStat.Level;
+	}
+	MainStat GetMainStat()
+	{
+		return UnitStat.MainStatValue;
+	}
+	int GetExp()
+	{
+		return UnitStat.Experience;
+	}
 
 	// ป๓ลย
 

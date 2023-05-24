@@ -9,6 +9,7 @@ enum class RenderOrder
 	MapCursor,
 	Effect, // 효과
 
+	UIBackground,
 	UI,		// UI
 	UIText,		// UI
 	UICursor,	// UI위 표시되는 이미지

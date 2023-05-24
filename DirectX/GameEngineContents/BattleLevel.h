@@ -47,6 +47,7 @@ private:
 		EnemyBattle,		// 적이 공격
 		EnemyBattleReturn,	// 적 공격레벨에서 돌아옴
 
+		Information,		// 유닛 정보창을 연상태
 		GameOver,			// 게임 오버
 		TimeStone,			// 시간석 사용
 		Clear,				// 클리어
@@ -80,6 +81,7 @@ private:
 
 	// UI
 	std::shared_ptr<class BattleLevelUI> BattleUI = nullptr;
+	std::shared_ptr <class UnitInformationUI> InfoUI = nullptr;
 
 	const float MoveSpeed = 10;
 	int MoveIndex = 0;
@@ -140,6 +142,10 @@ private:
 	void EnemyBattleReturnStart();
 	void EnemyBattleReturnUpdate(float _DeltaTime);
 	void EnemyBattleReturnEnd();
+
+	void InformationStart();
+	void InformationUpdate(float _DeltaTime);
+	void InformationEnd();
 
 	void GameOverStart();
 	void GameOverUpdate(float _DeltaTime);
@@ -233,6 +239,15 @@ public:
 	void FieldCommand_Exit();
 	void FieldCommand_PhaseEnd();
 	void FieldCommand_Cancel();
+private:
+
+#pragma endregion
+
+#pragma region UnitInformation
+
+public:
+	void UnitInformation_Cancel();
+
 private:
 
 #pragma endregion

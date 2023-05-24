@@ -461,7 +461,8 @@ void BattleLevel::UnitSelect()
 	if (GameEngineInput::IsDown("ButtonR"))
 	{
 		if (nullptr == SelectUnit) { return; }
-		MsgTextBox(SelectUnit->ToString());
+		ChangeState(BattleState::Information);
+		return;
 	}
 
 

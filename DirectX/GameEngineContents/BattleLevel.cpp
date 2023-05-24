@@ -11,7 +11,7 @@
 #include "ArrowRender.h"
 #include "ContentsEnum.h"
 #include "BattleLevelUI.h"
-
+#include "UnitInformationUI.h"
 BattleLevel::BattleLevel()
 {
 	StateUpdate = std::bind(&BattleLevel::PlayerPhaseUpdate, this, std::placeholders::_1);
@@ -100,6 +100,7 @@ void BattleLevel::LevelChangeStart()
 		MainCursor->SetMapPos({ 0,0 });
 
 		BattleUI = CreateActor<BattleLevelUI>(RenderOrder::UI);
+		InfoUI = CreateActor<UnitInformationUI>(RenderOrder::UI);
 
 		std::shared_ptr<BattleUnit> NewActor = CreateActor<BattleUnit>(RenderOrder::Unit);
 		NewActor->SetUnitCode(UnitIdentityCode::Sain);
@@ -114,7 +115,7 @@ void BattleLevel::LevelChangeStart()
 
 		NewActor = CreateActor<BattleUnit>(RenderOrder::Unit);
 		NewActor->SetUnitCode(UnitIdentityCode::Lyn);
-		NewActor->GetUnitData().LevelUp(10);
+		//NewActor->GetUnitData().LevelUp(10);
 		NewActor->SetMapPos({ 5, 4 });
 		NewActor->NewItem(ItemCode::ManiKatti);
 		NewActor->NewItem(ItemCode::KillingSword);

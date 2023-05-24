@@ -99,15 +99,6 @@ public:
 	{
 		return Renderer;
 	}
-	// 유닛의 간략한 정보 반환
-	std::string ToString() const
-	{
-		std::string Str;
-		Str += "이름 : " + std::string(GetName()) + '\n';
-		Str += UnitData.ToString();
-		return Str;
-	}
-
 
 
 	// (적 전용) 공격범위 표시여부 반환

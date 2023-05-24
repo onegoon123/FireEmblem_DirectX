@@ -206,6 +206,7 @@
     </ClCompile>
     <ClCompile Include="BattleLevel_Select.cpp" />
     <ClCompile Include="BattleLevel_UnitCommand.cpp" />
+    <ClCompile Include="BattleLevel_UnitInformation.cpp" />
     <ClCompile Include="BattleMap.cpp">
       <SubType>
       </SubType>
@@ -289,6 +290,10 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="SpriteRenderer.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="UnitInformationUI.cpp">
       <SubType>
       </SubType>
     </ClCompile>
@@ -409,6 +414,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="SpriteRenderer.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="UnitInformationUI.h">
       <SubType>
       </SubType>
     </ClInclude>

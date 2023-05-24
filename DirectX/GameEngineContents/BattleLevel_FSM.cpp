@@ -13,8 +13,8 @@
 #include "ArrowRender.h"
 #include "UnitCommand.h"
 #include "BattleLevelUI.h"
+#include "UnitInformationUI.h"
 #include "DebugWindow.h" // юс╫ц
-
 void BattleLevel::ChangeState(BattleState _State)
 {
 
@@ -90,6 +90,11 @@ void BattleLevel::ChangeState(BattleState _State)
 		StateUpdate = std::bind(&BattleLevel::EnemyBattleReturnUpdate, this, std::placeholders::_1);
 		StateEnd = std::bind(&BattleLevel::EnemyBattleReturnEnd, this);
 		EnemyBattleReturnStart();
+		break;
+	case BattleLevel::BattleState::Information:
+		StateUpdate = std::bind(&BattleLevel::InformationUpdate, this, std::placeholders::_1);
+		StateEnd = std::bind(&BattleLevel::InformationEnd, this);
+		InformationStart();
 		break;
 	case BattleLevel::BattleState::GameOver:
 		StateUpdate = std::bind(&BattleLevel::GameOverUpdate, this, std::placeholders::_1);
@@ -856,6 +861,24 @@ void BattleLevel::EnemyBattleReturnEnd()
 		_Unit->GetRenderer()->SetIsBlur(false);
 	}
 	MainMap->GetRenderer()->SetIsBlur(false);
+}
+
+void BattleLevel::InformationStart()
+{
+	Tiles->Clear();
+	BattleUI->SetFadeIn(0.1f);
+	InfoUI->On();
+	InfoUI->SetUnit(SelectUnit);
+}
+
+void BattleLevel::InformationUpdate(float _DeltaTime)
+{
+}
+
+void BattleLevel::InformationEnd()
+{
+	BattleUI->SetFadeIn(0.1f);
+	InfoUI->Off();
 }
 
 static std::list<UnitCommand> Command;

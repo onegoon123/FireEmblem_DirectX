@@ -114,6 +114,12 @@
     <ClCompile Include="DoubleIconActor.cpp">
       <Filter>Battle\UI\Parts</Filter>
     </ClCompile>
+    <ClCompile Include="UnitInformationUI.cpp">
+      <Filter>Battle\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="BattleLevel_UnitInformation.cpp">
+      <Filter>Battle\System</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FECore.h" />
@@ -208,6 +214,9 @@
     </ClInclude>
     <ClInclude Include="DoubleIconActor.h">
       <Filter>Battle\UI\Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="UnitInformationUI.h">
+      <Filter>Battle\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
