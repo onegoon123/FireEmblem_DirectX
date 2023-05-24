@@ -23,6 +23,17 @@ public:
 	void On();
 	void Off();
 
+	void SetLeft()
+	{
+		GetTransform()->SetLocalPosition({-668, 0});
+		StartCursorPos = { -420, 144 };
+	}
+	void SetRight()
+	{
+		GetTransform()->SetLocalPosition({ 0, 0 });
+		StartCursorPos = { 224, 144 };
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -38,8 +49,8 @@ private:
 	size_t CurrentCursor = 0;
 	float CursorTimer = 0;
 
-	const float4 StartCursorPos = { 224, 144 };
-	const float4 StartSelectPos = { 330, 152 };
+	float4 StartCursorPos = { 224, 144 };
+	float4 StartSelectPos = { 330, 152 };
 
 	const float PreesTime = 0.2f;
 	bool PressOK = false;

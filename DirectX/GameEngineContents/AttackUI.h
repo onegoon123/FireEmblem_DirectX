@@ -25,6 +25,9 @@ public:
 	//void On();
 	void Off();
 
+	void SetLeft();
+	void SetRight();
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;

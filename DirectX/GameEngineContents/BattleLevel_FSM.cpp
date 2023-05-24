@@ -319,6 +319,8 @@ void BattleLevel::MoveWaitEnd()
 
 void BattleLevel::UnitCommandStart()
 {
+	CursorDirCheck();
+
 	// 이동한 위치 기준으로 적 타일 체크
 	EnemyTileCheck();
 

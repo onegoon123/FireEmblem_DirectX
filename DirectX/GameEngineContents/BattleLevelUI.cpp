@@ -53,6 +53,23 @@ void BattleLevelUI::UnitUIOff()
 void BattleLevelUI::SetCursorDir(UIDir _Dir)
 {
 	UI_Select->SetCursorDir(_Dir);
+	switch (_Dir)
+	{
+	case UIDir::None:
+		break;
+	case UIDir::LeftUp:
+	case UIDir::LeftDown:
+		UI_UnitCommand->SetRight();
+		UI_Attack->SetRight();
+		break;
+	case UIDir::RightUp:
+	case UIDir::RightDown:
+		UI_UnitCommand->SetLeft();
+		UI_Attack->SetLeft();
+		break;
+	default:
+		break;
+	}
 }
 
 void BattleLevelUI::UnitCommandOn()
@@ -159,6 +176,7 @@ void BattleLevelUI::Start()
 	Dir.Move("UI");
 	GameEngineSprite::LoadSheet(Dir.GetPlusFileName("ItemUI.png").GetFullPath(), 3, 2);
 	GameEngineSprite::LoadSheet(Dir.GetPlusFileName("CommandUI.png").GetFullPath(), 5, 1);
+	GameEngineSprite::LoadSheet(Dir.GetPlusFileName("Triangle.png").GetFullPath(), 3, 2);
 
 	Dir.MoveParent();
 	Dir.Move("Item");

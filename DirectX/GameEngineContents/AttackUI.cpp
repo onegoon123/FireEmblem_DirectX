@@ -101,6 +101,16 @@ void AttackUI::Off()
 	}
 }
 
+void AttackUI::SetLeft()
+{
+	BattleEx->GetTransform()->SetLocalPosition({ -318, 62 });
+}
+
+void AttackUI::SetRight()
+{
+	BattleEx->GetTransform()->SetLocalPosition({ 318, 62 });
+}
+
 void AttackUI::Start()
 {
 	WindowRender = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
@@ -142,20 +152,41 @@ void AttackUI::Start()
 
 	{
 		// 무기 아이콘
-		SubjectWeapon = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
+		SubjectWeapon = CreateComponent<GameEngineUIRenderer>(RenderOrder::UICursor);
 		SubjectWeapon->SetSprite("Items.png", 0);
+		SubjectWeapon->GetTransform()->SetParent(BattleEx->GetTransform());
+		SubjectWeapon->GetTransform()->SetLocalPosition({ 94, 202 });
+		SubjectWeapon->GetTransform()->SetWorldRotation(float4::Zero);
 		SubjectWeapon->GetTransform()->SetWorldScale({ 64, 64 });
-		SubjectWeapon->GetTransform()->SetLocalPosition({ -224.0f, 260.0f });
 		SubjectWeapon->Off();
-		TargetWeapon = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
+		TargetWeapon = CreateComponent<GameEngineUIRenderer>(RenderOrder::UICursor);
 		TargetWeapon->SetSprite("Items.png", 0);
+		TargetWeapon->GetTransform()->SetParent(BattleEx->GetTransform());
+		TargetWeapon->GetTransform()->SetLocalPosition({ -94, -130 });
+		TargetWeapon->GetTransform()->SetWorldRotation(float4::Zero);
 		TargetWeapon->GetTransform()->SetWorldScale({ 64, 64 });
-		TargetWeapon->GetTransform()->SetLocalPosition({ -412.0f, -72.0f });
 		TargetWeapon->Off();
+
 
 		// 무기 상성 이미지
 		SubjectTriangle = CreateComponent<GameEngineUIRenderer>(RenderOrder::UICursor);
-		//SubjectTriangle
+		SubjectTriangle->CreateAnimation({ .AnimationName = "Advantage", .SpriteName = "Triangle.png", .Start = 0, .End = 2, .FrameInter = 0.15f });
+		SubjectTriangle->CreateAnimation({ .AnimationName = "Disadvantage", .SpriteName = "Triangle.png", .Start = 3, .End = 5, .FrameInter = 0.15f });
+		SubjectTriangle->ChangeAnimation("Advantage");
+		SubjectTriangle->GetTransform()->SetParent(BattleEx->GetTransform());
+		SubjectTriangle->GetTransform()->SetLocalPosition({116, 188});
+		SubjectTriangle->GetTransform()->SetWorldRotation(float4::Zero);
+		SubjectTriangle->GetTransform()->SetWorldScale({28, 40});
+
+		TargetTriangle = CreateComponent<GameEngineUIRenderer>(RenderOrder::UICursor);
+		TargetTriangle->CreateAnimation({ .AnimationName = "Advantage", .SpriteName = "Triangle.png", .Start = 0, .End = 2, .FrameInter = 0.15f });
+		TargetTriangle->CreateAnimation({ .AnimationName = "Disadvantage", .SpriteName = "Triangle.png", .Start = 3, .End = 5, .FrameInter = 0.15f });
+		TargetTriangle->ChangeAnimation("Advantage");
+		TargetTriangle->GetTransform()->SetParent(BattleEx->GetTransform());
+		TargetTriangle->GetTransform()->SetLocalPosition({ -68, -148 });
+		TargetTriangle->GetTransform()->SetWorldRotation(float4::Zero);
+		TargetTriangle->GetTransform()->SetWorldScale({ 28, 40 });
+
 	}
 
 	{
@@ -471,7 +502,9 @@ void AttackUI::SetTarget()
 	SubjectWeapon->SetFrame(static_cast<size_t>(SelectWeapon->GetItemCode()) - 1);
 	TargetWeapon->SetFrame(static_cast<size_t>(TargetUnit->GetUnitData().GetCurWeapon()->GetItemCode()) - 1);
 
+	// 체력
 	SubjectHP->SetValue(SelectUnit->GetUnitData().GetHP());
+	// 공격이 가능한가 (사거리)
 	if (SelectUnit->IsAttackable(TargetUnit))
 	{
 		SubjectDamage->SetValue(SelectUnit->GetUnitData().GetAttackPoint(TargetUnit->GetUnitData()));
@@ -480,10 +513,12 @@ void AttackUI::SetTarget()
 	}
 	else
 	{
+		// 공격 불가능 시 0
 		SubjectDamage->SetValue(0);
 		SubjectHit->SetValue(0);
 		SubjectCritical->SetValue(0);
 	}
+	// 추격이 발동하는가
 	if (SelectUnit->GetUnitData().IsDoubleAttack(TargetUnit->GetUnitData()))
 	{
 		SubjectDoubleAttack->On();
@@ -492,6 +527,7 @@ void AttackUI::SetTarget()
 	{
 		SubjectDoubleAttack->Off();
 	}
+
 	TargetHP->SetValue(TargetUnit->GetUnitData().GetHP());
 	if (TargetUnit->IsAttackable(SelectUnit))
 	{
@@ -513,5 +549,30 @@ void AttackUI::SetTarget()
 	{
 		TargetDoubleAttack->Off();
 	}
+
+	// 무기 상성 값
+	int TriangleValue = Weapon::GetWeaponeTriangle(SelectUnit->GetUnitData().GetCurWeapon(), TargetUnit->GetUnitData().GetCurWeapon());
+	switch (TriangleValue)
+	{
+	case 0:
+		SubjectTriangle->Off();
+		TargetTriangle->Off();
+		break;
+	case 1:
+		SubjectTriangle->On();
+		SubjectTriangle->ChangeAnimation("Advantage");
+		TargetTriangle->On();
+		TargetTriangle->ChangeAnimation("Disadvantage");
+		break;
+	case -1:
+		SubjectTriangle->On();
+		SubjectTriangle->ChangeAnimation("Disadvantage");
+		TargetTriangle->On();
+		TargetTriangle->ChangeAnimation("Advantage");
+		break;
+	default:
+		break;
+	}
+
 }
 
