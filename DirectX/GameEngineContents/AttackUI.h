@@ -57,7 +57,9 @@ private:
 	std::shared_ptr<NumberActor>  WeaponWeight;
 
 	std::shared_ptr<GameEngineUIRenderer> SubjectWeapon;
+	std::shared_ptr<GameEngineUIRenderer> SubjectTriangle;
 	std::shared_ptr<GameEngineUIRenderer> TargetWeapon;
+	std::shared_ptr<GameEngineUIRenderer> TargetTriangle;
 
 	std::shared_ptr<NumberActor> SubjectHP;
 	std::shared_ptr<NumberActor> SubjectDamage;

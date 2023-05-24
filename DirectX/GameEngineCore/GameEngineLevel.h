@@ -17,6 +17,7 @@ class GameEngineLevel : public GameEngineObject
 	friend class GameEngineTransform;
 	friend class GameEngineCore;
 	friend class GameEngineActor;
+	friend class GameEngineTexture;
 
 public:
 	GameEngineTimeEvent TimeEvent;
@@ -85,6 +86,9 @@ protected:
 	void Render(float _DeltaTime);
 
 private:
+	//      이름           경로
+	std::map<std::string, std::string> TexturePath;
+
 	// 카메라
 	std::map<int, std::shared_ptr<GameEngineCamera>> Cameras;
 	std::shared_ptr<GameEngineCamera> MainCamera;

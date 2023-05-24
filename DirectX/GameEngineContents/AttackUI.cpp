@@ -140,16 +140,23 @@ void AttackUI::Start()
 		WeaponeIcon[i]->Off();
 	}
 
-	SubjectWeapon = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
-	SubjectWeapon->SetSprite("Items.png", 0);
-	SubjectWeapon->GetTransform()->SetWorldScale({ 64, 64 });
-	SubjectWeapon->GetTransform()->SetLocalPosition({ -224.0f, 260.0f });
-	SubjectWeapon->Off();
-	TargetWeapon = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
-	TargetWeapon->SetSprite("Items.png", 0);
-	TargetWeapon->GetTransform()->SetWorldScale({ 64, 64 });
-	TargetWeapon->GetTransform()->SetLocalPosition({ -412.0f, -72.0f });
-	TargetWeapon->Off();
+	{
+		// 무기 아이콘
+		SubjectWeapon = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
+		SubjectWeapon->SetSprite("Items.png", 0);
+		SubjectWeapon->GetTransform()->SetWorldScale({ 64, 64 });
+		SubjectWeapon->GetTransform()->SetLocalPosition({ -224.0f, 260.0f });
+		SubjectWeapon->Off();
+		TargetWeapon = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
+		TargetWeapon->SetSprite("Items.png", 0);
+		TargetWeapon->GetTransform()->SetWorldScale({ 64, 64 });
+		TargetWeapon->GetTransform()->SetLocalPosition({ -412.0f, -72.0f });
+		TargetWeapon->Off();
+
+		// 무기 상성 이미지
+		SubjectTriangle = CreateComponent<GameEngineUIRenderer>(RenderOrder::UICursor);
+		//SubjectTriangle
+	}
 
 	{
 		// 무기 내구도

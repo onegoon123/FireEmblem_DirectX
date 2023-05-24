@@ -66,9 +66,14 @@ public:
 		return Load(_Path, NewPath.GetFileName());
 	}
 
+	static void PathCheck(const std::string_view& _Path, const std::string_view& _Name);
+
 	static std::shared_ptr<GameEngineTexture> Load(const std::string_view& _Path, const std::string_view& _Name)
 	{
 		std::shared_ptr<GameEngineTexture> NewTexture = GameEngineResource::Create(_Name);
+
+		PathCheck(_Path, _Name);
+
 		NewTexture->ResLoad(_Path);
 		return NewTexture;
 	}
@@ -150,5 +155,8 @@ private:
 
 	void VSSetting(UINT _Slot);
 	void PSSetting(UINT _Slot);
+
+	void VSReset(UINT _Slot);
+	void PSReset(UINT _Slot);
 };
 
