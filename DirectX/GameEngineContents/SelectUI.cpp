@@ -140,6 +140,8 @@ void SelectUI::SetUnitData(std::shared_ptr<BattleUnit> _Unit)
 	PortraitRender->SetTexture(TextureName);
 
 	SetHPBar(_Unit->GetUnitData().GetHP() / (float)_Unit->GetUnitData().GetMaxHP());
+	UnitHP->SetValue(_Unit->GetUnitData().GetHP());
+	UnitMaxHP->SetValue(_Unit->GetUnitData().GetMaxHP());
 }
 
 void SelectUI::UnitUIOff()
@@ -203,6 +205,22 @@ void SelectUI::Start()
 	TerrainDef->GetTransform()->SetLocalPosition({48, -64});
 	TerrainDef->GetTransform()->SetWorldRotation(float4::Zero);
 	TerrainDef->GetTransform()->SetWorldScale({1, 0.8f});
+
+	UnitHP = GetLevel()->CreateActor<NumberActor>();
+	UnitHP->SetBlackFont();
+	UnitHP->SetValue(20);
+	UnitHP->GetTransform()->SetParent(UnitData.Render->GetTransform());
+	UnitHP->GetTransform()->SetLocalPosition({ 76, -16 });
+	UnitHP->GetTransform()->SetWorldRotation(float4::Zero);
+	UnitHP->GetTransform()->SetWorldScale({ .8f,.8f });
+
+	UnitMaxHP = GetLevel()->CreateActor<NumberActor>();
+	UnitMaxHP->SetBlackFont();
+	UnitMaxHP->SetValue(20);
+	UnitMaxHP->GetTransform()->SetParent(UnitData.Render->GetTransform());
+	UnitMaxHP->GetTransform()->SetLocalPosition({ 146, -16 });
+	UnitMaxHP->GetTransform()->SetWorldRotation(float4::Zero);
+	UnitMaxHP->GetTransform()->SetWorldScale({ .8f,.8f });
 
 	Off();
 }

@@ -62,6 +62,8 @@ private:
 	std::shared_ptr<GameEngineUIRenderer> PortraitRender = nullptr;
 	std::shared_ptr<class NumberActor> TerrainDodge = nullptr;
 	std::shared_ptr<class NumberActor> TerrainDef = nullptr;
+	std::shared_ptr<class NumberActor> UnitHP = nullptr;
+	std::shared_ptr<class NumberActor> UnitMaxHP= nullptr;
 
 	bool UnitDataOn = false;
 	UIDir CursorDir = UIDir::LeftUp;
