@@ -104,7 +104,7 @@ void BattleLevel::LevelChangeStart()
 
 		std::shared_ptr<BattleUnit> NewActor = CreateActor<BattleUnit>(RenderOrder::Unit);
 		NewActor->SetUnitCode(UnitIdentityCode::Sain);
-		NewActor->GetUnitData().LevelUp(10);
+		NewActor->GetUnitData().LevelUp(998);
 		NewActor->SetMapPos({ 3, 5 });
 		NewActor->NewItem(ItemCode::IronBow);
 		NewActor->NewItem(ItemCode::IronSword);

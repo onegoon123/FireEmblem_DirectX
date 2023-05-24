@@ -44,6 +44,8 @@ public:
 
 	BattleClass ClassValue = BattleClass::Lord;
 	MainStat MainStatValue;
+	MainStat MaximumStat;
+
 	int Level = 0;			// 레벨
 	int Movement = 0;				// 이동력
 	int Experience = 0;			// 경험치

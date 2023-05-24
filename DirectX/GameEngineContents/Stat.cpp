@@ -5,6 +5,15 @@
 #include "Unit.h"
 Stat::Stat()
 {
+	MaximumStat.HP = 60;
+	MaximumStat.Strength = 20;
+	MaximumStat.Magic = 20;
+	MaximumStat.Dexterity = 20;
+	MaximumStat.Speed = 20;
+	MaximumStat.Luck = 30;
+	MaximumStat.Defense = 20;
+	MaximumStat.Resistance = 20;
+	MaximumStat.Constitution = 20;
 }
 Stat::~Stat()
 {
@@ -111,14 +120,15 @@ MainStat Stat::LevelUp()
 	// ¼ºÀå·ü È®·ü¸¸Å­ ·¹º§¾÷½Ã ½ºÅÝ ¼ºÀå
 	MainStat UpValue;
 	
-	if (FERandom::RandomInt() < GrowthRates_HP == true) { MainStatValue.HP++; UpValue.HP++;}
-	if (FERandom::RandomInt() < GrowthRates_Strength == true) { MainStatValue.Strength++; UpValue.Strength++; }
-	if (FERandom::RandomInt() < GrowthRates_Magic == true) { MainStatValue.Magic++; UpValue.Magic++; }
-	if (FERandom::RandomInt() < GrowthRates_Dexterity == true) { MainStatValue.Dexterity++; UpValue.Dexterity++; }
-	if (FERandom::RandomInt() < GrowthRates_Speed == true) { MainStatValue.Speed++; UpValue.Speed++; }
-	if (FERandom::RandomInt() < GrowthRates_Luck == true) { MainStatValue.Luck++; UpValue.Luck++; }
-	if (FERandom::RandomInt() < GrowthRates_Defense == true) { MainStatValue.Defense++; UpValue.Defense++; }
-	if (FERandom::RandomInt() < GrowthRates_Resistance == true) { MainStatValue.Resistance++; UpValue.Resistance++; }
+	// ÃÖ´ë ¼öÄ¡¸¸Å­ ÂïÀº ½ºÅÝÀº ½ºÅµ
+	if (MainStatValue.HP < MaximumStat.HP && FERandom::RandomInt() < GrowthRates_HP == true) { MainStatValue.HP++; UpValue.HP++;}
+	if (MainStatValue.Strength < MaximumStat.Strength && FERandom::RandomInt() < GrowthRates_Strength == true) { MainStatValue.Strength++; UpValue.Strength++; }
+	if (MainStatValue.Magic < MaximumStat.Magic && FERandom::RandomInt() < GrowthRates_Magic == true) { MainStatValue.Magic++; UpValue.Magic++; }
+	if (MainStatValue.Dexterity < MaximumStat.Dexterity && FERandom::RandomInt() < GrowthRates_Dexterity == true) { MainStatValue.Dexterity++; UpValue.Dexterity++; }
+	if (MainStatValue.Speed < MaximumStat.Speed && FERandom::RandomInt() < GrowthRates_Speed == true) { MainStatValue.Speed++; UpValue.Speed++; }
+	if (MainStatValue.Luck < MaximumStat.Luck && FERandom::RandomInt() < GrowthRates_Luck == true) { MainStatValue.Luck++; UpValue.Luck++; }
+	if (MainStatValue.Defense < MaximumStat.Defense && FERandom::RandomInt() < GrowthRates_Defense == true) { MainStatValue.Defense++; UpValue.Defense++; }
+	if (MainStatValue.Resistance < MaximumStat.Resistance && FERandom::RandomInt() < GrowthRates_Resistance == true) { MainStatValue.Resistance++; UpValue.Resistance++; }
 
 	return UpValue;
 }
@@ -461,6 +471,13 @@ void Stat::ClassChange_BladeLord()
 	MainStatValue.Resistance += 5;
 	Movement += 1;
 	MainStatValue.Constitution += 1;
+
+	MaximumStat.Strength = 24;
+	MaximumStat.Dexterity = 29;
+	MaximumStat.Speed = 30;
+	MaximumStat.Defense = 22;
+	MaximumStat.Resistance = 22;
+	MaximumStat.Constitution = 25;
 }
 
 void Stat::ClassChange_Warrior()
@@ -473,6 +490,12 @@ void Stat::ClassChange_Warrior()
 	MainStatValue.Resistance += 3;
 	Movement += 1;
 	MainStatValue.Constitution += 2;
+
+	MaximumStat.Strength = 30;
+	MaximumStat.Dexterity = 28;
+	MaximumStat.Speed = 26;
+	MaximumStat.Defense = 26;
+	MaximumStat.Resistance = 22;
 }
 
 void Stat::ClassChange_Assassin()
@@ -482,6 +505,9 @@ void Stat::ClassChange_Assassin()
 	MainStatValue.Strength += 1;
 	MainStatValue.Defense += 2;
 	MainStatValue.Resistance += 2;
+
+	MaximumStat.Dexterity = 30;
+	MaximumStat.Speed = 30;
 }
 
 void Stat::ClassChange_General()
@@ -495,6 +521,12 @@ void Stat::ClassChange_General()
 	MainStatValue.Resistance += 3;
 	Movement += 1;
 	MainStatValue.Constitution += 2;
+
+	MaximumStat.Strength = 29;
+	MaximumStat.Dexterity = 27;
+	MaximumStat.Speed = 24;
+	MaximumStat.Defense = 30;
+	MaximumStat.Resistance = 25;
 }
 
 void Stat::SetStat_Brigand()

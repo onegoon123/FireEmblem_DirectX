@@ -13,6 +13,11 @@ NumberActor::~NumberActor()
 
 void NumberActor::SetValue(int _Value)
 {
+	if (1000 <= _Value)
+	{
+		MsgAssert("아직 4자리수를 표현하지 못합니다.");
+		return;
+	}
 	if (100 <= _Value)
 	{
 		for (int i = 0; i < 3; i++)
