@@ -106,6 +106,8 @@ bool Stat::AddExperience(int _Experience)
 
 MainStat Stat::LevelUp()
 {
+	Level++;
+
 	// 성장률 확률만큼 레벨업시 스텟 성장
 	MainStat UpValue;
 	

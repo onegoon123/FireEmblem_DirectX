@@ -99,7 +99,10 @@ public:
 	{
 		return Renderer;
 	}
-
+	std::string_view GetMapSpriteName()
+	{
+		return MapSpriteName;
+	}
 
 	// (적 전용) 공격범위 표시여부 반환
 	bool GetIsCheckTile() { return IsCheckTile; }

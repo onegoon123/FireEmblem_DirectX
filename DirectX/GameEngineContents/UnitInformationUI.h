@@ -27,10 +27,21 @@ private:
 	std::shared_ptr<GameEngineUIRenderer> Fore = nullptr;
 	std::shared_ptr<GameEngineUIRenderer> PersonalDataWindow = nullptr;
 	std::shared_ptr<GameEngineUIRenderer> PortraitRenderer = nullptr;
+	std::shared_ptr<GameEngineUIRenderer> UnitRenderer = nullptr;
 
 	std::shared_ptr<class NumberActor> Number_Level = nullptr;
 	std::shared_ptr<NumberActor> Number_Exp = nullptr;
 	std::shared_ptr<NumberActor> Number_HP = nullptr;
 	std::shared_ptr<NumberActor> Number_MaxHP = nullptr;
+
+	std::shared_ptr<NumberActor> Number_Strength = nullptr;
+	std::shared_ptr<NumberActor> Number_Magic = nullptr;
+	std::shared_ptr<NumberActor> Number_Dexterity = nullptr;
+	std::shared_ptr<NumberActor> Number_Speed = nullptr;
+	std::shared_ptr<NumberActor> Number_Defense = nullptr;
+	std::shared_ptr<NumberActor> Number_Resistance = nullptr;
+	std::shared_ptr<NumberActor> Number_Luck = nullptr;
+	std::shared_ptr<NumberActor> Number_Move = nullptr;
+	std::shared_ptr<NumberActor> Number_Constitution = nullptr;
 };
 
