@@ -805,7 +805,7 @@ void BattleLevel::EnemyBattleEnd()
 		SelectUnit->Off();
 		SelectUnit = nullptr;
 	}
-	if (TargetUnit->GetIsDie())
+	if (nullptr != TargetUnit && TargetUnit->GetIsDie())
 	{
 		TargetUnit->Off();
 		TargetUnit = nullptr;

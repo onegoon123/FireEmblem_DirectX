@@ -2,25 +2,10 @@
 #include <vector>
 #include <GameEngineCore/GameEngineActor.h>
 #include "Int2.h"
+#include "ContentsEnum.h"
+
 const static float TileScale = 64.0f;
 
-enum class Terrain
-{
-	Plain,	//평지
-	None,	//이동불가지역
-	Forest,	//숲
-	Cliff,	//벼랑
-	Mountain,	//산
-	Peak,		//높은 산
-	Door,		//문 이동불가
-	Gate,		//문 게이트 이동가능
-	House,		//민가
-	Sea,		//바다
-	River,		//강
-	Bridge,		//다리
-	Wall,		//벽
-	Fort,		//요새
-};
 
 
 class SpriteRenderer;

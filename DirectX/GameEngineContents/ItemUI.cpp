@@ -6,6 +6,7 @@
 #include "BattleLevel.h"
 #include "BattleUnit.h"
 #include "DebugWindow.h"
+#include "NumberActor.h"
 ItemUI::ItemUI()
 {
 }
@@ -53,12 +54,16 @@ void ItemUI::On(std::shared_ptr<BattleUnit> _SelectUnit)
 	{
 		Icons[i]->SetFrame(static_cast<size_t>(_Item->GetItemCode()) - 1);
 		Icons[i]->On();
+		ItemUses[i]->SetValue(_Item->GetUses());
+		ItemUses[i]->On();
 		i++;
 	}
 	for (i = ItemSize; i < 5; i++)
 	{
 		Icons[i]->Off();
+		ItemUses[i]->Off();
 	}
+
 
 	std::shared_ptr<DebugWindow> Window = GameEngineGUI::FindGUIWindowConvert<DebugWindow>("DebugWindow");
 	Window->Text = "";
@@ -99,11 +104,11 @@ void ItemUI::Start()
 	Portrait->GetTransform()->SetLocalPosition({ 224, 114 });
 	Portrait->SetTexture("Portrait_Lyn.png");
 
-	ItemUseWindow = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
+	ItemUseWindow = CreateComponent<GameEngineUIRenderer>(static_cast<int>(RenderOrder::UIText) + 1);
 	ItemUseWindow->GetTransform()->SetWorldScale({ 160, 192 });
 	ItemUseWindow->SetTexture("ItemUse.png");
 
-	ItemUseSelect = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
+	ItemUseSelect = CreateComponent<GameEngineUIRenderer>(static_cast<int>(RenderOrder::UIText) + 2);
 	ItemUseSelect->GetTransform()->SetWorldScale({ 76, 20 });
 	ItemUseSelect->SetTexture("ItemUseSelect.png");
 
@@ -126,6 +131,21 @@ void ItemUI::Start()
 		Icons[i]->GetTransform()->SetLocalPosition({ -386.0f, 198.0f - (64.0f * i) });
 
 		Icons[i]->Off();
+	}
+
+	{
+		// 아이템 내구도
+		ItemUses.resize(5);
+		for (int i = 0; i < 5; i++)
+		{
+			ItemUses[i] = GetLevel()->CreateActor<NumberActor>();
+			ItemUses[i]->GetTransform()->SetParent(WindowRender->GetTransform());
+			ItemUses[i]->GetTransform()->SetLocalPosition({ 172, 128.0f - i * 64 });
+			ItemUses[i]->GetTransform()->SetWorldRotation(float4::Zero);
+			ItemUses[i]->GetTransform()->SetWorldScale(float4::One);
+			ItemUses[i]->SetValue(0);
+			ItemUses[i]->Off();
+		}
 	}
 
 	GameEngineActor::Off();

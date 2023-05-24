@@ -72,6 +72,11 @@ void BattleLevelUI::SetCursorDir(UIDir _Dir)
 	}
 }
 
+void BattleLevelUI::SetTerrain(Terrain _Value)
+{
+	UI_Select->SetTerrainData(_Value);
+}
+
 void BattleLevelUI::UnitCommandOn()
 {
 	UI_Select->Off();

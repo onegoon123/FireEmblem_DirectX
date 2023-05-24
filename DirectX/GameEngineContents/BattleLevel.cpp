@@ -108,6 +108,7 @@ void BattleLevel::LevelChangeStart()
 		NewActor->NewItem(ItemCode::IronBow);
 		NewActor->NewItem(ItemCode::IronSword);
 		NewActor->NewItem(ItemCode::IronLance);
+		NewActor->NewItem(ItemCode::Vulnerary);
 		NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
 		PlayerUnits.push_back(NewActor);
 

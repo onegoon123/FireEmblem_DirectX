@@ -21,6 +21,7 @@ public:
 	void SetUnitData(std::shared_ptr<class BattleUnit> _Unit);
 	void UnitUIOff();
 	void SetCursorDir(UIDir _Dir);
+	void SetTerrain(Terrain _Value);
 	void UnitCommandOn();
 	void UnitCommandSet(bool _IsAttackable, bool _IsCloseUnit, bool _IsItem);
 	void FieldCommandOn();

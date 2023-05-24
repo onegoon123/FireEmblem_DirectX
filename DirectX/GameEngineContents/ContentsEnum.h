@@ -130,3 +130,22 @@ enum class BattleClass
 	Soldier,	// 군인 (창든 적)
 	Mercenary,	// 용병 (검든 적)
 };
+
+
+enum class Terrain
+{
+	Plain,	//평지
+	None,	//이동불가지역
+	Forest,	//숲
+	Cliff,	//벼랑
+	Mountain,	//산
+	Peak,		//높은 산
+	Door,		//문 이동불가
+	Gate,		//문 게이트 이동가능
+	House,		//민가
+	Sea,		//바다
+	River,		//강
+	Bridge,		//다리
+	Wall,		//벽
+	Fort,		//요새
+};

@@ -42,6 +42,23 @@ void NumberActor::SetValue(int _Value)
 	}
 }
 
+void NumberActor::SetBlackFont()
+{
+	if (nullptr == GameEngineSprite::Find("NumFontBlack.png"))
+	{
+		GameEngineDirectory Dir;
+		Dir.MoveParentToDirectory("ContentResources");
+		Dir.Move("ContentResources");
+		Dir.Move("Battle");
+		Dir.Move("UI");
+		GameEngineSprite::LoadSheet(Dir.GetPlusFileName("NumFontBlack.png").GetFullPath(), 10, 1);
+	}
+	for (int i = 0; i < 3; i++)
+	{
+		Renders[i]->SetSprite("NumFontBlack.png", 0);
+	}
+}
+
 void NumberActor::Start()
 {
 	if (nullptr == GameEngineSprite::Find("NumFont.png"))

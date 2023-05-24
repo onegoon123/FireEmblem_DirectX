@@ -52,6 +52,7 @@ private:
 	std::vector<std::shared_ptr<GameEngineUIRenderer>> Icons;
 	size_t ItemSize = 0;
 	std::list<std::shared_ptr<Item>>::iterator ItemIter;
+	std::vector<std::shared_ptr<class NumberActor>> ItemUses;
 	std::shared_ptr<BattleUnit> SelectUnit = nullptr;;
 
 	const float4 StartCursorPos = { -432, 192 };

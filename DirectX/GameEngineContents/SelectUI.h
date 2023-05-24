@@ -1,6 +1,7 @@
 #pragma once
 #include <GameEngineCore/GameEngineActor.h>
 #include "ContentsEnum.h"
+
 class GameEngineUIRenderer;
 class BattleUnit;
 class SelectUIObject
@@ -40,6 +41,7 @@ public:
 	SelectUI& operator=(SelectUI&& _Other) noexcept = delete;
 
 	void SetCursorDir(UIDir _Dir);
+	void SetTerrainData(Terrain _Data);
 	void On();
 	void Off();
 
@@ -53,11 +55,14 @@ protected:
 
 private:
 	SelectUIObject Goal;	// 목표 표시UI
-	SelectUIObject Terrain;	// 지형 표시UI
+	SelectUIObject TerrainUI;	// 지형 표시UI
 	SelectUIObject UnitData;	// 유닛 표시UI
 
 	std::shared_ptr<GameEngineUIRenderer> HPBarRender = nullptr;
 	std::shared_ptr<GameEngineUIRenderer> PortraitRender = nullptr;
+	std::shared_ptr<class NumberActor> TerrainDodge = nullptr;
+	std::shared_ptr<class NumberActor> TerrainDef = nullptr;
+
 	bool UnitDataOn = false;
 	UIDir CursorDir = UIDir::LeftUp;
 };

@@ -673,6 +673,7 @@ void BattleLevel::EnemyTileCheck()
 	SelectUnit = BeforeUnit;
 }
 
+
 void BattleLevel::UnitMove()
 {
 	if (true == IsMapOut(MainCursor->GetMapPos())) { return; }
@@ -714,6 +715,11 @@ bool BattleLevel::IsMapOut(int2 _Pos)
 		return true;
 	}
 	return false;
+}
+
+Terrain BattleLevel::GetTerrain(int2 _Pos)
+{
+	return MainMap->TerrainData[_Pos.y][_Pos.x];
 }
 
 int BattleLevel::GetTerrainCostFoot(int2 _Pos)

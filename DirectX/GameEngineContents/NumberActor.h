@@ -15,6 +15,7 @@ public:
 	NumberActor& operator=(NumberActor&& _Other) noexcept = delete;
 
 	void SetValue(int _Value);
+	void SetBlackFont();
 
 protected:
 	void Start() override;

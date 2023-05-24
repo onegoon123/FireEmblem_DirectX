@@ -96,6 +96,8 @@ void BattleLevel::CursorMove()
 		CursorDirCheck();	// 커서의 방향(정중앙 기준) 체크
 		CursorUnitSelect();
 
+		BattleUI->SetTerrain(GetTerrain(MainCursor->GetMapPos()));
+		
 	}
 }
 
@@ -233,12 +235,17 @@ void BattleLevel::CursorMoveMouse()
 	float4 MousePos = GameEngineInput::GetMousePosition();
 	float4 MouseLocalPos = float4(MousePos.x, 640 - MousePos.y);
 	int2 MouseMapPos = int2::Float4ToInt2(MouseLocalPos * 0.015625f);
+	if (true == IsMapOut(MouseMapPos))
+	{
+		return;
+	}
 	if (1 <= CursorPos.GetDistance(MouseMapPos))
 	{
 		int2 MovePos = MouseMapPos - CursorPos;
 		MainCursor->MoveMapPosLerp(MovePos.Normalize());
 		CursorDirCheck();
 		CursorUnitSelect();
+		BattleUI->SetTerrain(GetTerrain(MainCursor->GetMapPos()));
 	}
 
 

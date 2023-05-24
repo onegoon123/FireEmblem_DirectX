@@ -5,6 +5,7 @@
 #include <GameEngineCore/GameEngineUIRenderer.h>
 #include "ContentsEnum.h"
 #include "BattleUnit.h"
+#include "NumberActor.h"
 SelectUI::SelectUI()
 {
 }
@@ -26,27 +27,27 @@ void SelectUI::SetCursorDir(UIDir _Dir)
 	{
 	case UIDir::None:
 		Goal.ChangeDir(UIDir::None);
-		Terrain.ChangeDir(UIDir::None);
+		TerrainUI.ChangeDir(UIDir::None);
 		UnitData.ChangeDir(UIDir::None);
 		break;
 	case UIDir::LeftUp:
 		Goal.ChangeDir(UIDir::RightUp);
-		Terrain.ChangeDir(UIDir::RightDown);
+		TerrainUI.ChangeDir(UIDir::RightDown);
 		//UnitData.ChangeDir(UIDir::LeftDown);
 		break;
 	case UIDir::LeftDown:
 		Goal.ChangeDir(UIDir::RightUp);
-		Terrain.ChangeDir(UIDir::RightDown);
+		TerrainUI.ChangeDir(UIDir::RightDown);
 		//UnitData.ChangeDir(UIDir::LeftUp);
 		break;
 	case UIDir::RightUp:
 		Goal.ChangeDir(UIDir::RightDown);
-		Terrain.ChangeDir(UIDir::LeftDown);
+		TerrainUI.ChangeDir(UIDir::LeftDown);
 		//UnitData.ChangeDir(UIDir::LeftUp);
 		break;
 	case UIDir::RightDown:
 		Goal.ChangeDir(UIDir::RightUp);
-		Terrain.ChangeDir(UIDir::LeftDown);
+		TerrainUI.ChangeDir(UIDir::LeftDown);
 		//UnitData.ChangeDir(UIDir::LeftUp);
 		break;
 	default:
@@ -56,13 +57,19 @@ void SelectUI::SetCursorDir(UIDir _Dir)
 
 }
 
+void SelectUI::SetTerrainData(Terrain _Data)
+{
+	TerrainDodge->SetValue(BattleMap::GetTerrainDodge(_Data));
+	TerrainDef->SetValue(BattleMap::GetTerrainDef(_Data));
+}
+
 void SelectUI::On()
 {
 	GameEngineActor::On();
 	Goal.Render->On();
 	Goal.Timer = 0;
-	Terrain.Render->On();
-	Terrain.Timer = 0;
+	TerrainUI.Render->On();
+	TerrainUI.Timer = 0;
 	UnitData.Render->On();
 	UnitData.Timer = 0;
 	HPBarRender->On();
@@ -70,8 +77,8 @@ void SelectUI::On()
 
 	Goal.CurDir = UIDir::None;
 	Goal.NextDir = UIDir::None;
-	Terrain.CurDir = UIDir::None;
-	Terrain.NextDir = UIDir::None;
+	TerrainUI.CurDir = UIDir::None;
+	TerrainUI.NextDir = UIDir::None;
 	UnitData.ChangeDir(UIDir::None);
 	CursorDir = UIDir::None;
 }
@@ -82,8 +89,8 @@ void SelectUI::Off()
 	CursorDir = UIDir::None;
 	Goal.Render->Off();
 	Goal.Render->GetTransform()->SetLocalPosition(Goal.BenchmarkHidePos);
-	Terrain.Render->Off();
-	Terrain.Render->GetTransform()->SetLocalPosition(Terrain.BenchmarkHidePos);
+	TerrainUI.Render->Off();
+	TerrainUI.Render->GetTransform()->SetLocalPosition(TerrainUI.BenchmarkHidePos);
 	UnitData.Render->Off();
 	UnitData.Render->GetTransform()->SetLocalPosition(UnitData.BenchmarkHidePos);
 	HPBarRender->Off();
@@ -151,13 +158,13 @@ void SelectUI::Start()
 	Goal.CurDir = UIDir::None;
 	Goal.NextDir = UIDir::None;
 
-	Terrain.Render = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
-	Terrain.Render->SetTexture("terrainUI.png");
-	Terrain.Render->GetTransform()->SetWorldScale({ 192, 212 });
-	Terrain.BenchmarkHidePos = { -576, 214 };
-	Terrain.BenchmarkShowPos = { -384, 214 };
-	Terrain.CurDir = UIDir::None;
-	Terrain.NextDir = UIDir::None;
+	TerrainUI.Render = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
+	TerrainUI.Render->SetTexture("TerrainUI.png");
+	TerrainUI.Render->GetTransform()->SetWorldScale({ 192, 212 });
+	TerrainUI.BenchmarkHidePos = { -576, 214 };
+	TerrainUI.BenchmarkShowPos = { -384, 214 };
+	TerrainUI.CurDir = UIDir::None;
+	TerrainUI.NextDir = UIDir::None;
 
 	UnitData.Render = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
 	UnitData.Render->SetTexture("ActorUI.png");
@@ -177,10 +184,25 @@ void SelectUI::Start()
 
 	PortraitRender = _Actor->CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
 	PortraitRender->SetTexture("BattleIcon_Lyn.png");
-	//PortraitRender->GetTransform()->SetParent(UnitData.Render->GetTransform());
 	PortraitRender->GetTransform()->SetWorldScale({ 128, 128 });
 	PortraitRender->GetTransform()->SetLocalPosition({ -96, 0 });
 	CursorDir = UIDir::None;
+
+	TerrainDodge = GetLevel()->CreateActor<NumberActor>();
+	TerrainDodge->SetBlackFont();
+	TerrainDodge->SetValue(0);
+	TerrainDodge->GetTransform()->SetParent(TerrainUI.Render->GetTransform());
+	TerrainDodge->GetTransform()->SetLocalPosition({48, -32});
+	TerrainDodge->GetTransform()->SetWorldRotation(float4::Zero);
+	TerrainDodge->GetTransform()->SetWorldScale({ 1, 0.8f });
+
+	TerrainDef = GetLevel()->CreateActor<NumberActor>();
+	TerrainDef->SetBlackFont();
+	TerrainDef->SetValue(0);
+	TerrainDef->GetTransform()->SetParent(TerrainUI.Render->GetTransform());
+	TerrainDef->GetTransform()->SetLocalPosition({48, -64});
+	TerrainDef->GetTransform()->SetWorldRotation(float4::Zero);
+	TerrainDef->GetTransform()->SetWorldScale({1, 0.8f});
 
 	Off();
 }
@@ -188,7 +210,7 @@ static float Timer = 0;
 void SelectUI::Update(float _DeltaTiime)
 {
 	Goal.Update(_DeltaTiime);
-	Terrain.Update(_DeltaTiime);
+	TerrainUI.Update(_DeltaTiime);
 	UnitData.Update(_DeltaTiime);
 }
 

@@ -182,6 +182,7 @@ private:
 	// 다음턴의 적이 공격 가능한 범위를 표시하는 기능 (IsCheckTile가 true인 적 한정)
 	void EnemyTileCheck();
 
+	Terrain GetTerrain(int2 _Pos);
 	// 지상유닛기준 지형에 대한 이동 코스트를 계산. 이동 불가능 지형은 99가 반환
 	int GetTerrainCostFoot(int2 _Pos);
 	int GetTerrainDodge(int2 _Pos);
