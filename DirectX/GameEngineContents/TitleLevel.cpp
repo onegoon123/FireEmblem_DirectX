@@ -40,33 +40,6 @@ void TitleLevel::Start()
 	GetMainCamera()->SetProjectionType(CameraType::Orthogonal);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -554.0f });
 
-	std::shared_ptr<DebugWindow> Window = GameEngineGUI::FindGUIWindowConvert<DebugWindow>("DebugWindow");
-	{
-		if (nullptr == Window)
-		{
-			MsgAssert("윈도우 테스트 코드 미작동");
-		}
-
-		std::function<void()> Function;
-		Function = []() {
-			MsgTextBox("버튼누름");
-		};
-
-	}
-}
-
-void TitleLevel::Update(float _DeltaTime)
-{
-	if (true == GameEngineInput::IsAnyKey())
-	{
-		GameEngineCore::ChangeLevel("BattleLevel");
-	}
-}
-
-void TitleLevel::LevelChangeStart()
-{
-	GameEngineLevel::LevelChangeStart();
-
 	// 타이틀 리소스 로딩
 	{
 		GameEngineDirectory Dir;
@@ -88,11 +61,26 @@ void TitleLevel::LevelChangeStart()
 		TitleRenderer->SetTexture("TitleImage.png");
 		TitleRenderer->GetTransform()->SetWorldScale({ 960, 640 });
 	}
+
+	std::shared_ptr<DebugWindow> Window = GameEngineGUI::FindGUIWindowConvert<DebugWindow>("DebugWindow");
+	{
+		if (nullptr == Window)
+		{
+			MsgAssert("윈도우 테스트 코드 미작동");
+		}
+
+		std::function<void()> Function;
+		Function = []() {
+			MsgTextBox("버튼누름");
+		};
+
+	}
 }
 
-void TitleLevel::LevelChangeEnd()
+void TitleLevel::Update(float _DeltaTime)
 {
-	GameEngineLevel::LevelChangeEnd();
-
-	GameEngineTexture::ResourcesClear();
+	if (true == GameEngineInput::IsAnyKey())
+	{
+		GameEngineCore::ChangeLevel("BattleLevel");
+	}
 }

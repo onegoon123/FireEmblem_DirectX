@@ -71,6 +71,7 @@ void UnitInformationUI::SetUnit(std::shared_ptr<BattleUnit> _Unit)
 	Number_HP->SetValue(_Unit->GetUnitData().GetHP());
 	Number_MaxHP->SetValue(_Unit->GetUnitData().GetMaxHP());
 
+	// ½ºÅÝ ¼ýÀÚ
 	MainStat StatValue = _Unit->GetUnitData().GetMainStat();
 	Number_Strength->SetValue(StatValue.Strength);
 	Number_Magic->SetValue(StatValue.Magic);
@@ -82,6 +83,7 @@ void UnitInformationUI::SetUnit(std::shared_ptr<BattleUnit> _Unit)
 	Number_Move->SetValue(_Unit->GetMoveStat());
 	Number_Constitution->SetValue(StatValue.Constitution);
 
+	// ½ºÅÈ °ÔÀÌÁö
 	MainStat MaximumStat = _Unit->GetUnitData().GetMaximumStat();
 	Bar_Strength->SetSize((float)MaximumStat.Strength * 5);
 	Bar_Strength->SetValue((float)StatValue.Strength / MaximumStat.Strength);

@@ -88,6 +88,7 @@ protected:
 private:
 	//      이름           경로
 	std::map<std::string, std::string> TexturePath;
+	std::map<std::string, std::string> LoadEndPath;
 
 	// 카메라
 	std::map<int, std::shared_ptr<GameEngineCamera>> Cameras;
@@ -108,6 +109,10 @@ private:
 	void ActorRelease();
 	void ActorLevelChangeStart();
 	void ActorLevelChangeEnd();
+
+	void TextureUnLoad(GameEngineLevel* _NextLevel);
+
+	void TextureRealLoad(GameEngineLevel* _PrevLevel);
 
 };
 

@@ -70,17 +70,14 @@ public:
 
 	static std::shared_ptr<GameEngineTexture> Load(const std::string_view& _Path, const std::string_view& _Name)
 	{
-		std::shared_ptr<GameEngineTexture> NewTexture = GameEngineResource::Create(_Name);
+		std::shared_ptr<GameEngineTexture> NewTexture = GameEngineResource::Find(_Name);
+		if (nullptr == NewTexture)
+		{
+			NewTexture = GameEngineResource::Create(_Name);
+		}
 
 		PathCheck(_Path, _Name);
-
-		NewTexture->ResLoad(_Path);
-		return NewTexture;
-	}
-
-	static std::shared_ptr<GameEngineTexture> Create(const std::string_view& _Name, const std::string_view& _Path)
-	{
-		std::shared_ptr<GameEngineTexture> NewTexture = GameEngineResource::Create(_Name);
+		// NewTexture->ResLoad(_Path);
 		return NewTexture;
 	}
 
@@ -97,6 +94,40 @@ public:
 		NewTexture->ResCreate(_Value);
 		return NewTexture;
 	}
+
+	static std::shared_ptr<GameEngineTexture> UnLoad(const std::string_view& _Name)
+	{
+		std::shared_ptr<GameEngineTexture> NewTexture = GameEngineResource::Find(_Name);
+
+		if (nullptr == NewTexture)
+		{
+			MsgAssert("존재하지 않는 텍스처를 언로드 하려고 했습니다.");
+		}
+
+		NewTexture->Release();
+		return NewTexture;
+	}
+
+	static std::shared_ptr<GameEngineTexture> RealLoad(const std::string_view& _Path)
+	{
+		GameEnginePath NewPath(_Path);
+		return RealLoad(_Path, NewPath.GetFileName());
+	}
+
+
+	static std::shared_ptr<GameEngineTexture> RealLoad(const std::string_view& _Path, const std::string_view& _Name)
+	{
+		std::shared_ptr<GameEngineTexture> NewTexture = GameEngineResource<GameEngineTexture>::Find(_Name);
+
+		if (nullptr == NewTexture)
+		{
+			MsgAssert("존재하지 않는 텍스처를 로드 하려고 했습니다.");
+		}
+
+		NewTexture->ResLoad(_Path);
+		return NewTexture;
+	}
+
 
 	ID3D11ShaderResourceView* GetSRV()
 	{
@@ -158,5 +189,7 @@ private:
 
 	void VSReset(UINT _Slot);
 	void PSReset(UINT _Slot);
+
+	void Release();
 };
 

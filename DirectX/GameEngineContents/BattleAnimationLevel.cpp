@@ -77,6 +77,8 @@ void BattleAnimationLevel::TurnEnd()
 
 void BattleAnimationLevel::Start()
 {
+
+
 	GetMainCamera()->SetProjectionType(CameraType::Perspective);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -554.0f });
 	
@@ -102,6 +104,42 @@ void BattleAnimationLevel::Update(float _DeltaTime)
 
 void BattleAnimationLevel::LevelChangeStart()
 {
+	// 리소스 로딩
+	{
+		GameEngineDirectory Dir;
+		Dir.MoveParentToDirectory("ContentResources");
+		Dir.Move("ContentResources");
+		Dir.Move("Battle");
+		std::vector<GameEngineFile> File = Dir.GetAllFile({ ".png", });
+		for (size_t i = 0; i < File.size(); i++)
+		{
+			GameEngineTexture::Load(File[i].GetFullPath());
+		}
+
+		Dir.MoveParent();
+		Dir.Move("Character");
+		Dir.Move("BattleIcon");
+		File = Dir.GetAllFile({ ".png", });
+		for (size_t i = 0; i < File.size(); i++)
+		{
+			GameEngineTexture::Load(File[i].GetFullPath());
+		}
+		Dir.MoveParent();
+		Dir.Move("Map");
+		File = Dir.GetAllFile({ ".png", });
+		for (size_t i = 0; i < File.size(); i++)
+		{
+			GameEngineTexture::Load(File[i].GetFullPath());
+		}
+		Dir.MoveParent();
+		Dir.Move("Portrait");
+		File = Dir.GetAllFile({ ".png", });
+		for (size_t i = 0; i < File.size(); i++)
+		{
+			GameEngineTexture::Load(File[i].GetFullPath());
+		}
+	}
+
 	// 엑터 및 렌더러 생성
 	if (nullptr == BackgroundRender)
 	{

@@ -42,48 +42,47 @@ void BattleLevel::LevelChangeStart()
 {
 	GameEngineLevel::LevelChangeStart();
 
+	// 리소스 로딩
+	{
+		GameEngineDirectory Dir;
+		Dir.MoveParentToDirectory("ContentResources");
+		Dir.Move("ContentResources");
+		Dir.Move("Battle");
+		std::vector<GameEngineFile> File = Dir.GetAllFile({ ".png", });
+		for (size_t i = 0; i < File.size(); i++)
+		{
+			GameEngineTexture::Load(File[i].GetFullPath());
+		}
+
+		Dir.MoveParent();
+		Dir.Move("Character");
+		Dir.Move("BattleIcon");
+		File = Dir.GetAllFile({ ".png", });
+		for (size_t i = 0; i < File.size(); i++)
+		{
+			GameEngineTexture::Load(File[i].GetFullPath());
+		}
+		Dir.MoveParent();
+		Dir.Move("Map");
+		File = Dir.GetAllFile({ ".png", });
+		for (size_t i = 0; i < File.size(); i++)
+		{
+			GameEngineTexture::Load(File[i].GetFullPath());
+		}
+		Dir.MoveParent();
+		Dir.Move("Portrait");
+		File = Dir.GetAllFile({ ".png", });
+		for (size_t i = 0; i < File.size(); i++)
+		{
+			GameEngineTexture::Load(File[i].GetFullPath());
+		}
+	}
+
 	if (CurState == BattleState::BattleReturn || CurState == BattleState::EnemyBattleReturn)
 	{
 		return;
 	}
-	if (CurState == BattleState::None)
-	{
-		// 리소스 로딩
-		{
-			GameEngineDirectory Dir;
-			Dir.MoveParentToDirectory("ContentResources");
-			Dir.Move("ContentResources");
-			Dir.Move("Battle");
-			std::vector<GameEngineFile> File = Dir.GetAllFile({ ".png", });
-			for (size_t i = 0; i < File.size(); i++)
-			{
-				GameEngineTexture::Load(File[i].GetFullPath());
-			}
 
-			Dir.MoveParent();
-			Dir.Move("Character");
-			Dir.Move("BattleIcon");
-			File = Dir.GetAllFile({ ".png", });
-			for (size_t i = 0; i < File.size(); i++)
-			{
-				GameEngineTexture::Load(File[i].GetFullPath());
-			}
-			Dir.MoveParent();
-			Dir.Move("Map");
-			File = Dir.GetAllFile({ ".png", });
-			for (size_t i = 0; i < File.size(); i++)
-			{
-				GameEngineTexture::Load(File[i].GetFullPath());
-			}
-			Dir.MoveParent();
-			Dir.Move("Portrait");
-			File = Dir.GetAllFile({ ".png", });
-			for (size_t i = 0; i < File.size(); i++)
-			{
-				GameEngineTexture::Load(File[i].GetFullPath());
-			}
-		}
-	}
 
 	if (MainMap == nullptr)
 	{
@@ -161,7 +160,5 @@ void BattleLevel::LevelChangeStart()
 void BattleLevel::LevelChangeEnd()
 {
 	GameEngineLevel::LevelChangeEnd();
-
-	//GameEngineTexture::ResourcesClear();
 }
 

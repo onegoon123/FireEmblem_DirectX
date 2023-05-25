@@ -1515,8 +1515,6 @@ bool BattleLevel::GameOverCheck()
 	}
 	if (false == IsAliveUnit)
 	{
-		GameEngineTexture::ResourcesClear();
-		GameEngineSprite::ResourcesClear();
 		CurState = BattleState::None;
 		GetMainCamera()->GetTransform()->SetLocalPosition({ 448, 288, -554.0f });
 		for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
