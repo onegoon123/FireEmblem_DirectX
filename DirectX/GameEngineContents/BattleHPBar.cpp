@@ -42,21 +42,40 @@ void BattleHPBar::SetMaxHP(int _Value)
 		}
 	}
 	MaxHP = _Value;
+
+	// 최대체력이 30이상일시 두 줄로 표시
+	if (30 < MaxHP)
+	{
+		for (int i = 0; i < 30; i++)
+		{
+			Renders[i]->GetTransform()->SetLocalPosition({ 8.0f * i, 12 });
+		}
+		for (int i = 30; i < MaxHP; i++)
+		{
+			Renders[i]->GetTransform()->SetLocalPosition({ 8.0f * (i - 30), -12 });
+		}
+	}
+	else
+	{
+		for (int i = 0; i < MaxHP; i++)
+		{
+			Renders[i]->GetTransform()->SetLocalPosition({ 8.0f * i, 0 });
+		}
+	}
 }
 
 void BattleHPBar::SetCurrentHP(int _Value)
 {
-	CurrentHP = _Value;
-	if (MaxHP < CurrentHP)
+	if (MaxHP < _Value)
 	{
 		MsgAssert("최대체력 보다 높은 체력이 지정되었습니다.");
 		return;
 	}
-	for (int i = 0; i < CurrentHP; i++)
+	for (int i = 0; i < _Value; i++)
 	{
 		Renders[i]->SetFrame(1);
 	}
-	for (int i = CurrentHP; i < MaxHP; i++)
+	for (int i = _Value; i < MaxHP; i++)
 	{
 		Renders[i]->SetFrame(0);
 	}
@@ -64,6 +83,8 @@ void BattleHPBar::SetCurrentHP(int _Value)
 
 void BattleHPBar::SetHPAnimation(int _Value)
 {
+	CurrentHP = _Value;
+	Timer = 1;
 }
 
 void BattleHPBar::Start()
@@ -81,5 +102,15 @@ void BattleHPBar::Start()
 
 void BattleHPBar::Update(float _DeltaTime)
 {
+	if (0 < Timer)
+	{
+		Timer -= _DeltaTime;
+		int Value = static_cast<int>(std::lerp(static_cast<float>(CurrentHP), static_cast<float>(MaxHP), Timer));
+		SetCurrentHP(Value);
+		if (Timer < 0)
+		{
+			SetCurrentHP(CurrentHP);
+		}
+	}
 }
 

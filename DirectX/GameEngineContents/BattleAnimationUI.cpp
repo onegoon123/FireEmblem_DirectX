@@ -56,12 +56,12 @@ void BattleAnimationUI::SetDamage(Unit& _Unit)
 	if (true == _Unit.GetIsPlayer())
 	{
 		Number_PlayerHP->SetValue(_Unit.GetHP());
-		PlayerHPBar->SetCurrentHP(_Unit.GetHP());
+		PlayerHPBar->SetHPAnimation(_Unit.GetHP());
 	}
 	else
 	{
 		Number_EnemyHP->SetValue(_Unit.GetHP());
-		EnemyHPBar->SetCurrentHP(_Unit.GetHP());
+		EnemyHPBar->SetHPAnimation(_Unit.GetHP());
 	}
 }
 
