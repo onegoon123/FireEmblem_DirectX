@@ -123,6 +123,9 @@
     <ClCompile Include="StatBar.cpp">
       <Filter>Battle\UI</Filter>
     </ClCompile>
+    <ClCompile Include="BattleHPBar.cpp">
+      <Filter>Battle\Animation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FECore.h" />
@@ -223,6 +226,9 @@
     </ClInclude>
     <ClInclude Include="StatBar.h">
       <Filter>Battle\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="BattleHPBar.h">
+      <Filter>Battle\Animation</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

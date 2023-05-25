@@ -39,11 +39,13 @@ void BattleAnimationLevel::HitEvent()
 	{
 		DamageUnit = TargetAnimation;
 		AttackUnit = SubjectUnit;
+		UI->SetDamage((*BattleIter).TargetUnit);
 	}
 	else
 	{
 		DamageUnit = SubjectAnimation;
 		AttackUnit = TargetUnit;
+		UI->SetDamage((*BattleIter).SubjectUnit);
 	}
 
 	if (AttackUnit->GetUnitData().GetClassValue() == BattleClass::Mage)
@@ -179,7 +181,7 @@ void BattleAnimationLevel::LevelChangeStart()
 
 	SubjectAnimation->SetAnimation(SubjectUnit);
 	TargetAnimation->SetAnimation(TargetUnit);
-
+	UI->SetData(SubjectUnit->GetUnitData(), TargetUnit->GetUnitData());
 	TimeEvent.Clear();
 	Test();
 	UI->SetFadeIn(0.3f);
@@ -189,8 +191,8 @@ void BattleAnimationLevel::Test()
 {
 	if (BattleIter == BattleData.end())
 	{
-		UI->SetFadeOut(0.3f);
-		TimeEvent.AddEvent(0.5f, std::bind(&BattleAnimationLevel::End, this));
+		//UI->SetFadeOut(0.3f);
+		//TimeEvent.AddEvent(0.5f, std::bind(&BattleAnimationLevel::End, this));
 		return;
 	}
 

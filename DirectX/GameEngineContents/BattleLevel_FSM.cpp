@@ -469,11 +469,8 @@ void BattleLevel::FieldCommandEnd()
 
 void BattleLevel::BattleStart()
 {
-
-	std::list<AttackCommand> AttackDetail = UnitCommand::Attack(SelectUnit, TargetUnit);
-	BattleAnimationLevel::SetBattleData(SelectUnit, TargetUnit, AttackDetail);
-	SelectUnit->SetUnitData(Unit(AttackDetail.back().SubjectUnit));
-	TargetUnit->SetUnitData(Unit(AttackDetail.back().TargetUnit));
+	AttackRecord = UnitCommand::Attack(SelectUnit, TargetUnit);
+	BattleAnimationLevel::SetBattleData(SelectUnit, TargetUnit, AttackRecord);
 
 	for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
 	{
@@ -563,6 +560,8 @@ void BattleLevel::BattleReturnUpdate(float _DeltaTime)
 
 void BattleLevel::BattleReturnEnd()
 {
+	SelectUnit->SetUnitData(Unit(AttackRecord.back().SubjectUnit));
+	TargetUnit->SetUnitData(Unit(AttackRecord.back().TargetUnit));
 
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 448, 288, -554.0f });
 	for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
@@ -752,10 +751,8 @@ void BattleLevel::EnemyBattleStart()
 {
 	if (nullptr != TargetUnit)
 	{
-		std::list<AttackCommand> AttackDetail = UnitCommand::Attack(SelectUnit, TargetUnit);
-		BattleAnimationLevel::SetBattleData(SelectUnit, TargetUnit, AttackDetail);
-		SelectUnit->SetUnitData(Unit(AttackDetail.back().SubjectUnit));
-		TargetUnit->SetUnitData(Unit(AttackDetail.back().TargetUnit));
+		AttackRecord = UnitCommand::Attack(SelectUnit, TargetUnit);
+		BattleAnimationLevel::SetBattleData(SelectUnit, TargetUnit, AttackRecord);
 	}
 	else
 	{
@@ -819,6 +816,7 @@ void BattleLevel::EnemyBattleEnd()
 
 void BattleLevel::EnemyBattleReturnStart()
 {
+	BattleUI->SetFadeIn(0.3f);
 }
 
 void BattleLevel::EnemyBattleReturnUpdate(float _DeltaTime)
@@ -851,6 +849,9 @@ void BattleLevel::EnemyBattleReturnUpdate(float _DeltaTime)
 
 void BattleLevel::EnemyBattleReturnEnd()
 {
+	SelectUnit->SetUnitData(Unit(AttackRecord.back().SubjectUnit));
+	TargetUnit->SetUnitData(Unit(AttackRecord.back().TargetUnit));
+
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 448, 288, -554.0f });
 	for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
 	{

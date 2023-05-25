@@ -20,6 +20,7 @@ public:
 		TerrainDodge = _Other.TerrainDodge;
 		IsTurnEnd = _Other.IsTurnEnd;
 		IsDie = _Other.IsDie;
+		IsPlayer = _Other.IsPlayer;
 		Items = _Other.Items;
 		Weapons = _Other.Weapons;
 		CurWeapon = _Other.CurWeapon;
@@ -34,6 +35,7 @@ public:
 		TerrainDodge = _Other.TerrainDodge;
 		IsTurnEnd = _Other.IsTurnEnd;
 		IsDie = _Other.IsDie;
+		IsPlayer = _Other.IsPlayer;
 		Items = _Other.Items;
 		Weapons = _Other.Weapons;
 		CurWeapon = _Other.CurWeapon;
@@ -74,7 +76,10 @@ public:
 	{
 		return IdentityCode;
 	}
-
+	bool GetIsPlayer()
+	{
+		return IsPlayer;
+	}
 	// 체력 관련
 
 	// 회복

@@ -116,8 +116,8 @@ void BattleLevel::LevelChangeStart()
 		NewActor->SetUnitCode(UnitIdentityCode::Lyn);
 		//NewActor->GetUnitData().LevelUp(10);
 		NewActor->SetMapPos({ 5, 4 });
-		NewActor->NewItem(ItemCode::ManiKatti);
 		NewActor->NewItem(ItemCode::IronSword);
+		NewActor->NewItem(ItemCode::ManiKatti);
 		NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
 		PlayerUnits.push_back(NewActor);
 
@@ -125,7 +125,7 @@ void BattleLevel::LevelChangeStart()
 		NewActor->SetUnitCode(UnitIdentityCode::Brigand);
 		NewActor->NewItem(ItemCode::IronAxe);
 		//NewActor->GetUnitData().LevelUp(10);
-		NewActor->SetMapPos({ 5, 5 });
+		NewActor->SetMapPos({ 4, 5 });
 		NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
 		EnemyUnits.push_back(NewActor);
 

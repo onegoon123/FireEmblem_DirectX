@@ -64,6 +64,23 @@ void NumberActor::SetBlackFont()
 	}
 }
 
+void NumberActor::SetDamageFont()
+{
+	if (nullptr == GameEngineSprite::Find("NumFontDamage.png"))
+	{
+		GameEngineDirectory Dir;
+		Dir.MoveParentToDirectory("ContentResources");
+		Dir.Move("ContentResources");
+		Dir.Move("Battle");
+		Dir.Move("UI");
+		GameEngineSprite::LoadSheet(Dir.GetPlusFileName("NumFontDamage.png").GetFullPath(), 10, 1);
+	}
+	for (int i = 0; i < 3; i++)
+	{
+		Renders[i]->SetSprite("NumFontDamage.png", 0);
+	}
+}
+
 void NumberActor::Start()
 {
 	if (nullptr == GameEngineSprite::Find("NumFont.png"))

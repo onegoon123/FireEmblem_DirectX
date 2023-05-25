@@ -387,6 +387,7 @@ void ItemUI::Equipment()
 	ItemUseSelect->Off();
 	IsItemSelect = false;
 	Cursor->GetTransform()->SetLocalPosition(StartCursorPos + float4::Down * (64.0f * CurrentCursor));
+	On(SelectUnit);
 }
 
 void ItemUI::Drop()

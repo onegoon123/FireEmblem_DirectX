@@ -24,7 +24,7 @@ std::shared_ptr<GameEngineCollision> GameEngineCollision::Collision(int _TargetG
 
 	std::list<std::shared_ptr<GameEngineCollision>>& Group = GetLevel()->Collisions[_TargetGroup];
 
-	if (Type == ColType::MAX)
+	if (_ThisColType == ColType::MAX)
 	{
 		_ThisColType = Type;
 	}

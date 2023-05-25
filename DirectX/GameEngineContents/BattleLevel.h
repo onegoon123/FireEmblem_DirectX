@@ -2,6 +2,7 @@
 #include <GameEngineCore/GameEngineLevel.h>
 #include "ContentsEnum.h"
 #include "Int2.h"
+#include "UnitCommand.h"
 
 class BattleLevel : public GameEngineLevel
 {
@@ -67,6 +68,7 @@ private:
 	std::list< std::shared_ptr <BattleUnit>> CloseUnits = std::list< std::shared_ptr <BattleUnit>>();		// 주변에 있는 유닛 리스트
 	std::shared_ptr <BattleUnit> SelectUnit = nullptr;	// 선택된 유닛
 	std::shared_ptr <BattleUnit> TargetUnit = nullptr;
+	std::list<AttackCommand> AttackRecord;
 
 	// Map 관련
 	std::shared_ptr <class TileRender> Tiles = nullptr;

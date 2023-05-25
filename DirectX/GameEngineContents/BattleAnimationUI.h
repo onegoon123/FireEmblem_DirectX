@@ -16,14 +16,30 @@ public:
 
 	void SetFadeIn(float _Timer);
 	void SetFadeOut(float _Timer);
-		
+	
+	void SetData(class Unit& _Unit1, Unit& _Unit2);
+	void SetDamage(Unit& _Unit);
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
 
 private:
 	std::shared_ptr<class GameEngineUIRenderer> UIRenderer = nullptr;
-	std::shared_ptr<class GameEngineUIRenderer> FadeRenderer = nullptr;
+	std::shared_ptr<GameEngineUIRenderer> FadeRenderer = nullptr;
+
+	std::shared_ptr<class BattleHPBar> PlayerHPBar = nullptr;
+	std::shared_ptr<BattleHPBar> EnemyHPBar = nullptr;
+
+	std::shared_ptr<class NumberActor> Number_PlayerHP = nullptr;
+	std::shared_ptr<NumberActor> Number_PlayerDamage = nullptr;
+	std::shared_ptr<NumberActor> Number_PlayerHit = nullptr;
+	std::shared_ptr<NumberActor> Number_PlayerCritical = nullptr;
+
+	std::shared_ptr<NumberActor> Number_EnemyHP = nullptr;
+	std::shared_ptr<NumberActor> Number_EnemyDamage = nullptr;
+	std::shared_ptr<NumberActor> Number_EnemyHit = nullptr;
+	std::shared_ptr<NumberActor> Number_EnemyCritical = nullptr;
 
 	float FadeSpeed = 0.0f;
 	float FadeTimer = 0.0f;

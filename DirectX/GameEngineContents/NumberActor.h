@@ -16,6 +16,7 @@ public:
 
 	void SetValue(int _Value);
 	void SetBlackFont();
+	void SetDamageFont();
 
 protected:
 	void Start() override;
