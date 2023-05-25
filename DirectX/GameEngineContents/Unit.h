@@ -127,6 +127,30 @@ public:
 	{
 		return UnitStat.ClassValue;
 	}
+	void ClassChange(BattleClass _Value)
+	{
+		switch (_Value)
+		{
+		case BattleClass::BladeLord:
+			CurrentHP += 3;
+			UnitStat.ClassChange_BladeLord();
+			break;
+		case BattleClass::Warrior:
+			CurrentHP += 3;
+			UnitStat.ClassChange_Warrior();
+			break;
+		case BattleClass::Assassin:
+			CurrentHP += 3;
+			UnitStat.ClassChange_Assassin();
+			break;
+		case BattleClass::General:
+			CurrentHP += 4;
+			UnitStat.ClassChange_General();
+			break;
+		default:
+			break;
+		}
+	}
 	int GetLevel()
 	{
 		return UnitStat.Level;

@@ -563,6 +563,18 @@ void BattleLevel::BattleReturnEnd()
 	SelectUnit->SetUnitData(Unit(AttackRecord.back().SubjectUnit));
 	TargetUnit->SetUnitData(Unit(AttackRecord.back().TargetUnit));
 
+	SelectUnit->SetIsTurnEnd(true);
+	if (SelectUnit->GetIsDie())
+	{
+		SelectUnit->Off();
+		SelectUnit = nullptr;
+	}
+	if (nullptr != TargetUnit && TargetUnit->GetIsDie())
+	{
+		TargetUnit->Off();
+		TargetUnit = nullptr;
+	}
+
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 448, 288, -554.0f });
 	for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
 	{
@@ -801,17 +813,6 @@ void BattleLevel::EnemyBattleUpdate(float _DeltaTime)
 
 void BattleLevel::EnemyBattleEnd()
 {
-	SelectUnit->SetIsTurnEnd(true);
-	if (SelectUnit->GetIsDie())
-	{
-		SelectUnit->Off();
-		SelectUnit = nullptr;
-	}
-	if (nullptr != TargetUnit && TargetUnit->GetIsDie())
-	{
-		TargetUnit->Off();
-		TargetUnit = nullptr;
-	}
 }
 
 void BattleLevel::EnemyBattleReturnStart()
@@ -851,6 +852,18 @@ void BattleLevel::EnemyBattleReturnEnd()
 {
 	SelectUnit->SetUnitData(Unit(AttackRecord.back().SubjectUnit));
 	TargetUnit->SetUnitData(Unit(AttackRecord.back().TargetUnit));
+
+	SelectUnit->SetIsTurnEnd(true);
+	if (SelectUnit->GetIsDie())
+	{
+		SelectUnit->Off();
+		SelectUnit = nullptr;
+	}
+	if (nullptr != TargetUnit && TargetUnit->GetIsDie())
+	{
+		TargetUnit->Off();
+		TargetUnit = nullptr;
+	}
 
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 448, 288, -554.0f });
 	for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)

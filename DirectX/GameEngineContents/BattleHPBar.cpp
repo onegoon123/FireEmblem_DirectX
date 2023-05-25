@@ -66,6 +66,8 @@ void BattleHPBar::SetMaxHP(int _Value)
 
 void BattleHPBar::SetCurrentHP(int _Value)
 {
+	HP = _Value;
+
 	if (MaxHP < _Value)
 	{
 		MsgAssert("최대체력 보다 높은 체력이 지정되었습니다.");
@@ -83,8 +85,13 @@ void BattleHPBar::SetCurrentHP(int _Value)
 
 void BattleHPBar::SetHPAnimation(int _Value)
 {
-	CurrentHP = _Value;
-	Timer = 1;
+	if (_Value == HP)
+	{
+		return;
+	}
+	TargetHP = _Value;
+	Timer = Time;
+	IsLerp = true;
 }
 
 void BattleHPBar::Start()
@@ -102,15 +109,17 @@ void BattleHPBar::Start()
 
 void BattleHPBar::Update(float _DeltaTime)
 {
-	if (0 < Timer)
+	if (false == IsLerp) { return; }
+
+	Timer -= _DeltaTime;
+	if (Timer < 0)
 	{
-		Timer -= _DeltaTime;
-		int Value = static_cast<int>(std::lerp(static_cast<float>(CurrentHP), static_cast<float>(MaxHP), Timer));
-		SetCurrentHP(Value);
-		if (Timer < 0)
+		SetCurrentHP(HP - 1);
+		if (TargetHP == HP)
 		{
-			SetCurrentHP(CurrentHP);
+			IsLerp = false;
 		}
+		Timer = Time;
 	}
 }
 

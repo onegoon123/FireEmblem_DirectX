@@ -28,6 +28,8 @@ public:
 	void Dodge();
 	void HitEffect(const std::string_view& _Name);
 
+	void Die();
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -41,6 +43,9 @@ private:
 	std::shared_ptr<SpriteRenderer> CurAnimation;
 	std::map<UnitIdentityCode, std::shared_ptr<SpriteRenderer>> Animations;
 	std::shared_ptr<SpriteRenderer> EffectAnimation = nullptr;
+
+	bool IsDie = false;
+	float Timer = 0;
 
 	std::shared_ptr<SpriteRenderer> CreateAnimation(UnitIdentityCode _UnitIdentity);
 

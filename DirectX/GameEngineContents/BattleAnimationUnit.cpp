@@ -20,6 +20,7 @@ void BattleAnimationUnit::SetAnimation(std::shared_ptr<BattleUnit> _Unit)
 
 void BattleAnimationUnit::SetAnimation(UnitIdentityCode _IdentityValue)
 {
+	IsDie = false;
 	IdentityValue = _IdentityValue;
 
 	if (CurAnimation != nullptr)
@@ -81,6 +82,12 @@ void BattleAnimationUnit::Dodge()
 void BattleAnimationUnit::HitEffect(const std::string_view& _Name)
 {
 	EffectAnimation->ChangeAnimation(_Name);
+}
+
+void BattleAnimationUnit::Die()
+{
+	IsDie = true;
+	Timer = 0;
 }
 
 
@@ -150,6 +157,16 @@ void BattleAnimationUnit::Update(float _DeltaTime)
 	if (true == EffectAnimation->IsAnimationEnd())
 	{
 		EffectAnimation->ChangeAnimation("Idle");
+	}
+
+	if (false == IsDie) { return; }
+
+	Timer += _DeltaTime * 3;
+	CurAnimation->SetOpacity(1 - Timer);
+	if (1 < Timer)
+	{
+		CurAnimation->SetOpacity(0);
+		IsDie = false;
 	}
 }
 
@@ -445,7 +462,7 @@ std::shared_ptr<SpriteRenderer> BattleAnimationUnit::CreateAnimation(UnitIdentit
 		NewAnim->CreateAnimation({ .AnimationName = "Critical", .SpriteName = "Battle_Matthew.png", .Loop = false,
 			.FrameIndex = {0, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 30, 31, 34, 30, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22}, 
 			.FrameTime = { .08f, .08f, .08f, .08f, .08f, .08f, .08f, .05f, .08f, .05f, .08f, .08f, .05f, .05f, .6f, .08f, .08f, .05f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, } });
-		NewAnim->SetAnimationStartEvent("Critical", 35, std::bind(&BattleAnimationLevel::HitEvent, Level));
+		NewAnim->SetAnimationStartEvent("Critical", 34, std::bind(&BattleAnimationLevel::HitEvent, Level));
 		NewAnim->SetAnimationStartEvent("Critical", 22, std::bind(&BattleAnimationUnit::AttackEnd, this));
 		NewAnim->CreateAnimation({ .AnimationName = "Dodge", .SpriteName = "Battle_Matthew.png", .Loop = false, .FrameIndex = {35, 36, 35, 0}, .FrameTime = {.08f, .6f, .04f, 1.0f} });
 		break;

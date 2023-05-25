@@ -15,13 +15,25 @@ public:
 	NumberActor& operator=(NumberActor&& _Other) noexcept = delete;
 
 	void SetValue(int _Value);
+	void SetValueLerp(int _Value);
 	void SetBlackFont();
 	void SetDamageFont();
 
+	bool GetIsLerp()
+	{
+		return IsLerp;
+	}
+
 protected:
 	void Start() override;
-
+	void Update(float _DeltaTime) override;
 private:
 	std::vector<std::shared_ptr<class GameEngineUIRenderer>> Renders;
+
+	int Value = 0;
+	int TargetValue = 0;
+	const float Time = 0.05f;
+	float Timer = 0;
+	bool IsLerp = false;
 };
 

@@ -42,7 +42,9 @@ private:
 	std::shared_ptr<BattleAnimationUnit> RightUnit;
 	std::shared_ptr<class BattleAnimationUI> UI;
 
-	void Test();
+	bool IsTurnEnd = false;
+
+	void PlayAttack();
 	void End();
 };
 

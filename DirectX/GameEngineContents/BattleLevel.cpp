@@ -101,22 +101,23 @@ void BattleLevel::LevelChangeStart()
 		BattleUI = CreateActor<BattleLevelUI>(RenderOrder::UI);
 		InfoUI = CreateActor<UnitInformationUI>(RenderOrder::UI);
 
-		std::shared_ptr<BattleUnit> NewActor = CreateActor<BattleUnit>(RenderOrder::Unit);
-		NewActor->SetUnitCode(UnitIdentityCode::Sain);
-		NewActor->GetUnitData().LevelUp(30);
-		NewActor->SetMapPos({ 3, 5 });
-		NewActor->NewItem(ItemCode::IronBow);
-		NewActor->NewItem(ItemCode::IronSword);
-		NewActor->NewItem(ItemCode::IronLance);
-		NewActor->NewItem(ItemCode::Vulnerary);
+		std::shared_ptr<BattleUnit> NewActor;
+
+		NewActor = CreateActor<BattleUnit>(RenderOrder::Unit);
+		NewActor->SetUnitCode(UnitIdentityCode::Lyn);
+		NewActor->GetUnitData().ClassChange(BattleClass::BladeLord);
+		NewActor->GetUnitData().LevelUp(99);
+		NewActor->SetMapPos({ 5, 4 });
+		NewActor->NewItem(ItemCode::ManiKatti);
+		NewActor->NewItem(ItemCode::SteelSword);
 		NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
 		PlayerUnits.push_back(NewActor);
 
 		NewActor = CreateActor<BattleUnit>(RenderOrder::Unit);
-		NewActor->SetUnitCode(UnitIdentityCode::Lyn);
-		//NewActor->GetUnitData().LevelUp(10);
-		NewActor->SetMapPos({ 5, 4 });
-		NewActor->NewItem(ItemCode::IronSword);
+		NewActor->SetUnitCode(UnitIdentityCode::Matthew);
+		NewActor->GetUnitData().LevelUp(99);
+		NewActor->SetMapPos({ 5, 5 });
+		NewActor->NewItem(ItemCode::SteelSword);
 		NewActor->NewItem(ItemCode::ManiKatti);
 		NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
 		PlayerUnits.push_back(NewActor);
@@ -124,8 +125,8 @@ void BattleLevel::LevelChangeStart()
 		NewActor = CreateActor<BattleUnit>(RenderOrder::Unit);
 		NewActor->SetUnitCode(UnitIdentityCode::Brigand);
 		NewActor->NewItem(ItemCode::IronAxe);
-		NewActor->GetUnitData().LevelUp(20);
-		NewActor->SetMapPos({ 4, 5 });
+		NewActor->GetUnitData().LevelUp(99);
+		NewActor->SetMapPos({ 6, 4 });
 		NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
 		EnemyUnits.push_back(NewActor);
 
@@ -134,7 +135,7 @@ void BattleLevel::LevelChangeStart()
 		NewActor->NewItem(ItemCode::IronSword);
 		NewActor->NewItem(ItemCode::IronLance);
 		NewActor->NewItem(ItemCode::IronAxe);
-		NewActor->GetUnitData().LevelUp(10);
+		//NewActor->GetUnitData().LevelUp(10);
 		NewActor->SetMapPos({ 9, 4 });
 		NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
 		EnemyUnits.push_back(NewActor);

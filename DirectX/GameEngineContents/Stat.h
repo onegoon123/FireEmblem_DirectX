@@ -29,6 +29,7 @@ public:
 	{
 		ClassValue = _Other.ClassValue;
 		MainStatValue = _Other.MainStatValue;
+		MaximumStat = _Other.MaximumStat;
 		Level = _Other.Level;			// 레벨
 		Movement = _Other.Movement;				// 이동력
 		Experience = _Other.Experience;			// 경험치
@@ -69,6 +70,10 @@ public:
 
 
 
+	void ClassChange_BladeLord();
+	void ClassChange_Warrior();
+	void ClassChange_Assassin();
+	void ClassChange_General();
 
 private:
 	void SetStat_Lyn();
@@ -85,10 +90,6 @@ private:
 	void SetStat_Lucius();
 	void SetStat_Wallace();
 
-	void ClassChange_BladeLord();
-	void ClassChange_Warrior();
-	void ClassChange_Assassin();
-	void ClassChange_General();
 
 	void SetStat_Brigand();
 	void SetStat_Soldier();

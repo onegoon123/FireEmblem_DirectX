@@ -40,12 +40,22 @@ void BattleAnimationLevel::HitEvent()
 		DamageUnit = TargetAnimation;
 		AttackUnit = SubjectUnit;
 		UI->SetDamage((*BattleIter).TargetUnit);
+
+		if (true == (*BattleIter).TargetUnit.GetIsDie())
+		{
+			TimeEvent.AddEvent(1.5f, std::bind(&BattleAnimationUnit::Die, DamageUnit));
+		}
 	}
 	else
 	{
 		DamageUnit = SubjectAnimation;
 		AttackUnit = TargetUnit;
 		UI->SetDamage((*BattleIter).SubjectUnit);
+
+		if (true == (*BattleIter).SubjectUnit.GetIsDie())
+		{
+			TimeEvent.AddEvent(1.5f, std::bind(&BattleAnimationUnit::Die, DamageUnit));
+		}
 	}
 
 	if (AttackUnit->GetUnitData().GetClassValue() == BattleClass::Mage)
@@ -74,7 +84,7 @@ void BattleAnimationLevel::HitEvent()
 void BattleAnimationLevel::TurnEnd()
 {
 	BattleIter++;
-	Test();
+	IsTurnEnd = true;
 }
 
 void BattleAnimationLevel::Start()
@@ -88,6 +98,8 @@ void BattleAnimationLevel::Start()
 
 void BattleAnimationLevel::Update(float _DeltaTime)
 {
+	TimeEvent.Update(_DeltaTime);
+
 	if (GameEngineInput::IsPress("ButtonA") || GameEngineInput::IsPress("LeftClick"))
 	{
 		GameEngineTime::GlobalTime.SetTimeScale(2.0f);
@@ -101,7 +113,12 @@ void BattleAnimationLevel::Update(float _DeltaTime)
 	{
 		GameEngineCore::ChangeLevel("BattleLevel");
 	}
-	TimeEvent.Update(_DeltaTime);
+
+	if (true == IsTurnEnd && true == UI->IsTurnEnd())
+	{
+		IsTurnEnd = false;
+		TimeEvent.AddEvent(0.3f, std::bind(&BattleAnimationLevel::PlayAttack, this));
+	}
 }
 
 void BattleAnimationLevel::LevelChangeStart()
@@ -183,16 +200,16 @@ void BattleAnimationLevel::LevelChangeStart()
 	TargetAnimation->SetAnimation(TargetUnit);
 	UI->SetData(SubjectUnit->GetUnitData(), TargetUnit->GetUnitData());
 	TimeEvent.Clear();
-	Test();
 	UI->SetFadeIn(0.3f);
+	TimeEvent.AddEvent(0.3f, std::bind(&BattleAnimationLevel::PlayAttack, this));
 }
 
-void BattleAnimationLevel::Test()
+void BattleAnimationLevel::PlayAttack()
 {
 	if (BattleIter == BattleData.end())
 	{
-		//UI->SetFadeOut(0.3f);
-		//TimeEvent.AddEvent(0.5f, std::bind(&BattleAnimationLevel::End, this));
+		TimeEvent.AddEvent(0.5f, std::bind(&BattleAnimationUI::SetFadeOut, UI, 0.3f));
+		TimeEvent.AddEvent(1.0f, std::bind(&BattleAnimationLevel::End, this));
 		return;
 	}
 

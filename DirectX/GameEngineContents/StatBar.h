@@ -20,7 +20,6 @@ public:
 
 protected:
 	void Start() override;
-
 private:
 	std::shared_ptr<class GameEngineUIRenderer> Left = nullptr;
 	std::shared_ptr<GameEngineUIRenderer> Center = nullptr;

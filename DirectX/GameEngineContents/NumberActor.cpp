@@ -13,6 +13,7 @@ NumberActor::~NumberActor()
 
 void NumberActor::SetValue(int _Value)
 {
+	Value = _Value;
 	if (1000 <= _Value)
 	{
 		MsgAssert("아직 4자리수를 표현하지 못합니다.");
@@ -45,6 +46,17 @@ void NumberActor::SetValue(int _Value)
 	{
 		Renders[i]->Off();
 	}
+}
+
+void NumberActor::SetValueLerp(int _Value)
+{
+	if (Value == _Value)
+	{
+		return;
+	}
+	TargetValue = _Value;
+	Timer = Time;
+	IsLerp = true;
 }
 
 void NumberActor::SetBlackFont()
@@ -101,5 +113,22 @@ void NumberActor::Start()
 		Renders[i]->GetTransform()->SetLocalScale({ 32, 40 });
 		Renders[i]->GetTransform()->SetLocalPosition({ -32.0f * i, 0});
 	}
+}
+
+void NumberActor::Update(float _DeltaTime)
+{
+	if (false == IsLerp) { return; }
+
+	Timer -= _DeltaTime;
+	if (Timer < 0)
+	{
+		SetValue(Value - 1);
+		if (TargetValue == Value)
+		{
+			IsLerp = false;
+		}
+		Timer = Time;
+	}
+
 }
 

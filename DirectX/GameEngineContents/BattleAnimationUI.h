@@ -20,6 +20,8 @@ public:
 	void SetData(class Unit& _Unit1, Unit& _Unit2);
 	void SetDamage(Unit& _Unit);
 
+	bool IsTurnEnd();
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;

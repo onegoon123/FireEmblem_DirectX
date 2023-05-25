@@ -55,14 +55,19 @@ void BattleAnimationUI::SetDamage(Unit& _Unit)
 {
 	if (true == _Unit.GetIsPlayer())
 	{
-		Number_PlayerHP->SetValue(_Unit.GetHP());
+		Number_PlayerHP->SetValueLerp(_Unit.GetHP());
 		PlayerHPBar->SetHPAnimation(_Unit.GetHP());
 	}
 	else
 	{
-		Number_EnemyHP->SetValue(_Unit.GetHP());
+		Number_EnemyHP->SetValueLerp(_Unit.GetHP());
 		EnemyHPBar->SetHPAnimation(_Unit.GetHP());
 	}
+}
+
+bool BattleAnimationUI::IsTurnEnd()
+{
+	return false == PlayerHPBar->GetIsLerp() && false == Number_PlayerHP->GetIsLerp() && false == EnemyHPBar->GetIsLerp() && false == Number_EnemyHP->GetIsLerp();
 }
 
 
