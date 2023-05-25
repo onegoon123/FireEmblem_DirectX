@@ -50,7 +50,7 @@ void NumberActor::SetValue(int _Value)
 
 void NumberActor::SetValueLerp(int _Value)
 {
-	if (Value == _Value)
+	if (Value <= _Value)
 	{
 		return;
 	}

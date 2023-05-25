@@ -85,7 +85,7 @@ void BattleHPBar::SetCurrentHP(int _Value)
 
 void BattleHPBar::SetHPAnimation(int _Value)
 {
-	if (_Value == HP)
+	if (_Value >= HP)
 	{
 		return;
 	}

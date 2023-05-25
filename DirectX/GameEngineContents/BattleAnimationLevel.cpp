@@ -74,6 +74,7 @@ void BattleAnimationLevel::HitEvent()
 	}
 	else
 	{
+		DamageUnit->Dodge();
 		EffectName += "Dodge";
 	}
 

@@ -108,7 +108,7 @@ void BattleAnimationUnit::Start()
 		Dir.Move("Battle");
 		Dir.Move("Effect");
 		GameEngineSprite::LoadSheet(Dir.GetPlusFileName("Effect_Hit.png").GetFullPath(), 3, 9);
-
+		GameEngineSprite::LoadSheet(Dir.GetPlusFileName("Effect_Miss.png").GetFullPath(), 4, 5);
 		GameEngineSprite::LoadSheet(Dir.GetPlusFileName("Effect_Fire.png").GetFullPath(), 5, 7);
 
 	}
@@ -133,8 +133,9 @@ void BattleAnimationUnit::Start()
 	EffectAnimation->SetAnimationStartEvent("Critical", 10, SetBright1);
 	EffectAnimation->SetAnimationStartEvent("Critical", 14, SetBright0);
 
-	EffectAnimation->CreateAnimation({ .AnimationName = "Dodge", .SpriteName = "Effect_Hit.png", .FrameInter = 0.0f, .FrameIndex = {8, 17} });
-	EffectAnimation->SetAnimationStartEvent("Dodge", 17, std::bind(&BattleAnimationUnit::Dodge, this));
+	EffectAnimation->CreateAnimation({ .AnimationName = "Dodge", .SpriteName = "Effect_Miss.png", .Start = 0, .End = 17, .Loop = false,
+		.FrameTime = { .03f, .03f, .03f, .03f, .03f, .03f, .03f, .03f, .03f, .03f, .03f, .03f, .03f, .03f, .03f, .03f, .5f, .03f, } });
+	EffectAnimation->SetAnimationStartEvent("Dodge", 0, std::bind(&BattleAnimationUnit::Dodge, this));
 
 	EffectAnimation->CreateAnimation({ .AnimationName = "FireHit", .SpriteName = "Effect_Fire.png", .Start = 0, .End = 19, .FrameInter = 0.05f, .Loop = false, });
 	EffectAnimation->SetAnimationStartEvent("FireHit", 16, SetBright1);
