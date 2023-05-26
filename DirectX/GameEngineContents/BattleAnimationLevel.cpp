@@ -178,8 +178,8 @@ void BattleAnimationLevel::PlayAttack()
 {
 	if (BattleIter == BattleData.end())
 	{
-		TimeEvent.AddEvent(0.5f, std::bind(&BattleAnimationUI::SetFadeOut, UI, 0.3f));
-		TimeEvent.AddEvent(1.0f, std::bind(&BattleAnimationLevel::End, this));
+		TimeEvent.AddEvent(1.0f, std::bind(&BattleAnimationUI::SetFadeOut, UI, 0.3f));
+		TimeEvent.AddEvent(1.5f, std::bind(&BattleAnimationLevel::End, this));
 		return;
 	}
 

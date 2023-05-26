@@ -642,21 +642,32 @@ void BattleLevel::EnemySelectStart()
 		if (false == _Enemy->GetIsTurnEnd())
 		{
 			SelectUnit = _Enemy;
-			ChangeState(BattleState::EnemyMove);
+			SelectUnit->Select();
+			MainCursor->On();
+			MainCursor->SetMapPos(SelectUnit->GetMapPos());
 
 			return;
 		}
 	}
-
 	ChangeState(BattleState::PlayerPhase);
 }
 
 void BattleLevel::EnemySelectUpdate(float _DeltaTime)
 {
+	static float EnemySelectTimer = 0;
+	EnemySelectTimer += _DeltaTime;
+
+	if (0.3f < EnemySelectTimer)
+	{
+		EnemySelectTimer = 0;
+		ChangeState(BattleState::EnemyMove);
+		return;
+	}
 }
 
 void BattleLevel::EnemySelectEnd()
 {
+	MainCursor->Off();
 }
 
 void BattleLevel::EnemyMoveStart()
@@ -781,6 +792,7 @@ void BattleLevel::EnemyBattleStart()
 	{
 		_Unit->GetRenderer()->SetIsBlur(true);
 	}
+	BattleUI->SetFadeOut(0.3f);
 	MainMap->GetRenderer()->SetIsBlur(true);
 }
 

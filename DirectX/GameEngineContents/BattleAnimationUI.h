@@ -43,6 +43,11 @@ private:
 	std::shared_ptr<NumberActor> Number_EnemyHit = nullptr;
 	std::shared_ptr<NumberActor> Number_EnemyCritical = nullptr;
 
+	std::shared_ptr<GameEngineUIRenderer> PlayerWeaponIcon = nullptr;
+	std::shared_ptr<GameEngineUIRenderer> EnemyWeaponIcon = nullptr;
+	std::shared_ptr<GameEngineUIRenderer> PlayerTriangle = nullptr;
+	std::shared_ptr<GameEngineUIRenderer> EnemyTriangle = nullptr;
+
 	float FadeSpeed = 0.0f;
 	float FadeTimer = 0.0f;
 	bool IsFadeIn = false;

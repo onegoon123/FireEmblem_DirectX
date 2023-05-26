@@ -11,6 +11,12 @@ NumberActor::~NumberActor()
 {
 }
 
+void NumberActor::Setting(int _Value)
+{
+	SetValue(_Value);
+	IsLerp = false;
+}
+
 void NumberActor::SetValue(int _Value)
 {
 	Value = _Value;

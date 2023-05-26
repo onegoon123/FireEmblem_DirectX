@@ -12,6 +12,13 @@ BattleHPBar::~BattleHPBar()
 {
 }
 
+void BattleHPBar::Setting(int _HP, int _MaxHP)
+{
+	IsLerp = false;
+	SetMaxHP(_MaxHP);
+	SetCurrentHP(_HP);
+}
+
 void BattleHPBar::SetMaxHP(int _Value)
 {
 	

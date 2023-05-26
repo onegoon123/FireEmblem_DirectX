@@ -61,8 +61,10 @@ void BattleAnimationUnit::SetAnimation(UnitIdentityCode _IdentityValue)
 
 	CurAnimation->On();
 	CurAnimation->SetOpacity(1);
+	CurAnimation->SetBrightness(0);
 	CurAnimation->ChangeAnimation("Idle");
 	EffectAnimation->ChangeAnimation("Idle");
+	EffectAnimation->GetTransform()->SetLocalScale({ -960,640 });
 }
 
 void BattleAnimationUnit::Attack()
@@ -122,8 +124,7 @@ void BattleAnimationUnit::Start()
 	};
 
 	EffectAnimation = CreateComponent<SpriteRenderer>(RenderOrder::Effect);
-	EffectAnimation->GetTransform()->SetLocalScale({ 960,640 });
-	EffectAnimation->GetTransform()->SetLocalNegativeScaleX();
+	EffectAnimation->GetTransform()->SetLocalScale({ -960,640 });
 	EffectAnimation->CreateAnimation({ "Idle", "Effect_Hit.png", 8, 8 });
 
 	EffectAnimation->CreateAnimation({ .AnimationName = "Hit", .SpriteName = "Effect_Hit.png", .Start = 0, .End = 8, .Loop = false, .FrameTime = {.04f, .02f, .02f, .02f, .02f, .02f, .02f, .02f, .02f} });
@@ -134,10 +135,14 @@ void BattleAnimationUnit::Start()
 	EffectAnimation->SetAnimationStartEvent("Critical", 10, SetBright1);
 	EffectAnimation->SetAnimationStartEvent("Critical", 14, SetBright0);
 
-	EffectAnimation->CreateAnimation({ .AnimationName = "Dodge", .SpriteName = "Effect_Miss.png", .Start = 0, .End = 17, .Loop = false,
-		.FrameTime = { .03f, .03f, .03f, .03f, .03f, .03f, .03f, .03f, .03f, .03f, .03f, .03f, .03f, .03f, .03f, .03f, .5f, .03f, } });
-	EffectAnimation->SetAnimationStartEvent("Dodge", 0, std::bind(&BattleAnimationUnit::Dodge, this));
-
+	EffectAnimation->CreateAnimation({ .AnimationName = "Dodge", .SpriteName = "Effect_Miss.png", .Start = 0, .End = 18, .Loop = false,
+		.FrameTime = { .03f, .03f, .03f, .03f, .03f, .03f, .03f, .03f, .03f, .03f, .03f, .03f, .03f, .03f, .03f, .03f, .03f, .5f, .03f, } });
+	EffectAnimation->SetAnimationStartEvent("Dodge", 1, [this] {
+		EffectAnimation->GetTransform()->SetWorldScale({960, 640});
+		});
+	EffectAnimation->SetAnimationStartEvent("Dodge", 18, [this] {
+		EffectAnimation->GetTransform()->SetLocalScale({ -960,640 });
+		});
 	EffectAnimation->CreateAnimation({ .AnimationName = "FireHit", .SpriteName = "Effect_Fire.png", .Start = 0, .End = 19, .FrameInter = 0.05f, .Loop = false, });
 	EffectAnimation->SetAnimationStartEvent("FireHit", 16, SetBright1);
 	EffectAnimation->SetAnimationStartEvent("FireHit", 18, SetBright0);
@@ -163,10 +168,12 @@ void BattleAnimationUnit::Update(float _DeltaTime)
 
 	if (false == IsDie) { return; }
 
-	Timer += _DeltaTime * 3;
+	Timer += _DeltaTime;
 	CurAnimation->SetOpacity(1 - Timer);
+	CurAnimation->SetBrightness(1 - Timer);
 	if (1 < Timer)
 	{
+		CurAnimation->SetBrightness(0);
 		CurAnimation->SetOpacity(0);
 		IsDie = false;
 	}

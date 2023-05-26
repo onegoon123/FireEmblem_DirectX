@@ -15,6 +15,8 @@ public:
 	BattleHPBar& operator=(const BattleHPBar& _Other) = delete;
 	BattleHPBar& operator=(BattleHPBar&& _Other) noexcept = delete;
 
+	void Setting(int _HP, int _MaxHP);
+
 	void SetMaxHP(int _Value);
 	void SetCurrentHP(int _Value);
 

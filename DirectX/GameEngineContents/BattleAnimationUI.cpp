@@ -34,21 +34,46 @@ void BattleAnimationUI::SetData(Unit& _Unit1, Unit& _Unit2)
 	Unit& Player = _Unit1.GetIsPlayer() == true ? _Unit1 : _Unit2;
 	Unit& Enemy = _Unit2.GetIsPlayer() == true ? _Unit1 : _Unit2;
 
-	PlayerHPBar->SetMaxHP(Player.GetMaxHP());
-	PlayerHPBar->SetCurrentHP(Player.GetHP());
+	PlayerHPBar->Setting(Player.GetHP(), Player.GetMaxHP());
 
-	Number_PlayerHP->SetValue(Player.GetHP());
+	Number_PlayerHP->Setting(Player.GetHP());
 	Number_PlayerDamage->SetValue(Player.GetAttackPoint(Enemy));
 	Number_PlayerHit->SetValue(Player.GetHitPoint(Enemy));
 	Number_PlayerCritical->SetValue(Player.GetCriticalPoint(Enemy));
 
-	EnemyHPBar->SetMaxHP(Enemy.GetMaxHP());
-	EnemyHPBar->SetCurrentHP(Enemy.GetHP());
+	EnemyHPBar->Setting(Enemy.GetHP(), Enemy.GetMaxHP());
 
-	Number_EnemyHP->SetValue(Enemy.GetHP());
+	Number_EnemyHP->Setting(Enemy.GetHP());
 	Number_EnemyDamage->SetValue(Enemy.GetAttackPoint(Player));
 	Number_EnemyHit->SetValue(Enemy.GetHitPoint(Player));
 	Number_EnemyCritical->SetValue(Enemy.GetCriticalPoint(Player));
+
+	PlayerWeaponIcon->SetFrame(Player.GetCurWeapon()->GetItemCodeToInt() - 1);
+	EnemyWeaponIcon->SetFrame(Enemy.GetCurWeapon()->GetItemCodeToInt() - 1);
+
+	// 무기 상성 값
+	int TriangleValue = Weapon::GetWeaponeTriangle(Player.GetCurWeapon(), Enemy.GetCurWeapon());
+	switch (TriangleValue)
+	{
+	case 0:
+		PlayerTriangle->Off();
+		EnemyTriangle->Off();
+		break;
+	case 1:
+		PlayerTriangle->On();
+		PlayerTriangle->ChangeAnimation("Advantage");
+		EnemyTriangle->On();
+		EnemyTriangle->ChangeAnimation("Disadvantage");
+		break;
+	case -1:
+		PlayerTriangle->On();
+		PlayerTriangle->ChangeAnimation("Disadvantage");
+		EnemyTriangle->On();
+		EnemyTriangle->ChangeAnimation("Advantage");
+		break;
+	default:
+		break;
+	}
 }
 
 void BattleAnimationUI::SetDamage(Unit& _Unit)
@@ -149,6 +174,31 @@ void BattleAnimationUI::Start()
 	Number_EnemyCritical->GetTransform()->SetLocalPosition({ 456, -208 });
 	Number_EnemyCritical->GetTransform()->SetWorldRotation(float4::Zero);
 	Number_EnemyCritical->GetTransform()->SetWorldScale({ 1, 0.8f });
+
+	PlayerWeaponIcon = CreateComponent<GameEngineUIRenderer>(RenderOrder::UICursor);
+	PlayerWeaponIcon->GetTransform()->SetLocalPosition({ -272, -200 });
+	PlayerWeaponIcon->GetTransform()->SetLocalScale({ 64, 64 });
+	PlayerWeaponIcon->SetSprite("Items.png", 0);
+
+	EnemyWeaponIcon = CreateComponent<GameEngineUIRenderer>(RenderOrder::UICursor);
+	EnemyWeaponIcon->GetTransform()->SetLocalPosition({ 48, -200 });
+	EnemyWeaponIcon->GetTransform()->SetLocalScale({ 64, 64 });
+	EnemyWeaponIcon->SetSprite("Items.png", 0);
+
+	// 무기 상성 이미지
+	PlayerTriangle = CreateComponent<GameEngineUIRenderer>(RenderOrder::UICursor);
+	PlayerTriangle->CreateAnimation({ .AnimationName = "Advantage", .SpriteName = "Triangle.png", .Start = 0, .End = 2, .FrameInter = 0.15f });
+	PlayerTriangle->CreateAnimation({ .AnimationName = "Disadvantage", .SpriteName = "Triangle.png", .Start = 3, .End = 5, .FrameInter = 0.15f });
+	PlayerTriangle->ChangeAnimation("Advantage");
+	PlayerTriangle->GetTransform()->SetLocalPosition({ -248, -214 });
+	PlayerTriangle->GetTransform()->SetWorldScale({ 28, 40 });
+
+	EnemyTriangle = CreateComponent<GameEngineUIRenderer>(RenderOrder::UICursor);
+	EnemyTriangle->CreateAnimation({ .AnimationName = "Advantage", .SpriteName = "Triangle.png", .Start = 0, .End = 2, .FrameInter = 0.15f });
+	EnemyTriangle->CreateAnimation({ .AnimationName = "Disadvantage", .SpriteName = "Triangle.png", .Start = 3, .End = 5, .FrameInter = 0.15f });
+	EnemyTriangle->ChangeAnimation("Advantage");
+	EnemyTriangle->GetTransform()->SetLocalPosition({ 72, -214 });
+	EnemyTriangle->GetTransform()->SetWorldScale({ 28, 40 });
 }
 
 void BattleAnimationUI::Update(float _DeltaTime)

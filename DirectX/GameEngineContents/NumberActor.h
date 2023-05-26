@@ -13,7 +13,8 @@ public:
 	NumberActor(NumberActor&& _Other) noexcept = delete;
 	NumberActor& operator=(const NumberActor& _Other) = delete;
 	NumberActor& operator=(NumberActor&& _Other) noexcept = delete;
-
+	
+	void Setting(int _Value);
 	void SetValue(int _Value);
 	void SetValueLerp(int _Value);
 	void SetBlackFont();

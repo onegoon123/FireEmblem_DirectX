@@ -52,6 +52,10 @@ public:
 	{
 		return Code;
 	}
+	int GetItemCodeToInt()
+	{
+		return static_cast<int>(Code);
+	}
 	int GetUses()
 	{
 		return Uses;
