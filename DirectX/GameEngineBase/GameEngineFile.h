@@ -31,6 +31,10 @@ public:
 	{
 		return Path.Path.string();
 	}
+	std::string GetFileName()
+	{
+		return Path.GetFileName();
+	}
 
 	void SaveBin(const GameEngineSerializer& _Data);
 	void SaveText(const std::string_view& _View);

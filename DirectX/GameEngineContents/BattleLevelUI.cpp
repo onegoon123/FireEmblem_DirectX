@@ -155,6 +155,11 @@ bool BattleLevelUI::IsPhaseEnd()
 	return UI_Phase->PhaseUIEnd();
 }
 
+void BattleLevelUI::PhaseOff()
+{
+	UI_Phase->PhaseOff();
+}
+
 void BattleLevelUI::SetFadeIn(float _Timer)
 {
 	FadeSpeed = 1 / _Timer;

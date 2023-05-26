@@ -461,6 +461,8 @@ void AttackUI::TargetSelectUpdate(float _DeltaTime)
 	if (GameEngineInput::IsDown("ButtonB") || GameEngineInput::IsUp("RightClick"))
 	{
 		WeaponSelectStart();
+		Cursor_Map->SetMapPos(SelectUnit->GetMapPos());
+		Cursor_Map->Off();
 		return;
 	}
 	if (Cursor_Map->GetIsMove()) { return; }

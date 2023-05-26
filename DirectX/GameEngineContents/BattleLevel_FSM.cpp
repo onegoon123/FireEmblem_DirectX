@@ -286,6 +286,7 @@ void BattleLevel::MoveUpdate(float _DeltaTime)
 	{
 		// 커서를 선택한 유닛위치로 돌려놓은 후 Select State로 변경
 		MainCursor->SetMapPos(SelectUnit->GetMapPos());
+		SelectUnit->SetIdle();
 		ChangeState(BattleState::Select);
 		return;
 	}
@@ -293,6 +294,7 @@ void BattleLevel::MoveUpdate(float _DeltaTime)
 	{
 		// Select State로 변경
 		ChangeState(BattleState::Select);
+		SelectUnit->SetIdle();
 		return;
 	}
 }
@@ -474,6 +476,7 @@ void BattleLevel::FieldCommandUpdate(float _DeltaTime)
 void BattleLevel::FieldCommandEnd()
 {
 	//UI_FieldCommand->Off();
+	BattleUI->AllOff();
 	MainCursor->On();
 }
 
@@ -550,6 +553,8 @@ void BattleLevel::BattleReturnUpdate(float _DeltaTime)
 	if (0.5f < ReturnTimer)
 	{
 		ReturnTimer = 0;
+		SelectUnit->SetUnitData(Unit(AttackRecord.back().SubjectUnit));
+		TargetUnit->SetUnitData(Unit(AttackRecord.back().TargetUnit));
 		if (false == GameOverCheck())
 		{
 			ChangeState(BattleState::Select);
@@ -572,9 +577,6 @@ void BattleLevel::BattleReturnUpdate(float _DeltaTime)
 
 void BattleLevel::BattleReturnEnd()
 {
-	SelectUnit->SetUnitData(Unit(AttackRecord.back().SubjectUnit));
-	TargetUnit->SetUnitData(Unit(AttackRecord.back().TargetUnit));
-
 	SelectUnit->SetIsTurnEnd(true);
 	if (SelectUnit->GetIsDie())
 	{
@@ -637,6 +639,14 @@ void BattleLevel::EnemyPhaseStart()
 
 void BattleLevel::EnemyPhaseUpdate(float _DeltaTime)
 {
+	if (GameEngineInput::IsDown("Start"))
+	{
+		IsSkip = true;
+		BattleUI->SetFadeIn(0.2f);
+		BattleUI->PhaseOff();
+		ChangeState(BattleState::EnemySelect);
+		return;
+	}
 	if (true == BattleUI->IsPhaseEnd())
 	{
 		ChangeState(BattleState::EnemySelect);
@@ -670,7 +680,6 @@ void BattleLevel::EnemySelectUpdate(float _DeltaTime)
 
 void BattleLevel::EnemySelectEnd()
 {
-	MainCursor->Off();
 }
 
 void BattleLevel::EnemyMoveStart()
@@ -738,9 +747,10 @@ void BattleLevel::EnemyMoveStart()
 
 void BattleLevel::EnemyMoveUpdate(float _DeltaTime)
 {
-	if (GameEngineInput::IsDown("Start"))
+	if (false == IsSkip && GameEngineInput::IsDown("Start"))
 	{
 		IsSkip = true;
+		BattleUI->SetFadeIn(0.2f);
 	}
 	if (true == IsSkip)
 	{
@@ -782,6 +792,10 @@ void BattleLevel::EnemyBattleStart()
 		return;
 	}
 
+	if (true == IsSkip)
+	{
+		return;
+	}
 	for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
 	{
 		_Unit->GetRenderer()->SetIsBlur(true);
@@ -837,9 +851,11 @@ void BattleLevel::EnemyBattleReturnUpdate(float _DeltaTime)
 	static float ReturnTimer = 0;
 	ReturnTimer += _DeltaTime;
 
-	if (0.5f < ReturnTimer)
+	if (0.5f < ReturnTimer || true == IsSkip)
 	{
 		ReturnTimer = 0;
+		SelectUnit->SetUnitData(Unit(AttackRecord.back().SubjectUnit));
+		TargetUnit->SetUnitData(Unit(AttackRecord.back().TargetUnit));
 		if (false == GameOverCheck())
 		{
 			ChangeState(BattleState::EnemySelect);
@@ -862,8 +878,7 @@ void BattleLevel::EnemyBattleReturnUpdate(float _DeltaTime)
 
 void BattleLevel::EnemyBattleReturnEnd()
 {
-	SelectUnit->SetUnitData(Unit(AttackRecord.back().SubjectUnit));
-	TargetUnit->SetUnitData(Unit(AttackRecord.back().TargetUnit));
+
 
 	SelectUnit->SetIsTurnEnd(true);
 	if (SelectUnit->GetIsDie())
@@ -1123,13 +1138,11 @@ void BattleLevel::TimeStoneUpdate(float _DeltaTime)
 					{
 						_Unit->SetUnitData((*RIter).BeforeSubjectUnit);
 						_Unit->SetMapPos((*RIter).BeforeSubjectUnitPos);
-						//Item::LoadItemDataList(_Unit->GetUnitData().GetItems(), (*RIter).BeforeSubjectItems);
 						_Unit->GetUnitData().LoadItemData((*RIter).BeforeSubjectItems);
 					}
 					else if ((*RIter).BeforeTargetUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
 					{
 						_Unit->SetUnitData((*RIter).BeforeTargetUnit);
-						//Item::LoadItemDataList(_Unit->GetUnitData().GetItems(), (*RIter).BeforeTargetItems);
 						_Unit->GetUnitData().LoadItemData((*RIter).BeforeTargetItems);
 					}
 				}
@@ -1139,14 +1152,12 @@ void BattleLevel::TimeStoneUpdate(float _DeltaTime)
 					{
 						_Unit->SetUnitData((*RIter).BeforeSubjectUnit);
 						_Unit->SetMapPos((*RIter).BeforeSubjectUnitPos);
-						//Item::LoadItemDataList(_Unit->GetUnitData().GetItems(), (*RIter).BeforeSubjectItems);
 						_Unit->GetUnitData().LoadItemData((*RIter).BeforeSubjectItems);
 					}
 					else if ((*RIter).BeforeTargetUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
 					{
 						_Unit->SetUnitData((*RIter).BeforeTargetUnit);
-						//Item::LoadItemDataList(_Unit->GetUnitData().GetItems(), (*RIter).BeforeTargetItems);
-						_Unit->GetUnitData().LoadItemData((*RIter).BeforeTargetItems);
+						//_Unit->GetUnitData().LoadItemData((*RIter).BeforeTargetItems);
 					}
 				}
 				break;
@@ -1159,7 +1170,7 @@ void BattleLevel::TimeStoneUpdate(float _DeltaTime)
 					{
 						_Unit->SetUnitData((*RIter).BeforeSubjectUnit);
 						_Unit->SetMapPos((*RIter).BeforeSubjectUnitPos);
-						Item::LoadItemDataList(_Unit->GetUnitData().GetItems(), (*RIter).BeforeSubjectItems);
+						_Unit->GetUnitData().LoadItemData((*RIter).BeforeSubjectItems);
 					}
 				}
 				for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
@@ -1168,7 +1179,7 @@ void BattleLevel::TimeStoneUpdate(float _DeltaTime)
 					{
 						_Unit->SetUnitData((*RIter).BeforeSubjectUnit);
 						_Unit->SetMapPos((*RIter).BeforeSubjectUnitPos);
-						Item::LoadItemDataList(_Unit->GetUnitData().GetItems(), (*RIter).BeforeSubjectItems);
+						_Unit->GetUnitData().LoadItemData((*RIter).BeforeSubjectItems);
 					}
 				}
 				break;
@@ -1282,13 +1293,12 @@ void BattleLevel::TimeStoneUpdate(float _DeltaTime)
 					{
 						_Unit->SetUnitData((*RIter).AfterSubjectUnit);
 						_Unit->SetMapPos((*RIter).AfterSubjectUnitPos);
-						Item::LoadItemDataList(_Unit->GetUnitData().GetItems(), (*RIter).AfterSubjectItems);
-
+						_Unit->GetUnitData().LoadItemData((*RIter).AfterSubjectItems);
 					}
 					else if ((*RIter).AfterTargetUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
 					{
 						_Unit->SetUnitData((*RIter).AfterTargetUnit);
-						Item::LoadItemDataList(_Unit->GetUnitData().GetItems(), (*RIter).AfterTargetItems);
+						_Unit->GetUnitData().LoadItemData((*RIter).AfterTargetItems);
 					}
 				}
 				for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
@@ -1297,12 +1307,12 @@ void BattleLevel::TimeStoneUpdate(float _DeltaTime)
 					{
 						_Unit->SetUnitData((*RIter).AfterSubjectUnit);
 						_Unit->SetMapPos((*RIter).AfterSubjectUnitPos);
-						Item::LoadItemDataList(_Unit->GetUnitData().GetItems(), (*RIter).AfterSubjectItems);
+						_Unit->GetUnitData().LoadItemData((*RIter).AfterSubjectItems);
 					}
 					else if ((*RIter).AfterTargetUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
 					{
 						_Unit->SetUnitData((*RIter).AfterTargetUnit);
-						Item::LoadItemDataList(_Unit->GetUnitData().GetItems(), (*RIter).AfterTargetItems);
+						_Unit->GetUnitData().LoadItemData((*RIter).AfterTargetItems);
 					}
 				}
 				break;
@@ -1315,7 +1325,7 @@ void BattleLevel::TimeStoneUpdate(float _DeltaTime)
 					{
 						_Unit->SetUnitData((*RIter).AfterSubjectUnit);
 						_Unit->SetMapPos((*RIter).AfterSubjectUnitPos);
-						Item::LoadItemDataList(_Unit->GetUnitData().GetItems(), (*RIter).AfterSubjectItems);
+						_Unit->GetUnitData().LoadItemData((*RIter).AfterSubjectItems);
 					}
 				}
 				for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
@@ -1324,7 +1334,7 @@ void BattleLevel::TimeStoneUpdate(float _DeltaTime)
 					{
 						_Unit->SetUnitData((*RIter).AfterSubjectUnit);
 						_Unit->SetMapPos((*RIter).AfterSubjectUnitPos);
-						Item::LoadItemDataList(_Unit->GetUnitData().GetItems(), (*RIter).AfterSubjectItems);
+						_Unit->GetUnitData().LoadItemData((*RIter).AfterSubjectItems);
 					}
 				}
 				break;
@@ -1524,6 +1534,7 @@ bool BattleLevel::GameOverCheck()
 		if (false == _Unit->GetIsDie())
 		{
 			IsAliveUnit = true;
+			break;
 		}
 	}
 	if (false == IsAliveUnit)

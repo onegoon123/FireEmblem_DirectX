@@ -43,7 +43,7 @@ void BattleAnimationLevel::HitEvent()
 
 		if (true == (*BattleIter).TargetUnit.GetIsDie())
 		{
-			TimeEvent.AddEvent(1.5f, std::bind(&BattleAnimationUnit::Die, DamageUnit));
+			TimeEvent.AddEvent(1.0f, std::bind(&BattleAnimationUnit::Die, DamageUnit));
 		}
 	}
 	else
@@ -54,7 +54,7 @@ void BattleAnimationLevel::HitEvent()
 
 		if (true == (*BattleIter).SubjectUnit.GetIsDie())
 		{
-			TimeEvent.AddEvent(1.5f, std::bind(&BattleAnimationUnit::Die, DamageUnit));
+			TimeEvent.AddEvent(1.0f, std::bind(&BattleAnimationUnit::Die, DamageUnit));
 		}
 	}
 
@@ -178,6 +178,12 @@ void BattleAnimationLevel::PlayAttack()
 {
 	if (BattleIter == BattleData.end())
 	{
+		if (true == LeftUnit->GetIsDie() || true == RightUnit->GetIsDie())
+		{
+			TimeEvent.AddEvent(2.0f, std::bind(&BattleAnimationUI::SetFadeOut, UI, 0.3f));
+			TimeEvent.AddEvent(2.5f, std::bind(&BattleAnimationLevel::End, this));
+			return;
+		}
 		TimeEvent.AddEvent(1.0f, std::bind(&BattleAnimationUI::SetFadeOut, UI, 0.3f));
 		TimeEvent.AddEvent(1.5f, std::bind(&BattleAnimationLevel::End, this));
 		return;

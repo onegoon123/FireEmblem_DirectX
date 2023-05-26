@@ -56,6 +56,10 @@ public:
 		{
 			On();
 		}
+		else
+		{
+			Off();
+		}
 		SetIsTurnEnd(GetIsTurnEnd());
 	}
 	// 유닛 데이터를 반환

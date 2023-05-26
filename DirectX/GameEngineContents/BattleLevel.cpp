@@ -30,21 +30,7 @@ void BattleLevel::Start()
 	// 카메라 세팅
 	GetMainCamera()->SetProjectionType(CameraType::Orthogonal);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 448, 288, -554.0f });
-}
 
-void BattleLevel::Update(float _DeltaTime)
-{
-	StateUpdate(_DeltaTime);
-}
-
-void BattleLevel::LevelChangeStart()
-{
-	GameEngineLevel::LevelChangeStart();
-
-	if (CurState == BattleState::BattleReturn || CurState == BattleState::EnemyBattleReturn)
-	{
-		return;
-	}
 
 	// 리소스 로딩
 	{
@@ -120,20 +106,30 @@ void BattleLevel::LevelChangeStart()
 		PlayerUnits.push_back(NewActor);
 
 		NewActor = CreateActor<BattleUnit>(RenderOrder::Unit);
-		NewActor->SetUnitCode(UnitIdentityCode::Brigand);
-		NewActor->NewItem(ItemCode::IronAxe);
+		NewActor->SetUnitCode(UnitIdentityCode::Dorcas);
 		NewActor->GetUnitData().LevelUp(0);
-		NewActor->SetMapPos({ 10, 4 });
+		NewActor->SetMapPos({ 5, 5 });
+		NewActor->NewItem(ItemCode::HandAxe);
+		NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
+		PlayerUnits.push_back(NewActor);
+
+		NewActor = CreateActor<BattleUnit>(RenderOrder::Unit);
+		NewActor->SetUnitCode(UnitIdentityCode::Brigand);
+		NewActor->NewItem(ItemCode::HandAxe);
+		NewActor->NewItem(ItemCode::HandAxe);
+		NewActor->NewItem(ItemCode::HandAxe);
+		NewActor->GetUnitData().LevelUp(0);
+		NewActor->SetMapPos({ 1, 3 });
 		NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
 		EnemyUnits.push_back(NewActor);
 
 		NewActor = CreateActor<BattleUnit>(RenderOrder::Unit);
 		NewActor->SetUnitCode(UnitIdentityCode::Soldier);
-		NewActor->NewItem(ItemCode::IronSword);
-		NewActor->NewItem(ItemCode::IronLance);
-		NewActor->NewItem(ItemCode::IronAxe);
+		NewActor->NewItem(ItemCode::SilverLance);
+		NewActor->NewItem(ItemCode::SilverLance);
+		NewActor->NewItem(ItemCode::SilverLance);
 		NewActor->GetUnitData().LevelUp(0);
-		NewActor->SetMapPos({ 10, 3 });
+		NewActor->SetMapPos({ 2, 4 });
 		NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
 		EnemyUnits.push_back(NewActor);
 	}
@@ -155,8 +151,29 @@ void BattleLevel::LevelChangeStart()
 
 }
 
+void BattleLevel::Update(float _DeltaTime)
+{
+	StateUpdate(_DeltaTime);
+}
+
+void BattleLevel::LevelChangeStart()
+{
+	GameEngineLevel::LevelChangeStart();
+
+	if (CurState == BattleState::BattleReturn || CurState == BattleState::EnemyBattleReturn)
+	{
+		return;
+	}
+
+}
+
 void BattleLevel::LevelChangeEnd()
 {
 	GameEngineLevel::LevelChangeEnd();
+
+	if (CurState == BattleState::BattleReturn || CurState == BattleState::EnemyBattleReturn)
+	{
+		return;
+	}
 }
 

@@ -29,6 +29,10 @@ public:
 	void HitEffect(const std::string_view& _Name);
 
 	void Die();
+	bool GetIsDie()
+	{
+		return IsDie;
+	}
 
 protected:
 	void Start() override;

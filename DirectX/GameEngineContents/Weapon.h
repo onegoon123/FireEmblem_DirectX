@@ -32,6 +32,10 @@ public:
 	Weapon(const Weapon& _Other)
 	{
 		SetName(_Other.GetName());
+		IdentityCode = _Other.IdentityCode;
+		Code = _Other.Code;
+		TypeValue = _Other.TypeValue;
+		MaxUses = _Other.MaxUses;
 		Damage = _Other.Damage;
 		Hit = _Other.Hit;
 		Critical = _Other.Critical;

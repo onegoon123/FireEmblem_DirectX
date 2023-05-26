@@ -142,5 +142,8 @@ void Unit::LoadItemData(std::list<Item>& _Data)
 		}
 
 	}
-
+	if (Weapons.size() == 0)
+	{
+		int a = 0;
+	}
 }

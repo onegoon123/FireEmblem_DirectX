@@ -29,6 +29,7 @@ public:
 	void ItemOn(std::shared_ptr<BattleUnit> _SelectUnit);
 	void PhaseOn(Faction _Faction);
 	bool IsPhaseEnd();
+	void PhaseOff();
 	void SetFadeIn(float _Timer);
 	void SetFadeOut(float _Timer);
 
