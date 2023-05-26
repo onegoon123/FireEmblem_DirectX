@@ -106,7 +106,7 @@ void BattleLevel::LevelChangeStart()
 		NewActor = CreateActor<BattleUnit>(RenderOrder::Unit);
 		NewActor->SetUnitCode(UnitIdentityCode::Lyn);
 		NewActor->GetUnitData().ClassChange(BattleClass::BladeLord);
-		//NewActor->GetUnitData().LevelUp(99);
+		NewActor->GetUnitData().LevelUp(99);
 		NewActor->SetMapPos({ 5, 4 });
 		NewActor->NewItem(ItemCode::ManiKatti);
 		NewActor->NewItem(ItemCode::SteelSword);
