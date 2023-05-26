@@ -16,9 +16,9 @@ BattleUnit::~BattleUnit()
 void BattleUnit::Select()
 {
 	GetTransform()->SetLocalPositiveScaleX();
-	//Renderer->ChangeAnimation("Select");
 	Renderer->Off();
 	FrontRenderer->On();
+	FrontRenderer->ChangeAnimation("Select");
 }
 
 void BattleUnit::SetIdle()

@@ -261,6 +261,7 @@ void BattleLevel::MoveStart()
 	ArrowPos.clear();
 	ArrowPos.push_back(SelectUnit->GetMapPos());	// 엑터 위치에서부터 화살표 시작
 	AddArrow(ArrowPos.front());
+	
 }
 
 void BattleLevel::MoveUpdate(float _DeltaTime)
@@ -656,9 +657,7 @@ void BattleLevel::EnemySelectStart()
 		{
 			SelectUnit = _Enemy;
 			SelectUnit->Select();
-			MainCursor->On();
-			MainCursor->SetMapPos(SelectUnit->GetMapPos());
-
+			ChangeState(BattleState::EnemyMove);
 			return;
 		}
 	}
@@ -667,15 +666,6 @@ void BattleLevel::EnemySelectStart()
 
 void BattleLevel::EnemySelectUpdate(float _DeltaTime)
 {
-	static float EnemySelectTimer = 0;
-	EnemySelectTimer += _DeltaTime;
-
-	if (0.3f < EnemySelectTimer)
-	{
-		EnemySelectTimer = 0;
-		ChangeState(BattleState::EnemyMove);
-		return;
-	}
 }
 
 void BattleLevel::EnemySelectEnd()
@@ -691,20 +681,6 @@ void BattleLevel::EnemyMoveStart()
 
 	MoveSearchForEnemy();
 	EnemyFindTarget();
-	/*
-	TargetUnit = nullptr;
-
-	for (std::shared_ptr<BattleUnit> _Player : PlayerUnits)
-	{
-		if (true == _Player->GetIsDie()) { continue; }
-		int2 PlayerPos = _Player->GetMapPos();
-		if (true == IsAttack[PlayerPos.y][PlayerPos.x])
-		{
-			TargetUnit = _Player;
-			break;
-		}
-	}
-	*/
 
 	if (TargetUnit == nullptr)
 	{
@@ -735,6 +711,7 @@ void BattleLevel::EnemyMoveStart()
 			}
 		}
 		MainCursor->SetMapPos(MovePos);
+		ArrowPos.clear();
 		MoveCalculationForEnemy();
 		MoveIndex = 0;
 		return;
@@ -744,15 +721,19 @@ void BattleLevel::EnemyMoveStart()
 	MainCursor->SetMapPos(TargetUnit->GetMapPos());
 	ArrowPos.clear();
 	MoveCalculationForEnemyAttack();
+	MoveIndex = 0;
+
+	MainCursor->SetMapPos(TargetUnit->GetMapPos());
+	MainCursor->On();
+	MainCursor->Enemy();
+
 	if (ArrowPos.size() == 0)
 	{
 		MoveIndex = -1;
 		return;
 	}
 	int2 MovePos = ArrowPos.back();
-	MainCursor->SetMapPos(MovePos);
 
-	MoveIndex = 0;
 }
 
 void BattleLevel::EnemyMoveUpdate(float _DeltaTime)
@@ -774,6 +755,9 @@ void BattleLevel::EnemyMoveUpdate(float _DeltaTime)
 
 void BattleLevel::EnemyMoveEnd()
 {
+	MainCursor->Off();
+	MainCursor->Idle();
+
 	if (ArrowPos.size() != 0)
 	{
 		SelectUnit->SetMapPos(ArrowPos.back());
@@ -793,6 +777,7 @@ void BattleLevel::EnemyBattleStart()
 	else
 	{
 		UnitCommand::Wait(SelectUnit);
+		SelectUnit->SetIsTurnEnd(true);
 		ChangeState(BattleState::EnemySelect);
 		return;
 	}
