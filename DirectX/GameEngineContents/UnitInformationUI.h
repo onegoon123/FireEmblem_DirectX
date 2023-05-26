@@ -22,13 +22,15 @@ protected:
 
 private:
 	class BattleLevel* CurLevel = nullptr;
+
 	std::shared_ptr<class GameEngineUIRenderer> Background = nullptr;
 	std::shared_ptr<GameEngineUIRenderer> PortraitBack = nullptr;
 	std::shared_ptr<GameEngineUIRenderer> Fore = nullptr;
-	std::shared_ptr<GameEngineUIRenderer> PersonalDataWindow = nullptr;
 	std::shared_ptr<GameEngineUIRenderer> PortraitRenderer = nullptr;
 	std::shared_ptr<GameEngineUIRenderer> UnitRenderer = nullptr;
 
+
+	std::shared_ptr<GameEngineUIRenderer> PersonalDataWindow = nullptr;
 	std::shared_ptr<class NumberActor> Number_Level = nullptr;
 	std::shared_ptr<NumberActor> Number_Exp = nullptr;
 	std::shared_ptr<NumberActor> Number_HP = nullptr;
@@ -53,5 +55,20 @@ private:
 	std::shared_ptr<StatBar> Bar_Luck = nullptr;
 	std::shared_ptr<StatBar> Bar_Move = nullptr;
 	std::shared_ptr<StatBar> Bar_Constitution = nullptr;
+
+	std::shared_ptr<GameEngineUIRenderer> ItemDataWindow = nullptr;
+	std::vector<std::shared_ptr<GameEngineUIRenderer>> ItemIcons;
+	std::vector<std::shared_ptr<NumberActor>> ItemUses;
+	std::vector<std::shared_ptr<NumberActor>> ItemMaxUses;
+
+	std::shared_ptr<NumberActor> Range;
+	std::shared_ptr<NumberActor> Attack;
+	std::shared_ptr<NumberActor> Critical;
+	std::shared_ptr<NumberActor> Hit;
+	std::shared_ptr<NumberActor> Dodge;
+
+	bool IsMove = false;
+	bool IsItemWindow = false;
+	float Timer = 0;
 };
 

@@ -267,14 +267,106 @@ void UnitInformationUI::Start()
 		Bar_Constitution->GetTransform()->SetWorldScale(float4::One);
 	}
 
+
+	{
+		// 아이템 데이터 창
+		ItemDataWindow = CreateComponent<GameEngineUIRenderer>(3);
+		ItemDataWindow->SetTexture("ItemDataWindow.png");
+		ItemDataWindow->GetTransform()->SetLocalScale({ 536, 536 });
+		ItemDataWindow->GetTransform()->SetLocalPosition({ 164, -26 });
+		ItemDataWindow->GetTransform()->AddLocalPosition(float4::Right * 1000);
+
+		ItemIcons.resize(5);
+		for (int i = 0; i < 5; i++)
+		{
+			ItemIcons[i] = CreateComponent<GameEngineUIRenderer>(4);
+			ItemIcons[i]->SetSprite("Items.png", 0);
+
+			ItemIcons[i]->GetTransform()->SetParent(ItemDataWindow->GetTransform());
+			ItemIcons[i]->GetTransform()->SetLocalPosition({ -212, i * 64.0f - 32.0f});
+			ItemIcons[i]->GetTransform()->SetWorldRotation(float4::Zero);
+			ItemIcons[i]->GetTransform()->SetWorldScale({ 64, 64 });
+
+			//ItemIcons[i]->Off();
+		}
+
+		ItemUses.resize(5);
+		ItemMaxUses.resize(5);
+		for (int i = 0; i < 5; i++)
+		{
+			ItemMaxUses[i] = GetLevel()->CreateActor<NumberActor>();
+
+			ItemMaxUses[i]->GetTransform()->SetParent(ItemDataWindow->GetTransform());
+			ItemMaxUses[i]->GetTransform()->SetLocalPosition({ 212, i * 64.0f - 32.0f });
+			ItemMaxUses[i]->GetTransform()->SetWorldRotation(float4::Zero);
+			ItemMaxUses[i]->GetTransform()->SetWorldScale(float4::One);
+
+			ItemMaxUses[i]->SetValue(25);
+
+			ItemUses[i] = GetLevel()->CreateActor<NumberActor>();
+
+			ItemUses[i]->GetTransform()->SetParent(ItemDataWindow->GetTransform());
+			ItemUses[i]->GetTransform()->SetLocalPosition({ 128, i * 64.0f - 32.0f });
+			ItemUses[i]->GetTransform()->SetWorldRotation(float4::Zero);
+			ItemUses[i]->GetTransform()->SetWorldScale(float4::One);
+
+			ItemUses[i]->SetValue(25);
+
+			//ItemIcons[i]->Off();
+		}
+
+
+
+	}
 	Off();
 }
 
 void UnitInformationUI::Update(float _DeltaTime)
 {
+	if (true == IsMove)
+	{
+		Timer += _DeltaTime * 2;
+		if (true == IsItemWindow)
+		{
+			PersonalDataWindow->GetTransform()->SetLocalPosition(float4::LerpClamp(PersonalDataWindow->GetTransform()->GetLocalPosition(), {1164, 32}, _DeltaTime * 10));
+			ItemDataWindow->GetTransform()->SetLocalPosition(float4::LerpClamp(ItemDataWindow->GetTransform()->GetLocalPosition(), { 164, -26 }, _DeltaTime * 10));
+
+			if (1 < Timer)
+			{
+				PersonalDataWindow->GetTransform()->SetLocalPosition({ 1164, 32 });
+				ItemDataWindow->GetTransform()->SetLocalPosition({ 164, -26 });
+				IsMove = false;
+			}
+		}
+		else
+		{
+			PersonalDataWindow->GetTransform()->SetLocalPosition(float4::LerpClamp(PersonalDataWindow->GetTransform()->GetLocalPosition(), { 164, 32 }, _DeltaTime * 10));
+			ItemDataWindow->GetTransform()->SetLocalPosition(float4::LerpClamp(ItemDataWindow->GetTransform()->GetLocalPosition(), { 1164, -26 }, _DeltaTime * 10));
+
+			if (1 < Timer)
+			{
+				PersonalDataWindow->GetTransform()->SetLocalPosition({ 164, 32 });
+				ItemDataWindow->GetTransform()->SetLocalPosition({ 1164, -26 });
+				IsMove = false;
+			}
+		}
+		
+		
+		
+
+		return;
+	}
+
 	if (GameEngineInput::IsDown("ButtonB"))
 	{
 		CurLevel->UnitInformation_Cancel();
+	}
+
+	if (GameEngineInput::IsDown("Left") || GameEngineInput::IsDown("Right"))
+	{
+		Timer = 0;
+		IsMove = true;
+		IsItemWindow = !IsItemWindow;
 	}
 }
 

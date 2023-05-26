@@ -292,9 +292,9 @@ void BattleLevel::MoveUpdate(float _DeltaTime)
 	}
 	if (GameEngineInput::IsDown("RightClick"))
 	{
-		// Select State로 변경
-		ChangeState(BattleState::Select);
+		// 커서를 선택한 유닛위치로 돌려놓은 후 Select State로 변경
 		SelectUnit->SetIdle();
+		ChangeState(BattleState::Select);
 		return;
 	}
 }
