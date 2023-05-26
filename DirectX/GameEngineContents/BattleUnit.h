@@ -116,6 +116,7 @@ protected:
 	void SetMoveDir(int2 _Dir) override;
 
 	std::shared_ptr<class SpriteRenderer> Renderer = nullptr;
+	std::shared_ptr<class SpriteRenderer> FrontRenderer = nullptr;
 	std::string_view MapSpriteName = "";
 private:
 	Unit UnitData;

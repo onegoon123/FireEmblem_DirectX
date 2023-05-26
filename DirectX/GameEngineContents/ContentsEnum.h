@@ -4,8 +4,9 @@ enum class RenderOrder
 {
 	Map,	// 맵 (배경)
 	Tile,	// 타일 (이동, 공격 범위)
-	Arrow,	// 화살표 (이동 방향)
 	Unit,	// 유닛
+	Arrow,	// 화살표 (이동 방향)
+	SelectUnit, // 선택된 유닛
 	MapCursor,
 	Effect, // 효과
 

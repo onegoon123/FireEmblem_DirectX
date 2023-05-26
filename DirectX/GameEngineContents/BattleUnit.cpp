@@ -16,13 +16,17 @@ BattleUnit::~BattleUnit()
 void BattleUnit::Select()
 {
 	GetTransform()->SetLocalPositiveScaleX();
-	Renderer->ChangeAnimation("Select");
+	//Renderer->ChangeAnimation("Select");
+	Renderer->Off();
+	FrontRenderer->On();
 }
 
 void BattleUnit::SetIdle()
 {
 	GetTransform()->SetLocalPositiveScaleX();
 	Renderer->ChangeAnimation("Idle");
+	Renderer->On();
+	FrontRenderer->Off();
 }
 
 void BattleUnit::SetIsTurnEnd(bool _Value)
@@ -241,20 +245,22 @@ void BattleUnit::SetUnitCode(UnitIdentityCode _Code)
 
 	Renderer->CreateAnimation({ .AnimationName = "Idle",.SpriteName = MapSpriteName, .FrameIndex = {0, 1, 2, 1}, .FrameTime = {0.5f, 0.1f, 0.5f, 0.1f} });
 	Renderer->CreateAnimation({ .AnimationName = "Select",.SpriteName = MapSpriteName, .FrameIndex = {3, 4, 5, 4}, .FrameTime = {0.3f, 0.1f, 0.3f, 0.1f} });
+	FrontRenderer->CreateAnimation({ .AnimationName = "Select",.SpriteName = MapSpriteName, .FrameIndex = {3, 4, 5, 4}, .FrameTime = {0.3f, 0.1f, 0.3f, 0.1f} });
 	if (true == IsShortWalk)
 	{
-		Renderer->CreateAnimation({ .AnimationName = "Left", .SpriteName = MapSpriteName, .FrameInter = 0.2f, .FrameIndex = {6, 7, 8, 7} });
-		Renderer->CreateAnimation({ .AnimationName = "Down", .SpriteName = MapSpriteName, .FrameInter = 0.2f, .FrameIndex = {9, 10, 11, 10} });
-		Renderer->CreateAnimation({ .AnimationName = "Up", .SpriteName = MapSpriteName, .FrameInter = 0.2f, .FrameIndex = {12, 13, 14, 13} });
+		FrontRenderer->CreateAnimation({ .AnimationName = "Left", .SpriteName = MapSpriteName, .FrameInter = 0.2f, .FrameIndex = {6, 7, 8, 7} });
+		FrontRenderer->CreateAnimation({ .AnimationName = "Down", .SpriteName = MapSpriteName, .FrameInter = 0.2f, .FrameIndex = {9, 10, 11, 10} });
+		FrontRenderer->CreateAnimation({ .AnimationName = "Up", .SpriteName = MapSpriteName, .FrameInter = 0.2f, .FrameIndex = {12, 13, 14, 13} });
 	}
 	else
 	{
-		Renderer->CreateAnimation({ "Left", MapSpriteName, 6, 9, 0.2f, true, false });
-		Renderer->CreateAnimation({ "Down", MapSpriteName, 10, 13, 0.2f, true, false });
-		Renderer->CreateAnimation({ "Up", MapSpriteName, 14, 17, 0.2f, true, false });
+		FrontRenderer->CreateAnimation({ "Left", MapSpriteName, 6, 9, 0.2f, true, false });
+		FrontRenderer->CreateAnimation({ "Down", MapSpriteName, 10, 13, 0.2f, true, false });
+		FrontRenderer->CreateAnimation({ "Up", MapSpriteName, 14, 17, 0.2f, true, false });
 	}
 
 	Renderer->ChangeAnimation("Idle");
+	FrontRenderer->ChangeAnimation("Select");
 }
 
 bool BattleUnit::IsAttackable(int _Distance)
@@ -291,6 +297,10 @@ void BattleUnit::Start()
 {
 	Renderer = CreateComponent<SpriteRenderer>(RenderOrder::Unit);
 	Renderer->SetLocalScale({ 192,192 });
+	FrontRenderer = CreateComponent<SpriteRenderer>(RenderOrder::SelectUnit);
+	FrontRenderer->SetLocalScale({ 192,192 });
+	FrontRenderer->Off();
+
 	SetMapPos({ 0,0 });
 }
 
@@ -303,7 +313,7 @@ void BattleUnit::SetMoveDir(int2 _Dir)
 {
 	if (_Dir == int2::Right)
 	{
-		Renderer->ChangeAnimation("Left");
+		FrontRenderer->ChangeAnimation("Left");
 		GetTransform()->SetLocalNegativeScaleX();
 		return;
 	}
@@ -312,17 +322,17 @@ void BattleUnit::SetMoveDir(int2 _Dir)
 
 	if (_Dir == int2::Left)
 	{
-		Renderer->ChangeAnimation("Left");
+		FrontRenderer->ChangeAnimation("Left");
 		return;
 	}
 	if (_Dir == int2::Down)
 	{
-		Renderer->ChangeAnimation("Down");
+		FrontRenderer->ChangeAnimation("Down");
 		return;
 	}
 	if (_Dir == int2::Up)
 	{
-		Renderer->ChangeAnimation("Up");
+		FrontRenderer->ChangeAnimation("Up");
 		return;
 	}
 }

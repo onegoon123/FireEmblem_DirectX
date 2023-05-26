@@ -28,9 +28,8 @@ BattleLevel::~BattleLevel()
 void BattleLevel::Start()
 {
 	// 카메라 세팅
-	GetMainCamera()->SetProjectionType(CameraType::Perspective);
+	GetMainCamera()->SetProjectionType(CameraType::Orthogonal);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 448, 288, -554.0f });
-	GetMainCamera()->SetSortType(0, SortType::ZSort);
 }
 
 void BattleLevel::Update(float _DeltaTime)
@@ -91,7 +90,7 @@ void BattleLevel::LevelChangeStart()
 		Tiles = CreateActor<TileRender>(RenderOrder::Tile);
 		Tiles->Create(MainMap->MapScaleInt2);
 
-		Arrows = CreateActor<ArrowRender>(RenderOrder::Arrow);
+		Arrows = CreateActor<ArrowRender>(RenderOrder::Unit);
 		Arrows->Create(MainMap->MapScaleInt2);
 
 		MainCursor = CreateActor<MapCursor>(RenderOrder::MapCursor);

@@ -242,16 +242,25 @@ void BattleLevel::MoveStart()
 
 	MoveSearch();	// 이동범위 탐색, 자동으로 공격범위도 탐색
 	Tiles->SetTile(IsMove, IsAttack);	// 이동 및 공격 범위를 타일로 표시
+
+	// Move State시 필요한 UI
+	MainCursor->On();
+	MainCursor->Idle();
+
+	// 유닛 선택 애니메이션
+	SelectUnit->Select();
+
+	Arrows->On();
+
+	if (0 < BeforePos.GetDistance(MainCursor->GetMapPos()))
+	{
+		return;
+	}
+
 	// 이동 화살표 초기화
 	ArrowPos.clear();
 	ArrowPos.push_back(SelectUnit->GetMapPos());	// 엑터 위치에서부터 화살표 시작
 	AddArrow(ArrowPos.front());
-
-	// Move State시 필요한 UI
-	MainCursor->On();
-
-	// 유닛 선택 애니메이션
-	SelectUnit->Select();
 }
 
 void BattleLevel::MoveUpdate(float _DeltaTime)
@@ -290,9 +299,9 @@ void BattleLevel::MoveUpdate(float _DeltaTime)
 void BattleLevel::MoveEnd()
 {
 	// Move State 종료시 화살표와 이동타일을 제거
-	Arrows->Clear();
+	Arrows->Off();
 	Tiles->Clear();
-	SelectUnit->SetIdle();
+	//SelectUnit->SetIdle();
 	BattleUI->AllOff();
 }
 
@@ -482,6 +491,8 @@ void BattleLevel::BattleStart()
 	}
 	MainMap->GetRenderer()->SetIsBlur(true);
 	BattleUI->SetFadeOut(0.3f);
+	GetMainCamera()->SetProjectionType(CameraType::Perspective);
+
 	return;
 }
 
@@ -576,6 +587,8 @@ void BattleLevel::BattleReturnEnd()
 	}
 
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 448, 288, -554.0f });
+	GetMainCamera()->SetProjectionType(CameraType::Orthogonal);
+
 	for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
 	{
 		_Unit->GetRenderer()->SetIsBlur(false);
@@ -794,6 +807,8 @@ void BattleLevel::EnemyBattleStart()
 	}
 	BattleUI->SetFadeOut(0.3f);
 	MainMap->GetRenderer()->SetIsBlur(true);
+	GetMainCamera()->SetProjectionType(CameraType::Perspective);
+
 }
 
 void BattleLevel::EnemyBattleUpdate(float _DeltaTime)
@@ -878,6 +893,8 @@ void BattleLevel::EnemyBattleReturnEnd()
 	}
 
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 448, 288, -554.0f });
+	GetMainCamera()->SetProjectionType(CameraType::Orthogonal);
+
 	for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
 	{
 		_Unit->GetRenderer()->SetIsBlur(false);

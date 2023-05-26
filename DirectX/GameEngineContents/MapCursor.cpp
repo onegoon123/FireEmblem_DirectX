@@ -29,6 +29,22 @@ void MapCursor::Off()
 	AnimationRender->Off();
 }
 
+void MapCursor::Select()
+{
+	AnimationRender->ChangeAnimation("OnUnit", false);
+}
+
+void MapCursor::Idle()
+{
+	AnimationRender->ChangeAnimation("Idle", false);
+}
+
+
+void MapCursor::Enemy()
+{
+	AnimationRender->ChangeAnimation("Enemy", false);
+}
+
 void MapCursor::Start()
 {
 	if (nullptr == GameEngineSprite::Find("PlayerCursor.png"))
@@ -41,10 +57,11 @@ void MapCursor::Start()
 		GameEngineSprite::LoadSheet(Dir.GetPlusFileName("PlayerCursor.png").GetFullPath(), 5, 2);
 	}
 	AnimationRender = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::MapCursor);
-	AnimationRender->CreateAnimation({ .AnimationName = "Idle", .SpriteName = "PlayerCursor.png", .FrameIndex = {1, 2, 3, 4, 3, 2}, .FrameTime = { .5f, .07f, .07f, .07f, .07f, .07f} });
+	AnimationRender->CreateAnimation({ .AnimationName = "Idle", .SpriteName = "PlayerCursor.png", .FrameIndex = {1, 2, 3, 4, 3, 2}, .FrameTime = { .5f, .04f, .04f, .07f, .04f, .04f} });
 	AnimationRender->CreateAnimation({ .AnimationName = "OnUnit", .SpriteName = "PlayerCursor.png", .Start = 0, .End = 0 });
 	AnimationRender->CreateAnimation({ .AnimationName = "Enemy", .SpriteName = "PlayerCursor.png", .FrameIndex = {6, 7, 8, 9, 8, 7}, .FrameTime = { .2f, .05f, .05f, .05f, .05f, .05f} });
 	AnimationRender->ChangeAnimation("Idle");
+	AnimationRender->GetTransform()->SetLocalPosition({ 0, 0, -10});
 	AnimationRender->GetTransform()->SetWorldScale({ 104, 104 });
 	SetMapPos({ 1, 1 });
 }
