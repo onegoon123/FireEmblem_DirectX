@@ -47,10 +47,17 @@ public:
 	void RenderingPipeLineSetting();
 	void Render();
 
+	std::shared_ptr<GameEngineRenderingPipeLine> Clone();
+
+	bool IsClone()
+	{
+		return IsCloneValue;
+	}
+
 protected:
 
 private:
-
+	bool IsCloneValue = false;
 	// Directx11 랜더링 파이프라인의 단계에는 2가지 구분이 있는데.
 	// 고정기능 단계 => 내가 옵션정도만 넘겨서 만드는 단계
 	// 프로그래밍 가능 단계 => 특정 규칙만 지키면 나머지는 이제 내가 마음대로 짤수 있는 단계를 의미한다.

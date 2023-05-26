@@ -27,6 +27,7 @@ protected:
 	void Update(float _DeltaTime) override;
 
 	void LevelChangeStart() override;
+	void LevelChangeEnd() override;
 private:
 	static std::shared_ptr<class BattleUnit> SubjectUnit;
 	static std::shared_ptr<BattleUnit> TargetUnit;

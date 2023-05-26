@@ -124,42 +124,6 @@ void BattleAnimationLevel::Update(float _DeltaTime)
 
 void BattleAnimationLevel::LevelChangeStart()
 {
-	// 리소스 로딩
-	{
-		GameEngineDirectory Dir;
-		Dir.MoveParentToDirectory("ContentResources");
-		Dir.Move("ContentResources");
-		Dir.Move("Battle");
-		std::vector<GameEngineFile> File = Dir.GetAllFile({ ".png", });
-		for (size_t i = 0; i < File.size(); i++)
-		{
-			GameEngineTexture::Load(File[i].GetFullPath());
-		}
-
-		Dir.MoveParent();
-		Dir.Move("Character");
-		Dir.Move("BattleIcon");
-		File = Dir.GetAllFile({ ".png", });
-		for (size_t i = 0; i < File.size(); i++)
-		{
-			GameEngineTexture::Load(File[i].GetFullPath());
-		}
-		Dir.MoveParent();
-		Dir.Move("Map");
-		File = Dir.GetAllFile({ ".png", });
-		for (size_t i = 0; i < File.size(); i++)
-		{
-			GameEngineTexture::Load(File[i].GetFullPath());
-		}
-		Dir.MoveParent();
-		Dir.Move("Portrait");
-		File = Dir.GetAllFile({ ".png", });
-		for (size_t i = 0; i < File.size(); i++)
-		{
-			GameEngineTexture::Load(File[i].GetFullPath());
-		}
-	}
-
 	// 엑터 및 렌더러 생성
 	if (nullptr == BackgroundRender)
 	{
@@ -203,6 +167,11 @@ void BattleAnimationLevel::LevelChangeStart()
 	TimeEvent.Clear();
 	UI->SetFadeIn(0.3f);
 	TimeEvent.AddEvent(0.3f, std::bind(&BattleAnimationLevel::PlayAttack, this));
+}
+
+void BattleAnimationLevel::LevelChangeEnd()
+{
+	GameEngineTime::GlobalTime.SetTimeScale(1.0f);
 }
 
 void BattleAnimationLevel::PlayAttack()
@@ -254,6 +223,5 @@ void BattleAnimationLevel::PlayAttack()
 
 void BattleAnimationLevel::End()
 {
-	GameEngineTime::GlobalTime.SetTimeScale(1.0f);
 	GameEngineCore::ChangeLevel("BattleLevel");
 }

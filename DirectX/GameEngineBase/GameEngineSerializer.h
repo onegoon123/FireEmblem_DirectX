@@ -60,6 +60,8 @@ public:
 		return Datas.size();
 	}
 
+	std::string GetString();
+
 protected:
 
 private:

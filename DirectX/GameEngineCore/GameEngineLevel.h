@@ -76,6 +76,11 @@ public:
 
 	std::shared_ptr<GameEngineCamera> GetCamera(int _CameraOrder);
 
+	std::shared_ptr<GameEngineRenderTarget> GetLastTarget()
+	{
+		return LastTarget;
+	}
+
 protected:
 	// 레벨이 바뀌어서 시작할때
 	virtual void LevelChangeStart();
@@ -86,6 +91,9 @@ protected:
 	void Render(float _DeltaTime);
 
 private:
+	// 모든 카메라의 내용이 다 종합된.
+	std::shared_ptr<GameEngineRenderTarget> LastTarget;
+
 	//      이름           경로
 	std::map<std::string, std::string> TexturePath;
 	std::map<std::string, std::string> LoadEndPath;
@@ -112,7 +120,7 @@ private:
 
 	void TextureUnLoad(GameEngineLevel* _NextLevel);
 
-	void TextureRealLoad(GameEngineLevel* _PrevLevel);
+	void TextureReLoad(GameEngineLevel* _PrevLevel);
 
 };
 

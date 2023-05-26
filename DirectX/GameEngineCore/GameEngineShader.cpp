@@ -1,6 +1,8 @@
 #include "PrecompileHeader.h"
 #include "GameEngineShader.h"
 #include "GameEngineConstantBuffer.h"
+#include "GameEngineVertexShader.h"
+#include "GameEnginePixelShader.h"
 
 GameEngineShader::GameEngineShader()
 {
@@ -66,6 +68,7 @@ void GameEngineShader::ShaderResCheck()
 		{
 		case D3D_SIT_CBUFFER:
 		{
+
 			ID3D11ShaderReflectionConstantBuffer* CBufferPtr = CompileInfo->GetConstantBufferByName(ResDesc.Name);
 
 			D3D11_SHADER_BUFFER_DESC BufferDesc;
@@ -89,7 +92,7 @@ void GameEngineShader::ShaderResCheck()
 		}
 		case D3D_SIT_TEXTURE:
 		{
-			std::shared_ptr<GameEngineTexture> Res = GameEngineTexture::Find("MissingTexture.png");
+			std::shared_ptr<GameEngineTexture> Res = GameEngineTexture::Find("EngineBaseTex.png");
 
 			GameEngineTextureSetter Setter;
 			Setter.ParentShader = this;
@@ -125,4 +128,39 @@ void GameEngineShader::ShaderResCheck()
 	}
 
 	// CompileInfo
+}
+
+void GameEngineShader::AutoCompile(GameEngineFile& _File)
+{
+	std::string ShaderCode = _File.GetString();
+
+	{
+		size_t EntryIndex = ShaderCode.find("_VS(");
+		// unsigned __int64 == max값이 std::string::npos
+		if (EntryIndex != std::string::npos)
+		{
+			{
+				size_t FirstIndex = ShaderCode.find_last_of(" ", EntryIndex);
+				std::string EntryName = ShaderCode.substr(FirstIndex + 1, EntryIndex - FirstIndex - 1);
+				EntryName += "_VS";
+				GameEngineVertexShader::Load(_File.GetFullPath(), EntryName);
+			}
+		}
+	}
+
+
+	{
+		size_t EntryIndex = ShaderCode.find("_PS(");
+		// unsigned __int64 == max값이 std::string::npos
+		if (EntryIndex != std::string::npos)
+		{
+			{
+				size_t FirstIndex = ShaderCode.find_last_of(" ", EntryIndex);
+				std::string EntryName = ShaderCode.substr(FirstIndex + 1, EntryIndex - FirstIndex - 1);
+				EntryName += "_PS";
+				GameEnginePixelShader::Load(_File.GetFullPath(), EntryName);
+			}
+		}
+	}
+
 }

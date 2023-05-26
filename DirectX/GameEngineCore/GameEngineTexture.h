@@ -70,14 +70,10 @@ public:
 
 	static std::shared_ptr<GameEngineTexture> Load(const std::string_view& _Path, const std::string_view& _Name)
 	{
-		std::shared_ptr<GameEngineTexture> NewTexture = GameEngineResource::Find(_Name);
-		if (nullptr == NewTexture)
-		{
-			NewTexture = GameEngineResource::Create(_Name);
-		}
+		std::shared_ptr<GameEngineTexture> NewTexture = GameEngineResource::Create(_Name);
 
 		PathCheck(_Path, _Name);
-		// NewTexture->ResLoad(_Path);
+		NewTexture->ResLoad(_Path);
 		return NewTexture;
 	}
 
@@ -108,14 +104,14 @@ public:
 		return NewTexture;
 	}
 
-	static std::shared_ptr<GameEngineTexture> RealLoad(const std::string_view& _Path)
+	static std::shared_ptr<GameEngineTexture> ReLoad(const std::string_view& _Path)
 	{
 		GameEnginePath NewPath(_Path);
-		return RealLoad(_Path, NewPath.GetFileName());
+		return ReLoad(_Path, NewPath.GetFileName());
 	}
 
 
-	static std::shared_ptr<GameEngineTexture> RealLoad(const std::string_view& _Path, const std::string_view& _Name)
+	static std::shared_ptr<GameEngineTexture> ReLoad(const std::string_view& _Path, const std::string_view& _Name)
 	{
 		std::shared_ptr<GameEngineTexture> NewTexture = GameEngineResource<GameEngineTexture>::Find(_Name);
 

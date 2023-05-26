@@ -60,6 +60,7 @@ void BattleAnimationUnit::SetAnimation(UnitIdentityCode _IdentityValue)
 	}
 
 	CurAnimation->On();
+	CurAnimation->SetOpacity(1);
 	CurAnimation->ChangeAnimation("Idle");
 	EffectAnimation->ChangeAnimation("Idle");
 }

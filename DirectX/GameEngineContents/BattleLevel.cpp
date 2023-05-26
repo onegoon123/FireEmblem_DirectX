@@ -42,6 +42,11 @@ void BattleLevel::LevelChangeStart()
 {
 	GameEngineLevel::LevelChangeStart();
 
+	if (CurState == BattleState::BattleReturn || CurState == BattleState::EnemyBattleReturn)
+	{
+		return;
+	}
+
 	// 리소스 로딩
 	{
 		GameEngineDirectory Dir;
@@ -77,12 +82,6 @@ void BattleLevel::LevelChangeStart()
 			GameEngineTexture::Load(File[i].GetFullPath());
 		}
 	}
-
-	if (CurState == BattleState::BattleReturn || CurState == BattleState::EnemyBattleReturn)
-	{
-		return;
-	}
-
 
 	if (MainMap == nullptr)
 	{
