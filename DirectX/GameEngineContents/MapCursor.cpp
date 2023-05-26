@@ -31,8 +31,20 @@ void MapCursor::Off()
 
 void MapCursor::Start()
 {
+	if (nullptr == GameEngineSprite::Find("PlayerCursor.png"))
+	{
+		GameEngineDirectory Dir;
+		Dir.MoveParentToDirectory("ContentResources");
+		Dir.Move("ContentResources");
+		Dir.Move("Battle");
+		Dir.Move("Map");
+		GameEngineSprite::LoadSheet(Dir.GetPlusFileName("PlayerCursor.png").GetFullPath(), 5, 2);
+	}
 	AnimationRender = CreateComponent<GameEngineSpriteRenderer>(RenderOrder::MapCursor);
-	AnimationRender->SetTexture("TestCursor.png");
+	AnimationRender->CreateAnimation({ .AnimationName = "Idle", .SpriteName = "PlayerCursor.png", .FrameIndex = {1, 2, 3, 4, 3, 2}, .FrameTime = { .5f, .07f, .07f, .07f, .07f, .07f} });
+	AnimationRender->CreateAnimation({ .AnimationName = "OnUnit", .SpriteName = "PlayerCursor.png", .Start = 0, .End = 0 });
+	AnimationRender->CreateAnimation({ .AnimationName = "Enemy", .SpriteName = "PlayerCursor.png", .FrameIndex = {6, 7, 8, 9, 8, 7}, .FrameTime = { .2f, .05f, .05f, .05f, .05f, .05f} });
+	AnimationRender->ChangeAnimation("Idle");
 	AnimationRender->GetTransform()->SetWorldScale({ 104, 104 });
 	SetMapPos({ 1, 1 });
 }
