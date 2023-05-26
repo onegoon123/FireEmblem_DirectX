@@ -115,8 +115,7 @@ void BattleLevel::Start()
 
 		NewActor = CreateActor<BattleUnit>(RenderOrder::Unit);
 		NewActor->SetUnitCode(UnitIdentityCode::Brigand);
-		NewActor->NewItem(ItemCode::HandAxe);
-		NewActor->NewItem(ItemCode::HandAxe);
+		NewActor->NewItem(ItemCode::IronAxe);
 		NewActor->NewItem(ItemCode::HandAxe);
 		NewActor->GetUnitData().LevelUp(0);
 		NewActor->SetMapPos({ 1, 3 });
@@ -125,6 +124,8 @@ void BattleLevel::Start()
 
 		NewActor = CreateActor<BattleUnit>(RenderOrder::Unit);
 		NewActor->SetUnitCode(UnitIdentityCode::Soldier);
+		NewActor->NewItem(ItemCode::SilverLance);
+		NewActor->NewItem(ItemCode::SilverLance);
 		NewActor->NewItem(ItemCode::SilverLance);
 		NewActor->NewItem(ItemCode::SilverLance);
 		NewActor->NewItem(ItemCode::SilverLance);

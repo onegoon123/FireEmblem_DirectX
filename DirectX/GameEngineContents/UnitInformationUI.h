@@ -60,6 +60,7 @@ private:
 	std::vector<std::shared_ptr<GameEngineUIRenderer>> ItemIcons;
 	std::vector<std::shared_ptr<NumberActor>> ItemUses;
 	std::vector<std::shared_ptr<NumberActor>> ItemMaxUses;
+	std::vector<std::shared_ptr<GameEngineUIRenderer>> ItemUsesText;
 
 	std::shared_ptr<NumberActor> Range;
 	std::shared_ptr<NumberActor> Attack;

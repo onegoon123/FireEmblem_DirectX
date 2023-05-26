@@ -103,6 +103,29 @@ void UnitInformationUI::SetUnit(std::shared_ptr<BattleUnit> _Unit)
 	Bar_Move->SetValue((float)_Unit->GetMoveStat() / 10);
 	Bar_Constitution->SetSize((float)MaximumStat.Constitution * 5);
 	Bar_Constitution->SetValue((float)StatValue.Constitution / MaximumStat.Constitution);
+
+	// 아이템 세팅
+	std::list<std::shared_ptr<Item>>& Items = _Unit->GetUnitData().GetItems();
+	std::list<std::shared_ptr<Item>>::iterator ItemIter = Items.begin();
+
+	for (size_t i = 0; i < Items.size(); i++)
+	{
+		ItemIcons[i]->On();
+		ItemIcons[i]->SetFrame(static_cast<int>((*ItemIter)->GetItemCode()) - 1);
+		ItemUses[i]->On();
+		ItemUses[i]->SetValue((*ItemIter)->GetUses());
+		ItemMaxUses[i]->On();
+		ItemMaxUses[i]->SetValue((*ItemIter)->GetMaxUses());
+		ItemUsesText[i]->On();
+		ItemIter++;
+	}
+	for (size_t i = Items.size(); i < 5; i++)
+	{
+		ItemIcons[i]->Off();
+		ItemUses[i]->Off();
+		ItemMaxUses[i]->Off();
+		ItemUsesText[i]->Off();
+	}
 }
 
 void UnitInformationUI::Start()
@@ -283,7 +306,7 @@ void UnitInformationUI::Start()
 			ItemIcons[i]->SetSprite("Items.png", 0);
 
 			ItemIcons[i]->GetTransform()->SetParent(ItemDataWindow->GetTransform());
-			ItemIcons[i]->GetTransform()->SetLocalPosition({ -212, i * 64.0f - 32.0f});
+			ItemIcons[i]->GetTransform()->SetLocalPosition({ -212, i * -64.0f + 220.0f});
 			ItemIcons[i]->GetTransform()->SetWorldRotation(float4::Zero);
 			ItemIcons[i]->GetTransform()->SetWorldScale({ 64, 64 });
 
@@ -292,12 +315,13 @@ void UnitInformationUI::Start()
 
 		ItemUses.resize(5);
 		ItemMaxUses.resize(5);
+		ItemUsesText.resize(5);
 		for (int i = 0; i < 5; i++)
 		{
 			ItemMaxUses[i] = GetLevel()->CreateActor<NumberActor>();
 
 			ItemMaxUses[i]->GetTransform()->SetParent(ItemDataWindow->GetTransform());
-			ItemMaxUses[i]->GetTransform()->SetLocalPosition({ 212, i * 64.0f - 32.0f });
+			ItemMaxUses[i]->GetTransform()->SetLocalPosition({ 208, i * -64.0f + 220.0f });
 			ItemMaxUses[i]->GetTransform()->SetWorldRotation(float4::Zero);
 			ItemMaxUses[i]->GetTransform()->SetWorldScale(float4::One);
 
@@ -306,13 +330,18 @@ void UnitInformationUI::Start()
 			ItemUses[i] = GetLevel()->CreateActor<NumberActor>();
 
 			ItemUses[i]->GetTransform()->SetParent(ItemDataWindow->GetTransform());
-			ItemUses[i]->GetTransform()->SetLocalPosition({ 128, i * 64.0f - 32.0f });
+			ItemUses[i]->GetTransform()->SetLocalPosition({ 116, i * -64.0f + 220.0f });
 			ItemUses[i]->GetTransform()->SetWorldRotation(float4::Zero);
 			ItemUses[i]->GetTransform()->SetWorldScale(float4::One);
 
 			ItemUses[i]->SetValue(25);
 
-			//ItemIcons[i]->Off();
+			ItemUsesText[i] = CreateComponent<GameEngineUIRenderer>(RenderOrder::UIText);
+			ItemUsesText[i]->SetTexture("ItemUseText.png");
+			ItemUsesText[i]->GetTransform()->SetParent(ItemDataWindow->GetTransform());
+			ItemUsesText[i]->GetTransform()->SetLocalPosition({ 144, i * -64.0f + 220.0f });
+			ItemUsesText[i]->GetTransform()->SetWorldRotation(float4::Zero);
+			ItemUsesText[i]->GetTransform()->SetWorldScale({24, 40});
 		}
 
 
