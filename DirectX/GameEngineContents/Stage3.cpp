@@ -28,7 +28,7 @@ void Stage3::StageSetting()
 	NewActor->NewItem(ItemCode::IronAxe);
 	NewActor->NewItem(ItemCode::HandAxe);
 	NewActor->GetUnitData().LevelUp(0);
-	NewActor->SetMapPos({ 7, 3 });
+	NewActor->SetMapPos({ 9, 3 });
 	PushEnemyUnit(NewActor);
 
 

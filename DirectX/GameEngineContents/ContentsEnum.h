@@ -137,6 +137,8 @@ enum class BattleClass
 enum class Terrain
 {
 	Plain,	//평지
+	Floor,	//바닥
+	Road,	//길
 	None,	//이동불가지역
 	Forest,	//숲
 	Cliff,	//벼랑
@@ -144,10 +146,14 @@ enum class Terrain
 	Peak,		//높은 산
 	Door,		//문 이동불가
 	Gate,		//문 게이트 이동가능
+	Ruins,		//폐허
 	House,		//민가
+	Shop,		//가게 (무기점)
 	Sea,		//바다
 	River,		//강
 	Bridge,		//다리
 	Wall,		//벽
 	Fort,		//요새
+	Pillar,		//기둥
+	Throne,		//옥좌
 };

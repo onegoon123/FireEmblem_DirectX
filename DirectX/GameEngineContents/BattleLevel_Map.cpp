@@ -13,7 +13,7 @@ bool BattleLevel::UnitMoveAnim()
 {
 	if (false == SelectUnit->GetIsMove())
 	{
-		if (ArrowPos.size() == ++MoveIndex)
+		if (ArrowPos.size() <= ++MoveIndex)
 		{
 			return true;
 		}
