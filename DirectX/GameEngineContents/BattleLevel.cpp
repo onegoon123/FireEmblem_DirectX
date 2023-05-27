@@ -71,6 +71,7 @@ void BattleLevel::Start()
 	{
 		// ¸ÊÀ» »ý¼º
 		MainMap = CreateActor<BattleMap>(RenderOrder::Map);
+		MainMap->SetMap(0);
 
 		Tiles = CreateActor<TileRender>(RenderOrder::Tile);
 		Tiles->Create(MainMap->MapScaleInt2);

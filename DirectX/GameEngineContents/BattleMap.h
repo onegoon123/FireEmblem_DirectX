@@ -23,6 +23,8 @@ public:
 	BattleMap& operator=(const BattleMap& _Other) = delete;
 	BattleMap& operator=(BattleMap&& _Other) noexcept = delete;
 
+	void SetMap(int _StageNum);
+
 	float4 MapScaleFloat4 = { 960, 640 };
 	int2 MapScaleInt2 = { 15, 10 };
 
