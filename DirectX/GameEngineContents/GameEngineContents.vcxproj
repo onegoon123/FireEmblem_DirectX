@@ -271,6 +271,14 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="Stage0.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="StageSelectWindow.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="Stat.cpp" />
     <ClCompile Include="StatBar.cpp">
       <SubType>
@@ -400,6 +408,14 @@
     </ClInclude>
     <ClInclude Include="PrecompileHeader.h" />
     <ClInclude Include="SelectUI.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Stage0.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="StageSelectWindow.h">
       <SubType>
       </SubType>
     </ClInclude>

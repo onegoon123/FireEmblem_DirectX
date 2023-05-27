@@ -126,6 +126,12 @@
     <ClCompile Include="BattleHPBar.cpp">
       <Filter>Battle\Animation</Filter>
     </ClCompile>
+    <ClCompile Include="StageSelectWindow.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage0.cpp">
+      <Filter>Levels\Stage</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FECore.h" />
@@ -230,6 +236,12 @@
     <ClInclude Include="BattleHPBar.h">
       <Filter>Battle\Animation</Filter>
     </ClInclude>
+    <ClInclude Include="StageSelectWindow.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Stage0.h">
+      <Filter>Levels\Stage</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Levels">
@@ -270,6 +282,9 @@
     </Filter>
     <Filter Include="Battle\Animation">
       <UniqueIdentifier>{75acbddf-1fed-49e6-8ee3-3c540b8221fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Levels\Stage">
+      <UniqueIdentifier>{cfbdcba4-adfb-45c7-937f-9b690257739f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

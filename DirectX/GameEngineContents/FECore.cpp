@@ -9,6 +9,8 @@
 #include "BattleAnimationLevel.h"
 #include "FERandom.h"
 #include "DebugWindow.h"
+#include "StageSelectWindow.h"
+#include "Stage0.h"
 FECore::FECore()
 {
 }
@@ -20,14 +22,30 @@ FECore::~FECore()
 void FECore::GameStart()
 {
 	new int();
+	ResourcesCreate();
 
 	GameEngineGUI::GUIWindowCreate<DebugWindow>("DebugWindow");
+	GameEngineGUI::GUIWindowCreate<StageSelectWindow>("StageSelectWindow");
 
-	ResourcesCreate();
+	std::shared_ptr<StageSelectWindow> Window = GameEngineGUI::FindGUIWindowConvert<StageSelectWindow>("StageSelectWindow");
+	{
+		if (nullptr == Window)
+		{
+			MsgAssert("윈도우 생성 실패");
+		}
+
+		Window->Funcions[0] = [] {
+			GameEngineCore::ChangeLevel("Stage0");
+		};
+
+	}
+	
+
 	FERandom::SetSeed(0);
 	GameEngineCore::CreateLevel<TitleLevel>();
 	GameEngineCore::CreateLevel<BattleLevel>();
 	GameEngineCore::CreateLevel<BattleAnimationLevel>();
+	GameEngineCore::CreateLevel<Stage0>();
 	GameEngineCore::ChangeLevel("TitleLevel");
 }
 

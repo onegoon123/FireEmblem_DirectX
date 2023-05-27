@@ -179,19 +179,21 @@ void BattleLevelUI::SetFadeOut(float _Timer)
 
 void BattleLevelUI::Start()
 {
-	GameEngineDirectory Dir;
-	Dir.MoveParentToDirectory("ContentResources");
-	Dir.Move("ContentResources");
-	Dir.Move("Battle");
-	Dir.Move("UI");
-	GameEngineSprite::LoadSheet(Dir.GetPlusFileName("ItemUI.png").GetFullPath(), 3, 2);
-	GameEngineSprite::LoadSheet(Dir.GetPlusFileName("CommandUI.png").GetFullPath(), 5, 1);
-	GameEngineSprite::LoadSheet(Dir.GetPlusFileName("Triangle.png").GetFullPath(), 3, 2);
+	if (nullptr == GameEngineSprite::Find("ItemUI.png"))
+	{
+		GameEngineDirectory Dir;
+		Dir.MoveParentToDirectory("ContentResources");
+		Dir.Move("ContentResources");
+		Dir.Move("Battle");
+		Dir.Move("UI");
+		GameEngineSprite::LoadSheet(Dir.GetPlusFileName("ItemUI.png").GetFullPath(), 3, 2);
+		GameEngineSprite::LoadSheet(Dir.GetPlusFileName("CommandUI.png").GetFullPath(), 5, 1);
+		GameEngineSprite::LoadSheet(Dir.GetPlusFileName("Triangle.png").GetFullPath(), 3, 2);
 
-	Dir.MoveParent();
-	Dir.Move("Item");
-	GameEngineSprite::LoadSheet(Dir.GetPlusFileName("Items.png").GetFullPath(), 7, 5);
-
+		Dir.MoveParent();
+		Dir.Move("Item");
+		GameEngineSprite::LoadSheet(Dir.GetPlusFileName("Items.png").GetFullPath(), 7, 5);
+	}
 
 	if (nullptr == UI_Select)
 	{

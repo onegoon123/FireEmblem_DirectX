@@ -18,7 +18,7 @@ void TileRender::Create(int2 _Scale)
 	Dir.Move("ContentResources");
 	Dir.Move("Battle");
 	Dir.Move("Map");
-	if (nullptr == GameEngineSprite::Find(Dir.GetPlusFileName("Tile.png").GetFullPath()))
+	if (nullptr == GameEngineSprite::Find("Tile.png"))
 	{
 		GameEngineSprite::LoadSheet(Dir.GetPlusFileName("Tile.png").GetFullPath(), 16, 3);
 	}

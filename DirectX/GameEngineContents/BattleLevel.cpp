@@ -33,7 +33,7 @@ void BattleLevel::Start()
 
 
 	// 리소스 로딩
-	{
+	if (nullptr == GameEngineTexture::Find("PlayerCursor.png")) {
 		GameEngineDirectory Dir;
 		Dir.MoveParentToDirectory("ContentResources");
 		Dir.Move("ContentResources");
@@ -67,7 +67,6 @@ void BattleLevel::Start()
 			GameEngineTexture::Load(File[i].GetFullPath());
 		}
 	}
-
 	if (MainMap == nullptr)
 	{
 		// 맵을 생성
@@ -97,7 +96,7 @@ void BattleLevel::Start()
 		PlayerUnits.push_back(NewActor);
 
 		NewActor = CreateActor<BattleUnit>(RenderOrder::Unit);
-		NewActor->SetUnitCode(UnitIdentityCode::Matthew);
+		NewActor->SetUnitCode(UnitIdentityCode::Kent);
 		NewActor->GetUnitData().LevelUp(0);
 		NewActor->SetMapPos({ 1, 5 });
 		NewActor->NewItem(ItemCode::IronSword);
