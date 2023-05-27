@@ -27,6 +27,11 @@ protected:
 	void LevelChangeStart() override;
 	void LevelChangeEnd() override;
 
+	virtual void StageSetting() = 0;
+
+	void SetStage(int _StageNum);
+	void PushPlayerUnit(std::shared_ptr <BattleUnit> _Unit);
+	void PushEnemyUnit(std::shared_ptr <BattleUnit> _Unit);
 private:
 
 	// State

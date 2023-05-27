@@ -122,7 +122,7 @@ void GameEngineLevel::ActorRender(float _DeltaTime)
 		Cam->Setting();
 		Cam->CameraTransformUpdate();
 		Cam->Render(_DeltaTime);
-		Cam->CamTarget->Effect();
+		Cam->CamTarget->Effect(_DeltaTime);
 	}
 
 	LastTarget->Clear();
@@ -134,6 +134,11 @@ void GameEngineLevel::ActorRender(float _DeltaTime)
 
 		LastTarget->Merge(Target);
 	}
+
+	LastTarget->Effect(_DeltaTime);
+
+	// 백버퍼는 효과를 줄수가 없습니다.
+
 
 
 	GameEngineDevice::GetBackBufferTarget()->Merge(LastTarget);
@@ -167,8 +172,25 @@ void GameEngineLevel::ActorRender(float _DeltaTime)
 	//	}
 	//}
 
+	static bool GUIRender = true;
 
-	GameEngineGUI::Render(GetSharedThis(), _DeltaTime);
+	if (true == GameEngineInput::IsDown("GUISwitch"))
+	{
+		GUIRender = !GUIRender;
+
+		if (false == GUIRender)
+		{
+			GameEngineGUI::Release();
+		}
+		else {
+			GameEngineGUI::Initialize();
+		}
+	}
+
+	if (true == GUIRender)
+	{
+		GameEngineGUI::Render(GetSharedThis(), _DeltaTime);
+	}
 
 }
 

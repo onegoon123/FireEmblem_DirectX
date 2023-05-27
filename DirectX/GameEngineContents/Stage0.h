@@ -15,7 +15,7 @@ public:
 	Stage0& operator=(Stage0&& _Other) noexcept = delete;
 
 protected:
-
+	void StageSetting() override;
 private:
 
 };

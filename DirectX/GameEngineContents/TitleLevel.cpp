@@ -81,6 +81,6 @@ void TitleLevel::Update(float _DeltaTime)
 {
 	if (true == GameEngineInput::IsAnyKey())
 	{
-		GameEngineCore::ChangeLevel("BattleLevel");
+		GameEngineCore::ChangeLevel("Stage0");
 	}
 }

@@ -168,12 +168,14 @@ void GameEngineCamera::Render(float _DeltaTime)
 					Render->CalSortZ(this);
 				}
 
+				// 퀵소트 내일
 				RenderGroup.sort([](std::shared_ptr<GameEngineRenderer>& _Left, std::shared_ptr<GameEngineRenderer>& _Right)
 					{
 						return _Left->CalZ > _Right->CalZ;
 					});
 			}
 
+			// 정렬을 하겠다는 뜻으로 본다.
 		}
 
 		std::list<std::shared_ptr<GameEngineRenderer>>::iterator StartRenderer = RenderGroup.begin();
@@ -220,7 +222,7 @@ void GameEngineCamera::CameraTransformUpdate()
 		Projection.PerspectiveFovLH(FOV, Width / Height, Near, Far);
 		break;
 	case CameraType::Orthogonal:
-		Projection.OrthographicLH(Width, Height, Near, Far);
+		Projection.OrthographicLH(Width * ZoomRatio, Height * ZoomRatio, Near, Far);
 		break;
 	default:
 		break;

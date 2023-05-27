@@ -5,12 +5,23 @@
 #include <GameEngineCore/GameEngineRenderingPipeLine.h>
 #include <GameEngineCore/GameEnginePixelShader.h>
 #include "TitleLevel.h"
-#include "BattleLevel.h"
 #include "BattleAnimationLevel.h"
 #include "FERandom.h"
 #include "DebugWindow.h"
 #include "StageSelectWindow.h"
+
 #include "Stage0.h"
+#include "Stage1.h"
+#include "Stage2.h"
+#include "Stage3.h"
+#include "Stage4.h"
+#include "Stage5.h"
+#include "Stage6.h"
+#include "Stage7.h"
+#include "Stage8.h"
+#include "Stage9.h"
+#include "Stage10.h"
+
 FECore::FECore()
 {
 }
@@ -34,18 +45,27 @@ void FECore::GameStart()
 			MsgAssert("윈도우 생성 실패");
 		}
 
-		Window->Funcions[0] = [] {
-			GameEngineCore::ChangeLevel("Stage0");
+		Window->Funcions = [](int i) {
+			GameEngineCore::ChangeLevel("Stage" + std::to_string(i));
 		};
 
 	}
-	
+
 
 	FERandom::SetSeed(0);
 	GameEngineCore::CreateLevel<TitleLevel>();
-	GameEngineCore::CreateLevel<BattleLevel>();
 	GameEngineCore::CreateLevel<BattleAnimationLevel>();
 	GameEngineCore::CreateLevel<Stage0>();
+	GameEngineCore::CreateLevel<Stage1>();
+	GameEngineCore::CreateLevel<Stage2>();
+	GameEngineCore::CreateLevel<Stage3>();
+	GameEngineCore::CreateLevel<Stage4>();
+	GameEngineCore::CreateLevel<Stage5>();
+	GameEngineCore::CreateLevel<Stage6>();
+	GameEngineCore::CreateLevel<Stage7>();
+	GameEngineCore::CreateLevel<Stage8>();
+	GameEngineCore::CreateLevel<Stage9>();
+	GameEngineCore::CreateLevel<Stage10>();
 	GameEngineCore::ChangeLevel("TitleLevel");
 }
 
@@ -62,7 +82,7 @@ void FECore::ResourcesCreate()
 	NewDir.Move("Shader");
 
 	std::shared_ptr<GameEnginePixelShader> Shader = GameEnginePixelShader::Load(NewDir.GetPlusFileName("EffectPixelShader.hlsl").GetFullPath(), "Texture_PS");
- 	std::shared_ptr<GameEngineRenderingPipeLine> Pipe = GameEngineRenderingPipeLine::Create("2DTextureEffect");
+	std::shared_ptr<GameEngineRenderingPipeLine> Pipe = GameEngineRenderingPipeLine::Create("2DTextureEffect");
 
 	Pipe->SetVertexBuffer("Rect");
 	Pipe->SetIndexBuffer("Rect");

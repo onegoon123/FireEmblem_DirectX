@@ -18,7 +18,6 @@ BattleLevel::BattleLevel()
 	StateEnd = std::bind(&BattleLevel::PlayerPhaseEnd, this);
 
 	ArrowPos.reserve(8);
-
 }
 
 BattleLevel::~BattleLevel()
@@ -27,10 +26,27 @@ BattleLevel::~BattleLevel()
 
 void BattleLevel::Start()
 {
+
+}
+
+void BattleLevel::Update(float _DeltaTime)
+{
+	StateUpdate(_DeltaTime);
+}
+
+void BattleLevel::LevelChangeStart()
+{
+	GameEngineLevel::LevelChangeStart();
+
+	if (CurState == BattleState::BattleReturn || CurState == BattleState::EnemyBattleReturn)
+	{
+		return;
+	}
+
+
 	// 카메라 세팅
 	GetMainCamera()->SetProjectionType(CameraType::Orthogonal);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 448, 288, -554.0f });
-
 
 	// 리소스 로딩
 	if (nullptr == GameEngineTexture::Find("PlayerCursor.png")) {
@@ -67,73 +83,20 @@ void BattleLevel::Start()
 			GameEngineTexture::Load(File[i].GetFullPath());
 		}
 	}
-	if (MainMap == nullptr)
-	{
-		// 맵을 생성
-		MainMap = CreateActor<BattleMap>(RenderOrder::Map);
-		MainMap->SetMap(0);
 
-		Tiles = CreateActor<TileRender>(RenderOrder::Tile);
-		Tiles->Create(MainMap->MapScaleInt2);
+	StageSetting();
 
-		Arrows = CreateActor<ArrowRender>(RenderOrder::Unit);
-		Arrows->Create(MainMap->MapScaleInt2);
+	Tiles = CreateActor<TileRender>(RenderOrder::Tile);
+	Tiles->Create(MainMap->MapScaleInt2);
 
-		MainCursor = CreateActor<MapCursor>(RenderOrder::MapCursor);
-		MainCursor->SetMapPos({ 0,0 });
+	Arrows = CreateActor<ArrowRender>(RenderOrder::Unit);
+	Arrows->Create(MainMap->MapScaleInt2);
 
-		BattleUI = CreateActor<BattleLevelUI>(RenderOrder::UI);
-		InfoUI = CreateActor<UnitInformationUI>(RenderOrder::UI);
+	MainCursor = CreateActor<MapCursor>(RenderOrder::MapCursor);
+	MainCursor->SetMapPos({ 0,0 });
 
-		std::shared_ptr<BattleUnit> NewActor;
-
-		NewActor = CreateActor<BattleUnit>(RenderOrder::Unit);
-		NewActor->SetUnitCode(UnitIdentityCode::Lyn);
-		NewActor->GetUnitData().LevelUp(0);
-		NewActor->SetMapPos({ 1, 4 });
-		NewActor->NewItem(ItemCode::IronSword);
-		NewActor->NewItem(ItemCode::ManiKatti);
-		NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
-		PlayerUnits.push_back(NewActor);
-
-		NewActor = CreateActor<BattleUnit>(RenderOrder::Unit);
-		NewActor->SetUnitCode(UnitIdentityCode::Kent);
-		NewActor->GetUnitData().LevelUp(0);
-		NewActor->SetMapPos({ 1, 5 });
-		NewActor->NewItem(ItemCode::IronSword);
-		NewActor->NewItem(ItemCode::ManiKatti);
-		NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
-		PlayerUnits.push_back(NewActor);
-
-		NewActor = CreateActor<BattleUnit>(RenderOrder::Unit);
-		NewActor->SetUnitCode(UnitIdentityCode::Dorcas);
-		NewActor->GetUnitData().LevelUp(0);
-		NewActor->SetMapPos({ 5, 5 });
-		NewActor->NewItem(ItemCode::HandAxe);
-		NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
-		PlayerUnits.push_back(NewActor);
-
-		NewActor = CreateActor<BattleUnit>(RenderOrder::Unit);
-		NewActor->SetUnitCode(UnitIdentityCode::Brigand);
-		NewActor->NewItem(ItemCode::IronAxe);
-		NewActor->NewItem(ItemCode::HandAxe);
-		NewActor->GetUnitData().LevelUp(0);
-		NewActor->SetMapPos({ 1, 3 });
-		NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
-		EnemyUnits.push_back(NewActor);
-
-		NewActor = CreateActor<BattleUnit>(RenderOrder::Unit);
-		NewActor->SetUnitCode(UnitIdentityCode::Soldier);
-		NewActor->NewItem(ItemCode::SilverLance);
-		NewActor->NewItem(ItemCode::SilverLance);
-		NewActor->NewItem(ItemCode::SilverLance);
-		NewActor->NewItem(ItemCode::SilverLance);
-		NewActor->NewItem(ItemCode::SilverLance);
-		NewActor->GetUnitData().LevelUp(0);
-		NewActor->SetMapPos({ 2, 4 });
-		NewActor->SetTerrain(MainMap->TerrainData[NewActor->GetMapPos().y][NewActor->GetMapPos().x]);
-		EnemyUnits.push_back(NewActor);
-	}
+	BattleUI = CreateActor<BattleLevelUI>(RenderOrder::UI);
+	InfoUI = CreateActor<UnitInformationUI>(RenderOrder::UI);
 
 	// 조건 초기화
 	IsMove.resize(MainMap->MapScaleInt2.y);
@@ -147,34 +110,36 @@ void BattleLevel::Start()
 		IsAttack[i].resize(MainMap->MapScaleInt2.x);
 	}
 
-	//CursorDirCheck();
+
 	ChangeState(BattleState::PlayerPhase);
 
-}
 
-void BattleLevel::Update(float _DeltaTime)
-{
-	StateUpdate(_DeltaTime);
-}
-
-void BattleLevel::LevelChangeStart()
-{
-	GameEngineLevel::LevelChangeStart();
-
-	if (CurState == BattleState::BattleReturn || CurState == BattleState::EnemyBattleReturn)
-	{
-		return;
-	}
 
 }
 
 void BattleLevel::LevelChangeEnd()
 {
 	GameEngineLevel::LevelChangeEnd();
+}
 
-	if (CurState == BattleState::BattleReturn || CurState == BattleState::EnemyBattleReturn)
-	{
-		return;
-	}
+void BattleLevel::SetStage(int _StageNum)
+{
+	// 맵을 생성
+	MainMap = CreateActor<BattleMap>(RenderOrder::Map);
+	MainMap->SetMap(_StageNum);
+}
+
+void BattleLevel::PushPlayerUnit(std::shared_ptr<BattleUnit> _Unit)
+{
+	_Unit->SetTerrain(MainMap->TerrainData[_Unit->GetMapPos().y][_Unit->GetMapPos().x]);
+
+	PlayerUnits.push_back(_Unit);
+}
+
+void BattleLevel::PushEnemyUnit(std::shared_ptr<BattleUnit> _Unit)
+{
+	_Unit->SetTerrain(MainMap->TerrainData[_Unit->GetMapPos().y][_Unit->GetMapPos().x]);
+
+	EnemyUnits.push_back(_Unit);
 }
 

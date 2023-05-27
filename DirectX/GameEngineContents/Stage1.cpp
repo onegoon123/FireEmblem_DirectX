@@ -1,17 +1,17 @@
 #include "PrecompileHeader.h"
-#include "Stage0.h"
+#include "Stage1.h"
 
-Stage0::Stage0() 
+Stage1::Stage1()
 {
 }
 
-Stage0::~Stage0() 
+Stage1::~Stage1()
 {
 }
 
-void Stage0::StageSetting()
+void Stage1::StageSetting()
 {
-	SetStage(0);
+	SetStage(1);
 
 	std::shared_ptr<BattleUnit> NewActor;
 

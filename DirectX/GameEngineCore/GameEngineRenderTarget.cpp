@@ -131,10 +131,16 @@ void GameEngineRenderTarget::Merge(std::shared_ptr<GameEngineRenderTarget> _Othe
 
 }
 
-void GameEngineRenderTarget::Effect()
+void GameEngineRenderTarget::Effect(float _DeltaTime)
 {
 	for (size_t i = 0; i < Effects.size(); i++)
 	{
-		Effects[i]->Effect(shared_from_this());
+		Effects[i]->Effect(this, _DeltaTime);
 	}
+}
+
+
+void GameEngineRenderTarget::EffectInit(std::shared_ptr<GameEnginePostProcess> _PostProcess)
+{
+	_PostProcess->Start(this);
 }

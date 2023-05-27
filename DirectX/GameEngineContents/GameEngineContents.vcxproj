@@ -275,6 +275,43 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="Stage1.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Stage10.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Stage2.cpp" />
+    <ClCompile Include="Stage3.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Stage4.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Stage5.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Stage6.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Stage7.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Stage8.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Stage9.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="StageSelectWindow.cpp">
       <SubType>
       </SubType>
@@ -412,6 +449,43 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="Stage0.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Stage1.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Stage10.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Stage2.h" />
+    <ClInclude Include="Stage3.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Stage4.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Stage5.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Stage6.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Stage7.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Stage8.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Stage9.h">
       <SubType>
       </SubType>
     </ClInclude>

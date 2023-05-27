@@ -16,7 +16,7 @@ public:
 	StageSelectWindow& operator=(const StageSelectWindow& _Other) = delete;
 	StageSelectWindow& operator=(StageSelectWindow&& _Other) noexcept = delete;
 
-	std::vector<std::function<void()>> Funcions = std::vector<std::function<void()>>(10);
+	std::function<void(int)> Funcions = nullptr;
 
 	void OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime) override;
 

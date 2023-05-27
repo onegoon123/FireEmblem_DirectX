@@ -12,6 +12,7 @@ std::shared_ptr<BattleUnit> BattleAnimationLevel::SubjectUnit = nullptr;
 std::shared_ptr<BattleUnit> BattleAnimationLevel::TargetUnit = nullptr;
 std::list<AttackCommand> BattleAnimationLevel::BattleData = std::list<AttackCommand>();
 std::list<AttackCommand>::iterator BattleAnimationLevel::BattleIter = std::list<AttackCommand>::iterator();
+std::string_view BattleAnimationLevel::ReturnLevelStr = "";
 
 BattleAnimationLevel::BattleAnimationLevel()
 {
@@ -21,12 +22,13 @@ BattleAnimationLevel::~BattleAnimationLevel()
 {
 }
 
-void BattleAnimationLevel::SetBattleData(std::shared_ptr<BattleUnit> _SubjectUnit, std::shared_ptr<BattleUnit> _TargetUnit, const std::list<AttackCommand>& _Data)
+void BattleAnimationLevel::SetBattleData(std::shared_ptr<BattleUnit> _SubjectUnit, std::shared_ptr<BattleUnit> _TargetUnit, const std::list<AttackCommand>& _Data, const std::string_view& _Level)
 {
 	SubjectUnit = _SubjectUnit;
 	TargetUnit = _TargetUnit;
 	BattleData = _Data;
 	BattleIter = BattleData.begin();
+	ReturnLevelStr = _Level;
 }
 
 void BattleAnimationLevel::HitEvent()
@@ -112,7 +114,7 @@ void BattleAnimationLevel::Update(float _DeltaTime)
 
 	if (GameEngineInput::IsDown("ButtonB") || GameEngineInput::IsDown("Start") || GameEngineInput::IsUp("RightClick"))
 	{
-		GameEngineCore::ChangeLevel("BattleLevel");
+		GameEngineCore::ChangeLevel(ReturnLevelStr);
 	}
 
 	if (true == IsTurnEnd && true == UI->IsTurnEnd())
@@ -229,5 +231,5 @@ void BattleAnimationLevel::PlayAttack()
 
 void BattleAnimationLevel::End()
 {
-	GameEngineCore::ChangeLevel("BattleLevel");
+	GameEngineCore::ChangeLevel(ReturnLevelStr);
 }

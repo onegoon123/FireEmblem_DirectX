@@ -483,7 +483,7 @@ void BattleLevel::FieldCommandEnd()
 void BattleLevel::BattleStart()
 {
 	AttackRecord = UnitCommand::Attack(SelectUnit, TargetUnit);
-	BattleAnimationLevel::SetBattleData(SelectUnit, TargetUnit, AttackRecord);
+	BattleAnimationLevel::SetBattleData(SelectUnit, TargetUnit, AttackRecord, GetName());
 
 	for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
 	{
@@ -782,7 +782,7 @@ void BattleLevel::EnemyBattleStart()
 	if (nullptr != TargetUnit)
 	{
 		AttackRecord = UnitCommand::Attack(SelectUnit, TargetUnit);
-		BattleAnimationLevel::SetBattleData(SelectUnit, TargetUnit, AttackRecord);
+		BattleAnimationLevel::SetBattleData(SelectUnit, TargetUnit, AttackRecord, GetName());
 	}
 	else
 	{

@@ -28,9 +28,9 @@ SamplerState WRAPSAMPLER : register(s0);
 float4 Merge_PS(OutPut _Value) : SV_Target0
 {
     float4 Color = DiffuseTex.Sample(WRAPSAMPLER, _Value.UV.xy);
-    //if (all(Color == float4(0, 0, 0, 0)))
-    //{
-    //    clip(-1);
-    //}
+    
+    Color.a = saturate(Color.a);
+    
+  
     return Color;
 }

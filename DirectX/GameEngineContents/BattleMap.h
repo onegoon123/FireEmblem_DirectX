@@ -47,5 +47,17 @@ protected:
 private:
 	std::shared_ptr<SpriteRenderer> Renderer = nullptr;
 
+	void SetTerrainData_Stage0();
+	void SetTerrainData_Stage1();
+	void SetTerrainData_Stage2();
+	void SetTerrainData_Stage3();
+	void SetTerrainData_Stage4();
+	void SetTerrainData_Stage5();
+	void SetTerrainData_Stage6();
+	void SetTerrainData_Stage7();
+	void SetTerrainData_Stage8();
+	void SetTerrainData_Stage9();
+	void SetTerrainData_Stage10();
+
 };
 

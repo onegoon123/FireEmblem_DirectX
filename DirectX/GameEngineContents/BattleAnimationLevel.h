@@ -16,7 +16,7 @@ public:
 	BattleAnimationLevel& operator=(const BattleAnimationLevel& _Other) = delete;
 	BattleAnimationLevel& operator=(BattleAnimationLevel&& _Other) noexcept = delete;
 
-	static void SetBattleData(std::shared_ptr<BattleUnit> _SubjectUnit, std::shared_ptr<BattleUnit> _TargetUnit, const std::list<AttackCommand>& _Data);
+	static void SetBattleData(std::shared_ptr<BattleUnit> _SubjectUnit, std::shared_ptr<BattleUnit> _TargetUnit, const std::list<AttackCommand>& _Data, const std::string_view& _Level);
 
 	void HitEvent();
 	void TurnEnd();
@@ -29,6 +29,7 @@ protected:
 	void LevelChangeStart() override;
 	void LevelChangeEnd() override;
 private:
+	static std::string_view ReturnLevelStr;
 	static std::shared_ptr<class BattleUnit> SubjectUnit;
 	static std::shared_ptr<BattleUnit> TargetUnit;
 	static std::list<AttackCommand> BattleData;
