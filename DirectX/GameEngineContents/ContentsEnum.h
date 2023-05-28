@@ -150,6 +150,7 @@ enum class Terrain
 	House,		//민가
 	Shop,		//가게 (무기점)
 	Sea,		//바다
+	Lake,		//호수
 	River,		//강
 	Bridge,		//다리
 	Wall,		//벽

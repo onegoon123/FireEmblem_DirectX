@@ -15,46 +15,28 @@ void Stage0::StageSetting()
 
 	std::shared_ptr<BattleUnit> NewActor;
 
+	// 린
 	NewActor = CreateActor<BattleUnit>(RenderOrder::Unit);
 	NewActor->SetUnitCode(UnitIdentityCode::Lyn);
-	NewActor->GetUnitData().LevelUp(0);
-	NewActor->SetMapPos({ 1, 4 });
+	NewActor->SetMapPos({ 13, 2 });
 	NewActor->NewItem(ItemCode::IronSword);
-	NewActor->NewItem(ItemCode::ManiKatti);
+	NewActor->NewItem(ItemCode::Vulnerary);
+	NewActor->NewItem(ItemCode::Vulnerary);
 	PushPlayerUnit(NewActor);
 
-	NewActor = CreateActor<BattleUnit>(RenderOrder::Unit);
-	NewActor->SetUnitCode(UnitIdentityCode::Kent);
-	NewActor->GetUnitData().LevelUp(0);
-	NewActor->SetMapPos({ 1, 5 });
-	NewActor->NewItem(ItemCode::IronSword);
-	NewActor->NewItem(ItemCode::ManiKatti);
-	PushPlayerUnit(NewActor);
-
-	NewActor = CreateActor<BattleUnit>(RenderOrder::Unit);
-	NewActor->SetUnitCode(UnitIdentityCode::Dorcas);
-	NewActor->GetUnitData().LevelUp(0);
-	NewActor->SetMapPos({ 5, 5 });
-	NewActor->NewItem(ItemCode::HandAxe);
-	PushPlayerUnit(NewActor);
-
+	// 산적
 	NewActor = CreateActor<BattleUnit>(RenderOrder::Unit);
 	NewActor->SetUnitCode(UnitIdentityCode::Brigand);
 	NewActor->NewItem(ItemCode::IronAxe);
-	NewActor->NewItem(ItemCode::HandAxe);
-	NewActor->GetUnitData().LevelUp(0);
-	NewActor->SetMapPos({ 1, 3 });
+	NewActor->SetMapPos({ 2, 3 });
 	PushEnemyUnit(NewActor);
 
+	// 바타
 	NewActor = CreateActor<BattleUnit>(RenderOrder::Unit);
-	NewActor->SetUnitCode(UnitIdentityCode::Soldier);
-	NewActor->NewItem(ItemCode::SilverLance);
-	NewActor->NewItem(ItemCode::SilverLance);
-	NewActor->NewItem(ItemCode::SilverLance);
-	NewActor->NewItem(ItemCode::SilverLance);
-	NewActor->NewItem(ItemCode::SilverLance);
-	NewActor->GetUnitData().LevelUp(0);
-	NewActor->SetMapPos({ 2, 4 });
+	NewActor->SetUnitCode(UnitIdentityCode::Brigand);
+	NewActor->NewItem(ItemCode::IronAxe);
+	NewActor->GetUnitData().LevelUp();
+	NewActor->SetMapPos({ 3, 7 });
 	PushEnemyUnit(NewActor);
 
 }
