@@ -17,7 +17,7 @@ void Stage10::StageSetting()
 	NewActor = CreateActor<BattleUnit>(RenderOrder::Unit);
 	NewActor->SetUnitCode(UnitIdentityCode::Lyn);
 	NewActor->GetUnitData().LevelUp(0);
-	NewActor->SetMapPos({ 1, 10 });
+	NewActor->SetMapPos({ 1, 5 });
 	NewActor->NewItem(ItemCode::IronSword);
 	NewActor->NewItem(ItemCode::ManiKatti);
 	PushPlayerUnit(NewActor);
@@ -28,7 +28,7 @@ void Stage10::StageSetting()
 	NewActor->NewItem(ItemCode::IronAxe);
 	NewActor->NewItem(ItemCode::HandAxe);
 	NewActor->GetUnitData().LevelUp(0);
-	NewActor->SetMapPos({ 10, 10 });
+	NewActor->SetMapPos({ 10, 5 });
 	PushEnemyUnit(NewActor);
 
 
