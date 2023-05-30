@@ -151,25 +151,57 @@ public:
 	float4()
 		: x(0.0f), y(0.0f), z(0.0f), w(1.0f)
 	{
-
+		PosX = 0;
+		PosY = 0;
+		SizeX = 0;
+		SizeY = 0;
+		r = 0;
+		g = 0;
+		b = 0;
+		a = 0;
+		Arr1D[0] = 0.0f;
 	}
 
 	float4(float _x, float _y)
 		: x(_x), y(_y), z(0.0f), w(1.0f)
 	{
-
+		PosX = _x;
+		PosY = _y;
+		SizeX = 0;
+		SizeY = 1.0f;
+		r = _x;
+		g = _y;
+		b = 0.0f;
+		a = 1.0f;
+		Arr1D[0] = _x;
 	}
 
 	float4(float _x, float _y, float _z)
 		: x(_x), y(_y), z(_z), w(1.0f)
 	{
-
+		PosX = _x;
+		PosY = _y;
+		SizeX = _z;
+		SizeY = 1.0f;
+		r = _x;
+		g = _y;
+		b = _z;
+		a = 1.0f;
+		Arr1D[0] = _x;
 	}
 
 	float4(float _x, float _y, float _z, float _w)
 		: x(_x), y(_y), z(_z), w(_w)
 	{
-
+		PosX = _x;
+		PosY = _y;
+		SizeX = _z;
+		SizeY = _w;
+		r = _x;
+		g = _y;
+		b = _z;
+		a = _w;
+		Arr1D[0] = _x;
 	}
 
 	float4(DirectX::FXMVECTOR _Vector)

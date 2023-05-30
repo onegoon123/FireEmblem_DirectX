@@ -32,14 +32,21 @@ public:
 	}
 
 	GameEnginePixelColor()
+		: r(0), g(0), b(0), a(0)
 	{
-
+		ColorChar[0] = 0;
+		Color = 0;
 	}
 
 	GameEnginePixelColor(char _r, char _g, char _b, char _a)
 		: r(_r), g(_g), b(_b), a(_a)
 	{
-
+		Color = 0;
+		r = _r;
+		g = _g;
+		b = _b;
+		a = _a;
+		ColorChar[0] = _r;
 	}
 };
 

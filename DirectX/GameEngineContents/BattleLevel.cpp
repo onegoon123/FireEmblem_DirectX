@@ -45,8 +45,9 @@ void BattleLevel::LevelChangeStart()
 
 
 	// 카메라 세팅
-	GetMainCamera()->SetProjectionType(CameraType::Orthogonal);
-	GetMainCamera()->GetTransform()->SetLocalPosition({ 448, 288, -554.0f });
+	MainCamera = GetMainCamera();
+	MainCamera->SetProjectionType(CameraType::Orthogonal);
+	MainCamera->GetTransform()->SetLocalPosition({ 448, 288, -554.0f });
 
 	// 리소스 로딩
 	if (nullptr == GameEngineTexture::Find("PlayerCursor.png")) {

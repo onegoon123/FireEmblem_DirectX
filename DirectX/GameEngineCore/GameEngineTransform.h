@@ -24,7 +24,7 @@ class CollisionData
 public:
 	union
 	{
-		DirectX::BoundingSphere SPHERE;
+		DirectX::BoundingSphere SPHERE = DirectX::BoundingSphere();
 		DirectX::BoundingBox AABB;
 		DirectX::BoundingOrientedBox OBB;
 	};

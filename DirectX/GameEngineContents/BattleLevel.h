@@ -64,7 +64,9 @@ private:
 	//void (BattleLevel::* StateUpdate)(float) = nullptr;		// 스테이트 업데이트
 	//void (BattleLevel::* StateEnd)() = nullptr;		// 스테이트 엔드
 
+
 	// Actor
+	std::shared_ptr<class GameEngineCamera>	MainCamera = nullptr;
 	std::shared_ptr<class BattleMap> MainMap = nullptr;
 	std::shared_ptr <class MapCursor> MainCursor = nullptr;
 	std::list<std::shared_ptr <class BattleUnit>> PlayerUnits = std::list< std::shared_ptr <BattleUnit>>();		// 플레이어 유닛 리스트

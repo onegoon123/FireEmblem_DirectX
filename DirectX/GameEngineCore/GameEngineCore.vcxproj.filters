@@ -130,7 +130,7 @@
       <Filter>Object\Collision</Filter>
     </ClCompile>
     <ClCompile Include="GameEngineUIRenderer.cpp">
-      <Filter>Object\Rendering\Component\2D</Filter>
+      <Filter>Object\Rendering\Component</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
