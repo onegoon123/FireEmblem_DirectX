@@ -2,6 +2,7 @@
 #include "DebugWindow.h"
 #include <GameEngineBase/GameEngineString.h>
 #include <GameEnginePlatform/GameEngineInput.h>
+#include "MapCursor.h"
 DebugWindow::DebugWindow() 
 {
 }
@@ -18,5 +19,8 @@ void DebugWindow::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime
 	float4 MousePos = GameEngineInput::GetMousePosition();
 	float4 LocalPos = float4(MousePos.x - 480, 320 - MousePos.y);
 	ImGui::Text(LocalPos.ToString().data());
+
+	if (nullptr == Cursor) { return; }
+	ImGui::Text(Cursor->WorldPos.ToString().data());
 }
 

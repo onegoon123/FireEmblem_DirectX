@@ -161,7 +161,8 @@ void BattleLevel::PlayerPhaseEnd()
 	{
 		if (_Unit->GetIsDie()) { continue; }
 		SelectUnit = _Unit;
-		MainCursor->SetMapPos(SelectUnit->GetMapPos());
+		MainCursor->SetCursorPos(SelectUnit->GetMapPos());
+		CameraSetPos();
 		break;
 	}
 }
@@ -206,7 +207,7 @@ void BattleLevel::SelectStart()
 		MainCursor->Select();
 	}
 
-	BattleUI->SetTerrain(GetTerrain(MainCursor->GetMapPos()));
+	BattleUI->SetTerrain(GetTerrain(MainCursor->WorldPos));
 }
 
 void BattleLevel::SelectUpdate(float _DeltaTime)
@@ -224,7 +225,7 @@ void BattleLevel::SelectUpdate(float _DeltaTime)
 		}
 	}
 	UnitSelect();	// 유닛 선택 동작들 처리
-
+	CameraUpdate(_DeltaTime);
 }
 
 void BattleLevel::SelectEnd()
@@ -260,7 +261,7 @@ void BattleLevel::MoveStart()
 
 	Arrows->On();
 
-	if (0 < BeforePos.GetDistance(MainCursor->GetMapPos()))
+	if (0 < BeforePos.GetDistance(MainCursor->WorldPos))
 	{
 		return;
 	}
@@ -284,6 +285,8 @@ void BattleLevel::MoveUpdate(float _DeltaTime)
 		CursorAndArrowMove();	// 커서 이동 및 화살표 추가
 	}
 
+	CameraUpdate(_DeltaTime);
+
 	if (GameEngineInput::IsDown("ButtonA") || GameEngineInput::IsUp("LeftClick"))
 	{
 		// A버튼 (Z키) 입력시 유닛을 커서 위치로 이동
@@ -293,7 +296,8 @@ void BattleLevel::MoveUpdate(float _DeltaTime)
 	if (GameEngineInput::IsDown("ButtonB"))
 	{
 		// 커서를 선택한 유닛위치로 돌려놓은 후 Select State로 변경
-		MainCursor->SetMapPos(SelectUnit->GetMapPos());
+		MainCursor->SetCursorPos(SelectUnit->GetMapPos());
+		CameraSetPos();
 		SelectUnit->SetIdle();
 		ChangeState(BattleState::Select);
 		return;
@@ -337,7 +341,7 @@ void BattleLevel::MoveWaitUpdate(float _DeltaTime)
 void BattleLevel::MoveWaitEnd()
 {
 	// 정확한 위치로 다시 지정
-	SelectUnit->SetMapPos(MainCursor->GetMapPos());
+	SelectUnit->SetMapPos(MainCursor->WorldPos);
 	Terrain TerrainData = MainMap->TerrainData[SelectUnit->GetMapPos().y][SelectUnit->GetMapPos().x];
 	SelectUnit->SetTerrain(TerrainData);
 }
@@ -727,7 +731,8 @@ void BattleLevel::EnemyMoveStart()
 				}
 			}
 		}
-		MainCursor->SetMapPos(MovePos);
+		MainCursor->SetCursorPos(MovePos);
+		CameraSetPos();
 		ArrowPos.clear();
 		MoveCalculationForEnemy();
 		MoveIndex = 0;
@@ -735,15 +740,15 @@ void BattleLevel::EnemyMoveStart()
 	}
 
 	// 공격범위내 적 포착
-	MainCursor->SetMapPos(TargetUnit->GetMapPos());
+	MainCursor->SetCursorPos(TargetUnit->GetMapPos());
 	ArrowPos.clear();
 	MoveCalculationForEnemyAttack();
 	MoveIndex = 0;
 
-	MainCursor->SetMapPos(TargetUnit->GetMapPos());
+	MainCursor->SetCursorPos(TargetUnit->GetMapPos());
 	MainCursor->On();
 	MainCursor->Enemy();
-
+	CameraSetPos();
 	if (ArrowPos.size() == 0)
 	{
 		MoveIndex = -1;
@@ -755,6 +760,7 @@ void BattleLevel::EnemyMoveStart()
 
 void BattleLevel::EnemyMoveUpdate(float _DeltaTime)
 {
+	CameraUpdate(_DeltaTime);
 	if (false == IsSkip && GameEngineInput::IsDown("Start"))
 	{
 		IsSkip = true;
@@ -820,6 +826,8 @@ void BattleLevel::EnemyBattleStart()
 
 void BattleLevel::EnemyBattleUpdate(float _DeltaTime)
 {
+	CameraUpdate(_DeltaTime);
+
 	static float CloseUpTimer = 0;
 	CloseUpTimer += _DeltaTime;
 	if (0.5f < CloseUpTimer || true == IsSkip)
@@ -856,6 +864,8 @@ void BattleLevel::EnemyBattleReturnStart()
 
 void BattleLevel::EnemyBattleReturnUpdate(float _DeltaTime)
 {
+	CameraUpdate(_DeltaTime);
+
 	static float ReturnTimer = 0;
 	ReturnTimer += _DeltaTime;
 

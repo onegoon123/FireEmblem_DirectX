@@ -75,6 +75,7 @@ private:
 	std::list< std::shared_ptr <BattleUnit>> CloseUnits = std::list< std::shared_ptr <BattleUnit>>();		// 주변에 있는 유닛 리스트
 	std::shared_ptr <BattleUnit> SelectUnit = nullptr;	// 선택된 유닛
 	std::shared_ptr <BattleUnit> TargetUnit = nullptr;
+	std::shared_ptr <MapUnit> CameraUnit = nullptr;
 	std::list<AttackCommand> AttackRecord;
 
 	// Map 관련
@@ -261,5 +262,10 @@ private:
 
 #pragma endregion
 
+
+	// 커서에 따른 카메라 조절
+	void CameraMove(int2 _Value);
+	void CameraSetPos();
+	void CameraUpdate(float _DeltaTime);
 };
 

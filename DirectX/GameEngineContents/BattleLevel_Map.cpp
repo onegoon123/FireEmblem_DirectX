@@ -395,7 +395,7 @@ void BattleLevel::MoveCalculation()
 
 
 	int2 StartPos = SelectUnit->GetMapPos();
-	int2 TargetPos = MainCursor->GetMapPos();
+	int2 TargetPos = MainCursor->WorldPos;
 
 	if (true == IsMapOut(TargetPos))
 	{
@@ -530,7 +530,7 @@ void BattleLevel::EnemyFindTarget()
 void BattleLevel::MoveCalculationForEnemyAttack()
 {
 	int2 StartPos = SelectUnit->GetMapPos();
-	int2 TargetPos = MainCursor->GetMapPos();
+	int2 TargetPos = MainCursor->WorldPos;
 
 	if (true == IsMapOut(TargetPos))
 	{
@@ -599,7 +599,7 @@ void BattleLevel::MoveCalculationForEnemyAttack()
 void BattleLevel::MoveCalculationForEnemy()
 {
 	int2 StartPos = SelectUnit->GetMapPos();
-	int2 TargetPos = MainCursor->GetMapPos();
+	int2 TargetPos = MainCursor->WorldPos;
 
 	if (true == IsMapOut(TargetPos))
 	{
@@ -676,8 +676,8 @@ void BattleLevel::EnemyTileCheck()
 
 void BattleLevel::UnitMove()
 {
-	if (true == IsMapOut(MainCursor->GetMapPos())) { return; }
-	if (true == IsMove[MainCursor->GetMapPos().y][MainCursor->GetMapPos().x])
+	if (true == IsMapOut(MainCursor->WorldPos)) { return; }
+	if (true == IsMove[MainCursor->WorldPos.y][MainCursor->WorldPos.x])
 	{
 		for (std::shared_ptr<BattleUnit> _Actor : PlayerUnits)
 		{
@@ -686,7 +686,7 @@ void BattleLevel::UnitMove()
 			if (_Actor->GetUnitCode() == SelectUnit->GetUnitCode()) {continue;}
 
 			// 이동할 위치에 있는 유닛이 있다면 종료
-			if (_Actor->GetMapPos() == MainCursor->GetMapPos())
+			if (_Actor->GetMapPos() == MainCursor->WorldPos)
 			{
 				return;
 			}

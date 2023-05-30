@@ -31,7 +31,7 @@ void BattleLevel::CursorMove()
 		{
 			return;
 		}
-		MainCursor->SetMapPos(MouseMapPos);
+		MainCursor->SetCursorPos(MouseMapPos);
 		CursorDirCheck();	// 커서의 방향(정중앙 기준) 체크
 		CursorUnitSelect();
 		return;
@@ -57,7 +57,7 @@ void BattleLevel::CursorMove()
 	}
 
 
-	int2 CursorPos = MainCursor->GetMapPos();
+	int2 CursorPos = MainCursor->WorldPos;
 	int2 MoveValue = { 0 };
 
 	if (GameEngineInput::IsDown("Up") || (GameEngineInput::IsPress("Up") && PressOK))
@@ -97,12 +97,11 @@ void BattleLevel::CursorMove()
 
 	if (MoveValue != int2{ 0 })
 	{
-		MainCursor->MoveMapPosLerp(MoveValue);
+		CameraMove(MoveValue);
+		MainCursor->MoveCursorPosLerp(MoveValue);
 		CursorDirCheck();	// 커서의 방향(정중앙 기준) 체크
 		CursorUnitSelect();
-
-		BattleUI->SetTerrain(GetTerrain(MainCursor->GetMapPos()));
-		
+		BattleUI->SetTerrain(GetTerrain(MainCursor->WorldPos));
 	}
 }
 
@@ -113,7 +112,7 @@ void BattleLevel::CursorUnitSelect()
 	for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
 	{
 		if (_Unit->GetIsDie()) { continue; }
-		if (MainCursor->GetMapPos() == _Unit->GetMapPos())
+		if (MainCursor->WorldPos == _Unit->GetMapPos())
 		{
 			SelectUnit = _Unit;
 			SetUI_UnitData();	// 유닛 정보 UI로 띄우기
@@ -126,7 +125,7 @@ void BattleLevel::CursorUnitSelect()
 	for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
 	{
 		if (_Unit->GetIsDie()) { continue; }
-		if (MainCursor->GetMapPos() == _Unit->GetMapPos())
+		if (MainCursor->WorldPos == _Unit->GetMapPos())
 		{
 			SelectUnit = _Unit;
 			SetUI_UnitData();	// 유닛 정보 UI로 띄우기
@@ -159,7 +158,7 @@ void BattleLevel::CursorAndArrowMove()
 		{
 			return;
 		}
-		MainCursor->SetMapPos(MouseMapPos);
+		MainCursor->SetCursorPos(MouseMapPos);
 		return;
 	}
 
@@ -183,7 +182,7 @@ void BattleLevel::CursorAndArrowMove()
 	}
 
 
-	int2 CursorPos = MainCursor->GetMapPos();
+	int2 CursorPos = MainCursor->WorldPos;
 	int2 MoveValue = { 0 };
 
 	if (GameEngineInput::IsDown("Up") || (GameEngineInput::IsPress("Up") && PressOK))
@@ -223,8 +222,9 @@ void BattleLevel::CursorAndArrowMove()
 
 	if (MoveValue != int2{ 0 })
 	{
-		MainCursor->MoveMapPosLerp(MoveValue);
-		AddArrow(MainCursor->GetMapPos());
+		CameraMove(MoveValue);
+		MainCursor->MoveCursorPosLerp(MoveValue);
+		AddArrow(MainCursor->WorldPos);
 	}
 }
 
@@ -243,7 +243,7 @@ void BattleLevel::CursorMoveMouse()
 
 	if (true == MainCursor->GetIsMove()) { return; }
 
-	int2 CursorPos = MainCursor->GetMapPos();
+	int2 CursorPos = MainCursor->WorldPos;
 	float4 MousePos = GameEngineInput::GetMousePosition();
 	float4 MouseLocalPos = float4(MousePos.x, 640 - MousePos.y);
 	int2 MouseMapPos = int2::Float4ToInt2(MouseLocalPos * 0.015625f);
@@ -254,10 +254,13 @@ void BattleLevel::CursorMoveMouse()
 	if (1 <= CursorPos.GetDistance(MouseMapPos))
 	{
 		int2 MovePos = MouseMapPos - CursorPos;
-		MainCursor->MoveMapPosLerp(MovePos.Normalize());
+
+		CameraMove(MovePos.Normalize());
+		MainCursor->MoveCursorPosLerp(MovePos.Normalize());
+
 		CursorDirCheck();
 		CursorUnitSelect();
-		BattleUI->SetTerrain(GetTerrain(MainCursor->GetMapPos()));
+		BattleUI->SetTerrain(GetTerrain(MainCursor->WorldPos));
 	}
 
 
@@ -278,7 +281,7 @@ void BattleLevel::CursorAndArrowMoveMouse()
 
 	if (true == MainCursor->GetIsMove()) { return; }
 
-	int2 CursorPos = MainCursor->GetMapPos();
+	int2 CursorPos = MainCursor->WorldPos;
 	float4 MousePos = GameEngineInput::GetMousePosition();
 	float4 MouseLocalPos = float4(MousePos.x, 640 - MousePos.y);
 	int2 MouseMapPos = int2::Float4ToInt2(MouseLocalPos * 0.015625f);
@@ -289,9 +292,10 @@ void BattleLevel::CursorAndArrowMoveMouse()
 	if (1 <= CursorPos.GetDistance(MouseMapPos))
 	{
 		int2 MovePos = MouseMapPos - CursorPos;
-		MainCursor->MoveMapPosLerp(MovePos.Normalize());
+		CameraMove(MovePos.Normalize());
+		MainCursor->MoveCursorPosLerp(MovePos.Normalize());
 		CursorDirCheck();
-		AddArrow(MainCursor->GetMapPos());
+		AddArrow(MainCursor->WorldPos);
 	}
 }
 
@@ -338,7 +342,7 @@ void BattleLevel::UnitSelect()
 	// 확인버튼 입력시에만
 	if (GameEngineInput::IsDown("ButtonA") || GameEngineInput::IsUp("LeftClick")) {
 
-		if (true == IsMapOut(MainCursor->GetMapPos())) { return; }
+		if (true == IsMapOut(MainCursor->WorldPos)) { return; }
 
 		// 선택한 곳에 유닛이 없다면
 		if (nullptr == SelectUnit)
@@ -392,8 +396,10 @@ void BattleLevel::UnitSelect()
 			{
 				if (_Unit->GetIsDie()) { continue; }
 				if (_Unit->GetIsTurnEnd()) { continue; }
+
 				SelectUnit = _Unit;
-				MainCursor->SetMapPos(SelectUnit->GetMapPos());
+				MainCursor->SetCursorPos(SelectUnit->GetMapPos());
+				CameraSetPos();
 				CursorDirCheck();
 				SetUI_UnitData();
 				MoveSearch();
@@ -417,7 +423,8 @@ void BattleLevel::UnitSelect()
 						if ((*Start)->GetUnitCode() == SelectUnit->GetUnitCode()) { continue; }
 
 						SelectUnit = *Start;
-						MainCursor->SetMapPos(SelectUnit->GetMapPos());
+						MainCursor->SetCursorPos(SelectUnit->GetMapPos());
+						CameraSetPos();
 						CursorDirCheck();
 						SetUI_UnitData();
 						MoveSearch();
@@ -429,8 +436,10 @@ void BattleLevel::UnitSelect()
 						if (_Unit->GetIsDie()) { continue; }
 						if (_Unit->GetIsTurnEnd()) { continue; }
 						if (_Unit->GetUnitCode() == SelectUnit->GetUnitCode()) { continue; }
+
 						SelectUnit = _Unit;
-						MainCursor->SetMapPos(SelectUnit->GetMapPos());
+						MainCursor->SetCursorPos(SelectUnit->GetMapPos());
+						CameraSetPos();
 						CursorDirCheck();
 						SetUI_UnitData();
 						MoveSearch();
