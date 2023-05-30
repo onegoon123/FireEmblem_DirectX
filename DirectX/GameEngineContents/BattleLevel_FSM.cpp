@@ -164,7 +164,6 @@ void BattleLevel::PlayerPhaseEnd()
 		MainCursor->SetMapPos(SelectUnit->GetMapPos());
 		break;
 	}
-
 }
 
 void BattleLevel::SelectStart()
@@ -196,13 +195,18 @@ void BattleLevel::SelectStart()
 	MainCursor->On();
 	BattleUI->SelectOn();
 	CursorDirCheck();
+	// 적 타일 체크
+	EnemyTileCheck();
 	// 선택된 유닛이 있다면 유닛 데이터 지정
 	if (nullptr != SelectUnit)
 	{
-		CursorUnitSelect();
+		SetUI_UnitData();	// 유닛 정보 UI로 띄우기
+		MoveSearch();	// 이동범위 탐색, 자동으로 공격범위도 탐색
+		Tiles->SetTile(IsMove, IsAttack);
+		MainCursor->Select();
 	}
-	// 적 타일 체크
-	EnemyTileCheck();
+
+	BattleUI->SetTerrain(GetTerrain(MainCursor->GetMapPos()));
 }
 
 void BattleLevel::SelectUpdate(float _DeltaTime)
@@ -214,6 +218,10 @@ void BattleLevel::SelectUpdate(float _DeltaTime)
 	else
 	{
 		CursorMove();	// 커서 이동
+		if (true == IsMouseOn)
+		{
+			return;
+		}
 	}
 	UnitSelect();	// 유닛 선택 동작들 처리
 

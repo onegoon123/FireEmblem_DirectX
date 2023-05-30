@@ -20,9 +20,10 @@ void BattleLevel::CursorMove()
 		return;
 	}
 
-	if (GameEngineInput::IsDown("LeftClick") || GameEngineInput::IsDown("RightClick"))
+	if (GameEngineInput::IsUp("LeftClick") || GameEngineInput::IsUp("RightClick"))
 	{
 		IsMouseOn = true;
+		return;
 		float4 MousePos = GameEngineInput::GetMousePosition();
 		float4 MouseLocalPos = float4(MousePos.x, 640 - MousePos.y);
 		int2 MouseMapPos = int2::Float4ToInt2(MouseLocalPos * 0.015625f);		// 64 ³ª´©±â
@@ -147,9 +148,10 @@ void BattleLevel::CursorAndArrowMove()
 		return;
 	}
 
-	if (GameEngineInput::IsDown("LeftClick") || GameEngineInput::IsDown("RightClick"))
+	if (GameEngineInput::IsUp("LeftClick") || GameEngineInput::IsUp("RightClick"))
 	{
 		IsMouseOn = true;
+		return;
 		float4 MousePos = GameEngineInput::GetMousePosition();
 		float4 MouseLocalPos = float4(MousePos.x, 640 - MousePos.y);
 		int2 MouseMapPos = int2::Float4ToInt2(MouseLocalPos * 0.015625f);
@@ -394,6 +396,8 @@ void BattleLevel::UnitSelect()
 				MainCursor->SetMapPos(SelectUnit->GetMapPos());
 				CursorDirCheck();
 				SetUI_UnitData();
+				MoveSearch();
+				Tiles->SetTile(IsMove, IsAttack);
 				return;
 			}
 		}
@@ -416,6 +420,8 @@ void BattleLevel::UnitSelect()
 						MainCursor->SetMapPos(SelectUnit->GetMapPos());
 						CursorDirCheck();
 						SetUI_UnitData();
+						MoveSearch();
+						Tiles->SetTile(IsMove, IsAttack);
 						return;
 					}
 					for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
@@ -427,6 +433,8 @@ void BattleLevel::UnitSelect()
 						MainCursor->SetMapPos(SelectUnit->GetMapPos());
 						CursorDirCheck();
 						SetUI_UnitData();
+						MoveSearch();
+						Tiles->SetTile(IsMove, IsAttack);
 						return;
 					}
 					return;
