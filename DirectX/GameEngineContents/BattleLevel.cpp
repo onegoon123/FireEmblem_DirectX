@@ -13,12 +13,14 @@
 #include "BattleLevelUI.h"
 #include "UnitInformationUI.h"
 #include "DebugWindow.h"
+#include "FEData.h"
 BattleLevel::BattleLevel()
 {
 	StateUpdate = std::bind(&BattleLevel::PlayerPhaseUpdate, this, std::placeholders::_1);
 	StateEnd = std::bind(&BattleLevel::PlayerPhaseEnd, this);
 
 	ArrowPos.reserve(8);
+	StartPos.reserve(10);
 }
 
 BattleLevel::~BattleLevel()
@@ -89,6 +91,16 @@ void BattleLevel::LevelChangeStart()
 	}
 
 	StageSetting();
+	//LoadPlayerUnits(FEData::GetPlayerUnits());
+
+	for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
+	{
+		_Unit->SetTerrain(GetTerrain(_Unit->GetMapPos()));
+	}
+	for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
+	{
+		_Unit->SetTerrain(GetTerrain(_Unit->GetMapPos()));
+	}
 
 	Tiles = CreateActor<TileRender>(RenderOrder::Tile);
 	Tiles->Create(MainMap->MapScaleInt2);
@@ -128,6 +140,24 @@ void BattleLevel::LevelChangeStart()
 void BattleLevel::LevelChangeEnd()
 {
 	GameEngineLevel::LevelChangeEnd();
+
+	if (CurState == BattleState::BattleReturn || CurState == BattleState::EnemyBattleReturn)
+	{
+		return;
+	}
+
+	// 저장
+	std::list<Unit> Units;
+	for (std::shared_ptr<BattleUnit> _BattleUnit : PlayerUnits)
+	{
+		if (true == _BattleUnit->GetIsDie()) { continue; }
+		_BattleUnit->GetUnitData().RecoverPersent(1.0f);
+		Units.push_back(_BattleUnit->GetUnitData());
+	}
+	FEData::SetPlayerUnits(Units);
+
+
+	// 릴리즈
 
 	Tiles->Death();
 	Tiles = nullptr;
@@ -181,17 +211,41 @@ void BattleLevel::SetStage(int _StageNum)
 	MainMap->SetMap(_StageNum);
 }
 
+void BattleLevel::LoadPlayerUnits(std::list<Unit>& _Units)
+{
+	if (StartPos.size() < _Units.size())
+	{
+		MsgAssert("유닛의 시작위치가 부족합니다. StartPos에 시작위치를 추가하세요");
+	}
+
+	int i = 0;
+	std::list<Unit>::iterator UnitIter = _Units.begin();
+	std::list<Unit>::iterator UnitEnd = _Units.end();
+	for (; UnitIter != UnitEnd; UnitIter++)
+	{
+		std::shared_ptr<BattleUnit> NewActor = CreateActor<BattleUnit>(RenderOrder::Unit);
+		NewActor->LoadUnitData(*UnitIter);
+		NewActor->SetMapPos(StartPos[i]);
+		PushPlayerUnit(NewActor);
+		i++;
+	}
+}
+
+std::shared_ptr<BattleUnit> BattleLevel::LoadPlayerUnit(const Unit& _Unit)
+{
+	std::shared_ptr<BattleUnit> NewActor = CreateActor<BattleUnit>(RenderOrder::Unit);
+	NewActor->LoadUnitData(_Unit);
+	PlayerUnits.push_back(NewActor);
+	return NewActor;
+}
+
 void BattleLevel::PushPlayerUnit(std::shared_ptr<BattleUnit> _Unit)
 {
-	_Unit->SetTerrain(MainMap->TerrainData[_Unit->GetMapPos().y][_Unit->GetMapPos().x]);
-
 	PlayerUnits.push_back(_Unit);
 }
 
 void BattleLevel::PushEnemyUnit(std::shared_ptr<BattleUnit> _Unit)
 {
-	_Unit->SetTerrain(MainMap->TerrainData[_Unit->GetMapPos().y][_Unit->GetMapPos().x]);
-
 	EnemyUnits.push_back(_Unit);
 }
 

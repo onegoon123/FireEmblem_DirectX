@@ -48,6 +48,9 @@ public:
 		return UnitData.UnitCode;
 	}
 
+	// 이전의 유닛 데이터를 받아서 적용시킨다
+	void LoadUnitData(Unit _Value);
+
 	// 유닛 데이터를 지정
 	void SetUnitData(Unit _Value)
 	{

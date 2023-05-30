@@ -41,6 +41,24 @@ void Stage1::StageSetting()
 	NewActor->NewItem(ItemCode::IronLance);
 	PushPlayerUnit(NewActor);
 
+	NewActor = CreateActor<BattleUnit>(RenderOrder::Unit);
+	NewActor->SetUnitCode(UnitIdentityCode::Florina);
+	NewActor->SetMapPos({ 0, 4 });
+	NewActor->NewItem(ItemCode::IronLance);
+	PushPlayerUnit(NewActor);
+
+	NewActor = CreateActor<BattleUnit>(RenderOrder::Unit);
+	NewActor->SetUnitCode(UnitIdentityCode::Erk);
+	NewActor->SetMapPos({ 0, 5 });
+	NewActor->NewItem(ItemCode::IronLance);
+	PushPlayerUnit(NewActor);
+
+	NewActor = CreateActor<BattleUnit>(RenderOrder::Unit);
+	NewActor->SetUnitCode(UnitIdentityCode::Matthew);
+	NewActor->SetMapPos({ 1, 5 });
+	NewActor->NewItem(ItemCode::KillingSword);
+	PushPlayerUnit(NewActor);
+
 	// »êÀû
 	NewActor = CreateActor<BattleUnit>(RenderOrder::Unit);
 	NewActor->SetUnitCode(UnitIdentityCode::Brigand);

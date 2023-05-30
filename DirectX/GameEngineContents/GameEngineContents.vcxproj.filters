@@ -162,6 +162,9 @@
     <ClCompile Include="Stage10.cpp">
       <Filter>Levels\Stage</Filter>
     </ClCompile>
+    <ClCompile Include="FEData.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FECore.h" />
@@ -301,6 +304,9 @@
     </ClInclude>
     <ClInclude Include="Stage10.h">
       <Filter>Levels\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="FEData.h">
+      <Filter>System</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

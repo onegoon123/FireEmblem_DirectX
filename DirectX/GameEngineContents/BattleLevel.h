@@ -30,6 +30,10 @@ protected:
 	virtual void StageSetting() = 0;
 
 	void SetStage(int _StageNum);
+
+	std::vector<int2> StartPos;
+	void LoadPlayerUnits(std::list<Unit>& _Units);
+	std::shared_ptr <BattleUnit> LoadPlayerUnit(const Unit& _Unit);
 	void PushPlayerUnit(std::shared_ptr <BattleUnit> _Unit);
 	void PushEnemyUnit(std::shared_ptr <BattleUnit> _Unit);
 private:

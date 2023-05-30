@@ -224,6 +224,10 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="FECore.cpp" />
+    <ClCompile Include="FEData.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="FERandom.cpp" />
     <ClCompile Include="FieldCommandUI.cpp">
       <SubType>
@@ -403,6 +407,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="FECore.h" />
+    <ClInclude Include="FEData.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="FERandom.h">
       <SubType>
       </SubType>

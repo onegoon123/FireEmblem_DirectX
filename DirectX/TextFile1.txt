@@ -1,23 +1,4 @@
-	static bool Fast = false;
-	Fast = GameEngineInput::IsPress("ButtonB");
+버그
+적이 사거리 1짜리를 장비했는데 사거리 2무기를 지녔을때 공격을 못하는데 공격 가능한걸로 판단하는 문제
 
-	if (GameEngineInput::IsDown("Down") || (GameEngineInput::IsPress("Down") && Fast))
-	{
-		PortraitRender->GetTransform()->AddLocalPosition(float4::Down);
-	}
-	if (GameEngineInput::IsDown("Right") || (GameEngineInput::IsPress("Right") && Fast))
-	{
-		PortraitRender->GetTransform()->AddLocalPosition(float4::Right);
-	}
-	if (GameEngineInput::IsDown("Left") || (GameEngineInput::IsPress("Left") && Fast))
-	{
-		PortraitRender->GetTransform()->AddLocalPosition(float4::Left);
-	}
-	if (GameEngineInput::IsDown("Up") || (GameEngineInput::IsPress("Up") && Fast))
-	{
-		PortraitRender->GetTransform()->AddLocalPosition(float4::Up);
-	}
-	if (GameEngineInput::IsDown("ButtonR"))
-	{
-		MsgTextBox(PortraitRender->GetTransform()->GetLocalPosition().ToString());
-	}
+마우스 커서가 InfoUI에서 보이는 문제

@@ -48,8 +48,24 @@ void BattleAnimationUI::SetData(Unit& _Unit1, Unit& _Unit2)
 	Number_EnemyHit->SetValue(Enemy.GetHitPoint(Player));
 	Number_EnemyCritical->SetValue(Enemy.GetCriticalPoint(Player));
 
-	PlayerWeaponIcon->SetFrame(Player.GetCurWeapon()->GetItemCodeToInt() - 1);
-	EnemyWeaponIcon->SetFrame(Enemy.GetCurWeapon()->GetItemCodeToInt() - 1);
+	if (nullptr == Player.GetCurWeapon())
+	{
+		PlayerWeaponIcon->Off();
+	}
+	else
+	{
+		PlayerWeaponIcon->On();
+		PlayerWeaponIcon->SetFrame(Player.GetCurWeapon()->GetItemCodeToInt() - 1);
+	}
+	if (nullptr == Enemy.GetCurWeapon())
+	{
+		EnemyWeaponIcon->Off();
+	}
+	else
+	{
+		EnemyWeaponIcon->On();
+		EnemyWeaponIcon->SetFrame(Enemy.GetCurWeapon()->GetItemCodeToInt() - 1);
+	}
 
 	// 무기 상성 값
 	int TriangleValue = Weapon::GetWeaponeTriangle(Player.GetCurWeapon(), Enemy.GetCurWeapon());

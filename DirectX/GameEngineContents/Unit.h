@@ -12,6 +12,8 @@ public:
 	~Unit();
 	Unit(const Unit& _Other)
 	{
+		SetName(_Other.GetName());
+		IdentityCode = _Other.IdentityCode;
 		UnitCode = _Other.UnitCode;
 		UnitStat = Stat(_Other.UnitStat);
 		CurrentHP = _Other.CurrentHP;
@@ -24,9 +26,12 @@ public:
 		Items = _Other.Items;
 		Weapons = _Other.Weapons;
 		CurWeapon = _Other.CurWeapon;
+
 	}
 	void operator=(const Unit& _Other)
 	{
+		SetName(_Other.GetName());
+		IdentityCode = _Other.IdentityCode;
 		UnitCode = _Other.UnitCode;
 		UnitStat = Stat(_Other.UnitStat);
 		CurrentHP = _Other.CurrentHP;
