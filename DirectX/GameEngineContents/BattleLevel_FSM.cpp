@@ -507,6 +507,7 @@ void BattleLevel::BattleStart()
 	}
 	MainMap->GetRenderer()->SetIsBlur(true);
 	BattleUI->SetFadeOut(0.3f);
+	BeforeCamPos = MainCamera->GetTransform()->GetLocalPosition();
 	MainCamera->SetProjectionType(CameraType::Perspective);
 
 	return;
@@ -583,7 +584,7 @@ void BattleLevel::BattleReturnUpdate(float _DeltaTime)
 		_Unit->GetRenderer()->SetBlurLevel(2.5f - ReturnTimer * 5);
 	}
 	MainMap->GetRenderer()->SetBlurLevel(2.5f - ReturnTimer * 5);
-	MainCamera->GetTransform()->SetLocalPosition(float4::LerpClamp(MainCamera->GetTransform()->GetWorldPosition(), { 448, 288, -554.0f }, _DeltaTime * 10));
+	MainCamera->GetTransform()->SetLocalPosition(float4::LerpClamp(MainCamera->GetTransform()->GetWorldPosition(), BeforeCamPos, _DeltaTime * 10));
 
 }
 
@@ -601,7 +602,7 @@ void BattleLevel::BattleReturnEnd()
 		TargetUnit = nullptr;
 	}
 
-	MainCamera->GetTransform()->SetLocalPosition({ 448, 288, -554.0f });
+	MainCamera->GetTransform()->SetLocalPosition(BeforeCamPos);
 	MainCamera->SetProjectionType(CameraType::Orthogonal);
 
 	for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
@@ -679,7 +680,10 @@ void BattleLevel::EnemySelectStart()
 		{
 			SelectUnit = _Enemy;
 			SelectUnit->Select();
-			ChangeState(BattleState::EnemyMove);
+			MainCursor->SetCursorPos(_Enemy->GetMapPos());
+			CameraSetPos();
+			CameraUnit->SetMoveSpeed(5.0f);
+
 			return;
 		}
 	}
@@ -688,10 +692,31 @@ void BattleLevel::EnemySelectStart()
 
 void BattleLevel::EnemySelectUpdate(float _DeltaTime)
 {
+	CameraUpdate(_DeltaTime);
+	static float EnemySelectTimer = 0;
+	EnemySelectTimer += _DeltaTime;
+	if (1 < EnemySelectTimer)
+	{
+		EnemySelectTimer = 0;
+		ChangeState(BattleState::EnemyMove);
+		return;
+	}
+
+	if (false == IsSkip && GameEngineInput::IsDown("Start"))
+	{
+		IsSkip = true;
+		BattleUI->SetFadeIn(0.2f);
+	}
+	if (true == IsSkip)
+	{
+		ChangeState(BattleState::EnemyMove);
+		return;
+	}
 }
 
 void BattleLevel::EnemySelectEnd()
 {
+	CameraUnit->SetMoveSpeed(15.0f);
 }
 
 void BattleLevel::EnemyMoveStart()
@@ -820,14 +845,13 @@ void BattleLevel::EnemyBattleStart()
 	}
 	BattleUI->SetFadeOut(0.3f);
 	MainMap->GetRenderer()->SetIsBlur(true);
+	BeforeCamPos = MainCamera->GetTransform()->GetLocalPosition();
 	MainCamera->SetProjectionType(CameraType::Perspective);
 
 }
 
 void BattleLevel::EnemyBattleUpdate(float _DeltaTime)
 {
-	CameraUpdate(_DeltaTime);
-
 	static float CloseUpTimer = 0;
 	CloseUpTimer += _DeltaTime;
 	if (0.5f < CloseUpTimer || true == IsSkip)
@@ -864,8 +888,6 @@ void BattleLevel::EnemyBattleReturnStart()
 
 void BattleLevel::EnemyBattleReturnUpdate(float _DeltaTime)
 {
-	CameraUpdate(_DeltaTime);
-
 	static float ReturnTimer = 0;
 	ReturnTimer += _DeltaTime;
 
@@ -890,7 +912,7 @@ void BattleLevel::EnemyBattleReturnUpdate(float _DeltaTime)
 		_Unit->GetRenderer()->SetBlurLevel(2.5f - ReturnTimer * 5);
 	}
 	MainMap->GetRenderer()->SetBlurLevel(2.5f - ReturnTimer * 5);
-	MainCamera->GetTransform()->SetLocalPosition(float4::LerpClamp(MainCamera->GetTransform()->GetWorldPosition(), { 448, 288, -554.0f }, _DeltaTime * 10));
+	MainCamera->GetTransform()->SetLocalPosition(float4::LerpClamp(MainCamera->GetTransform()->GetWorldPosition(), BeforeCamPos, _DeltaTime * 10));
 
 }
 
@@ -910,7 +932,7 @@ void BattleLevel::EnemyBattleReturnEnd()
 		TargetUnit = nullptr;
 	}
 
-	MainCamera->GetTransform()->SetLocalPosition({ 448, 288, -554.0f });
+	MainCamera->GetTransform()->SetLocalPosition(BeforeCamPos);
 	MainCamera->SetProjectionType(CameraType::Orthogonal);
 
 	for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)

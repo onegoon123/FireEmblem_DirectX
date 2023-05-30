@@ -24,17 +24,6 @@ void BattleLevel::CursorMove()
 	{
 		IsMouseOn = true;
 		return;
-		float4 MousePos = GameEngineInput::GetMousePosition();
-		float4 MouseLocalPos = float4(MousePos.x, 640 - MousePos.y);
-		int2 MouseMapPos = int2::Float4ToInt2(MouseLocalPos * 0.015625f);		// 64 나누기
-		if (true == IsMapOut(MouseMapPos))
-		{
-			return;
-		}
-		MainCursor->SetCursorPos(MouseMapPos);
-		CursorDirCheck();	// 커서의 방향(정중앙 기준) 체크
-		CursorUnitSelect();
-		return;
 	}
 
 	if (
@@ -151,15 +140,6 @@ void BattleLevel::CursorAndArrowMove()
 	{
 		IsMouseOn = true;
 		return;
-		float4 MousePos = GameEngineInput::GetMousePosition();
-		float4 MouseLocalPos = float4(MousePos.x, 640 - MousePos.y);
-		int2 MouseMapPos = int2::Float4ToInt2(MouseLocalPos * 0.015625f);
-		if (true == IsMapOut(MouseMapPos))
-		{
-			return;
-		}
-		MainCursor->SetCursorPos(MouseMapPos);
-		return;
 	}
 
 	if (
@@ -246,7 +226,7 @@ void BattleLevel::CursorMoveMouse()
 	int2 CursorPos = MainCursor->WorldPos;
 	float4 MousePos = GameEngineInput::GetMousePosition();
 	float4 MouseLocalPos = float4(MousePos.x, 640 - MousePos.y);
-	int2 MouseMapPos = int2::Float4ToInt2(MouseLocalPos * 0.015625f);
+	int2 MouseMapPos = int2::Float4ToInt2(MouseLocalPos * 0.015625f) + CameraUnit->GetMapPos();
 	if (true == IsMapOut(MouseMapPos))
 	{
 		return;
@@ -284,7 +264,7 @@ void BattleLevel::CursorAndArrowMoveMouse()
 	int2 CursorPos = MainCursor->WorldPos;
 	float4 MousePos = GameEngineInput::GetMousePosition();
 	float4 MouseLocalPos = float4(MousePos.x, 640 - MousePos.y);
-	int2 MouseMapPos = int2::Float4ToInt2(MouseLocalPos * 0.015625f);
+	int2 MouseMapPos = int2::Float4ToInt2(MouseLocalPos * 0.015625f) + CameraUnit->GetMapPos();
 	if (true == IsMapOut(MouseMapPos))
 	{
 		return;

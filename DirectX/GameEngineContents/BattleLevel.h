@@ -97,6 +97,7 @@ private:
 	int MoveIndex = 0;
 
 	int2 BeforePos = int2::Zero;
+	float4 BeforeCamPos = float4::Zero;
 
 #pragma region FSM
 	void ChangeState(BattleState _State);

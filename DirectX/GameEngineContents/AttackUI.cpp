@@ -461,7 +461,7 @@ void AttackUI::TargetSelectUpdate(float _DeltaTime)
 	if (GameEngineInput::IsDown("ButtonB") || GameEngineInput::IsUp("RightClick"))
 	{
 		WeaponSelectStart();
-		Cursor_Map->SetMapPos(SelectUnit->GetMapPos());
+		Cursor_Map->SetCursorPos(SelectUnit->GetMapPos());
 		Cursor_Map->Off();
 		return;
 	}
@@ -498,7 +498,7 @@ void AttackUI::SetTarget()
 {
 
 	TargetUnit = *TargetIter;
-	Cursor_Map->SetMapPosLerp(TargetUnit->GetMapPos());
+	Cursor_Map->SetCursorPos(TargetUnit->GetMapPos());
 
 	// 타겟 선택시 변경되는 UI 내용들 처리
 	SubjectWeapon->SetFrame(static_cast<size_t>(SelectWeapon->GetItemCode()) - 1);

@@ -38,7 +38,10 @@ public:
 		return BeforeMapPos;
 	}
 
-
+	void SetMoveSpeed(float _Speed)
+	{
+		MoveSpeed = _Speed;
+	}
 protected:
 	void Update(float _DeltaTime) override;
 	float MoveSpeed = 15.0f;
