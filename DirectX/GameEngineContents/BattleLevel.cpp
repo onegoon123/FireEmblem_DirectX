@@ -118,6 +118,7 @@ void BattleLevel::LevelChangeStart()
 	std::shared_ptr<DebugWindow> Window = GameEngineGUI::FindGUIWindowConvert<DebugWindow>("DebugWindow");
 	Window->Cursor = MainCursor;
 
+	CurState = BattleState::None;
 	ChangeState(BattleState::PlayerPhase);
 
 
@@ -127,6 +128,50 @@ void BattleLevel::LevelChangeStart()
 void BattleLevel::LevelChangeEnd()
 {
 	GameEngineLevel::LevelChangeEnd();
+
+	Tiles->Death();
+	Tiles = nullptr;
+
+	Arrows->Death();
+	Arrows = nullptr;
+
+	MainCursor->Death();
+	MainCursor = nullptr;
+
+	BattleUI->Death();
+	BattleUI = nullptr;
+
+	InfoUI->Death();
+	InfoUI = nullptr;
+
+	MainMap->Death();
+	MainMap = nullptr;
+
+	CameraUnit->Death();
+	CameraUnit = nullptr;
+
+	std::list<std::shared_ptr <BattleUnit>>::iterator UnitIter = PlayerUnits.begin();
+	std::list<std::shared_ptr <BattleUnit>>::iterator UnitEnd = PlayerUnits.end();
+	for (; UnitIter != UnitEnd; UnitIter++)
+	{
+		(*UnitIter)->Death();
+		(*UnitIter) = nullptr;
+	}
+	PlayerUnits.clear();
+
+	UnitIter = EnemyUnits.begin();
+	UnitEnd = EnemyUnits.end();
+	for (; UnitIter != UnitEnd; UnitIter++)
+	{
+		(*UnitIter)->Death();
+		(*UnitIter) = nullptr;
+	}
+	EnemyUnits.clear();
+
+	SelectUnit = nullptr;
+	TargetUnit = nullptr;
+	AttackableUnits.clear();
+	CloseUnits.clear();
 }
 
 void BattleLevel::SetStage(int _StageNum)

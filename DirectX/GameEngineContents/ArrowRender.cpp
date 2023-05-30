@@ -9,6 +9,17 @@ ArrowRender::ArrowRender()
 
 ArrowRender::~ArrowRender()
 {
+	for (int y = 0; y < Renders.size(); y++)
+	{
+		for (int x = 0; x < Renders[y].size(); x++)
+		{
+			if (nullptr != Renders[y][x])
+			{
+				Renders[y][x]->Death();
+				Renders[y][x] = nullptr;
+			}
+		}
+	}
 }
 
 void ArrowRender::Create(int2 _Scale)

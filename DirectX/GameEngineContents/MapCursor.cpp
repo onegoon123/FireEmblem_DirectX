@@ -18,6 +18,11 @@ MapCursor::MapCursor()
 
 MapCursor::~MapCursor()
 {
+	if (nullptr != AnimationRender)
+	{
+		AnimationRender->Death();
+		AnimationRender = nullptr;
+	}
 }
 
 void MapCursor::On()

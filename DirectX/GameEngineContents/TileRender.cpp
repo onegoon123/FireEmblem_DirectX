@@ -9,6 +9,18 @@ TileRender::TileRender()
 
 TileRender::~TileRender()
 {
+	for (int y = 0; y < Renders.size(); y++)
+	{
+		for (int x = 0; x < Renders[y].size(); x++)
+		{
+			if (nullptr != Renders[y][x])
+			{
+				Renders[y][x]->Death();
+				Renders[y][x] = nullptr;
+			}
+		}
+
+	}
 }
 
 void TileRender::Create(int2 _Scale)

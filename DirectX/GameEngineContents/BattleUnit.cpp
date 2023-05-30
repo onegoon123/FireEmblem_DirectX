@@ -11,6 +11,16 @@ BattleUnit::BattleUnit()
 
 BattleUnit::~BattleUnit()
 {
+	if (nullptr != Renderer)
+	{
+		Renderer->Death();
+		Renderer = nullptr;
+	}
+	if (nullptr != FrontRenderer)
+	{
+		FrontRenderer->Death();
+		FrontRenderer = nullptr;
+	}
 }
 
 void BattleUnit::Select()

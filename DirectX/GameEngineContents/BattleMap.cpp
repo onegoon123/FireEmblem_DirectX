@@ -8,6 +8,11 @@ BattleMap::BattleMap()
 
 BattleMap::~BattleMap()
 {
+	if (nullptr != Renderer)
+	{
+		Renderer->Death();
+		Renderer = nullptr;
+	}
 }
 
 void BattleMap::SetMap(int _StageNum)
