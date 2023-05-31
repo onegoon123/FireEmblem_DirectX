@@ -52,6 +52,7 @@ void MapUnit::Update(float _DeltaTime)
 	if (1 < MoveTimer)
 	{
 		IsMove = false;
+		MoveEnd();
 	}
 }
 

@@ -106,6 +106,11 @@ void BattleLevel::ChangeState(BattleState _State)
 		StateEnd = std::bind(&BattleLevel::TimeStoneEnd, this);
 		TimeStoneStart();
 		break;
+	case BattleLevel::BattleState::Opening:
+		StateUpdate = std::bind(&BattleLevel::OpeningUpdate, this, std::placeholders::_1);
+		StateEnd = std::bind(&BattleLevel::OpeningEnd, this);
+		OpeningStart();
+		break;
 	default:
 	{
 		MsgAssert("아직 지정하지 않은 State 입니다");
@@ -1650,4 +1655,22 @@ bool BattleLevel::GameOverCheck()
 	}
 
 	return false;
+}
+
+void BattleLevel::OpeningStart()
+{
+	OpeningEvent->EventStart();
+}
+
+void BattleLevel::OpeningUpdate(float _DeltaTime)
+{
+	if (true == OpeningEvent->GetIsEnd())
+	{
+		ChangeState(BattleState::PlayerPhase);
+	}
+}
+
+void BattleLevel::OpeningEnd()
+{
+	OpeningEvent->Off();
 }

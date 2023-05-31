@@ -3,6 +3,7 @@
 #include "ContentsEnum.h"
 #include "Int2.h"
 #include "UnitCommand.h"
+#include "EventSystem.h"
 
 class BattleLevel : public GameEngineLevel
 {
@@ -49,6 +50,9 @@ protected:
 
 	BattleClearTarget ClearTarget = BattleClearTarget::AllKill;
 	int2 ConquerPos = { -1, -1 };
+
+	std::shared_ptr<EventSystem> OpeningEvent;
+	std::shared_ptr <EventSystem> ClearEvent;
 
 private:
 
@@ -182,6 +186,10 @@ private:
 	void TimeStoneStart();
 	void TimeStoneUpdate(float _DeltaTime);
 	void TimeStoneEnd();
+
+	void OpeningStart();
+	void OpeningUpdate(float _DeltaTime);
+	void OpeningEnd();
 
 	bool GameOverCheck();
 

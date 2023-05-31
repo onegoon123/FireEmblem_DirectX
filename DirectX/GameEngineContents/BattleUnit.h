@@ -129,6 +129,7 @@ protected:
 	void Update(float _DeltaTime) override;
 
 	void SetMoveDir(int2 _Dir) override;
+	void MoveEnd() override;
 
 	std::shared_ptr<class SpriteRenderer> Renderer = nullptr;
 	std::shared_ptr<class SpriteRenderer> FrontRenderer = nullptr;

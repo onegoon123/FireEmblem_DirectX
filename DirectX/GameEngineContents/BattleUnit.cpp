@@ -512,6 +512,9 @@ void BattleUnit::Update(float _DeltaTime)
 
 void BattleUnit::SetMoveDir(int2 _Dir)
 {
+	Renderer->Off();
+	FrontRenderer->On();
+
 	if (_Dir == int2::Right)
 	{
 		FrontRenderer->ChangeAnimation("Left");
@@ -536,5 +539,10 @@ void BattleUnit::SetMoveDir(int2 _Dir)
 		FrontRenderer->ChangeAnimation("Up");
 		return;
 	}
+}
+
+void BattleUnit::MoveEnd()
+{
+	SetIdle();
 }
 

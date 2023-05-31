@@ -54,6 +54,7 @@ void BattleLevel::LevelChangeStart()
 	MainCamera->SetProjectionType(CameraType::Orthogonal);
 	MainCamera->GetTransform()->SetLocalPosition({ 448, 288, -554.0f });
 
+
 	// 리소스 로딩
 	if (nullptr == GameEngineTexture::Find("PlayerCursor.png")) {
 		GameEngineDirectory Dir;
@@ -90,6 +91,8 @@ void BattleLevel::LevelChangeStart()
 		}
 	}
 
+	OpeningEvent = CreateActor<EventSystem>();
+	ClearEvent = CreateActor<EventSystem>();
 	LoadPlayerUnits(FEData::GetPlayerUnits()); 
 	StageSetting();
 	if (PlayerUnits.size() != 0)
@@ -114,8 +117,10 @@ void BattleLevel::LevelChangeStart()
 	MainCursor = CreateActor<MapCursor>(RenderOrder::MapCursor);
 	MainCursor->SetMapPos({ 0,0 });
 	MainCursor->Setting(CameraUnit);
+	MainCursor->Off();
 
 	BattleUI = CreateActor<BattleLevelUI>(RenderOrder::UI);
+	BattleUI->AllOff();
 	InfoUI = CreateActor<UnitInformationUI>(RenderOrder::UI);
 
 	// 조건 초기화
@@ -135,7 +140,7 @@ void BattleLevel::LevelChangeStart()
 	Window->Cursor = MainCursor;
 
 	CurState = BattleState::None;
-	ChangeState(BattleState::PlayerPhase);
+	ChangeState(BattleState::Opening);
 
 
 

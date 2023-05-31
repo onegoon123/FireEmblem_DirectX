@@ -18,5 +18,6 @@ protected:
 	void StageSetting() override;
 private:
 
+	std::shared_ptr<BattleUnit> Unit_Lyn = nullptr;
 };
 

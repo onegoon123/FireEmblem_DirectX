@@ -47,6 +47,7 @@ protected:
 	float MoveSpeed = 15.0f;
 
 	virtual void SetMoveDir(int2 _Dir) {}
+	virtual void MoveEnd() {}
 
 private:
 	int2 MapPos = { 0 };

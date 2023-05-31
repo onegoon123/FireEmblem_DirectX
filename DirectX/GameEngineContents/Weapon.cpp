@@ -571,7 +571,7 @@ bool Weapon::IsUseWeapon(BattleClass _Class)
 	}
 	case BattleClass::PegasusKnight:
 	{
-		if (WeaponTypeValue == WeaponType::Sword) { return true; }
+		if (WeaponTypeValue == WeaponType::Lance) { return true; }
 		if (WeaponTypeValue == WeaponType::SwordReaver) { return true; }
 		return false;
 	}
