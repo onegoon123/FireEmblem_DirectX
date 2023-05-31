@@ -124,6 +124,8 @@ public:
 		DetectionRange = _Range;
 	}
 
+	bool IsEventMove = false;
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;

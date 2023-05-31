@@ -1,6 +1,6 @@
 #pragma once
 #include <GameEngineCore/GameEngineActor.h>
-// Ό³Έν :
+#include "DialogueSystem.h"
 
 class EventSystem : public GameEngineActor
 {
@@ -22,6 +22,7 @@ public:
 	std::shared_ptr<GameEngineUIRenderer> Portrait2 = nullptr;
 	std::shared_ptr<GameEngineUIRenderer> Portrait3 = nullptr;
 	std::shared_ptr<GameEngineUIRenderer> Portrait4 = nullptr;
+	std::shared_ptr<DialogueSystem> Dialogue;
 
 
 	void EventStart();
@@ -43,6 +44,7 @@ protected:
 
 private:
 	void FadeUpdate(float _DeltaTime);
+
 
 	struct EventData
 	{

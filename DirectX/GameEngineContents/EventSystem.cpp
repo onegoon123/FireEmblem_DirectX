@@ -2,12 +2,12 @@
 #include "EventSystem.h"
 #include <GameEngineCore/GameEngineUIRenderer.h>
 #include "ContentsEnum.h"
-EventSystem::EventSystem() 
+EventSystem::EventSystem()
 {
 	Events.reserve(100);
 }
 
-EventSystem::~EventSystem() 
+EventSystem::~EventSystem()
 {
 }
 
@@ -53,7 +53,7 @@ void EventSystem::Start()
 	Portrait1->GetTransform()->SetLocalScale({ 384, 320 });
 	Portrait1->GetTransform()->SetLocalPosition({ 0, -160 });
 	Portrait1->Off();
-	
+
 	Portrait2 = CreateComponent<GameEngineUIRenderer>(1);
 	Portrait2->GetTransform()->SetLocalScale({ 384, 320 });
 	Portrait2->Off();
@@ -66,6 +66,10 @@ void EventSystem::Start()
 	Portrait4->GetTransform()->SetLocalScale({ 384, 320 });
 	Portrait4->Off();
 
+	Dialogue = GetLevel()->CreateActor<DialogueSystem>();
+	Dialogue->GetTransform()->SetParent(GetTransform());
+	Dialogue->Off();
+
 	Off();
 }
 
@@ -75,25 +79,14 @@ void EventSystem::Update(float _DeltaTime)
 	if (true == IsEnd) { return; }
 
 	EventData& CurEvent = Events[EventIndex];
-	if (true == CurEvent.ButtonCheck)
-	{
-		if (true == GameEngineInput::IsDown("ButtonA"))
-		{
-			++EventIndex;
-			if (Events.size() <= EventIndex)
-			{
-				IsEnd = true;
-				return;
-			}
-			if (nullptr == Events[EventIndex].Function) { return; }
-			Events[EventIndex].Function();
-		}
-		return;
-	}
 
 	CurEvent.Timer -= _DeltaTime;
 	if (CurEvent.Timer < 0)
 	{
+		if (true == CurEvent.ButtonCheck && false == GameEngineInput::IsDown("ButtonA"))
+		{
+			return;
+		}
 		++EventIndex;
 		if (Events.size() <= EventIndex)
 		{

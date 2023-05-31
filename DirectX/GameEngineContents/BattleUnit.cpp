@@ -543,6 +543,9 @@ void BattleUnit::SetMoveDir(int2 _Dir)
 
 void BattleUnit::MoveEnd()
 {
-	SetIdle();
+	if (true == IsEventMove)
+	{
+		SetIdle();
+	}
 }
 

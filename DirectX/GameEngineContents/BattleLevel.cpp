@@ -89,6 +89,15 @@ void BattleLevel::LevelChangeStart()
 		{
 			GameEngineTexture::Load(File[i].GetFullPath());
 		}
+
+		Dir.MoveParent();
+		Dir.MoveParent();
+		Dir.Move("Event");
+		File = Dir.GetAllFile({ ".png", });
+		for (size_t i = 0; i < File.size(); i++)
+		{
+			GameEngineTexture::Load(File[i].GetFullPath());
+		}
 	}
 
 	OpeningEvent = CreateActor<EventSystem>();
