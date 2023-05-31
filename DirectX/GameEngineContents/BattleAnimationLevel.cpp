@@ -94,8 +94,10 @@ void BattleAnimationLevel::Start()
 {
 
 
-	GetMainCamera()->SetProjectionType(CameraType::Perspective);
+	GetMainCamera()->SetProjectionType(CameraType::Orthogonal);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -554.0f });
+	GetMainCamera()->SetSortType(RenderOrder::Unit, SortType::ZSort);
+	//GetMainCamera()->SetSortType(RenderOrder::Effect, SortType::None);
 	
 }
 

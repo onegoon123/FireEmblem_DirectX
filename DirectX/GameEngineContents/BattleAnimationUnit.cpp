@@ -70,11 +70,13 @@ void BattleAnimationUnit::SetAnimation(UnitIdentityCode _IdentityValue)
 void BattleAnimationUnit::Attack()
 {
 	CurAnimation->ChangeAnimation("Attack");
+	GetTransform()->SetLocalPosition({ 0, 0, -1 });
 }
 
 void BattleAnimationUnit::Critical()
 {
 	CurAnimation->ChangeAnimation("Critical");
+	GetTransform()->SetLocalPosition({ 0, 0, -1 });
 }
 
 void BattleAnimationUnit::Dodge()
@@ -125,6 +127,7 @@ void BattleAnimationUnit::Start()
 
 	EffectAnimation = CreateComponent<SpriteRenderer>(RenderOrder::Effect);
 	EffectAnimation->GetTransform()->SetLocalScale({ -960,640 });
+	EffectAnimation->GetTransform()->SetWorldPosition({ 0,0, -2});
 	EffectAnimation->CreateAnimation({ "Idle", "Effect_Hit.png", 8, 8 });
 
 	EffectAnimation->CreateAnimation({ .AnimationName = "Hit", .SpriteName = "Effect_Hit.png", .Start = 0, .End = 8, .Loop = false, .FrameTime = {.04f, .02f, .02f, .02f, .02f, .02f, .02f, .02f, .02f} });
@@ -732,6 +735,7 @@ void BattleAnimationUnit::AttackLoopEnd()
 
 void BattleAnimationUnit::AttackEnd()
 {
+	GetTransform()->SetLocalPosition({ 0, 0, 0 });
 	CurAnimation->ChangeAnimation("Idle");
 	Level->TurnEnd();
 }
