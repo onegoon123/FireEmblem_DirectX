@@ -46,6 +46,7 @@ void BattleLevel::MoveSearch()
 
 	std::queue<SearchData> Queue;
 	SearchData StartData = { SelectUnit->GetMapPos(), SelectUnit->GetMoveStat() };
+	BattleClass ClassValue = SelectUnit->GetUnitData().GetClassValue();
 	Queue.push(StartData);
 
 	for (int i = 0; i < IsMove.size(); i++)
@@ -82,8 +83,15 @@ void BattleLevel::MoveSearch()
 				continue;
 			}
 
+			if (ClassValue == BattleClass::PegasusKnight)
+			{
+				NextMove.MoveStat -= GetTerrainCostFly(NextMove.Pos);
+			}
+			else
+			{
+				NextMove.MoveStat -= GetTerrainCostFoot(NextMove.Pos);
+			}
 
-			NextMove.MoveStat -= GetTerrainCostFoot(NextMove.Pos);
 			if (NextMove.MoveStat < 0)
 			{
 				continue;
@@ -396,7 +404,7 @@ void BattleLevel::MoveCalculation()
 
 	int2 StartPos = SelectUnit->GetMapPos();
 	int2 TargetPos = MainCursor->WorldPos;
-
+	BattleClass ClassValue = SelectUnit->GetUnitData().GetClassValue();
 	if (true == IsMapOut(TargetPos))
 	{
 		return;
@@ -444,7 +452,14 @@ void BattleLevel::MoveCalculation()
 				return;
 			}
 
-			NextMove.MoveStat -= GetTerrainCostFoot(NextMove.Pos);
+			if (ClassValue == BattleClass::PegasusKnight)
+			{
+				NextMove.MoveStat -= GetTerrainCostFly(NextMove.Pos);
+			}
+			else
+			{
+				NextMove.MoveStat -= GetTerrainCostFoot(NextMove.Pos);
+			}
 			if (NextMove.MoveStat < 0)
 			{
 				continue;
@@ -727,7 +742,11 @@ int BattleLevel::GetTerrainCostFoot(int2 _Pos)
 	Terrain TerrainData = MainMap->TerrainData[_Pos.y][_Pos.x];
 	return BattleMap::GetTerrainCostFoot(TerrainData);
 }
-
+int BattleLevel::GetTerrainCostFly(int2 _Pos)
+{
+	Terrain TerrainData = MainMap->TerrainData[_Pos.y][_Pos.x];
+	return BattleMap::GetTerrainCostFly(TerrainData);
+}
 int BattleLevel::GetTerrainDodge(int2 _Pos)
 {
 	Terrain TerrainData = MainMap->TerrainData[_Pos.y][_Pos.x];

@@ -255,6 +255,7 @@ void BattleLevel::MoveStart()
 	SelectUnit->SetIsDie(false);
 
 	MoveSearch();	// 이동범위 탐색, 자동으로 공격범위도 탐색
+
 	Tiles->SetTile(IsMove, IsAttack);	// 이동 및 공격 범위를 타일로 표시
 
 	// Move State시 필요한 UI

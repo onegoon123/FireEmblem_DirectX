@@ -108,6 +108,18 @@ int BattleMap::GetTerrainCostFoot(Terrain _Value)
 	}
 }
 
+int BattleMap::GetTerrainCostFly(Terrain _Value)
+{
+	switch (_Value)
+	{
+	case Terrain::Door:
+	case Terrain::Wall:
+		return 99;
+	default:
+		return 1;
+	}
+}
+
 int BattleMap::GetTerrainDodge(Terrain _Value)
 {
 	switch (_Value)

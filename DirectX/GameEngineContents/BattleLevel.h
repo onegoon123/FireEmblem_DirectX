@@ -227,6 +227,7 @@ private:
 	Terrain GetTerrain(int2 _Pos);
 	// 지상유닛기준 지형에 대한 이동 코스트를 계산. 이동 불가능 지형은 99가 반환
 	int GetTerrainCostFoot(int2 _Pos);
+	int GetTerrainCostFly(int2 _Pos);
 	int GetTerrainDodge(int2 _Pos);
 	int GetTerrainDef(int2 _Pos);
 

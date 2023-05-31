@@ -29,6 +29,7 @@ public:
 	int2 MapScaleInt2 = { 15, 10 };
 
 	static int GetTerrainCostFoot(Terrain _Value);
+	static int GetTerrainCostFly(Terrain _Value);
 	static int GetTerrainDodge(Terrain _Value);
 	static int GetTerrainDef(Terrain _Value);
 
