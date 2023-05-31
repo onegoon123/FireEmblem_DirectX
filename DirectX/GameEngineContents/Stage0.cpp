@@ -41,7 +41,7 @@ void Stage0::StageSetting()
 		OpeningEvent->SetFadeIn(1.0f);
 		OpeningEvent->Dialogue->SetFadeIn(1.0f);
 		}
-	, true, 1.0f);
+	, false, 1.0f);
 
 
 	OpeningEvent->PushEvent([this] {

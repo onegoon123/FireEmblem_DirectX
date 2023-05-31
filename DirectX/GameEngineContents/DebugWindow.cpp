@@ -23,5 +23,6 @@ void DebugWindow::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime
 
 	if (nullptr == Cursor) { return; }
 	ImGui::Text(Cursor->WorldPos.ToString().data());
+	ImGui::Text((std::to_string(1 / _DeltaTime) + " fps").data());
 }
 
