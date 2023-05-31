@@ -739,7 +739,7 @@ void BattleLevel::EnemySelectUpdate(float _DeltaTime)
 	CameraUpdate(_DeltaTime);
 	static float EnemySelectTimer = 0;
 	EnemySelectTimer += _DeltaTime;
-	if (1 < EnemySelectTimer)
+	if (0.5f < EnemySelectTimer)
 	{
 		EnemySelectTimer = 0;
 		ChangeState(BattleState::EnemyMove);
