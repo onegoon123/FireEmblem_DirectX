@@ -75,15 +75,22 @@ void EventSystem::Start()
 
 void EventSystem::Update(float _DeltaTime)
 {
+	
 	FadeUpdate(_DeltaTime);
 	if (true == IsEnd) { return; }
+
+	if (GameEngineInput::IsDown("Start"))
+	{
+		SkipFunction();
+		IsEnd = true;
+	}
 
 	EventData& CurEvent = Events[EventIndex];
 
 	CurEvent.Timer -= _DeltaTime;
 	if (CurEvent.Timer < 0)
 	{
-		if (true == CurEvent.ButtonCheck && false == GameEngineInput::IsDown("ButtonA"))
+		if (true == CurEvent.ButtonCheck && false == GameEngineInput::IsDown("ButtonA") && false == GameEngineInput::IsDown("LeftClick"))
 		{
 			return;
 		}

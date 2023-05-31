@@ -23,7 +23,7 @@ public:
 	std::shared_ptr<GameEngineUIRenderer> Portrait3 = nullptr;
 	std::shared_ptr<GameEngineUIRenderer> Portrait4 = nullptr;
 	std::shared_ptr<DialogueSystem> Dialogue;
-
+	std::function<void()> SkipFunction;
 
 	void EventStart();
 	void PushEvent(std::function<void()> _Function, bool _ButtonCheck = false, float _Timer = 0.0f)

@@ -112,12 +112,12 @@ void FieldCommandUI::Update(float _DeltaTime)
 		return;
 	}
 
-	if (GameEngineInput::IsDown("Down") || (GameEngineInput::IsPress("Down") && PressOK) || GameEngineInput::IsUp("MiddleClick"))
+	if (GameEngineInput::IsDown("Down") || (GameEngineInput::IsPress("Down") && PressOK))
 	{
 		CursorTimer = 0;
 		if (CurrentCursor == CommandFunctions.size() - 1)
 		{
-			if (false == GameEngineInput::IsDown("Down") && false == GameEngineInput::IsUp("MiddleClick")) { return; }
+			if (false == GameEngineInput::IsDown("Down")) { return; }
 			CurrentCursor = 0;
 			SelectRender->GetTransform()->SetLocalPosition(StartSelectPos + float4::Down * (64.0f * CurrentCursor));
 			CursorPos = StartCursorPos;

@@ -111,6 +111,7 @@ void BattleLevel::LevelChangeStart()
 	for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
 	{
 		_Unit->SetTerrain(GetTerrain(_Unit->GetMapPos()));
+		_Unit->SetIsTurnEnd(false);
 	}
 	for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
 	{
@@ -263,7 +264,8 @@ std::shared_ptr<BattleUnit> BattleLevel::NewPlayerUnit(UnitIdentityCode _Code, i
 	{
 		if (_Unit->GetUnitData().GetIdentityCode() == _Code)
 		{
-			return nullptr;
+			_Unit->SetMapPos(_Pos);
+			return _Unit;
 		}
 	}
 	std::shared_ptr<BattleUnit> NewActor = CreateActor<BattleUnit>(RenderOrder::Unit);

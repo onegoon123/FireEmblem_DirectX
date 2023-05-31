@@ -27,7 +27,7 @@ void Stage0::StageSetting()
 
 	// 린
 	Unit_Lyn = NewPlayerUnit(UnitIdentityCode::Lyn, 1, { 14, 0 }, { ItemCode::IronSword, ItemCode::Vulnerary, ItemCode::Vulnerary });
-
+	
 	// 산적
 	NewEnemyUnit(UnitIdentityCode::Brigand, 1, { 2, 3 }, { ItemCode::IronAxe});
 	// 바타
@@ -111,5 +111,10 @@ void Stage0::StageSetting()
 		Unit_Lyn->SetMoveSpeed(15.0f);
 		}
 	, false, .0f);
+
+	OpeningEvent->SkipFunction = [this] {
+		Unit_Lyn->SetMapPos({ 13, 2 });
+		Unit_Lyn->SetMoveSpeed(15.0f);
+	};
 }
 
