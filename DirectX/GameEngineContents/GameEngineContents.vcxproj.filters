@@ -165,6 +165,9 @@
     <ClCompile Include="FEData.cpp">
       <Filter>System</Filter>
     </ClCompile>
+    <ClCompile Include="EventSystem.cpp">
+      <Filter>Event</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FECore.h" />
@@ -308,6 +311,9 @@
     <ClInclude Include="FEData.h">
       <Filter>System</Filter>
     </ClInclude>
+    <ClInclude Include="EventSystem.h">
+      <Filter>Event</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Levels">
@@ -351,6 +357,9 @@
     </Filter>
     <Filter Include="Levels\Stage">
       <UniqueIdentifier>{cfbdcba4-adfb-45c7-937f-9b690257739f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Event">
+      <UniqueIdentifier>{9e303086-c44f-44eb-b076-5482520234c4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

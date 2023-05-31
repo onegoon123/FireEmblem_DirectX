@@ -44,6 +44,16 @@ void UnitCommandUI::SetCommand(bool _IsAttackable, bool _IsCloseUnit, bool _IsIt
 	
 }
 
+void UnitCommandUI::SetConquer()
+{
+	CommandFunctions.clear();
+
+	CommandFunctions.push_back(std::bind(&BattleLevel::UnitCommand_Conquer, LevelPtr));// 대기 커맨드
+
+	WindowRender->SetFrame(0);
+
+}
+
 void UnitCommandUI::On()
 {
 	GameEngineActor::On();

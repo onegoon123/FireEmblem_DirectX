@@ -115,6 +115,14 @@ public:
 	bool GetIsCheckTile() { return IsCheckTile; }
 	// (적 전용) 공격범위 표시여부 지정
 	void SetIsCheckTile(bool _Value) { IsCheckTile = _Value; }
+	int GetDetectionRange()
+	{
+		return DetectionRange;
+	}
+	void SetDetectionRange(int _Range)
+	{
+		DetectionRange = _Range;
+	}
 
 protected:
 	void Start() override;
@@ -128,6 +136,7 @@ protected:
 private:
 	Unit UnitData;
 
+	int DetectionRange = 0;		// 적이 플레이어를 발견하는 범위 (0은 거리제한 X)
 	bool IsCheckTile = false;
 };
 

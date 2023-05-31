@@ -19,6 +19,7 @@ public:
 
 	void Setting(BattleLevel* _Level, std::shared_ptr<UICursor> _Cursor);
 	void SetCommand(bool _IsAttackable, bool _IsCloseUnit, bool _IsItem);
+	void SetConquer();	// 목표 점령시 나오는 커맨드
 
 	void On();
 	void Off();

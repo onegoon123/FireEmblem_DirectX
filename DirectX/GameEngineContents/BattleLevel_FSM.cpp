@@ -270,7 +270,7 @@ void BattleLevel::MoveStart()
 	ArrowPos.clear();
 	ArrowPos.push_back(SelectUnit->GetMapPos());	// 엑터 위치에서부터 화살표 시작
 	AddArrow(ArrowPos.front());
-	
+
 }
 
 void BattleLevel::MoveUpdate(float _DeltaTime)
@@ -374,6 +374,13 @@ void BattleLevel::UnitCommandStart()
 	}
 	Tiles->SetTileAttack(IsAttack);
 
+	if (ClearTarget == BattleClearTarget::Conquer && SelectUnit->GetMapPos() == ConquerPos)
+	{
+		BattleUI->UnitCommandOn();
+		BattleUI->UnitCommandConquer();
+		return;
+	}
+
 	bool IsAttackable = false;
 	bool IsCloseUnit = false;
 	bool IsItem = false;
@@ -443,9 +450,10 @@ void BattleLevel::UnitCommandStart()
 	// 커맨드 UI 켜기
 	BattleUI->UnitCommandOn();
 	BattleUI->UnitCommandSet(IsAttackable, IsCloseUnit, IsItem);
+
 	std::shared_ptr<DebugWindow> Window = GameEngineGUI::FindGUIWindowConvert<DebugWindow>("DebugWindow");
 	Window->Text = "";
-	if (true == IsAttackable) 
+	if (true == IsAttackable)
 	{
 		Window->Text += "공격\n";
 	}
@@ -574,7 +582,7 @@ void BattleLevel::BattleReturnUpdate(float _DeltaTime)
 		}
 		return;
 	}
-	
+
 	for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
 	{
 		_Unit->GetRenderer()->SetBlurLevel(2.5f - ReturnTimer * 5);
@@ -618,6 +626,7 @@ void BattleLevel::BattleReturnEnd()
 
 void BattleLevel::EnemyPhaseStart()
 {
+	
 	UnitCommand::PhaseStart(Faction::Enemy);
 
 	IsSkip = false;
@@ -628,6 +637,20 @@ void BattleLevel::EnemyPhaseStart()
 		_Unit->SetIsTurnEnd(false);
 		_Unit->SetIdle();
 	}
+
+	bool AliveUnit = false;
+	for (std::shared_ptr<BattleUnit> _Enemy : EnemyUnits)
+	{
+		if (true == _Enemy->GetIsDie()) { continue; }
+		AliveUnit = true;
+		break;
+	}
+	if (false == AliveUnit)
+	{
+		ChangeState(BattleState::PlayerPhase);
+		return;
+	}
+
 	MainCursor->Off();
 	Tiles->EnemyTileClear();
 
@@ -676,16 +699,31 @@ void BattleLevel::EnemySelectStart()
 	for (std::shared_ptr<BattleUnit> _Enemy : EnemyUnits)
 	{
 		if (true == _Enemy->GetIsDie()) { continue; }
-		if (false == _Enemy->GetIsTurnEnd())
-		{
-			SelectUnit = _Enemy;
-			SelectUnit->Select();
-			MainCursor->SetCursorPos(_Enemy->GetMapPos());
-			CameraSetPos();
-			CameraUnit->SetMoveSpeed(5.0f);
+		if (true == _Enemy->GetIsTurnEnd()) { continue; }
 
-			return;
+		if (_Enemy->GetDetectionRange() != 0)
+		{
+			bool Check = false;
+			for (std::shared_ptr<BattleUnit> _Player : PlayerUnits)
+			{
+				if (true == _Player->GetIsDie()) { continue; }
+				int Distance = _Enemy->GetMapPos().GetDistance(_Player->GetMapPos());
+				if (Distance <= _Enemy->GetDetectionRange())
+				{
+					Check = true;
+					break;
+				}
+			}
+			if (false == Check) { continue; }
 		}
+
+		SelectUnit = _Enemy;
+		SelectUnit->Select();
+		MainCursor->SetCursorPos(_Enemy->GetMapPos());
+		CameraSetPos();
+		CameraUnit->SetMoveSpeed(5.0f);
+
+		return;
 	}
 	ChangeState(BattleState::PlayerPhase);
 }
@@ -950,6 +988,7 @@ void BattleLevel::InformationStart()
 {
 	Tiles->Clear();
 	BattleUI->SetFadeIn(0.1f);
+	MainCursor->Off();
 	InfoUI->On();
 	InfoUI->SetUnit(SelectUnit);
 }
@@ -961,6 +1000,7 @@ void BattleLevel::InformationUpdate(float _DeltaTime)
 void BattleLevel::InformationEnd()
 {
 	BattleUI->SetFadeIn(0.1f);
+	MainCursor->On();
 	InfoUI->Off();
 }
 
@@ -1308,16 +1348,16 @@ void BattleLevel::TimeStoneUpdate(float _DeltaTime)
 				break;
 			}
 			}
-			
+
 			RIter++;
-			
+
 
 			return;
 		}
 		if (GameEngineInput::IsDown("Down"))
 		{
-			if (RIter == Command.rbegin()) { 
-				return; 
+			if (RIter == Command.rbegin()) {
+				return;
 			}
 			RIter--;
 			RewindNum--;
@@ -1542,7 +1582,7 @@ void BattleLevel::TimeStoneUpdate(float _DeltaTime)
 			Window->Text += _Command.Record;
 			if (RewindNum == --i)
 			{
-			Window->Text += " <";
+				Window->Text += " <";
 			}
 			Window->Text += '\n';
 		}
@@ -1582,7 +1622,7 @@ bool BattleLevel::GameOverCheck()
 		ChangeState(BattleState::TimeStone);
 		return true;
 	}
-
+	return false;
 	// 적 유닛이 모두 죽었는지 체크
 	IsAliveUnit = false;
 	for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)

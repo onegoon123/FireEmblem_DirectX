@@ -54,3 +54,8 @@ void BattleLevel::UnitCommand_ItemUse(std::list<std::shared_ptr<Item>>::iterator
 	SelectUnit->SetIsTurnEnd(true);
 	ChangeState(BattleState::Select);
 }
+
+void BattleLevel::UnitCommand_Conquer()
+{
+	BattleUI->AllOff();
+}

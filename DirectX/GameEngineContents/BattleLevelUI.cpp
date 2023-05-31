@@ -118,6 +118,19 @@ void BattleLevelUI::UnitCommandSet(bool _IsAttackable, bool _IsCloseUnit, bool _
 	UI_UnitCommand->SetCommand(_IsAttackable, _IsCloseUnit, _IsItem);
 }
 
+void BattleLevelUI::UnitCommandConquer()
+{
+	UI_Select->Off();
+	UI_UnitCommand->Off();
+	UI_Attack->Off();
+	UI_Item->Off();
+	UI_FieldCommand->Off();
+	UI_Phase->Off();
+
+	UI_UnitCommand->On();
+	UI_UnitCommand->SetConquer();
+}
+
 void BattleLevelUI::FieldCommandOn()
 {
 	UI_Select->Off();

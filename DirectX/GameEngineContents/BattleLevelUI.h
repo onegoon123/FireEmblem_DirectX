@@ -24,6 +24,7 @@ public:
 	void SetTerrain(Terrain _Value);
 	void UnitCommandOn();
 	void UnitCommandSet(bool _IsAttackable, bool _IsCloseUnit, bool _IsItem);
+	void UnitCommandConquer();
 	void FieldCommandOn();
 	void AttackOn(std::shared_ptr<class BattleUnit> _SelectUnit, std::list<std::shared_ptr<BattleUnit>>& _TargetUnits);
 	void ItemOn(std::shared_ptr<BattleUnit> _SelectUnit);

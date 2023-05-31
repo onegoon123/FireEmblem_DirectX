@@ -243,9 +243,15 @@ std::shared_ptr<BattleUnit> BattleLevel::LoadPlayerUnit(const Unit& _Unit)
 	return NewActor;
 }
 
-
 std::shared_ptr<BattleUnit> BattleLevel::NewPlayerUnit(UnitIdentityCode _Code, int _Level, int2 _Pos, std::vector<ItemCode> _Items)
 {
+	for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
+	{
+		if (_Unit->GetUnitData().GetIdentityCode() == _Code)
+		{
+			return nullptr;
+		}
+	}
 	std::shared_ptr<BattleUnit> NewActor = CreateActor<BattleUnit>(RenderOrder::Unit);
 	NewActor->SetUnitCode(_Code);
 	NewActor->GetUnitData().LevelUp(_Level - 1);

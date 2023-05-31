@@ -34,14 +34,30 @@ protected:
 	std::vector<int2> StartPos;
 	void LoadPlayerUnits(std::list<Unit>& _Units);
 	std::shared_ptr<BattleUnit> LoadPlayerUnit(const Unit& _Unit);
+
 	std::shared_ptr<BattleUnit> NewPlayerUnit(UnitIdentityCode _Code, int _Level, int2 _Pos, std::vector<ItemCode> _Items);
+
 	std::shared_ptr<BattleUnit> NewEnemyUnit(UnitIdentityCode _Code, int _Level, int2 _Pos, std::vector<ItemCode> _Items);
+
+	enum class BattleClearTarget
+	{
+		AllKill,	// 적 전멸
+		Conquer,	// 제압
+		Survival,	// 생존
+		BossKill,	// 보스처치
+	};
+
+	BattleClearTarget ClearTarget = BattleClearTarget::AllKill;
+	int2 ConquerPos = { -1, -1 };
+
 private:
 
 	// State
 	enum class BattleState
 	{
 		None,
+		Opening,		// 시작시 연출단계
+
 		PlayerPhase,	// 플레이어 턴 시작
 		Select,		// 커서로 유닛을 선택하는 단계
 		Move,		// 선택한 유닛으로 이동할 위치를 정하는 단계
@@ -65,9 +81,6 @@ private:
 	BattleState CurState = BattleState::None;	// 스태이트
 	std::function<void(float)> StateUpdate = nullptr;
 	std::function<void()> StateEnd = nullptr;
-	//void (BattleLevel::* StateUpdate)(float) = nullptr;		// 스테이트 업데이트
-	//void (BattleLevel::* StateEnd)() = nullptr;		// 스테이트 엔드
-
 
 	// Actor
 	std::shared_ptr<class GameEngineCamera>	MainCamera = nullptr;
@@ -241,6 +254,7 @@ public:
 	void UnitCommand_CommandCancel();
 	void UnitCommand_TargetAttack(std::shared_ptr<BattleUnit> _Target);
 	void UnitCommand_ItemUse(std::list<std::shared_ptr<class Item>>::iterator& _ItemIter);
+	void UnitCommand_Conquer();
 private:
 
 #pragma endregion

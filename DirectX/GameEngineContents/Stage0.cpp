@@ -22,6 +22,8 @@ Stage0::~Stage0()
 void Stage0::StageSetting()
 {
 	SetStage(0);
+	ClearTarget = BattleClearTarget::Conquer;
+	ConquerPos = { 3, 7 };
 
 	// 린
 	NewPlayerUnit(UnitIdentityCode::Lyn, 1, { 13, 2 }, { ItemCode::IronSword, ItemCode::Vulnerary, ItemCode::Vulnerary });
@@ -29,7 +31,7 @@ void Stage0::StageSetting()
 	// 산적
 	NewEnemyUnit(UnitIdentityCode::Brigand, 1, { 2, 3 }, { ItemCode::IronAxe});
 	// 바타
-	NewEnemyUnit(UnitIdentityCode::Brigand, 2, { 3, 7 }, { ItemCode::IronAxe});
+	NewEnemyUnit(UnitIdentityCode::Brigand, 1, { 3, 7 }, { ItemCode::IronAxe})->SetDetectionRange(1);
 
 }
 
