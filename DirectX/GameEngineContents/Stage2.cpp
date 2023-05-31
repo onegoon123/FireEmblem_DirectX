@@ -6,6 +6,14 @@ Stage2::Stage2()
 	StartPos.push_back({ 0, 6 });
 	StartPos.push_back({ 1, 4 });
 	StartPos.push_back({ 1, 6 });
+
+	StartPos.push_back({ 0, 0 });
+	StartPos.push_back({ 0, 0 });
+	StartPos.push_back({ 0, 0 });
+	StartPos.push_back({ 0, 0 });
+	StartPos.push_back({ 0, 0 });
+	StartPos.push_back({ 0, 0 });
+	StartPos.push_back({ 0, 0 });
 }
 
 Stage2::~Stage2()

@@ -7,6 +7,14 @@ Stage1::Stage1()
 	StartPos.push_back({ 0, 2 });
 	StartPos.push_back({ 0, 4 });
 	StartPos.push_back({ 0, 0 });
+
+	StartPos.push_back({ 0, 0 });
+	StartPos.push_back({ 0, 0 });
+	StartPos.push_back({ 0, 0 });
+	StartPos.push_back({ 0, 0 });
+	StartPos.push_back({ 0, 0 });
+	StartPos.push_back({ 0, 0 });
+	StartPos.push_back({ 0, 0 });
 }
 
 Stage1::~Stage1()

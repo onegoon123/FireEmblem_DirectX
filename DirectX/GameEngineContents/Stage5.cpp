@@ -9,6 +9,14 @@ Stage5::Stage5()
 	StartPos.push_back({ 2, 2 });
 	StartPos.push_back({ 1, 3 });
 	StartPos.push_back({ 3, 1 });
+
+	StartPos.push_back({ 0, 0 });
+	StartPos.push_back({ 0, 0 });
+	StartPos.push_back({ 0, 0 });
+	StartPos.push_back({ 0, 0 });
+	StartPos.push_back({ 0, 0 });
+	StartPos.push_back({ 0, 0 });
+	StartPos.push_back({ 0, 0 });
 }
 
 Stage5::~Stage5()

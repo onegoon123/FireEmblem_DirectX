@@ -8,6 +8,14 @@ Stage4::Stage4()
 	StartPos.push_back({ 9, 6 });
 	StartPos.push_back({ 6, 7 });
 	StartPos.push_back({ 8, 7 });
+
+	StartPos.push_back({ 0, 0 });
+	StartPos.push_back({ 0, 0 });
+	StartPos.push_back({ 0, 0 });
+	StartPos.push_back({ 0, 0 });
+	StartPos.push_back({ 0, 0 });
+	StartPos.push_back({ 0, 0 });
+	StartPos.push_back({ 0, 0 });
 }
 
 Stage4::~Stage4()

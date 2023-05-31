@@ -7,6 +7,14 @@ Stage3::Stage3()
 	StartPos.push_back({ 2, 0 });
 	StartPos.push_back({ 4, 1 });
 	StartPos.push_back({ 2, 2 });
+
+	StartPos.push_back({ 0, 0 });
+	StartPos.push_back({ 0, 0 });
+	StartPos.push_back({ 0, 0 });
+	StartPos.push_back({ 0, 0 });
+	StartPos.push_back({ 0, 0 });
+	StartPos.push_back({ 0, 0 });
+	StartPos.push_back({ 0, 0 });
 }
 
 Stage3::~Stage3()
