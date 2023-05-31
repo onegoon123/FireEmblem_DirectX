@@ -33,9 +33,9 @@ protected:
 
 	std::vector<int2> StartPos;
 	void LoadPlayerUnits(std::list<Unit>& _Units);
-	std::shared_ptr <BattleUnit> LoadPlayerUnit(const Unit& _Unit);
-	void PushPlayerUnit(std::shared_ptr <BattleUnit> _Unit);
-	void PushEnemyUnit(std::shared_ptr <BattleUnit> _Unit);
+	std::shared_ptr<BattleUnit> LoadPlayerUnit(const Unit& _Unit);
+	std::shared_ptr<BattleUnit> NewPlayerUnit(UnitIdentityCode _Code, int _Level, int2 _Pos, std::vector<ItemCode> _Items);
+	std::shared_ptr<BattleUnit> NewEnemyUnit(UnitIdentityCode _Code, int _Level, int2 _Pos, std::vector<ItemCode> _Items);
 private:
 
 	// State
@@ -269,6 +269,7 @@ private:
 
 
 	// 커서에 따른 카메라 조절
+	void CameraSetting(int2 _Value);
 	void CameraMove(int2 _Value);
 	void CameraSetPos();
 	void CameraUpdate(float _DeltaTime);

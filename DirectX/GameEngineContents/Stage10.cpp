@@ -25,29 +25,6 @@ void Stage10::StageSetting()
 	StartPos.push_back({ 1, 15 });
 	StartPos.push_back({ 1, 15 });
 
-	LoadPlayerUnits(FEData::GetPlayerUnits());
 
-	std::shared_ptr<BattleUnit> NewActor;
-
-	NewActor = CreateActor<BattleUnit>(RenderOrder::Unit);
-	NewActor->SetUnitCode(UnitIdentityCode::Brigand);
-	NewActor->NewItem(ItemCode::IronAxe);
-	NewActor->GetUnitData().LevelUp(0);
-	NewActor->SetMapPos({ 3, 5 });
-	PushEnemyUnit(NewActor);
-
-	NewActor = CreateActor<BattleUnit>(RenderOrder::Unit);
-	NewActor->SetUnitCode(UnitIdentityCode::Brigand);
-	NewActor->NewItem(ItemCode::IronAxe);
-	NewActor->GetUnitData().LevelUp(0);
-	NewActor->SetMapPos({ 5, 5 });
-	PushEnemyUnit(NewActor);
-
-	NewActor = CreateActor<BattleUnit>(RenderOrder::Unit);
-	NewActor->SetUnitCode(UnitIdentityCode::Brigand);
-	NewActor->NewItem(ItemCode::IronAxe);
-	NewActor->GetUnitData().LevelUp(0);
-	NewActor->SetMapPos({ 12, 15 });
-	PushEnemyUnit(NewActor);
 }
 

@@ -14,6 +14,7 @@ DebugWindow::~DebugWindow()
 void DebugWindow::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime)
 {
 	if (Text == "") { return; }
+	ImGui::Text(GameEngineString::AnsiToUTF8("조작법\n 이동 : 방향키\n 확인 : z  취소 : x  다음유닛 : a  유닛정보 : s\n").c_str());
 	ImGui::Text(GameEngineString::AnsiToUTF8(Text).c_str());
 	
 	float4 MousePos = GameEngineInput::GetMousePosition();

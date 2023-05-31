@@ -3,6 +3,16 @@
 
 Stage0::Stage0() 
 {
+	StartPos.push_back({ 13, 2 });
+	StartPos.push_back({ 13, 4 });
+	StartPos.push_back({ 14, 3 });
+	StartPos.push_back({ 13, 0 });
+	StartPos.push_back({ 13, 1 });
+	StartPos.push_back({ 14, 1 });
+	StartPos.push_back({ 14, 2 });
+	StartPos.push_back({ 12, 2 });
+	StartPos.push_back({ 13, 3 });
+	StartPos.push_back({ 14, 4 });
 }
 
 Stage0::~Stage0() 
@@ -13,31 +23,13 @@ void Stage0::StageSetting()
 {
 	SetStage(0);
 
-	std::shared_ptr<BattleUnit> NewActor;
-
 	// 린
-	NewActor = CreateActor<BattleUnit>(RenderOrder::Unit);
-	NewActor->SetUnitCode(UnitIdentityCode::Lyn);
-	NewActor->SetMapPos({ 13, 2 });
-	NewActor->NewItem(ItemCode::IronSword);
-	NewActor->NewItem(ItemCode::Vulnerary);
-	NewActor->NewItem(ItemCode::Vulnerary);
-	PushPlayerUnit(NewActor);
+	NewPlayerUnit(UnitIdentityCode::Lyn, 1, { 13, 2 }, { ItemCode::IronSword, ItemCode::Vulnerary, ItemCode::Vulnerary });
 
 	// 산적
-	NewActor = CreateActor<BattleUnit>(RenderOrder::Unit);
-	NewActor->SetUnitCode(UnitIdentityCode::Brigand);
-	NewActor->NewItem(ItemCode::IronAxe);
-	NewActor->SetMapPos({ 2, 3 });
-	PushEnemyUnit(NewActor);
-
+	NewEnemyUnit(UnitIdentityCode::Brigand, 1, { 2, 3 }, { ItemCode::IronAxe});
 	// 바타
-	NewActor = CreateActor<BattleUnit>(RenderOrder::Unit);
-	NewActor->SetUnitCode(UnitIdentityCode::Brigand);
-	NewActor->NewItem(ItemCode::IronAxe);
-	NewActor->GetUnitData().LevelUp();
-	NewActor->SetMapPos({ 3, 7 });
-	PushEnemyUnit(NewActor);
+	NewEnemyUnit(UnitIdentityCode::Brigand, 2, { 3, 7 }, { ItemCode::IronAxe});
 
 }
 

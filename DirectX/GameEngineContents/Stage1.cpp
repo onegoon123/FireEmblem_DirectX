@@ -3,6 +3,10 @@
 
 Stage1::Stage1()
 {
+	StartPos.push_back({ 2, 1 });
+	StartPos.push_back({ 0, 2 });
+	StartPos.push_back({ 0, 4 });
+	StartPos.push_back({ 0, 0 });
 }
 
 Stage1::~Stage1()
@@ -13,88 +17,17 @@ void Stage1::StageSetting()
 {
 	SetStage(1);
 
-	std::shared_ptr<BattleUnit> NewActor;
-
-	// 린
-	NewActor = CreateActor<BattleUnit>(RenderOrder::Unit);
-	NewActor->SetUnitCode(UnitIdentityCode::Lyn);
-	NewActor->GetUnitData().LevelUp();
-	NewActor->SetMapPos({ 2, 1 });
-	NewActor->NewItem(ItemCode::IronSword);
-	NewActor->NewItem(ItemCode::Vulnerary);
-	NewActor->NewItem(ItemCode::Vulnerary);
-	PushPlayerUnit(NewActor);
-
-	// 켄트
-	NewActor = CreateActor<BattleUnit>(RenderOrder::Unit);
-	NewActor->SetUnitCode(UnitIdentityCode::Kent);
-	NewActor->SetMapPos({ 0, 2 });
-	NewActor->NewItem(ItemCode::IronSword);
-	NewActor->NewItem(ItemCode::IronLance);
-	NewActor->NewItem(ItemCode::Vulnerary);
-	PushPlayerUnit(NewActor);
-
-	// 세인
-	NewActor = CreateActor<BattleUnit>(RenderOrder::Unit);
-	NewActor->SetUnitCode(UnitIdentityCode::Sain);
-	NewActor->SetMapPos({ 0, 4 });
-	NewActor->NewItem(ItemCode::IronLance);
-	PushPlayerUnit(NewActor);
-
-	NewActor = CreateActor<BattleUnit>(RenderOrder::Unit);
-	NewActor->SetUnitCode(UnitIdentityCode::Florina);
-	NewActor->SetMapPos({ 0, 4 });
-	NewActor->NewItem(ItemCode::IronLance);
-	PushPlayerUnit(NewActor);
-
-	NewActor = CreateActor<BattleUnit>(RenderOrder::Unit);
-	NewActor->SetUnitCode(UnitIdentityCode::Erk);
-	NewActor->SetMapPos({ 0, 5 });
-	NewActor->NewItem(ItemCode::IronLance);
-	PushPlayerUnit(NewActor);
-
-	NewActor = CreateActor<BattleUnit>(RenderOrder::Unit);
-	NewActor->SetUnitCode(UnitIdentityCode::Matthew);
-	NewActor->SetMapPos({ 1, 5 });
-	NewActor->NewItem(ItemCode::KillingSword);
-	PushPlayerUnit(NewActor);
+	// 켄트, 세인
+	NewPlayerUnit(UnitIdentityCode::Kent, 1, { 0, 2 }, { ItemCode::IronSword, ItemCode::IronLance, ItemCode::Vulnerary });
+	NewPlayerUnit(UnitIdentityCode::Sain, 1, { 0, 4 }, { ItemCode::IronLance });
 
 	// 산적
-	NewActor = CreateActor<BattleUnit>(RenderOrder::Unit);
-	NewActor->SetUnitCode(UnitIdentityCode::Brigand);
-	NewActor->NewItem(ItemCode::IronAxe);
-	NewActor->SetMapPos({ 4, 3 });
-	PushEnemyUnit(NewActor);
-
-	// 산적
-	NewActor = CreateActor<BattleUnit>(RenderOrder::Unit);
-	NewActor->SetUnitCode(UnitIdentityCode::Brigand);
-	NewActor->NewItem(ItemCode::IronAxe);
-	NewActor->SetMapPos({ 9, 0 });
-	PushEnemyUnit(NewActor);
-
-	// 산적
-	NewActor = CreateActor<BattleUnit>(RenderOrder::Unit);
-	NewActor->SetUnitCode(UnitIdentityCode::Brigand);
-	NewActor->NewItem(ItemCode::IronAxe);
-	NewActor->SetMapPos({ 13, 4 });
-	NewActor->GetUnitData().LevelUp();
-	PushEnemyUnit(NewActor);
-
-	// 산적
-	NewActor = CreateActor<BattleUnit>(RenderOrder::Unit);
-	NewActor->SetUnitCode(UnitIdentityCode::Brigand);
-	NewActor->NewItem(ItemCode::IronAxe);
-	NewActor->SetMapPos({ 12, 8 });
-	NewActor->GetUnitData().LevelUp();
-	PushEnemyUnit(NewActor);
-
+	NewEnemyUnit(UnitIdentityCode::Brigand, 1, { 4, 3 }, { ItemCode::IronAxe });
+	NewEnemyUnit(UnitIdentityCode::Brigand, 1, { 9, 0 }, { ItemCode::IronAxe });
+	NewEnemyUnit(UnitIdentityCode::Brigand, 2, { 13, 4 }, { ItemCode::IronAxe });
+	NewEnemyUnit(UnitIdentityCode::Brigand, 2, { 12, 8 }, { ItemCode::IronAxe });
 	// 주그
-	NewActor = CreateActor<BattleUnit>(RenderOrder::Unit);
-	NewActor->SetUnitCode(UnitIdentityCode::Brigand);
-	NewActor->NewItem(ItemCode::IronAxe);
-	NewActor->SetMapPos({ 13, 8 });
-	NewActor->GetUnitData().LevelUp(3);
-	PushEnemyUnit(NewActor);
+	NewEnemyUnit(UnitIdentityCode::Brigand, 4, { 12, 8 }, { ItemCode::IronAxe });
+
 }
 

@@ -3,6 +3,9 @@
 
 Stage2::Stage2()
 {
+	StartPos.push_back({ 0, 6 });
+	StartPos.push_back({ 1, 4 });
+	StartPos.push_back({ 1, 6 });
 }
 
 Stage2::~Stage2()
@@ -12,25 +15,15 @@ Stage2::~Stage2()
 void Stage2::StageSetting()
 {
 	SetStage(2);
-	std::shared_ptr<BattleUnit> NewActor;
 
-	NewActor = CreateActor<BattleUnit>(RenderOrder::Unit);
-	NewActor->SetUnitCode(UnitIdentityCode::Lyn);
-	NewActor->GetUnitData().LevelUp(0);
-	NewActor->SetMapPos({ 1, 4 });
-	NewActor->NewItem(ItemCode::IronSword);
-	NewActor->NewItem(ItemCode::ManiKatti);
-	PushPlayerUnit(NewActor);
-
-
-	NewActor = CreateActor<BattleUnit>(RenderOrder::Unit);
-	NewActor->SetUnitCode(UnitIdentityCode::Brigand);
-	NewActor->NewItem(ItemCode::IronAxe);
-	NewActor->NewItem(ItemCode::HandAxe);
-	NewActor->GetUnitData().LevelUp(0);
-	NewActor->SetMapPos({ 7, 3 });
-	PushEnemyUnit(NewActor);
-
+	// 산적
+	NewEnemyUnit(UnitIdentityCode::Brigand, 1, { 7, 9 }, { ItemCode::IronAxe });
+	NewEnemyUnit(UnitIdentityCode::Brigand, 1, { 7, 0 }, { ItemCode::IronAxe });
+	NewEnemyUnit(UnitIdentityCode::Brigand, 1, { 11, 0 }, { ItemCode::IronAxe });
+	NewEnemyUnit(UnitIdentityCode::Brigand, 2, { 13, 1 }, { ItemCode::IronAxe });
+	NewEnemyUnit(UnitIdentityCode::Brigand, 2, { 11, 6 }, { ItemCode::IronAxe });
+	// 바타
+	NewEnemyUnit(UnitIdentityCode::Mercenary, 3, { 11, 8 }, { ItemCode::IronSword, ItemCode::Vulnerary });
 
 }
 

@@ -90,9 +90,12 @@ void BattleLevel::LevelChangeStart()
 		}
 	}
 
+	LoadPlayerUnits(FEData::GetPlayerUnits()); 
 	StageSetting();
-	//LoadPlayerUnits(FEData::GetPlayerUnits());
-
+	if (PlayerUnits.size() != 0)
+	{
+		CameraSetting((*PlayerUnits.front()).GetMapPos());
+	}
 	for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
 	{
 		_Unit->SetTerrain(GetTerrain(_Unit->GetMapPos()));
@@ -126,6 +129,7 @@ void BattleLevel::LevelChangeStart()
 	{
 		IsAttack[i].resize(MainMap->MapScaleInt2.x);
 	}
+
 
 	std::shared_ptr<DebugWindow> Window = GameEngineGUI::FindGUIWindowConvert<DebugWindow>("DebugWindow");
 	Window->Cursor = MainCursor;
@@ -226,7 +230,7 @@ void BattleLevel::LoadPlayerUnits(std::list<Unit>& _Units)
 		std::shared_ptr<BattleUnit> NewActor = CreateActor<BattleUnit>(RenderOrder::Unit);
 		NewActor->LoadUnitData(*UnitIter);
 		NewActor->SetMapPos(StartPos[i]);
-		PushPlayerUnit(NewActor);
+		PlayerUnits.push_back(NewActor);
 		i++;
 	}
 }
@@ -239,14 +243,95 @@ std::shared_ptr<BattleUnit> BattleLevel::LoadPlayerUnit(const Unit& _Unit)
 	return NewActor;
 }
 
-void BattleLevel::PushPlayerUnit(std::shared_ptr<BattleUnit> _Unit)
+
+std::shared_ptr<BattleUnit> BattleLevel::NewPlayerUnit(UnitIdentityCode _Code, int _Level, int2 _Pos, std::vector<ItemCode> _Items)
 {
-	PlayerUnits.push_back(_Unit);
+	std::shared_ptr<BattleUnit> NewActor = CreateActor<BattleUnit>(RenderOrder::Unit);
+	NewActor->SetUnitCode(_Code);
+	NewActor->GetUnitData().LevelUp(_Level - 1);
+	NewActor->SetMapPos(_Pos);
+	for (int i = 0; i < _Items.size(); i++)
+	{
+		NewActor->NewItem(_Items[i]);
+	}
+	PlayerUnits.push_back(NewActor);
+	return NewActor;
 }
 
-void BattleLevel::PushEnemyUnit(std::shared_ptr<BattleUnit> _Unit)
+std::shared_ptr<BattleUnit> BattleLevel::NewEnemyUnit(UnitIdentityCode _Code, int _Level, int2 _Pos, std::vector<ItemCode> _Items)
 {
-	EnemyUnits.push_back(_Unit);
+	std::shared_ptr<BattleUnit> NewActor = CreateActor<BattleUnit>(RenderOrder::Unit);
+	NewActor->SetUnitCode(_Code);
+	NewActor->GetUnitData().LevelUp(_Level - 1);
+	NewActor->SetMapPos(_Pos);
+	for (int i = 0; i < _Items.size(); i++)
+	{
+		NewActor->NewItem(_Items[i]);
+	}
+	EnemyUnits.push_back(NewActor);
+	return NewActor;
+}
+
+
+void BattleLevel::CameraSetting(int2 _Value)
+{
+	int2 CursorPos = _Value;
+	int2 MoveValue = int2::Zero;
+
+	bool Check = true;
+	while (true == Check)
+	{
+		Check = false;
+		if (CursorPos.x < 2)
+		{
+			Check = true;
+			CursorPos.x += 1;
+			MoveValue += int2::Left;
+		}
+		else if (12 < CursorPos.x)
+		{
+			Check = true;
+			// 오른쪽으로 이동
+			CursorPos.x -= 1;
+			MoveValue += int2::Right;
+		}
+		if (CursorPos.y < 2)
+		{
+			Check = true;
+			// 아래로 이동
+			CursorPos.y += 1;
+			MoveValue += int2::Down;
+		}
+		else if (7 < CursorPos.y)
+		{
+			Check = true;
+			// 위로 이동
+			CursorPos.y -= 1;
+			MoveValue += int2::Up;
+		}
+	}
+
+	int2 CameraPos = CameraUnit->GetMapPos() + MoveValue;
+
+	if (CameraPos.x < 0)
+	{
+		CameraPos.x = 0;
+	}
+	else if (MainMap->MapScaleInt2.x < CameraPos.x + 15)
+	{
+		CameraPos.x = MainMap->MapScaleInt2.x - 15;
+	}
+	if (CameraPos.y < 0)
+	{
+		CameraPos.y = 0;
+	}
+	if (MainMap->MapScaleInt2.y < CameraPos.y + 10)
+	{
+		CameraPos.y = MainMap->MapScaleInt2.y - 10;
+	}
+
+	CameraUnit->SetMapPos(CameraPos);
+	MainCamera->GetTransform()->SetLocalPosition(CameraUnit->GetTransform()->GetLocalPosition() + float4(448, 288, -554.0f));
 }
 
 void BattleLevel::CameraMove(int2 _Value)
