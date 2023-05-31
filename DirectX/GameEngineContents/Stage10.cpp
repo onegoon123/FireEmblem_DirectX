@@ -3,16 +3,7 @@
 #include "FEData.h"
 Stage10::Stage10()
 {
-}
-
-Stage10::~Stage10()
-{
-}
-
-void Stage10::StageSetting()
-{
-	SetStage(10);
-
+	// юс╫ц
 	StartPos.push_back({ 2, 15 });
 	StartPos.push_back({ 3, 15 });
 	StartPos.push_back({ 2, 14 });
@@ -25,6 +16,16 @@ void Stage10::StageSetting()
 	StartPos.push_back({ 1, 15 });
 	StartPos.push_back({ 1, 15 });
 
+
+}
+
+Stage10::~Stage10()
+{
+}
+
+void Stage10::StageSetting()
+{
+	SetStage(10);
 
 }
 
