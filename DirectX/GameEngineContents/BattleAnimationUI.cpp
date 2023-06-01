@@ -5,6 +5,7 @@
 #include "Unit.h"
 #include "NumberActor.h"
 #include "BattleHPBar.h"
+#include "EXPBar.h"
 BattleAnimationUI::BattleAnimationUI() 
 {
 }
@@ -106,6 +107,13 @@ void BattleAnimationUI::SetDamage(Unit& _Unit)
 		Number_EnemyHP->SetValueLerp(_Unit.GetHP());
 		EnemyHPBar->SetHPAnimation(_Unit.GetHP());
 	}
+}
+
+void BattleAnimationUI::SetEXP(int _Before, int _Get)
+{
+	EXPUI->SetEXP(_Before);
+	EXPUI->AddEXP(_Get);
+	EXPUI->On();
 }
 
 bool BattleAnimationUI::IsTurnEnd()
@@ -217,6 +225,12 @@ void BattleAnimationUI::Start()
 	EnemyTriangle->ChangeAnimation("Advantage");
 	EnemyTriangle->GetTransform()->SetLocalPosition({ 72, -214 });
 	EnemyTriangle->GetTransform()->SetWorldScale({ 28, 40 });
+
+	EXPUI = GetLevel()->CreateActor<EXPBar>();
+	EXPUI->GetTransform()->SetParent(GetTransform());
+	EXPUI->GetTransform()->SetLocalPosition({ 0, -108 });
+	EXPUI->Off();
+
 }
 
 void BattleAnimationUI::Update(float _DeltaTime)

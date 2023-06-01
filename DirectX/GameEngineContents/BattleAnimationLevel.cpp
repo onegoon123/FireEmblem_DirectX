@@ -182,14 +182,15 @@ void BattleAnimationLevel::PlayAttack()
 {
 	if (BattleIter == BattleData.end())
 	{
+		UI->SetEXP(75, 100);
 		if (true == LeftUnit->GetIsDie() || true == RightUnit->GetIsDie())
 		{
-			TimeEvent.AddEvent(2.0f, std::bind(&BattleAnimationUI::SetFadeOut, UI, 0.3f));
-			TimeEvent.AddEvent(2.5f, std::bind(&BattleAnimationLevel::End, this));
+			TimeEvent.AddEvent(3.0f, std::bind(&BattleAnimationUI::SetFadeOut, UI, 0.3f));
+			TimeEvent.AddEvent(3.5f, std::bind(&BattleAnimationLevel::End, this));
 			return;
 		}
-		TimeEvent.AddEvent(1.0f, std::bind(&BattleAnimationUI::SetFadeOut, UI, 0.3f));
-		TimeEvent.AddEvent(1.5f, std::bind(&BattleAnimationLevel::End, this));
+		TimeEvent.AddEvent(2.0f, std::bind(&BattleAnimationUI::SetFadeOut, UI, 0.3f));
+		TimeEvent.AddEvent(2.5f, std::bind(&BattleAnimationLevel::End, this));
 		return;
 	}
 

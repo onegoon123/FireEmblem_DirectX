@@ -17,6 +17,10 @@ public:
 	void Setting(int _Value);
 	void SetValue(int _Value);
 	void SetValueLerp(int _Value);
+	void StopLerp()
+	{
+		IsLerp = false;
+	}
 	void SetBlackFont();
 	void SetDamageFont();
 
@@ -30,6 +34,10 @@ public:
 		return Value;
 	}
 
+	void SetTime(float _Time)
+	{
+		Time = _Time;
+	}
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -38,7 +46,7 @@ private:
 
 	int Value = 0;
 	int TargetValue = 0;
-	const float Time = 0.05f;
+	float Time = 0.05f;
 	float Timer = 0;
 	bool IsLerp = false;
 	bool IsPlus = false;

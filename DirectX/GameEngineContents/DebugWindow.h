@@ -16,7 +16,7 @@ public:
 	DebugWindow& operator=(const DebugWindow& _Other) = delete;
 	DebugWindow& operator=(DebugWindow&& _Other) noexcept = delete;
 
-	std::string Text = "게임 시작";
+	std::string Text = " ";
 	std::shared_ptr<class MapCursor> Cursor = nullptr;
 
 	void OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime) override;

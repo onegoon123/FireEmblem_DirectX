@@ -20,6 +20,8 @@ public:
 	void SetData(class Unit& _Unit1, Unit& _Unit2);
 	void SetDamage(Unit& _Unit);
 
+	void SetEXP(int _Before, int _Get);
+
 	bool IsTurnEnd();
 
 protected:
@@ -47,6 +49,8 @@ private:
 	std::shared_ptr<GameEngineUIRenderer> EnemyWeaponIcon = nullptr;
 	std::shared_ptr<GameEngineUIRenderer> PlayerTriangle = nullptr;
 	std::shared_ptr<GameEngineUIRenderer> EnemyTriangle = nullptr;
+
+	std::shared_ptr<class EXPBar> EXPUI = nullptr;
 
 	float FadeSpeed = 0.0f;
 	float FadeTimer = 0.0f;

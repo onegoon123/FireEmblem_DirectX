@@ -75,4 +75,5 @@ private:
 	int2 AfterSubjectUnitPos = int2(-1, -1);
 	int RandomNum = 0;
 	std::string Record = "";
+
 };

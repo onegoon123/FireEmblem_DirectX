@@ -52,6 +52,7 @@ void NumberActor::SetValue(int _Value)
 	{
 		Renders[i]->Off();
 	}
+
 }
 
 void NumberActor::SetValueLerp(int _Value)
