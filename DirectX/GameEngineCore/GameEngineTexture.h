@@ -32,21 +32,14 @@ public:
 	}
 
 	GameEnginePixelColor()
-		: r(0), g(0), b(0), a(0)
 	{
-		ColorChar[0] = 0;
-		Color = 0;
+
 	}
 
 	GameEnginePixelColor(char _r, char _g, char _b, char _a)
 		: r(_r), g(_g), b(_b), a(_a)
 	{
-		Color = 0;
-		r = _r;
-		g = _g;
-		b = _b;
-		a = _a;
-		ColorChar[0] = _r;
+
 	}
 };
 
@@ -78,8 +71,8 @@ public:
 	static std::shared_ptr<GameEngineTexture> Load(const std::string_view& _Path, const std::string_view& _Name)
 	{
 		std::shared_ptr<GameEngineTexture> NewTexture = GameEngineResource::Create(_Name);
-
 		PathCheck(_Path, _Name);
+		NewTexture->SetPath(_Path);
 		NewTexture->ResLoad(_Path);
 		return NewTexture;
 	}
@@ -127,7 +120,7 @@ public:
 			MsgAssert("존재하지 않는 텍스처를 로드 하려고 했습니다.");
 		}
 
-		NewTexture->ResLoad(_Path);
+		NewTexture->ReLoad();
 		return NewTexture;
 	}
 
@@ -164,6 +157,9 @@ public:
 
 	GameEnginePixelColor GetPixel(int _X, int _Y, GameEnginePixelColor DefaultColor = GameEnginePixelColor::Black);
 
+	void ReLoad();
+	void Release();
+
 protected:
 
 private:
@@ -192,7 +188,5 @@ private:
 
 	void VSReset(UINT _Slot);
 	void PSReset(UINT _Slot);
-
-	void Release();
 };
 

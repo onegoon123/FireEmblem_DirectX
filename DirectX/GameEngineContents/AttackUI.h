@@ -84,6 +84,9 @@ private:
 	std::list<std::shared_ptr<BattleUnit>>::iterator TargetIter;
 	std::shared_ptr<BattleUnit> TargetUnit;
 
+	std::shared_ptr<class UIButtonSystem> ButtonSystem;
+	std::vector<std::shared_ptr<class GameEngineCollision>> ButtonCols;
+
 	const float4 StartCursorPos = { -432, 192 };
 	const float4 StartSelectPos = { -232, 192 };
 	float4 CursorPos;
@@ -94,5 +97,6 @@ private:
 	bool PressOK = false;
 	bool IsOnFrame = false;	// UI를 켠 프레임인가
 	bool IsWeaponSelect = false;// 무기를 선택했는가
+	bool IsClick = false;
 };
 

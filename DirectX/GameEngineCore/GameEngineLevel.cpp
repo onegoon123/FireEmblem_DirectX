@@ -6,6 +6,8 @@
 #include "GameEngineCollision.h"
 #include <GameEnginePlatform/GameEngineInput.h>
 
+bool GameEngineLevel::IsDebugRender = false;
+
 GameEngineLevel::GameEngineLevel()
 {
 	MainCamera = CreateActor<GameEngineCamera>();
@@ -50,12 +52,14 @@ void GameEngineLevel::ActorUpdate(float _DeltaTime)
 			std::list<std::shared_ptr<GameEngineActor>>::iterator ActorStart = ActorList.begin();
 			std::list<std::shared_ptr<GameEngineActor>>::iterator ActorEnd = ActorList.end();
 
+			float ScaleTime = _DeltaTime * GameEngineTime::GlobalTime.GetUpdateOrderTimeScale(GroupStartIter->first);
+
 			for (; ActorStart != ActorEnd; ++ActorStart)
 			{
 				std::shared_ptr<GameEngineActor>& Actor = *ActorStart;
 
-				Actor->AllAccTime(_DeltaTime);
-				Actor->AllUpdate(_DeltaTime);
+				Actor->AllAccTime(ScaleTime);
+				Actor->AllUpdate(ScaleTime);
 			}
 		}
 	}
@@ -110,6 +114,45 @@ void GameEngineLevel::ActorLevelChangeEnd()
 	}
 }
 
+void GameEngineLevel::CollisionDebugRender(GameEngineCamera* _Camera, float _Delta)
+{
+
+	{
+		std::map<int, std::list<std::shared_ptr<GameEngineCollision>>>::iterator GroupStartIter = Collisions.begin();
+		std::map<int, std::list<std::shared_ptr<GameEngineCollision>>>::iterator GroupEndIter = Collisions.end();
+
+		for (; GroupStartIter != GroupEndIter; ++GroupStartIter)
+		{
+			std::list<std::shared_ptr<GameEngineCollision>>& ObjectList = GroupStartIter->second;
+
+			std::list<std::shared_ptr<GameEngineCollision>>::iterator ObjectStart = ObjectList.begin();
+			std::list<std::shared_ptr<GameEngineCollision>>::iterator ObjectEnd = ObjectList.end();
+
+			for (; ObjectStart != ObjectEnd; ++ObjectStart)
+			{
+				std::shared_ptr<GameEngineCollision> CollisionObject = (*ObjectStart);
+
+				if (nullptr == CollisionObject)
+				{
+					continue;
+				}
+
+				if (false == CollisionObject->IsUpdate())
+				{
+					continue;
+				}
+
+				if (CollisionObject->DebugCamera != _Camera)
+				{
+					continue;
+				}
+
+				CollisionObject->DebugRender(_Delta);
+			}
+		}
+	}
+}
+
 void GameEngineLevel::ActorRender(float _DeltaTime)
 {
 	// GetMainCamera()->Setting();
@@ -123,6 +166,13 @@ void GameEngineLevel::ActorRender(float _DeltaTime)
 		Cam->CameraTransformUpdate();
 		Cam->Render(_DeltaTime);
 		Cam->CamTarget->Effect(_DeltaTime);
+
+		if (false == IsDebugRender)
+		{
+			continue;
+		}
+
+		CollisionDebugRender(Cam.get(), _DeltaTime);
 	}
 
 	LastTarget->Clear();
@@ -137,9 +187,7 @@ void GameEngineLevel::ActorRender(float _DeltaTime)
 
 	LastTarget->Effect(_DeltaTime);
 
-	// 백버퍼는 효과를 줄수가 없습니다.
-
-
+	LastTarget->Setting();
 
 	GameEngineDevice::GetBackBufferTarget()->Merge(LastTarget);
 

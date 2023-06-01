@@ -338,6 +338,10 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="TitleLevel.cpp" />
+    <ClCompile Include="UIButtonSystem.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="UICursor.cpp">
       <SubType>
       </SubType>
@@ -527,6 +531,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="TitleLevel.h" />
+    <ClInclude Include="UIButtonSystem.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="UICursor.h">
       <SubType>
       </SubType>

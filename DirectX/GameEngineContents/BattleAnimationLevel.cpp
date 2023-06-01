@@ -107,11 +107,11 @@ void BattleAnimationLevel::Update(float _DeltaTime)
 
 	if (GameEngineInput::IsPress("ButtonA") || GameEngineInput::IsPress("LeftClick"))
 	{
-		GameEngineTime::GlobalTime.SetTimeScale(2.0f);
+		GameEngineTime::GlobalTime.SetGlobalTimeScale(2.0f);
 	}
 	if (GameEngineInput::IsFree("ButtonA") && GameEngineInput::IsFree("LeftClick"))
 	{
-		GameEngineTime::GlobalTime.SetTimeScale(1.0f);
+		GameEngineTime::GlobalTime.SetGlobalTimeScale(1.0f);
 	}
 
 	if (GameEngineInput::IsDown("ButtonB") || GameEngineInput::IsDown("Start") || GameEngineInput::IsUp("RightClick"))
@@ -175,7 +175,7 @@ void BattleAnimationLevel::LevelChangeStart()
 
 void BattleAnimationLevel::LevelChangeEnd()
 {
-	GameEngineTime::GlobalTime.SetTimeScale(1.0f);
+	GameEngineTime::GlobalTime.SetGlobalTimeScale(1.0f);
 }
 
 void BattleAnimationLevel::PlayAttack()

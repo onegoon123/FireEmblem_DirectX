@@ -2,8 +2,10 @@
 #include "UnitCommandUI.h"
 #include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEngineCore/GameEngineUIRenderer.h>
+#include <GameEngineCore/GameEngineCollision.h>
 #include "BattleLevel.h"
 #include "UICursor.h"
+#include "UIButtonSystem.h"
 UnitCommandUI::UnitCommandUI()
 {
 	CommandFunctions.reserve(5);
@@ -41,7 +43,14 @@ void UnitCommandUI::SetCommand(bool _IsAttackable, bool _IsCloseUnit, bool _IsIt
 
 	WindowRender->SetFrame(CommandFunctions.size() - 1);
 
-	
+	for (int i = 0; i < CommandFunctions.size(); i++)
+	{
+		ButtonCols[i]->On();
+	}
+	for (size_t i = CommandFunctions.size(); i < 5; i++)
+	{
+		ButtonCols[i]->Off();
+	}
 }
 
 void UnitCommandUI::SetConquer()
@@ -52,6 +61,12 @@ void UnitCommandUI::SetConquer()
 
 	WindowRender->SetFrame(0);
 
+
+	ButtonCols[0]->On();
+	for (int i = 1; i < 5; i++)
+	{
+		ButtonCols[i]->Off();
+	}
 }
 
 void UnitCommandUI::On()
@@ -83,16 +98,40 @@ void UnitCommandUI::Start()
 
 	CursorPos = StartCursorPos;
 
+	ButtonSystem = GetLevel()->CreateActor<UIButtonSystem>();
+	ButtonSystem->GetTransform()->SetParent(GetTransform());
+
+	ButtonCols.resize(5);
+	for (int i = 0; i < 5; i++)
+	{
+		ButtonCols[i] = CreateComponent<GameEngineCollision>(CollisionOrder::Button);
+		ButtonCols[i]->GetTransform()->SetLocalPosition({ 330, 164.0f - (64 * i) });
+		ButtonCols[i]->GetTransform()->SetLocalScale({ 200, 64 });
+		ButtonCols[i]->SetColType(ColType::AABBBOX2D);
+		ButtonSystem->NewButton(ButtonCols[i],
+			[=] {
+				CurrentCursor = i;
+				SelectRender->GetTransform()->SetLocalPosition(StartSelectPos + float4::Down * (64.0f * CurrentCursor));
+				CursorPos = { StartCursorPos + float4::Down * (64.0f * CurrentCursor) };
+			},
+			[this] {
+				CommandFunctions[CurrentCursor]();
+			}
+		);
+
+	}
+
 	GameEngineActor::Off();
-}
+}	
 
 void UnitCommandUI::Update(float _DeltaTime)
 {
-	if (GameEngineInput::IsDown("ButtonA") || GameEngineInput::IsUp("LeftClick"))
+	if (GameEngineInput::IsDown("ButtonA"))
 	{
 		CommandFunctions[CurrentCursor]();
 		return;
 	}
+
 	if (GameEngineInput::IsDown("ButtonB") || GameEngineInput::IsUp("RightClick"))
 	{
 		CancelFunction();

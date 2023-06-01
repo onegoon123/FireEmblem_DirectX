@@ -457,7 +457,7 @@ void BattleLevel::UnitSelect()
 
 	}
 	// 선택한 유닛의 정보를 표시하는 기능
-	if (GameEngineInput::IsDown("ButtonR"))
+	if (GameEngineInput::IsDown("ButtonR") || GameEngineInput::IsDown("MiddleClick"))
 	{
 		if (nullptr == SelectUnit) { return; }
 		ChangeState(BattleState::Information);

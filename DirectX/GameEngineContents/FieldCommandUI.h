@@ -34,6 +34,9 @@ private:
 	std::vector<std::function<void()>> CommandFunctions;
 	std::function<void()> CancelFunction;
 
+	std::shared_ptr<class UIButtonSystem> ButtonSystem;
+	std::vector<std::shared_ptr<class GameEngineCollision>> ButtonCols;
+
 	float4 CursorPos;
 	size_t CurrentCursor = 0;
 	float CursorTimer = 0;

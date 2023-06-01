@@ -55,6 +55,10 @@ private:
 	std::vector<std::shared_ptr<class NumberActor>> ItemUses;
 	std::shared_ptr<BattleUnit> SelectUnit = nullptr;;
 
+	std::shared_ptr<class UIButtonSystem> ButtonSystem;
+	std::vector<std::shared_ptr<class GameEngineCollision>> ItemButtons;
+	std::vector<std::shared_ptr<class GameEngineCollision>> UseButtons;
+
 	const float4 StartCursorPos = { -432, 192 };
 	const float4 StartSelectPos = { -232, 192 };
 	float4 StartUseCursorPos = {0,0};
@@ -70,5 +74,6 @@ private:
 	bool PressOK = false;
 	bool IsOnFrame = false;	// UI를 켠 프레임인가
 	bool IsItemSelect = false;// 아이템을 선택했는가
+	bool IsClick = false;
 };
 

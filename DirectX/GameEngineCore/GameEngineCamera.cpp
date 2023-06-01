@@ -181,6 +181,8 @@ void GameEngineCamera::Render(float _DeltaTime)
 		std::list<std::shared_ptr<GameEngineRenderer>>::iterator StartRenderer = RenderGroup.begin();
 		std::list<std::shared_ptr<GameEngineRenderer>>::iterator EndRenderer = RenderGroup.end();
 
+		float ScaleTime = _DeltaTime * GameEngineTime::GlobalTime.GetRenderOrderTimeScale(RenderGroupStartIter->first);
+
 		for (; StartRenderer != EndRenderer; ++StartRenderer)
 		{
 			std::shared_ptr<GameEngineRenderer>& Render = *StartRenderer;
@@ -196,7 +198,7 @@ void GameEngineCamera::Render(float _DeltaTime)
 			}
 
 			Render->RenderTransformUpdate(this);
-			Render->Render(_DeltaTime);
+			Render->Render(ScaleTime);
 
 		}
 	}

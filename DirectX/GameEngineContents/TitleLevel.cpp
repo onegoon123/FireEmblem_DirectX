@@ -30,7 +30,7 @@ void TitleLevel::Start()
 		GameEngineInput::CreateKey("ButtonX", 'V');
 		GameEngineInput::CreateKey("ButtonL", 'A');
 		GameEngineInput::CreateKey("ButtonR", 'S');
-		GameEngineInput::CreateKey("Start", VK_RETURN);
+		GameEngineInput::CreateKey("Start", VK_ESCAPE);
 		GameEngineInput::CreateKey("LeftClick", VK_LBUTTON);
 		GameEngineInput::CreateKey("RightClick", VK_RBUTTON);
 		GameEngineInput::CreateKey("MiddleClick", VK_MBUTTON);

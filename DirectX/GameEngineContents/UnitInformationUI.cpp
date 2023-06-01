@@ -386,12 +386,12 @@ void UnitInformationUI::Update(float _DeltaTime)
 		return;
 	}
 
-	if (GameEngineInput::IsDown("ButtonB"))
+	if (GameEngineInput::IsDown("ButtonB") || GameEngineInput::IsDown("RightClick"))
 	{
 		CurLevel->UnitInformation_Cancel();
 	}
 
-	if (GameEngineInput::IsDown("Left") || GameEngineInput::IsDown("Right"))
+	if (GameEngineInput::IsDown("Left") || GameEngineInput::IsDown("Right") || GameEngineInput::IsDown("LeftClick"))
 	{
 		Timer = 0;
 		IsMove = true;

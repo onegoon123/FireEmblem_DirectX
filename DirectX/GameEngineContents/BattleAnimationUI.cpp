@@ -18,6 +18,7 @@ void BattleAnimationUI::SetFadeIn(float _Timer)
 	FadeSpeed = 1 / _Timer;
 	FadeTimer = 1;
 	IsFadeIn = true;
+	IsFadeOut = false;
 	FadeRenderer->ColorOptionValue.MulColor.a = 1;
 }
 
@@ -26,6 +27,7 @@ void BattleAnimationUI::SetFadeOut(float _Timer)
 	FadeSpeed = 1 / _Timer;
 	FadeTimer = 0;
 	IsFadeOut = true;
+	IsFadeIn = false;
 	FadeRenderer->ColorOptionValue.MulColor.a = 0;
 }
 

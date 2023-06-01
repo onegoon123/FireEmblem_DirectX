@@ -1,10 +1,11 @@
 #include "PrecompileHeader.h"
 #include "FieldCommandUI.h"
 #include <GameEnginePlatform/GameEngineInput.h>
+#include <GameEngineCore/GameEngineCollision.h>
 #include <GameEngineCore/GameEngineUIRenderer.h>
 #include "BattleLevel.h"
 #include "UICursor.h"
-
+#include "UIButtonSystem.h"
 FieldCommandUI::FieldCommandUI() 
 {
 	CommandFunctions.reserve(5);
@@ -57,6 +58,29 @@ void FieldCommandUI::Start()
 	SelectRender->GetTransform()->SetLocalPosition(StartSelectPos);
 	SelectRender->SetTexture("CommandSelect.png");
 
+	ButtonSystem = GetLevel()->CreateActor<UIButtonSystem>();
+	ButtonSystem->GetTransform()->SetParent(GetTransform());
+
+	ButtonCols.resize(5);
+	for (int i = 0; i < 5; i++)
+	{
+		ButtonCols[i] = CreateComponent<GameEngineCollision>(CollisionOrder::Button);
+		ButtonCols[i]->GetTransform()->SetLocalPosition({ 330, 164.0f - (64 * i) });
+		ButtonCols[i]->GetTransform()->SetLocalScale({ 200, 64 });
+		ButtonCols[i]->SetColType(ColType::AABBBOX2D);
+		ButtonSystem->NewButton(ButtonCols[i],
+			[=] {
+				CurrentCursor = i;
+				SelectRender->GetTransform()->SetLocalPosition(StartSelectPos + float4::Down * (64.0f * CurrentCursor));
+				CursorPos = { StartCursorPos + float4::Down * (64.0f * CurrentCursor) };
+			},
+			[this] {
+				CommandFunctions[CurrentCursor]();
+			}
+			);
+
+	}
+
 	GameEngineActor::Off();
 }
 
@@ -68,7 +92,7 @@ void FieldCommandUI::Update(float _DeltaTime)
 		return;
 	}
 
-	if (GameEngineInput::IsDown("ButtonA") || GameEngineInput::IsUp("LeftClick"))
+	if (GameEngineInput::IsDown("ButtonA"))
 	{
 		CommandFunctions[CurrentCursor]();
 		return;

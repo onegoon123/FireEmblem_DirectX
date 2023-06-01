@@ -171,6 +171,9 @@
     <ClCompile Include="DialogueSystem.cpp">
       <Filter>Event</Filter>
     </ClCompile>
+    <ClCompile Include="UIButtonSystem.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FECore.h" />
@@ -319,6 +322,9 @@
     </ClInclude>
     <ClInclude Include="DialogueSystem.h">
       <Filter>Event</Filter>
+    </ClInclude>
+    <ClInclude Include="UIButtonSystem.h">
+      <Filter>UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

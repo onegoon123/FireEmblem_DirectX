@@ -16,6 +16,11 @@ enum class RenderOrder
 	UICursor,	// UI위 표시되는 이미지
 	Fade,
 };
+enum class CollisionOrder
+{
+	Cursor,
+	Button
+};
 enum class UIDir
 {
 	None,

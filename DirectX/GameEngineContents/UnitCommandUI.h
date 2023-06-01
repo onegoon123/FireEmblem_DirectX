@@ -43,8 +43,11 @@ private:
 	std::shared_ptr<UICursor> Cursor = nullptr;
 	std::shared_ptr<GameEngineUIRenderer> SelectRender = nullptr;
 	std::shared_ptr<GameEngineUIRenderer> WindowRender = nullptr;
-
 	std::vector<std::function<void()>> CommandFunctions;
+
+	std::shared_ptr<class UIButtonSystem> ButtonSystem;
+	std::vector<std::shared_ptr<class GameEngineCollision>> ButtonCols;
+
 	std::function<void()> CancelFunction;
 	float4 CursorPos;
 	size_t CurrentCursor = 0;

@@ -2,6 +2,7 @@
 #include "AttackUI.h"
 #include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEngineCore/GameEngineUIRenderer.h>
+#include <GameEngineCore/GameEngineCollision.h>
 #include "UICursor.h"
 #include "BattleLevel.h"
 #include "BattleUnit.h"
@@ -9,6 +10,7 @@
 #include "DebugWindow.h"
 #include "NumberActor.h"
 #include "DoubleIconActor.h"
+#include "UIButtonSystem.h"
 AttackUI::AttackUI()
 {
 }
@@ -24,6 +26,7 @@ void AttackUI::Setting(BattleLevel* _Level, std::shared_ptr<UICursor> _Cursor)
 	Cursor_Map = _Level->GetMapCursor();
 	AttackFunction = std::bind(&BattleLevel::UnitCommand_TargetAttack, _Level, std::placeholders::_1);
 	CancelFunction = std::bind(&BattleLevel::UnitCommand_CommandCancel, _Level);
+
 }
 
 void AttackUI::On(std::shared_ptr<BattleUnit> _SelectUnit, std::list<std::shared_ptr<BattleUnit>>& _TargetUnits)
@@ -83,6 +86,15 @@ void AttackUI::On(std::shared_ptr<BattleUnit> _SelectUnit, std::list<std::shared
 		Window->Text += " ";
 		Window->Text += std::to_string(_Weapon->GetUses());
 		Window->Text += " / " + std::to_string(_Weapon->GetMaxUses()) + '\n';
+	}
+
+	for (int i = 0; i < Weapons.size(); i++)
+	{
+		ButtonCols[i]->On();
+	}
+	for (size_t i = Weapons.size(); i < 5; i++)
+	{
+		ButtonCols[i]->Off();
 	}
 }
 
@@ -280,6 +292,32 @@ void AttackUI::Start()
 		TargetCritical->GetTransform()->SetWorldScale({ 1, 1, 1 });
 
 	}
+
+	ButtonSystem = GetLevel()->CreateActor<UIButtonSystem>();
+	ButtonSystem->GetTransform()->SetParent(GetTransform());
+
+	ButtonCols.resize(5);
+	for (int i = 0; i < 5; i++)
+	{
+		ButtonCols[i] = CreateComponent<GameEngineCollision>(CollisionOrder::Button);
+		ButtonCols[i]->GetTransform()->SetLocalPosition({ -250, 192.0f - (64 * i) });
+		ButtonCols[i]->GetTransform()->SetLocalScale({ 400, 64 });
+		ButtonCols[i]->SetColType(ColType::AABBBOX2D);
+		ButtonSystem->NewButton(ButtonCols[i],
+			[=] {
+				CurrentCursor = i;
+				SelectRender->GetTransform()->SetLocalPosition(StartSelectPos + float4::Down * (64.0f * CurrentCursor));
+				CursorPos = StartCursorPos + float4::Down * (64.0f * CurrentCursor);
+				SetWeapon();
+			},
+			[this]
+			{
+				IsClick = true;
+			}
+		);
+
+	}
+
 	GameEngineActor::Off();
 }
 
@@ -321,6 +359,15 @@ void AttackUI::WeaponSelectStart()
 	SubjectWeapon->Off();
 	TargetWeapon->Off();
 	SetWeapon();
+
+	for (int i = 0; i < Weapons.size(); i++)
+	{
+		ButtonCols[i]->On();
+	}
+	for (size_t i = Weapons.size(); i < 5; i++)
+	{
+		ButtonCols[i]->Off();
+	}
 }
 
 void AttackUI::WeaponSelectUpdate(float _DeltaTime)
@@ -331,8 +378,9 @@ void AttackUI::WeaponSelectUpdate(float _DeltaTime)
 		return;
 	}
 
-	if (GameEngineInput::IsDown("ButtonA") || GameEngineInput::IsUp("LeftClick"))
+	if (GameEngineInput::IsDown("ButtonA") || true == IsClick)
 	{
+		IsClick = false;
 		WeaponSelectEnd();
 		TargetSelectStart();
 		return;
@@ -411,6 +459,10 @@ void AttackUI::WeaponSelectEnd()
 	{
 		WeaponeIcon[i]->Off();
 	}
+	for (int i = 0; i < 5; i++)
+	{
+		ButtonCols[i]->Off();
+	}
 }
 
 void AttackUI::SetWeapon()
@@ -446,6 +498,7 @@ void AttackUI::TargetSelectStart()
 	WeaponHit->Off();
 	WeaponCritical->Off();
 	WeaponWeight->Off();
+
 }
 
 void AttackUI::TargetSelectUpdate(float _DeltaTime)
@@ -577,4 +630,3 @@ void AttackUI::SetTarget()
 	}
 
 }
-

@@ -2,11 +2,13 @@
 #include "ItemUI.h"
 #include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEngineCore/GameEngineUIRenderer.h>
+#include <GameEngineCore/GameEngineCollision.h>
 #include "UICursor.h"
 #include "BattleLevel.h"
 #include "BattleUnit.h"
 #include "DebugWindow.h"
 #include "NumberActor.h"
+#include "UIButtonSystem.h"
 ItemUI::ItemUI()
 {
 }
@@ -73,6 +75,19 @@ void ItemUI::On(std::shared_ptr<BattleUnit> _SelectUnit)
 		Window->Text += " ";
 		Window->Text += std::to_string(_Item->GetUses());
 		Window->Text += " / " + std::to_string(_Item->GetMaxUses()) + '\n';
+	}
+
+	for (int i = 0; i < ItemSize; i++)
+	{
+		ItemButtons[i]->On();
+	}
+	for (size_t i = ItemSize; i < 5; i++)
+	{
+		ItemButtons[i]->Off();
+	}
+	for (int i = 0; i < 2; i++)
+	{
+		UseButtons[i]->Off();
 	}
 }
 
@@ -148,6 +163,49 @@ void ItemUI::Start()
 		}
 	}
 
+	ButtonSystem = GetLevel()->CreateActor<UIButtonSystem>();
+	ButtonSystem->GetTransform()->SetParent(GetTransform());
+
+	ItemButtons.resize(5);
+	for (int i = 0; i < 5; i++)
+	{
+		ItemButtons[i] = CreateComponent<GameEngineCollision>(CollisionOrder::Button);
+		ItemButtons[i]->GetTransform()->SetLocalPosition({ -250, 192.0f - (64 * i) });
+		ItemButtons[i]->GetTransform()->SetLocalScale({ 400, 64 });
+		ItemButtons[i]->SetColType(ColType::AABBBOX2D);
+		ButtonSystem->NewButton(ItemButtons[i],
+			[=] {
+				CurrentCursor = i;
+				SelectRender->GetTransform()->SetLocalPosition(StartSelectPos + float4::Down * (64.0f * CurrentCursor));
+				CursorPos = StartCursorPos + float4::Down * (64.0f * CurrentCursor);
+			},
+			[this]
+			{
+				ItemSelect();
+			}
+			);
+	}
+
+	UseButtons.resize(2);
+	for (int i = 0; i < 2; i++)
+	{
+		UseButtons[i] = CreateComponent<GameEngineCollision>(CollisionOrder::Button);
+		UseButtons[i]->GetTransform()->SetLocalPosition({ -75, 192.0f - (64 * i) });
+		UseButtons[i]->GetTransform()->SetLocalScale({ 250, 64 });
+		UseButtons[i]->SetColType(ColType::AABBBOX2D);
+		ButtonSystem->NewButton(UseButtons[i],
+			[=] {
+				CurrentUseCursor = i;
+				ItemUseSelect->GetTransform()->SetLocalPosition(StartUseSelectPos + float4::Down * (64.0f * CurrentUseCursor));
+				UseCursorPos = StartUseCursorPos + float4::Down * (64.0f * CurrentUseCursor);
+			},
+			[this]
+			{
+				UseFunctions[CurrentUseCursor]();
+			}
+			);
+	}
+
 	GameEngineActor::Off();
 }
 
@@ -169,7 +227,7 @@ void ItemUI::ItemSelectUpdate(float _DeltaTime)
 		return;
 	}
 
-	if (GameEngineInput::IsDown("ButtonA") || GameEngineInput::IsUp("LeftClick"))
+	if (GameEngineInput::IsDown("ButtonA"))
 	{
 		ItemSelect();
 		return;
@@ -241,8 +299,6 @@ void ItemUI::ItemSelect()
 	ItemIter = SelectUnit->GetUnitData().GetItems().begin();
 	std::advance(ItemIter, CurrentCursor);
 
-
-
 	ItemUseWindow->GetTransform()->SetLocalPosition(float4(-80.0f, 164.0f) + float4::Down * static_cast<float>(CurrentCursor) * 64);
 
 	StartUseSelectPos = float4(-80.0f, 198.0f) + float4::Down * static_cast<float>(CurrentCursor) * 64;
@@ -302,12 +358,21 @@ void ItemUI::ItemSelect()
 	break;
 	}
 
+	for (int i = 0; i < ItemSize; i++)
+	{
+		ItemButtons[i]->Off();
+	}
+	for (int i = 0; i < UseFunctions.size(); i++)
+	{
+		UseButtons[i]->On();
+		UseButtons[i]->GetTransform()->SetLocalPosition({ -75, 192.0f - (64 * (i + CurrentCursor))});
+	}
 }
 
 void ItemUI::ItemUseUpdate(float _DeltaTime)
 {
 
-	if (GameEngineInput::IsDown("ButtonA") || GameEngineInput::IsUp("LeftClick"))
+	if (GameEngineInput::IsDown("ButtonA"))
 	{
 		UseFunctions[CurrentUseCursor]();
 		return;
@@ -318,6 +383,14 @@ void ItemUI::ItemUseUpdate(float _DeltaTime)
 		ItemUseSelect->Off();
 		IsItemSelect = false;
 		Cursor->GetTransform()->SetLocalPosition(StartCursorPos + float4::Down * (64.0f * CurrentCursor));
+		for (int i = 0; i < ItemSize; i++)
+		{
+			ItemButtons[i]->On();
+		}
+		for (size_t i = ItemSize; i < 5; i++)
+		{
+			ItemButtons[i]->Off();
+		}
 		return;
 	}
 
