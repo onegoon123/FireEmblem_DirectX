@@ -23,6 +23,25 @@ void DebugWindow::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime
 
 	if (nullptr == Cursor) { return; }
 	ImGui::Text(Cursor->WorldPos.ToString().data());
-	ImGui::Text((std::to_string(1 / _DeltaTime) + " fps").data());
+
+	static std::vector<int> Frames;
+	static int FrameAverage;
+	static float Timer = 0;
+	Timer += _DeltaTime;
+	Frames.push_back(static_cast<int>(1 / _DeltaTime));
+	if (0.2f < Timer)
+	{
+		int Sum = 0;
+		for (int Num : Frames)
+		{
+			Sum += Num;
+		}
+		FrameAverage = Sum / static_cast<int>(Frames.size());
+		Frames.clear();
+		Timer = 0;
+	}
+
+	ImGui::Text((std::to_string(FrameAverage) + " fps").data());
+
 }
 
