@@ -56,7 +56,8 @@ void NumberActor::SetValue(int _Value)
 
 void NumberActor::SetValueLerp(int _Value)
 {
-	IsPlus = Value <= _Value;
+	if (Value == _Value) { return; }
+	IsPlus = Value < _Value;
 	TargetValue = _Value;
 	Timer = Time;
 	IsLerp = true;
