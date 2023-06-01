@@ -25,6 +25,11 @@ public:
 		return IsLerp;
 	}
 
+	int GetValue()
+	{
+		return Value;
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -36,5 +41,6 @@ private:
 	const float Time = 0.05f;
 	float Timer = 0;
 	bool IsLerp = false;
+	bool IsPlus = false;
 };
 

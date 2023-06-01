@@ -49,10 +49,8 @@ void BattleLevel::UnitCommand_TargetAttack(std::shared_ptr<BattleUnit> _Target)
 void BattleLevel::UnitCommand_ItemUse(std::list<std::shared_ptr<Item>>::iterator& _ItemIter)
 {
 	ItemCode _ItemCode = (*_ItemIter)->GetItemCode();
-	BattleUI->AllOff();
-	UnitCommand::ItemUse(SelectUnit, _ItemIter);
-	SelectUnit->SetIsTurnEnd(true);
-	ChangeState(BattleState::Select);
+	UseItem = _ItemIter;
+	ChangeState(BattleState::Potion);
 }
 
 void BattleLevel::UnitCommand_Conquer()

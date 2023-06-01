@@ -33,6 +33,9 @@ public:
 	void PhaseOff();
 	void SetFadeIn(float _Timer);
 	void SetFadeOut(float _Timer);
+	void PotionUIOn();
+	void PotionUIOff();
+	void SetHPLerp(int _Value);
 
 protected:
 	void Start() override;

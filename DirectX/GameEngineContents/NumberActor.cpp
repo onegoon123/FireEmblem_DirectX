@@ -56,10 +56,7 @@ void NumberActor::SetValue(int _Value)
 
 void NumberActor::SetValueLerp(int _Value)
 {
-	if (Value <= _Value)
-	{
-		return;
-	}
+	IsPlus = Value <= _Value;
 	TargetValue = _Value;
 	Timer = Time;
 	IsLerp = true;
@@ -128,7 +125,15 @@ void NumberActor::Update(float _DeltaTime)
 	Timer -= _DeltaTime;
 	if (Timer < 0)
 	{
-		SetValue(Value - 1);
+		if (IsPlus)
+		{
+			SetValue(Value + 1);
+		}
+		else
+		{
+			SetValue(Value - 1);
+		}
+		
 		if (TargetValue == Value)
 		{
 			IsLerp = false;

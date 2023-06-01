@@ -46,8 +46,12 @@ public:
 	void Off();
 
 	void SetHPBar(float _Value);
+	void SetHPLerp(int _Value);
 	void SetUnitData(std::shared_ptr<BattleUnit> _Unit);
 	void UnitUIOff();
+
+	void PotionUIOn();
+	void PotionUIOff();
 
 protected:
 	void Start();
@@ -67,5 +71,9 @@ private:
 
 	bool UnitDataOn = false;
 	UIDir CursorDir = UIDir::LeftUp;
+	float Timer = 0;
+	float StartValue = 0;
+	float TargetValue = 0;
+	bool IsLerp = false;
 };
 

@@ -111,6 +111,16 @@ void BattleLevel::ChangeState(BattleState _State)
 		StateEnd = std::bind(&BattleLevel::OpeningEnd, this);
 		OpeningStart();
 		break;
+	case BattleLevel::BattleState::Potion:
+		StateUpdate = std::bind(&BattleLevel::PotionUpdate, this, std::placeholders::_1);
+		StateEnd = std::bind(&BattleLevel::PotionEnd, this);
+		PotionStart();
+		break;
+	case BattleLevel::BattleState::EnemyPotion:
+		StateUpdate = std::bind(&BattleLevel::EnemyPotionUpdate, this, std::placeholders::_1);
+		StateEnd = std::bind(&BattleLevel::EnemyPotionEnd, this);
+		EnemyPotionStart();
+		break;
 	default:
 	{
 		MsgAssert("아직 지정하지 않은 State 입니다");
@@ -632,7 +642,7 @@ void BattleLevel::BattleReturnEnd()
 
 void BattleLevel::EnemyPhaseStart()
 {
-	
+
 	UnitCommand::PhaseStart(Faction::Enemy);
 
 	IsSkip = false;
@@ -1674,4 +1684,44 @@ void BattleLevel::OpeningUpdate(float _DeltaTime)
 void BattleLevel::OpeningEnd()
 {
 	OpeningEvent->Off();
+}
+
+void BattleLevel::PotionStart()
+{
+	BattleUI->AllOff();
+	BattleUI->PotionUIOn();
+	BattleUI->SetUnitData(SelectUnit);
+	UnitCommand::ItemUse(SelectUnit, UseItem);
+	BattleUI->SetHPLerp(SelectUnit->GetUnitData().GetHP());
+	SelectUnit->SetIsTurnEnd(true);
+}
+
+void BattleLevel::PotionUpdate(float _DeltaTime)
+{
+	static float PotionTimer = 0;
+	PotionTimer += _DeltaTime;
+
+	if (2 < PotionTimer)
+	{
+		PotionTimer = 0;
+		ChangeState(BattleState::Select);
+		return;
+	}
+}
+
+void BattleLevel::PotionEnd()
+{
+	BattleUI->PotionUIOff();
+}
+
+void BattleLevel::EnemyPotionStart()
+{
+}
+
+void BattleLevel::EnemyPotionUpdate(float _DeltaTime)
+{
+}
+
+void BattleLevel::EnemyPotionEnd()
+{
 }

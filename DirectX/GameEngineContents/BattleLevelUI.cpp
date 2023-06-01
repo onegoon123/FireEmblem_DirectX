@@ -205,6 +205,24 @@ void BattleLevelUI::SetFadeOut(float _Timer)
 	UI_Fade->ColorOptionValue.MulColor.a = 0;
 }
 
+void BattleLevelUI::PotionUIOn()
+{
+	UI_Select->On();
+	UI_Select->SetCursorDir(UIDir::LeftUp);
+	UI_Select->PotionUIOn();
+}
+
+void BattleLevelUI::PotionUIOff()
+{
+	UI_Select->PotionUIOff();
+	UI_Select->Off();
+}
+
+void BattleLevelUI::SetHPLerp(int _Value)
+{
+	UI_Select->SetHPLerp(_Value);
+}
+
 
 void BattleLevelUI::Start()
 {

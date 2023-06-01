@@ -70,12 +70,14 @@ private:
 		FieldCommand,	// 커서로 땅을 클릭하면 나오는 행동들을 정하는 단계
 		Battle,		// 유닛끼리 전투를 하는 단계
 		BattleReturn,	// 공격레벨에서 돌아옴
+		Potion,	        // 회복약 사용
 
 		EnemyPhase,	// 적의 턴이 시작
 		EnemySelect,	// 적 선택
 		EnemyMove,			// 적이 이동
 		EnemyBattle,		// 적이 공격
 		EnemyBattleReturn,	// 적 공격레벨에서 돌아옴
+		EnemyPotion,	    // 회복약 사용
 
 		Information,		// 유닛 정보창을 연상태
 		GameOver,			// 게임 오버
@@ -120,6 +122,8 @@ private:
 	int2 BeforePos = int2::Zero;
 	float4 BeforeCamPos = float4::Zero;
 
+	std::list<std::shared_ptr<Item>>::iterator UseItem;
+
 #pragma region FSM
 	void ChangeState(BattleState _State);
 
@@ -154,6 +158,7 @@ private:
 	void BattleReturnStart();
 	void BattleReturnUpdate(float _DeltaTime);
 	void BattleReturnEnd();
+
 
 	void EnemyPhaseStart();
 	void EnemyPhaseUpdate(float _DeltaTime);
@@ -193,6 +198,14 @@ private:
 
 	bool GameOverCheck();
 
+
+	void PotionStart();
+	void PotionUpdate(float _DeltaTime);
+	void PotionEnd();
+
+	void EnemyPotionStart();
+	void EnemyPotionUpdate(float _DeltaTime);
+	void EnemyPotionEnd();
 #pragma endregion
 
 

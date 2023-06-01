@@ -103,6 +103,15 @@ void SelectUI::SetHPBar(float _Value)
 	HPBarRender->GetTransform()->SetLocalPosition(float4(-20 + (84 * _Value), -48));
 }
 
+void SelectUI::SetHPLerp(int _Value)
+{
+	StartValue = (float)UnitHP->GetValue() / UnitMaxHP->GetValue();
+	UnitHP->SetValueLerp(_Value);
+	TargetValue = (float)_Value / UnitMaxHP->GetValue();
+	IsLerp = true;
+	Timer = 0;
+}
+
 void SelectUI::SetUnitData(std::shared_ptr<BattleUnit> _Unit)
 {
 	switch (CursorDir)
@@ -148,6 +157,18 @@ void SelectUI::UnitUIOff()
 {
 	UnitDataOn = true;
 	UnitData.ChangeDir(UIDir::None);
+}
+
+void SelectUI::PotionUIOn()
+{
+	Goal.Render->Off();
+	TerrainUI.Render->Off();
+}
+
+void SelectUI::PotionUIOff()
+{
+	Goal.Render->On();
+	TerrainUI.Render->On();
 }
 
 void SelectUI::Start()
@@ -230,6 +251,19 @@ void SelectUI::Update(float _DeltaTiime)
 	Goal.Update(_DeltaTiime);
 	TerrainUI.Update(_DeltaTiime);
 	UnitData.Update(_DeltaTiime);
+
+	if (true == IsLerp)
+	{
+		Timer += _DeltaTiime;
+		if (1 < Timer)
+		{
+			SetHPBar(TargetValue);
+			IsLerp = false;
+			return;
+		}
+		SetHPBar(std::lerp(StartValue, TargetValue, Timer));
+	}
+
 }
 
 
