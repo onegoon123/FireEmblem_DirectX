@@ -84,8 +84,8 @@ void FECore::ResourcesCreate()
 	std::shared_ptr<GameEnginePixelShader> Shader = GameEnginePixelShader::Load(NewDir.GetPlusFileName("EffectPixelShader.hlsl").GetFullPath(), "Texture_PS");
 	std::shared_ptr<GameEngineRenderingPipeLine> Pipe = GameEngineRenderingPipeLine::Create("2DTextureEffect");
 
-	Pipe->SetVertexBuffer("Rect");
-	Pipe->SetIndexBuffer("Rect");
+	//Pipe->SetVertexBuffer("Rect");
+	//Pipe->SetIndexBuffer("Rect");
 	Pipe->SetVertexShader("TextureShader.hlsl");
 	Pipe->SetRasterizer("Engine2DBase");
 	Pipe->SetPixelShader("EffectPixelShader.hlsl");

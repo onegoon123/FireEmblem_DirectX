@@ -116,7 +116,7 @@ void GameEngineCore::CoreResourcesInit()
 
 		GameEngineVertexBuffer::Create("Rect", ArrVertex);
 		GameEngineIndexBuffer::Create("Rect", ArrIndex);
-
+		GameEngineMesh::Create("Rect");
 	}
 
 	{
@@ -135,7 +135,7 @@ void GameEngineCore::CoreResourcesInit()
 
 		GameEngineVertexBuffer::Create("FullRect", ArrVertex);
 		GameEngineIndexBuffer::Create("FullRect", ArrIndex);
-
+		GameEngineMesh::Create("FullRect");
 	}
 
 
@@ -309,11 +309,12 @@ void GameEngineCore::CoreResourcesInit()
 
 
 	{
+		// 2D가 워낙 매쉬가 중요하지가 않아요 Rect 안써.
 		{
 			std::shared_ptr<GameEngineRenderingPipeLine> Pipe = GameEngineRenderingPipeLine::Create("2DTexture");
 
-			Pipe->SetVertexBuffer("Rect");
-			Pipe->SetIndexBuffer("Rect");
+			//Pipe->SetVertexBuffer("Rect");
+			//Pipe->SetIndexBuffer("Rect");
 			Pipe->SetVertexShader("TextureShader.hlsl");
 			Pipe->SetRasterizer("Engine2DBase");
 			Pipe->SetPixelShader("TextureShader.hlsl");
@@ -323,8 +324,8 @@ void GameEngineCore::CoreResourcesInit()
 
 		{
 			std::shared_ptr<GameEngineRenderingPipeLine> Pipe = GameEngineRenderingPipeLine::Create("Merge");
-			Pipe->SetVertexBuffer("FullRect");
-			Pipe->SetIndexBuffer("FullRect");
+			//Pipe->SetVertexBuffer("FullRect");
+			//Pipe->SetIndexBuffer("FullRect");
 			Pipe->SetVertexShader("MergeShader.hlsl");
 			Pipe->SetRasterizer("Engine2DBase");
 			Pipe->SetPixelShader("MergeShader.hlsl");
@@ -333,7 +334,6 @@ void GameEngineCore::CoreResourcesInit()
 
 			GameEngineRenderTarget::RenderTargetUnitInit();
 		}
-
 	}
 }
 

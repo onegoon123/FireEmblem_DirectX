@@ -31,8 +31,9 @@ public:
 		return PixelShaderPtr;
 	}
 
-	void SetVertexBuffer(const std::string_view& _Value);
-	void SetIndexBuffer(const std::string_view& _Value);
+	//void SetVertexBuffer(const std::string_view& _Value);
+	//void SetIndexBuffer(const std::string_view& _Value);
+
 	void SetVertexShader(const std::string_view& _Value);
 	void SetRasterizer(const std::string_view& _Value);
 	void SetPixelShader(const std::string_view& _Value);
@@ -64,9 +65,9 @@ private:
 	// 쉐이더 계열은 다 프로그래밍 가능 단계 단계와 
 	// 나머지들은 고정기능 단계라고 부른다.
 
-	void InputAssembler1();
+	// void InputAssembler1();
 	void VertexShader();
-	void InputAssembler2();
+	// void InputAssembler2();
 	void HullShader();
 	void Tessellator();
 	void DomainShader();
@@ -77,9 +78,8 @@ private:
 
 
 	D3D11_FILL_MODE FILL_MODE = D3D11_FILL_MODE::D3D11_FILL_SOLID;
-	D3D11_PRIMITIVE_TOPOLOGY TOPOLOGY = D3D11_PRIMITIVE_TOPOLOGY::D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 
-	std::shared_ptr<class GameEngineInputLayOut> InputLayOutPtr;
+	// std::shared_ptr<class GameEngineInputLayOut> InputLayOutPtr;
 	std::shared_ptr<class GameEngineVertexBuffer> VertexBufferPtr;
 	std::shared_ptr<class GameEngineIndexBuffer> IndexBufferPtr;
 	std::shared_ptr<class GameEngineVertexShader> VertexShaderPtr;

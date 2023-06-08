@@ -12,6 +12,8 @@ void SpriteRenderer::Start()
 {
 	GameEngineRenderer::Start();
 
+	SetMesh("Rect");
+
 	AtlasData.x = 0.0f;
 	AtlasData.y = 0.0f;
 	AtlasData.z = 1.0f;
