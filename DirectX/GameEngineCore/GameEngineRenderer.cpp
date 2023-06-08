@@ -21,7 +21,7 @@ void GameEngineRenderUnit::SetMesh(const std::string_view& _Name)
 {
 	Mesh = GameEngineMesh::Find(_Name);
 
-	if (nullptr != Pipe)
+	if (false == InputLayOutPtr->IsCreate() && nullptr != Pipe)
 	{
 		InputLayOutPtr->ResCreate(Mesh->GetVertexBuffer(), Pipe->GetVertexShader());
 	}
@@ -41,7 +41,7 @@ void GameEngineRenderUnit::SetPipeLine(const std::string_view& _Name)
 		ShaderResHelper.Copy(Res);
 	}
 
-	if (nullptr != Mesh)
+	if (false == InputLayOutPtr->IsCreate() && nullptr != Mesh)
 	{
 		InputLayOutPtr->ResCreate(Mesh->GetVertexBuffer(), Pipe->GetVertexShader());
 	}

@@ -86,8 +86,6 @@ public:
 		return LastTarget;
 	}
 
-	void CollisionDebugRender(GameEngineCamera* _Camera, float _Delta);
-
 protected:
 	// 레벨이 바뀌어서 시작할때
 	virtual void LevelChangeStart();

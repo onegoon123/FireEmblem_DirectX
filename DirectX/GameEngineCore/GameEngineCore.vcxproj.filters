@@ -132,6 +132,9 @@
     <ClCompile Include="GameEngineUIRenderer.cpp">
       <Filter>Object\Rendering\Component</Filter>
     </ClCompile>
+    <ClCompile Include="GameEngineDebug3D.cpp">
+      <Filter>Debug</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngineCore.h" />
@@ -269,6 +272,9 @@
     <ClInclude Include="GameEngineUIRenderer.h">
       <Filter>Object\Rendering\Component\2D</Filter>
     </ClInclude>
+    <ClInclude Include="GameEngineDebug3D.h">
+      <Filter>Debug</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Resources">
@@ -333,6 +339,9 @@
     </Filter>
     <Filter Include="Object\Collision">
       <UniqueIdentifier>{0ebe6887-62fc-4cb1-bd35-5d90211c9b04}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Debug">
+      <UniqueIdentifier>{4b591575-73b3-45e8-9b15-f2a1f10f89f1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

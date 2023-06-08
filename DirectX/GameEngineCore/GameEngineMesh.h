@@ -11,12 +11,12 @@ class GameEngineMesh : public GameEngineResource<GameEngineMesh>
 	friend class GameEngineRenderUnit;
 
 public:
-	static void Create(const std::string_view& _Name)
+	static std::shared_ptr<GameEngineMesh> Create(const std::string_view& _Name)
 	{
-		Create(_Name, _Name, _Name);
+		return Create(_Name, _Name, _Name);
 	}
 
-	static void Create(const std::string_view& _Name, const std::string_view& _VtxName, const std::string_view& _IdxName)
+	static std::shared_ptr<GameEngineMesh> Create(const std::string_view& _Name, const std::string_view& _VtxName, const std::string_view& _IdxName)
 	{
 		std::shared_ptr<GameEngineMesh> Res = GameEngineResource::Create(_Name);
 		Res->VertexBufferPtr = GameEngineVertexBuffer::Find(_VtxName);
@@ -26,11 +26,18 @@ public:
 		{
 			MsgAssert("매쉬를 만드는데 실패했습니다.");
 		}
+
+		return Res;
 	}
 
 	std::shared_ptr<GameEngineVertexBuffer> GetVertexBuffer()
 	{
 		return VertexBufferPtr;
+	}
+
+	void SetTopology(D3D11_PRIMITIVE_TOPOLOGY _TOPOLOGY)
+	{
+		TOPOLOGY = _TOPOLOGY;
 	}
 
 	// constrcuter destructer

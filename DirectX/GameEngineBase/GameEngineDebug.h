@@ -4,26 +4,10 @@
 #include <string>
 
 // Ό³Έν :
-class GameEngineDebug
+namespace GameEngineDebug
 {
-public:
-
-	// delete Function
-	GameEngineDebug(const GameEngineDebug& _Other) = delete;
-	GameEngineDebug(GameEngineDebug&& _Other) noexcept = delete;
-	GameEngineDebug& operator=(const GameEngineDebug& _Other) = delete;
-	GameEngineDebug& operator=(GameEngineDebug&& _Other) noexcept = delete;
-
-	static void LeakCheck();
-	static void LeakPointBreak(int _Point);
-
-protected:
-
-private:
-	// constrcuter destructer
-	GameEngineDebug();
-	~GameEngineDebug();
-
+	void LeakCheck();
+	void LeakPointBreak(int _Point);
 };
 
 

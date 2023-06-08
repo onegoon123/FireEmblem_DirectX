@@ -6,3 +6,5 @@
 #include <GameEngineCore/GameEngineCore.h>
 #include <GameEngineCore/GameEngineCamera.h>
 #include <GameEnginePlatform/GameEngineInput.h>
+
+#include <GameEngineCore/GameEngineDebug3D.h>
