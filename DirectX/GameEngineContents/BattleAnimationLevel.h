@@ -21,6 +21,8 @@ public:
 	void HitEvent();
 	void TurnEnd();
 
+	void BattleEnd();
+
 	GameEngineTimeEvent TimeEvent;
 protected:
 	void Start() override;

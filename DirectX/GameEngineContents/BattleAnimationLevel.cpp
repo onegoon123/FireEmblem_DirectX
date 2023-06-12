@@ -90,6 +90,12 @@ void BattleAnimationLevel::TurnEnd()
 	IsTurnEnd = true;
 }
 
+void BattleAnimationLevel::BattleEnd()
+{
+	UI->SetFadeOut(0.3f);
+	TimeEvent.AddEvent(0.5f, std::bind(&BattleAnimationLevel::End, this));
+}
+
 void BattleAnimationLevel::Start()
 {
 
@@ -182,7 +188,23 @@ void BattleAnimationLevel::PlayAttack()
 {
 	if (BattleIter == BattleData.end())
 	{
-		UI->SetEXP(75, 100);
+		if (SubjectUnit->GetIsPlayer())
+		{
+			UI->SetEXP(SubjectUnit->GetUnitData().GetExp(), BattleData.back().Exp, BattleData.back().SubjectUnit);
+		}
+		else
+		{
+			UI->SetEXP(TargetUnit->GetUnitData().GetExp(), BattleData.back().Exp, BattleData.back().TargetUnit);
+		}
+
+		if (true == BattleData.back().IsLevelUp)
+		{
+			//TimeEvent.AddEvent(3.0f, std::bind(&BattleAnimationUI::SetFadeOut, UI, 0.3f));
+			//TimeEvent.AddEvent(3.5f, std::bind(&BattleAnimationLevel::End, this));
+			return;
+		}
+
+		return;
 		if (true == LeftUnit->GetIsDie() || true == RightUnit->GetIsDie())
 		{
 			TimeEvent.AddEvent(3.0f, std::bind(&BattleAnimationUI::SetFadeOut, UI, 0.3f));

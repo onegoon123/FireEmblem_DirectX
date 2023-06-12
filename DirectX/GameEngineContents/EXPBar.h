@@ -15,7 +15,7 @@ public:
 	EXPBar& operator=(EXPBar&& _Other) noexcept = delete;
 
 	void SetEXP(int _EXP);
-	void AddEXP(int _EXP);
+	void AddEXP(int _EXP, std::function<void()> _EndEvent = nullptr);
 
 protected:
 	void Start() override;
@@ -27,6 +27,7 @@ private:
 	std::shared_ptr<GameEngineUIRenderer> BarCenter = nullptr;
 	std::shared_ptr<GameEngineUIRenderer> BarRight = nullptr;
 	std::shared_ptr<class NumberActor> Number = nullptr;
+	std::function<void()> EndEvent = nullptr;
 
 	int CurEXP = 0;
 	int PlusEXP = 0; 

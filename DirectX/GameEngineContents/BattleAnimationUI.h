@@ -1,5 +1,6 @@
 #pragma once
 #include <GameEngineCore/GameEngineActor.h>
+#include "Unit.h"
 // Ό³Έν :
 class BattleAnimationUI : public GameEngineActor
 {
@@ -17,10 +18,10 @@ public:
 	void SetFadeIn(float _Timer);
 	void SetFadeOut(float _Timer);
 	
-	void SetData(class Unit& _Unit1, Unit& _Unit2);
+	void SetData(Unit& _Unit1, Unit& _Unit2);
 	void SetDamage(Unit& _Unit);
 
-	void SetEXP(int _Before, int _Get);
+	void SetEXP(int _Before, int _Get, Unit& _UnitData);
 
 	bool IsTurnEnd();
 
@@ -29,6 +30,8 @@ protected:
 	void Update(float _DeltaTime) override;
 
 private:
+	class BattleAnimationLevel* CurLevel = nullptr;
+	GameEngineTimeEvent* TimeEvent = nullptr;
 	std::shared_ptr<class GameEngineUIRenderer> UIRenderer = nullptr;
 	std::shared_ptr<GameEngineUIRenderer> FadeRenderer = nullptr;
 
@@ -51,10 +54,16 @@ private:
 	std::shared_ptr<GameEngineUIRenderer> EnemyTriangle = nullptr;
 
 	std::shared_ptr<class EXPBar> EXPUI = nullptr;
+	std::shared_ptr<class LevelUpUI> LevelUI = nullptr;
+
+	Unit PlayerData;
 
 	float FadeSpeed = 0.0f;
 	float FadeTimer = 0.0f;
 	bool IsFadeIn = false;
 	bool IsFadeOut = false;
+	bool IsLevelUp = false;
+
+	void EndExpUI();
 };
 

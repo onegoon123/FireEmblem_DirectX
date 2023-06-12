@@ -5,15 +5,50 @@
 // 레벨업시 성장할 능력치들
 struct MainStat
 {
-	int HP = 0;				// 체력
-	int Strength = 0;		// 힘
-	int Magic = 0;			// 마력
-	int Dexterity = 0;		// 기술
-	int Speed = 0;			// 속도
-	int Defense = 0;		// 수비
-	int Resistance = 0;		// 마방
-	int Luck = 0;			// 행운
-	int Constitution = 0;	// 체격
+	union
+	{
+		struct
+		{
+			int HP;				// 체력
+			int Strength;		// 힘
+			int Magic;			// 마력
+			int Dexterity;		// 기술
+			int Speed;			// 속도
+			int Defense;		// 수비
+			int Resistance;		// 마방
+			int Luck;			// 행운
+			int Constitution;	// 체격
+		};
+		int Array[9];
+	};
+
+	MainStat()
+	{
+		Array[0] = 0;
+		HP = 0;
+		Strength = 0;
+		Magic = 0;
+		Dexterity = 0;
+		Speed = 0;
+		Defense = 0;
+		Resistance = 0;
+		Luck = 0;
+		Constitution = 0;
+	}
+	MainStat operator-(MainStat& _Other)
+	{
+		MainStat ReturnStat;
+		ReturnStat.HP = HP - _Other.HP;
+		ReturnStat.Strength = Strength - _Other.Strength;
+		ReturnStat.Magic = Magic - _Other.Magic;
+		ReturnStat.Dexterity = Dexterity - _Other.Dexterity;
+		ReturnStat.Speed = Speed - _Other.Speed;
+		ReturnStat.Defense = Defense - _Other.Defense;
+		ReturnStat.Resistance = Resistance - _Other.Resistance;
+		ReturnStat.Luck = Luck - _Other.Luck;
+		ReturnStat.Constitution = Constitution - _Other.Constitution;
+		return ReturnStat;
+	}
 };
 
 

@@ -11,14 +11,38 @@ NumberActor::~NumberActor()
 {
 }
 
+void NumberActor::NumberCreate(int _Order)
+{
+	if (nullptr == GameEngineSprite::Find("NumFont.png"))
+	{
+		GameEngineDirectory Dir;
+		Dir.MoveParentToDirectory("ContentResources");
+		Dir.Move("ContentResources");
+		Dir.Move("Battle");
+		Dir.Move("UI");
+		GameEngineSprite::LoadSheet(Dir.GetPlusFileName("NumFont.png").GetFullPath(), 10, 1);
+	}
+
+	Renders.resize(3);
+	for (int i = 0; i < 3; i++)
+	{
+		Renders[i] = CreateComponent<GameEngineUIRenderer>(_Order);
+		Renders[i]->SetSprite("NumFont.png", 0);
+		Renders[i]->GetTransform()->SetLocalScale({ 32, 40 });
+		Renders[i]->GetTransform()->SetLocalPosition({ -32.0f * i, 0 });
+	}
+}
+
 void NumberActor::Setting(int _Value)
 {
+	if (0 == Renders.size()) { NumberCreate(); }
 	SetValue(_Value);
 	IsLerp = false;
 }
 
 void NumberActor::SetValue(int _Value)
 {
+	if (0 == Renders.size()) { NumberCreate(); }
 	Value = _Value;
 	if (1000 <= _Value)
 	{
@@ -57,6 +81,7 @@ void NumberActor::SetValue(int _Value)
 
 void NumberActor::SetValueLerp(int _Value)
 {
+	if (0 == Renders.size()) { NumberCreate(); }
 	if (Value == _Value) { return; }
 	IsPlus = Value < _Value;
 	TargetValue = _Value;
@@ -66,6 +91,7 @@ void NumberActor::SetValueLerp(int _Value)
 
 void NumberActor::SetBlackFont()
 {
+	if (0 == Renders.size()) { NumberCreate(); }
 	if (nullptr == GameEngineSprite::Find("NumFontBlack.png"))
 	{
 		GameEngineDirectory Dir;
@@ -83,6 +109,7 @@ void NumberActor::SetBlackFont()
 
 void NumberActor::SetDamageFont()
 {
+	if (0 == Renders.size()) { NumberCreate(); }
 	if (nullptr == GameEngineSprite::Find("NumFontDamage.png"))
 	{
 		GameEngineDirectory Dir;
@@ -100,24 +127,7 @@ void NumberActor::SetDamageFont()
 
 void NumberActor::Start()
 {
-	if (nullptr == GameEngineSprite::Find("NumFont.png"))
-	{
-		GameEngineDirectory Dir;
-		Dir.MoveParentToDirectory("ContentResources");
-		Dir.Move("ContentResources");
-		Dir.Move("Battle");
-		Dir.Move("UI");
-		GameEngineSprite::LoadSheet(Dir.GetPlusFileName("NumFont.png").GetFullPath(), 10, 1);
-	}
 
-	Renders.resize(3);
-	for (int i = 0; i < 3; i++)
-	{
-		Renders[i] = CreateComponent<GameEngineUIRenderer>(static_cast<int>(RenderOrder::UIText));
-		Renders[i]->SetSprite("NumFont.png", 0);
-		Renders[i]->GetTransform()->SetLocalScale({ 32, 40 });
-		Renders[i]->GetTransform()->SetLocalPosition({ -32.0f * i, 0});
-	}
 }
 
 void NumberActor::Update(float _DeltaTime)

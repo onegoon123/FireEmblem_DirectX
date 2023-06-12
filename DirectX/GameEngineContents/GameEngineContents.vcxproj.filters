@@ -177,6 +177,9 @@
     <ClCompile Include="EXPBar.cpp">
       <Filter>Battle\Animation</Filter>
     </ClCompile>
+    <ClCompile Include="LevelUpUI.cpp">
+      <Filter>Battle\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FECore.h" />
@@ -331,6 +334,9 @@
     </ClInclude>
     <ClInclude Include="EXPBar.h">
       <Filter>Battle\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelUpUI.h">
+      <Filter>Battle\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

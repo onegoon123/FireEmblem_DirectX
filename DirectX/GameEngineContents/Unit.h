@@ -16,6 +16,7 @@ public:
 		IdentityCode = _Other.IdentityCode;
 		UnitCode = _Other.UnitCode;
 		UnitStat = Stat(_Other.UnitStat);
+		LevelUpData = _Other.LevelUpData;
 		CurrentHP = _Other.CurrentHP;
 		TerrainData = _Other.TerrainData;
 		TerrainDeffence = _Other.TerrainDeffence;
@@ -34,6 +35,7 @@ public:
 		IdentityCode = _Other.IdentityCode;
 		UnitCode = _Other.UnitCode;
 		UnitStat = Stat(_Other.UnitStat);
+		LevelUpData = _Other.LevelUpData;
 		CurrentHP = _Other.CurrentHP;
 		TerrainData = _Other.TerrainData;
 		TerrainDeffence = _Other.TerrainDeffence;
@@ -55,24 +57,38 @@ public:
 
 	void LevelUp()
 	{
-		MainStat UpStat = UnitStat.LevelUp();
-		if (1 <= UpStat.HP)
+		LevelUpData = UnitStat.LevelUp();
+		if (1 <= LevelUpData.HP)
 		{
-			CurrentHP += UpStat.HP;
+			CurrentHP += LevelUpData.HP;
 		}
 	}
 	void LevelUp(int _Value)
 	{
 		for (int i = 0; i < _Value; i++)
 		{
-			MainStat UpStat = UnitStat.LevelUp();
-			if (1 <= UpStat.HP)
+			LevelUpData = UnitStat.LevelUp();
+			if (1 <= LevelUpData.HP)
 			{
-				CurrentHP += UpStat.HP;
+				CurrentHP += LevelUpData.HP;
 			}
 		}
 	}
-
+	bool AddExp(int _Exp)
+	{
+		UnitStat.Experience += _Exp;
+		if (100 <= UnitStat.Experience)
+		{
+			UnitStat.Experience -= 100;
+			LevelUp();
+			return true;
+		}
+		return false;
+	}
+	MainStat GetLevelUpData()
+	{
+		return LevelUpData;
+	}
 	int GetUnitCode()
 	{
 		return UnitCode;
@@ -257,6 +273,7 @@ private:
 	UnitIdentityCode IdentityCode;
 	int CurrentHP = 0;
 	Stat UnitStat;
+	MainStat LevelUpData; // 이전 레벨업에 증가된 스텟
 
 	// 지형 데이터
 	Terrain TerrainData = Terrain::None;

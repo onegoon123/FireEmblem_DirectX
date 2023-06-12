@@ -18,6 +18,9 @@ struct AttackCommand
 	bool IsCritical = false;
 	bool IsHit = false;
 	bool SubjectAttack = false;
+	bool IsLevelUp = false;
+	int Damage = 0;
+	int Exp = 1;
 
 	AttackCommand& ChangeOrder()
 	{
@@ -76,4 +79,5 @@ private:
 	int RandomNum = 0;
 	std::string Record = "";
 
+	static std::list<AttackCommand>& AttackEnd(std::list<AttackCommand>& _AttackList, UnitCommand& _CommandRecord, Unit& _SubjectUnit, Unit& _TargetUnit);
 };

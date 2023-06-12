@@ -37,13 +37,7 @@ std::list<AttackCommand> UnitCommand::Attack(std::shared_ptr<BattleUnit> _Subjec
 
 		if (true == TargetUnit.GetIsDie())
 		{
-			CommandRecord.AfterSubjectUnit = SubjectUnit;
-			CommandRecord.AfterSubjectUnit.SetIsTurnEnd(true);
-			CommandRecord.AfterTargetUnit = TargetUnit;
-			CommandRecord.AfterSubjectItems = Item::SaveItemDataList(SubjectUnit.GetItems());
-			CommandRecord.AfterTargetItems = Item::SaveItemDataList(TargetUnit.GetItems());
-			CommandList.push_back(CommandRecord);
-			return AttackList;
+			return AttackEnd(AttackList, CommandRecord, SubjectUnit, TargetUnit);
 		}
 	}
 
@@ -56,13 +50,7 @@ std::list<AttackCommand> UnitCommand::Attack(std::shared_ptr<BattleUnit> _Subjec
 
 		if (true == SubjectUnit.GetIsDie())
 		{
-			CommandRecord.AfterSubjectUnit = SubjectUnit;
-			CommandRecord.AfterSubjectUnit.SetIsTurnEnd(true);
-			CommandRecord.AfterTargetUnit = TargetUnit;
-			CommandRecord.AfterSubjectItems = Item::SaveItemDataList(SubjectUnit.GetItems());
-			CommandRecord.AfterTargetItems = Item::SaveItemDataList(TargetUnit.GetItems());
-			CommandList.push_back(CommandRecord);
-			return AttackList;
+			return AttackEnd(AttackList, CommandRecord, SubjectUnit, TargetUnit);
 		}
 	}
 
@@ -88,13 +76,7 @@ std::list<AttackCommand> UnitCommand::Attack(std::shared_ptr<BattleUnit> _Subjec
 		}
 	}
 
-	CommandRecord.AfterSubjectUnit = SubjectUnit;
-	CommandRecord.AfterSubjectUnit.SetIsTurnEnd(true);
-	CommandRecord.AfterTargetUnit = TargetUnit;
-	CommandRecord.AfterSubjectItems = Item::SaveItemDataList(SubjectUnit.GetItems());
-	CommandRecord.AfterTargetItems = Item::SaveItemDataList(TargetUnit.GetItems());
-	CommandList.push_back(CommandRecord);
-	return AttackList;
+	return AttackEnd(AttackList, CommandRecord, SubjectUnit, TargetUnit);
 }
 
 AttackCommand UnitCommand::AttackSimulation(std::shared_ptr<BattleUnit> _SubjectUnit, std::shared_ptr<BattleUnit> _TargetUnit)
@@ -176,20 +158,20 @@ AttackCommand UnitCommand::AttackCalculation(Unit& _SubjectUnit, Unit& _TargetUn
 	NewAttack.IsCritical = FERandom::RandomInt() < CriticalPercentage && NewAttack.IsHit;
 
 	// 공격력 계산
-	int Damage = _SubjectUnit.GetAttackPoint(_TargetUnit.GetClassValue()) + TriangleDamage;	// 상성에 따른 대미지 적용
-	Damage -= _TargetUnit.GetDefPoint();	// 방어력에 의한 수치 감소, 지형 수치 적용
-	Damage *= NewAttack.IsCritical ? 3 : 1;	// 치명타 시 3배로 적용
+	NewAttack.Damage = _SubjectUnit.GetAttackPoint(_TargetUnit.GetClassValue()) + TriangleDamage;	// 상성에 따른 대미지 적용
+	NewAttack.Damage -= _TargetUnit.GetDefPoint();	// 방어력에 의한 수치 감소, 지형 수치 적용
+	NewAttack.Damage *= NewAttack.IsCritical ? 3 : 1;	// 치명타 시 3배로 적용
 
 	// 대미지가 0이하 일때
-	if (0 >= Damage)
+	if (0 >= NewAttack.Damage)
 	{
 		// No Damage
-		Damage = 0;
+		NewAttack.Damage = 0;
 	}
 
 	if (true == NewAttack.IsHit)
 	{
-		_TargetUnit.Damage(Damage);
+		_TargetUnit.Damage(NewAttack.Damage);
 		_SubjectUnit.GetCurWeapon()->Use();
 	}
 
@@ -227,20 +209,20 @@ AttackCommand UnitCommand::AttackCalculationNoRandom(Unit& _SubjectUnit, Unit& _
 	NewAttack.IsCritical = 50 < CriticalPercentage && NewAttack.IsHit;
 
 	// 공격력 계산
-	int Damage = _SubjectUnit.GetAttackPoint(_TargetUnit.GetClassValue()) + TriangleDamage;	// 상성에 따른 대미지 적용
-	Damage -= _TargetUnit.GetDefPoint();	// 방어력에 의한 수치 감소, 지형 수치 적용
-	Damage *= NewAttack.IsCritical ? 3 : 1;	// 치명타 시 3배로 적용
+	NewAttack.Damage = _SubjectUnit.GetAttackPoint(_TargetUnit.GetClassValue()) + TriangleDamage;	// 상성에 따른 대미지 적용
+	NewAttack.Damage -= _TargetUnit.GetDefPoint();	// 방어력에 의한 수치 감소, 지형 수치 적용
+	NewAttack.Damage *= NewAttack.IsCritical ? 3 : 1;	// 치명타 시 3배로 적용
 
 	// 대미지가 0이하 일때
-	if (0 >= Damage)
+	if (0 >= NewAttack.Damage)
 	{
 		// No Damage
-		Damage = 0;
+		NewAttack.Damage = 0;
 	}
 
 	if (true == NewAttack.IsHit)
 	{
-		_TargetUnit.Damage(Damage);
+		_TargetUnit.Damage(NewAttack.Damage);
 	}
 
 	NewAttack.TargetUnit = _TargetUnit;
@@ -270,7 +252,7 @@ void UnitCommand::ItemUse(std::shared_ptr<BattleUnit> _SubjectUnit, std::list<st
 	CommandRecord.BeforeSubjectUnitPos = _SubjectUnit->GetBeforeMapPos();
 	CommandRecord.BeforeSubjectItems = Item::SaveItemDataList(CommandRecord.BeforeSubjectUnit.GetItems());
 
-	CommandRecord.Record = std::string(_SubjectUnit->GetName()) + "이(가) "+ std::string((*_ItemIter)->GetName()) + "를(을) 사용했다.";
+	CommandRecord.Record = std::string(_SubjectUnit->GetName()) + "이(가) " + std::string((*_ItemIter)->GetName()) + "를(을) 사용했다.";
 	_SubjectUnit->GetUnitData().UseItem(_ItemIter);
 
 	CommandRecord.AfterSubjectItems = Item::SaveItemDataList(_SubjectUnit->GetUnitData().GetItems());
@@ -302,5 +284,37 @@ void UnitCommand::PhaseStart(Faction _Faction)
 		break;
 	}
 	CommandList.push_back(CommandRecord);
+}
+
+std::list<AttackCommand>& UnitCommand::AttackEnd(std::list<AttackCommand>& _AttackList, UnitCommand& _CommandRecord, Unit& _SubjectUnit, Unit& _TargetUnit)
+{
+	_CommandRecord.AfterSubjectUnit = _SubjectUnit;
+	_CommandRecord.AfterSubjectUnit.SetIsTurnEnd(true);
+	_CommandRecord.AfterTargetUnit = _TargetUnit;
+	_CommandRecord.AfterSubjectItems = Item::SaveItemDataList(_SubjectUnit.GetItems());
+	_CommandRecord.AfterTargetItems = Item::SaveItemDataList(_TargetUnit.GetItems());
+	CommandList.push_back(_CommandRecord);
+
+	// 경험치 계산
+	int SumDamage = 0;
+	for (AttackCommand _Attack : _AttackList)
+	{
+		if (true == _Attack.SubjectAttack && false == _SubjectUnit.GetIsPlayer()) { continue; }
+		if (false == _Attack.SubjectAttack && true == _SubjectUnit.GetIsPlayer()) { continue; }
+		// 플레이어 유닛이 공격한 대미지를 더함
+		SumDamage += _Attack.Damage;
+	}
+
+	Unit& Player = _AttackList.back().SubjectUnit.GetIsPlayer() == true ? _AttackList.back().SubjectUnit : _AttackList.back().TargetUnit;
+	Unit& Enemy = _AttackList.back().SubjectUnit.GetIsPlayer() == false ? _AttackList.back().SubjectUnit : _AttackList.back().TargetUnit;
+
+	if (1 <= SumDamage)
+	{
+		_AttackList.back().Exp = SumDamage + Enemy.GetLevel() - Player.GetLevel() + 20;
+	}
+	_AttackList.back().IsLevelUp = Player.AddExp(_AttackList.back().Exp);
+
+	return _AttackList;
+
 }
 

@@ -1,5 +1,6 @@
 #pragma once
 #include <GameEngineCore/GameEngineActor.h>
+#include "ContentsEnum.h"
 // Ό³Έν :
 class NumberActor : public GameEngineActor
 {
@@ -14,6 +15,17 @@ public:
 	NumberActor& operator=(const NumberActor& _Other) = delete;
 	NumberActor& operator=(NumberActor&& _Other) noexcept = delete;
 	
+	void NumberCreate()
+	{
+		NumberCreate(RenderOrder::UIText);
+	}
+	template <typename EnumType>
+	void NumberCreate(EnumType _Order)
+	{
+		NumberCreate(static_cast<int>(_Order));
+	}
+	void NumberCreate(int _Order);
+
 	void Setting(int _Value);
 	void SetValue(int _Value);
 	void SetValueLerp(int _Value);
@@ -23,7 +35,6 @@ public:
 	}
 	void SetBlackFont();
 	void SetDamageFont();
-
 	bool GetIsLerp()
 	{
 		return IsLerp;

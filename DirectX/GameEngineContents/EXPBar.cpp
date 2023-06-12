@@ -17,8 +17,13 @@ void EXPBar::SetEXP(int _EXP)
 	Number->SetValue(CurEXP);
 }
 
-void EXPBar::AddEXP(int _EXP)
+void EXPBar::AddEXP(int _EXP, std::function<void()> _EndEvent)
 {
+	if (nullptr != _EndEvent)
+	{
+		EndEvent = _EndEvent;
+	}
+
 	Number->StopLerp();
 	Number->SetValue(CurEXP);
 
@@ -101,6 +106,10 @@ void EXPBar::Update(float _DeltaTime)
 			if (true == IsLevelUp)
 			{
 				AddEXP(PlusEXP);
+			}
+			else if (nullptr != EndEvent)
+			{
+				EndEvent();
 			}
 		}
 		SetEXPBar(BeforeEXP);

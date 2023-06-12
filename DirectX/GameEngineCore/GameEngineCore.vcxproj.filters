@@ -132,8 +132,14 @@
     <ClCompile Include="GameEngineUIRenderer.cpp">
       <Filter>Object\Rendering\Component</Filter>
     </ClCompile>
+    <ClCompile Include="GameEngineButton.cpp">
+      <Filter>Content\UI</Filter>
+    </ClCompile>
     <ClCompile Include="GameEngineDebug3D.cpp">
       <Filter>Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineFSM.cpp">
+      <Filter>Content\Patten</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -272,8 +278,14 @@
     <ClInclude Include="GameEngineUIRenderer.h">
       <Filter>Object\Rendering\Component\2D</Filter>
     </ClInclude>
+    <ClInclude Include="GameEngineButton.h">
+      <Filter>Content\UI</Filter>
+    </ClInclude>
     <ClInclude Include="GameEngineDebug3D.h">
       <Filter>Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineFSM.h">
+      <Filter>Content\Patten</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -340,8 +352,17 @@
     <Filter Include="Object\Collision">
       <UniqueIdentifier>{0ebe6887-62fc-4cb1-bd35-5d90211c9b04}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Content">
+      <UniqueIdentifier>{8646011a-6621-4b7a-8f7e-aa46900294ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Content\UI">
+      <UniqueIdentifier>{33e45f5f-ec95-4404-b095-76a12713a168}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Debug">
       <UniqueIdentifier>{4b591575-73b3-45e8-9b15-f2a1f10f89f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Content\Patten">
+      <UniqueIdentifier>{39aa3d0c-29ee-497d-a63e-b2df7e130182}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
