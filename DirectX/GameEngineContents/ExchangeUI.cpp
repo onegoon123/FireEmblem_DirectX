@@ -4,6 +4,7 @@
 #include "MapCursor.h"
 #include "BattleLevel.h"
 #include "NumberActor.h"
+#include "UICursor.h"
 ExchangeUI::ExchangeUI()
 {
 }
@@ -31,6 +32,12 @@ void ExchangeUI::On(std::shared_ptr<BattleUnit> _SelectUnit, std::list<std::shar
 	TargetIter = TargetUnits.begin();
 	SetTarget();
 	TargetSelectStart();
+}
+
+void ExchangeUI::Off()
+{
+	GameEngineActor::Off();
+	Cursor_UI->Off();
 }
 
 void ExchangeUI::Start()
@@ -122,7 +129,7 @@ void ExchangeUI::TargetSelectStart()
 {
 	IsUnitSelect = false;
 	Cursor_Map->On();
-
+	Cursor_UI->Off();
 	LeftWindow->Off();
 	RightWindow->Off();
 }
@@ -174,6 +181,7 @@ void ExchangeUI::TargetSelectUpdate(float _DeltaTime)
 
 void ExchangeUI::ExchangeStart()
 {
+	// 아이템 목록 세팅
 	RightItems = RightUnit->GetUnitData().GetItems();
 
 	std::list<std::shared_ptr<Item>>::iterator ItemIter = LeftItems.begin();
@@ -197,9 +205,12 @@ void ExchangeUI::ExchangeStart()
 
 	IsUnitSelect = true;
 	Cursor_Map->Off();
+	Cursor_UI->On();
+
 	LeftWindow->On();
 	RightWindow->On();
 
+	// 초상화 변경
 	std::string TextStr = "Portrait_";
 	TextStr += LeftUnit ->GetUnitData().GetName();
 	TextStr += ".png";
@@ -209,10 +220,16 @@ void ExchangeUI::ExchangeStart()
 	TextStr += RightUnit->GetUnitData().GetName();
 	TextStr += ".png";
 	RightPortrait->SetTexture(TextStr);
+
+	CurrentCursor = { 0, 0 };
+	CursorPos = StartCursorPos + float4(456 * CurrentCursor.x, -64 * CurrentCursor.y);
+	Cursor_UI->GetTransform()->SetLocalPosition(CursorPos);
 }
 
 void ExchangeUI::ExchangeUpdate(float _DeltaTime)
 {
+	Cursor_UI->GetTransform()->SetLocalPosition(float4::LerpClamp(Cursor_UI->GetTransform()->GetLocalPosition(), CursorPos, _DeltaTime * 20));
+
 	if (GameEngineInput::IsDown("ButtonA") || GameEngineInput::IsUp("LeftClick"))
 	{
 		//ExchangeStart();
@@ -222,6 +239,31 @@ void ExchangeUI::ExchangeUpdate(float _DeltaTime)
 	if (GameEngineInput::IsDown("ButtonB") || GameEngineInput::IsUp("RightClick"))
 	{
 		TargetSelectStart();
+		return;
+	}
+
+	if (GameEngineInput::IsDown("Left"))
+	{
+		CurrentCursor += int2::Left;
+		CursorPos = StartCursorPos + float4(456 * CurrentCursor.x, -64 * CurrentCursor.y);
+		return;
+	}
+	if (GameEngineInput::IsDown("Right"))
+	{
+		CurrentCursor += int2::Right;
+		CursorPos = StartCursorPos + float4(456 * CurrentCursor.x, -64 * CurrentCursor.y);
+		return;
+	}
+	if (GameEngineInput::IsDown("Up"))
+	{
+		CurrentCursor += int2::Down;
+		CursorPos = StartCursorPos + float4(456 * CurrentCursor.x, -64 * CurrentCursor.y);
+		return;
+	}
+	if (GameEngineInput::IsDown("Down"))
+	{
+		CurrentCursor += int2::Up;
+		CursorPos = StartCursorPos + float4(456 * CurrentCursor.x, -64 * CurrentCursor.y);
 		return;
 	}
 }

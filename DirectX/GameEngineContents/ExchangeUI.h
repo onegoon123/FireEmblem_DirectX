@@ -1,6 +1,6 @@
 #pragma once
 #include <GameEngineCore/GameEngineActor.h>
-
+#include "Int2.h"
 class MapCursor;
 class UICursor;
 class GameEngineUIRenderer;
@@ -22,6 +22,7 @@ public:
 
 	void Setting(BattleLevel* _Level, std::shared_ptr<UICursor> _Cursor);
 	void On(std::shared_ptr<BattleUnit> _SelectUnit, std::list<std::shared_ptr<BattleUnit>>& _TargetUnits);
+	void Off();
 
 protected:
 	void Start() override;
@@ -61,10 +62,13 @@ private:
 	std::shared_ptr<class UIButtonSystem> ButtonSystem;
 	std::vector<std::shared_ptr<class GameEngineCollision>> ButtonCols;
 
-	const float4 StartCursorPos = { -432, 192 };
-	const float4 StartSelectPos = { -232, 192 };
+	const float4 StartCursorPos = { -432, -4 };
+	const float4 LeftSelectPos = { -232, 192 };
+	const float4 RightCursorPos = { -232, 192 };
+	const float4 RightSelectPos = { -232, 192 };
+
 	float4 CursorPos;
-	size_t CurrentCursor = 0;
+	int2 CurrentCursor = 0;
 	float CursorTimer = 0;
 
 	const float PreesTime = 0.2f;
