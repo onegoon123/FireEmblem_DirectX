@@ -29,9 +29,9 @@ protected:
 private:
 	void TargetSelectStart();
 	void TargetSelectUpdate(float _DeltaTime);
-	void TargetSelectEnd();
 	void ExchangeStart();
 	void ExchangeUpdate(float _DeltaTime);
+
 	BattleLevel* LevelPtr = nullptr;
 	std::function<void(std::shared_ptr<BattleUnit>)> ExchangeFunction;
 	std::function<void()> CancelFunction;
@@ -72,5 +72,7 @@ private:
 	bool IsOnFrame = false;	// UI를 켠 프레임인가
 	bool IsUnitSelect = false;// 무기를 선택했는가
 	bool IsClick = false;
+
+	void SetTarget();
 };
 
