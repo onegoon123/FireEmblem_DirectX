@@ -116,6 +116,11 @@ void BattleLevel::ChangeState(BattleState _State)
 		StateEnd = std::bind(&BattleLevel::PotionEnd, this);
 		PotionStart();
 		break;
+	case BattleLevel::BattleState::Heal:
+		StateUpdate = std::bind(&BattleLevel::HealUpdate, this, std::placeholders::_1);
+		StateEnd = std::bind(&BattleLevel::HealEnd, this);
+		HealStart();
+		break;
 	case BattleLevel::BattleState::EnemyPotion:
 		StateUpdate = std::bind(&BattleLevel::EnemyPotionUpdate, this, std::placeholders::_1);
 		StateEnd = std::bind(&BattleLevel::EnemyPotionEnd, this);
@@ -218,7 +223,7 @@ void BattleLevel::SelectStart()
 	{
 		SetUI_UnitData();	// 유닛 정보 UI로 띄우기
 		MoveSearch();	// 이동범위 탐색, 자동으로 공격범위도 탐색
-		Tiles->SetTile(IsMove, IsAttack);
+		SetTile();
 		MainCursor->Select();
 	}
 
@@ -266,7 +271,7 @@ void BattleLevel::MoveStart()
 
 	MoveSearch();	// 이동범위 탐색, 자동으로 공격범위도 탐색
 
-	Tiles->SetTile(IsMove, IsAttack);	// 이동 및 공격 범위를 타일로 표시
+	SetTile();
 
 	// Move State시 필요한 UI
 	MainCursor->On();
@@ -369,6 +374,14 @@ void BattleLevel::UnitCommandStart()
 	// 이동한 위치 기준으로 적 타일 체크
 	EnemyTileCheck();
 
+	// 현재 위치에 점령 목표가 있을 시
+	if (ClearTarget == BattleClearTarget::Conquer && SelectUnit->GetMapPos() == ConquerPos)
+	{
+		BattleUI->UnitCommandOn();
+		BattleUI->UnitCommandConquer();
+		return;
+	}
+
 	// IsMove를 현재 위치만 true로 변경
 	for (int y = 0; y < IsMove.size(); y++)
 	{
@@ -379,6 +392,61 @@ void BattleLevel::UnitCommandStart()
 	}
 	IsMove[SelectUnit->GetMapPos().y][SelectUnit->GetMapPos().x] = true;
 
+	// 힐러 클래스일 경우
+	if (SelectUnit->GetUnitData().GetClassValue() == BattleClass::Cleric)
+	{
+		AttackSearch();
+		Tiles->SetTileHeal(IsAttack);
+		bool IsCloseUnit = false;
+		bool IsItem = false;
+
+		// 근처에 아군 유닛이 있는지 판단
+		CloseUnits.clear();
+		for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
+		{
+			if (true == _Unit->GetIsDie()) { continue; }
+			if (SelectUnit->GetUnitCode() == _Unit->GetUnitCode()) { continue; }
+
+			int2 UnitPos = SelectUnit->GetMapPos();
+			int2 _UnitPos = _Unit->GetMapPos();
+
+			if (_UnitPos == UnitPos + int2::Up)
+			{
+				CloseUnits.push_back(_Unit);
+				continue;
+			}
+			if (_UnitPos == UnitPos + int2::Down)
+			{
+				CloseUnits.push_back(_Unit);
+				continue;
+			}
+			if (_UnitPos == UnitPos + int2::Left)
+			{
+				CloseUnits.push_back(_Unit);
+				continue;
+			}
+			if (_UnitPos == UnitPos + int2::Right)
+			{
+				CloseUnits.push_back(_Unit);
+				continue;
+			}
+		}
+
+		// 근처에 아군 유닛이 있을때
+		if (1 <= CloseUnits.size())
+		{
+			IsCloseUnit = true;
+		}
+
+		if (0 != SelectUnit->GetUnitData().GetItems().size())
+		{
+			IsItem = true;
+		}
+		// 커맨드 UI 켜기
+		BattleUI->UnitCommandOn();
+		BattleUI->UnitCommandHealSet(IsCloseUnit, IsItem);
+		return;
+	}
 	// 활은 별도의 범위계산이 필요
 	if (SelectUnit->GetUnitData().GetWeaponTypeValue() == WeaponType::Bow)
 	{
@@ -390,12 +458,6 @@ void BattleLevel::UnitCommandStart()
 	}
 	Tiles->SetTileAttack(IsAttack);
 
-	if (ClearTarget == BattleClearTarget::Conquer && SelectUnit->GetMapPos() == ConquerPos)
-	{
-		BattleUI->UnitCommandOn();
-		BattleUI->UnitCommandConquer();
-		return;
-	}
 
 	bool IsAttackable = false;
 	bool IsCloseUnit = false;
@@ -638,6 +700,65 @@ void BattleLevel::BattleReturnEnd()
 		_Unit->GetRenderer()->SetIsBlur(false);
 	}
 	MainMap->GetRenderer()->SetIsBlur(false);
+}
+
+void BattleLevel::HealStart()
+{
+	AttackRecord = UnitCommand::Heal(SelectUnit, TargetUnit, UseItem);
+	BattleAnimationLevel::SetBattleData(SelectUnit, TargetUnit, AttackRecord, GetName());
+
+	for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
+	{
+		_Unit->GetRenderer()->SetIsBlur(true);
+	}
+	for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
+	{
+		_Unit->GetRenderer()->SetIsBlur(true);
+	}
+	MainMap->GetRenderer()->SetIsBlur(true);
+	BattleUI->SetFadeOut(0.3f);
+	BeforeCamPos = MainCamera->GetTransform()->GetLocalPosition();
+	MainCamera->SetProjectionType(CameraType::Perspective);
+
+	return;
+}
+void BattleLevel::HealUpdate(float _DeltaTime)
+{
+	static float CloseUpTimer = 0;
+	CloseUpTimer += _DeltaTime;
+	if (0.5f < CloseUpTimer)
+	{
+		CloseUpTimer = 0;
+		GameEngineCore::ChangeLevel("BattleAnimationLevel");
+
+		ChangeState(BattleState::BattleReturn);
+		return;
+	}
+
+	for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
+	{
+		_Unit->GetRenderer()->SetBlurLevel(CloseUpTimer * 5);
+	}
+	for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
+	{
+		_Unit->GetRenderer()->SetBlurLevel(CloseUpTimer * 5);
+	}
+	MainMap->GetRenderer()->SetBlurLevel(CloseUpTimer * 5);
+	MainCamera->GetTransform()->SetLocalPosition(float4::LerpClamp(MainCamera->GetTransform()->GetWorldPosition(), TargetUnit->GetTransform()->GetWorldPosition(), _DeltaTime * 5));
+}
+void BattleLevel::HealEnd()
+{
+	SelectUnit->SetIsTurnEnd(true);
+	if (SelectUnit->GetIsDie())
+	{
+		SelectUnit->Off();
+		SelectUnit = nullptr;
+	}
+	if (TargetUnit->GetIsDie())
+	{
+		TargetUnit->Off();
+		TargetUnit = nullptr;
+	}
 }
 
 void BattleLevel::EnemyPhaseStart()

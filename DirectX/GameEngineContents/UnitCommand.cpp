@@ -262,6 +262,46 @@ void UnitCommand::ItemUse(std::shared_ptr<BattleUnit> _SubjectUnit, std::list<st
 	CommandList.push_back(CommandRecord);
 }
 
+std::list<AttackCommand> UnitCommand::Heal(std::shared_ptr<BattleUnit> _SubjectUnit, std::shared_ptr<BattleUnit> _TargetUnit, std::list<std::shared_ptr<Item>>::iterator& _ItemIter)
+{
+	std::list<AttackCommand> AttackList;
+	UnitCommand CommandRecord;
+	Unit SubjectUnit = Unit(_SubjectUnit->GetUnitData());
+	Unit TargetUnit = Unit(_TargetUnit->GetUnitData());
+
+	CommandRecord.TypeValue = CommandType::Attack;
+	CommandRecord.BeforeSubjectUnit = Unit(SubjectUnit);
+	CommandRecord.BeforeTargetUnit = Unit(TargetUnit);
+	CommandRecord.BeforeSubjectUnitPos = _SubjectUnit->GetBeforeMapPos();
+	CommandRecord.AfterSubjectUnitPos = _SubjectUnit->GetMapPos();
+	CommandRecord.Record = std::string(_SubjectUnit->GetName()) + "이(가) " + std::string((*_ItemIter)->GetName()) + "을(를) 사용";
+
+	CommandRecord.BeforeSubjectItems = Item::SaveItemDataList(SubjectUnit.GetItems());
+	CommandRecord.BeforeTargetItems = Item::SaveItemDataList(TargetUnit.GetItems());
+
+	_SubjectUnit->GetUnitData().UseItem(_ItemIter);
+	TargetUnit.Recover(10 + SubjectUnit.GetMainStat().Magic);
+	SubjectUnit.SetIsTurnEnd(true);
+
+	AttackCommand NewAttackCommand;
+	NewAttackCommand.SubjectAttack = true;
+	NewAttackCommand.SubjectUnit = SubjectUnit;
+	NewAttackCommand.TargetUnit = TargetUnit;
+	NewAttackCommand.IsHit = true;
+	NewAttackCommand.Exp = 20;
+	AttackList.push_back(NewAttackCommand);
+
+	CommandRecord.AfterSubjectItems = Item::SaveItemDataList(_SubjectUnit->GetUnitData().GetItems());
+	CommandRecord.AfterSubjectUnit = CommandRecord.BeforeSubjectUnit;
+	CommandRecord.AfterSubjectUnit.SetIsTurnEnd(true);
+
+	CommandRecord.AfterTargetItems = Item::SaveItemDataList(TargetUnit.GetItems());
+	CommandRecord.AfterTargetUnit = CommandRecord.BeforeSubjectUnit;
+	
+	CommandList.push_back(CommandRecord);
+	return AttackList;
+}
+
 void UnitCommand::PhaseStart(Faction _Faction)
 {
 	UnitCommand CommandRecord;

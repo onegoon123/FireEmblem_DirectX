@@ -24,9 +24,11 @@ public:
 	void SetTerrain(Terrain _Value);
 	void UnitCommandOn();
 	void UnitCommandSet(bool _IsAttackable, bool _IsCloseUnit, bool _IsItem);
+	void UnitCommandHealSet(bool _IsCloseUnit, bool _IsItem);
 	void UnitCommandConquer();
 	void FieldCommandOn();
 	void AttackOn(std::shared_ptr<class BattleUnit> _SelectUnit, std::list<std::shared_ptr<BattleUnit>>& _TargetUnits);
+	void HealOn(std::shared_ptr<class BattleUnit> _SelectUnit, std::list<std::shared_ptr<BattleUnit>>& _TargetUnits);
 	void ItemOn(std::shared_ptr<BattleUnit> _SelectUnit);
 	void PhaseOn(Faction _Faction);
 	bool IsPhaseEnd();
@@ -46,6 +48,7 @@ private:
 	std::shared_ptr <class UnitCommandUI> UI_UnitCommand = nullptr;
 	std::shared_ptr <class FieldCommandUI> UI_FieldCommand = nullptr;
 	std::shared_ptr <class AttackUI> UI_Attack = nullptr;
+	std::shared_ptr <class HealUI> UI_Heal = nullptr;
 	std::shared_ptr <class ItemUI> UI_Item = nullptr;
 	std::shared_ptr <class PhaseUI> UI_Phase = nullptr;
 	std::shared_ptr <class UICursor> UI_Cursor = nullptr;

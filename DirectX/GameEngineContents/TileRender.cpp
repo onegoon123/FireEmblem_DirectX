@@ -48,7 +48,7 @@ void TileRender::Create(int2 _Scale)
 			Renders[y][x]->GetTransform()->SetLocalPosition(float4(x * 64.f, y * 64.f));
 			Renders[y][x]->CreateAnimation({ "Move", "Tile.png", 0, 15, 0.1f, true, false });
 			Renders[y][x]->CreateAnimation({ "Attack", "Tile.png", 16, 31, 0.1f, true, false });
-			//Renders[y][x]->CreateAnimation({ "Enemy", "Tile.png", 32, 47, 0.1f, true, false });
+			Renders[y][x]->CreateAnimation({ "Heal", "Tile.png", 32, 47, 0.1f, true, false });
 			Renders[y][x]->SetOpacity(0.8f);
 			Renders[y][x]->Off();
 		}
@@ -124,6 +124,25 @@ void TileRender::SetTile(const std::vector<std::vector<bool>>& _Move, const std:
 	}
 }
 
+void TileRender::SetTileMove(const std::vector<std::vector<bool>>& _Value)
+{
+	for (int y = 0; y < Renders.size(); y++)
+	{
+		for (int x = 0; x < Renders[y].size(); x++)
+		{
+			if (true == _Value[y][x])
+			{
+				Renders[y][x]->On();
+				Renders[y][x]->ChangeAnimation("Move");
+				if (true == EnemyTileValue[y][x])
+				{
+					Renders[y][x]->SetLerp(float4(0.3f, 0, 0.8f), 0.5f);
+				}
+			}
+		}
+	}
+}
+
 void TileRender::SetTileAttack(const std::vector<std::vector<bool>>& _Value)
 {
 	for (int y = 0; y < Renders.size(); y++)
@@ -134,6 +153,25 @@ void TileRender::SetTileAttack(const std::vector<std::vector<bool>>& _Value)
 			{
 				Renders[y][x]->On();
 				Renders[y][x]->ChangeAnimation("Attack");
+				if (true == EnemyTileValue[y][x])
+				{
+					Renders[y][x]->SetLerp(float4(0.3f, 0, 0.8f), 0.5f);
+				}
+			}
+		}
+	}
+}
+
+void TileRender::SetTileHeal(const std::vector<std::vector<bool>>& _Value)
+{
+	for (int y = 0; y < Renders.size(); y++)
+	{
+		for (int x = 0; x < Renders[y].size(); x++)
+		{
+			if (true == _Value[y][x])
+			{
+				Renders[y][x]->On();
+				Renders[y][x]->ChangeAnimation("Heal");
 				if (true == EnemyTileValue[y][x])
 				{
 					Renders[y][x]->SetLerp(float4(0.3f, 0, 0.8f), 0.5f);

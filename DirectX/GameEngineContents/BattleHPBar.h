@@ -38,6 +38,7 @@ private:
 	const float Time = 0.05f;
 	float Timer = 0;
 	bool IsLerp = false;
+	bool IsPlus = false;
 
 	std::vector<std::shared_ptr<class GameEngineUIRenderer>> Renders;
 };

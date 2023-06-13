@@ -262,8 +262,22 @@ void LevelUpUI::Start()
 			if (GameEngineInput::IsDown("ButtonA") || GameEngineInput::IsUp("LeftClick"))
 			{
 				CurLevel->BattleEnd();
-				//Off();
+				FSM.ChangeState("End");
 			}
+		},
+			.End = [this]()
+		{
+		}
+		});
+
+	FSM.CreateState(
+		{
+			.Name = "End",
+			.Start = [this]()
+		{
+		},
+		.Update = [this](float _DeltaTime)
+		{
 		},
 			.End = [this]()
 		{

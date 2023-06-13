@@ -37,8 +37,8 @@ void BattleAnimationUI::SetFadeOut(float _Timer)
 void BattleAnimationUI::SetData(Unit& _Unit1, Unit& _Unit2)
 {
 	Unit& Player = _Unit1.GetIsPlayer() == true ? _Unit1 : _Unit2;
-	Unit& Enemy = _Unit2.GetIsPlayer() == true ? _Unit1 : _Unit2;
-
+	Unit& Enemy = _Unit1.GetIsPlayer() == false ? _Unit1 : _Unit2;
+	PlayerData = Player;
 	PlayerHPBar->Setting(Player.GetHP(), Player.GetMaxHP());
 
 	Number_PlayerHP->Setting(Player.GetHP());
@@ -104,7 +104,7 @@ void BattleAnimationUI::SetData(Unit& _Unit1, Unit& _Unit2)
 
 void BattleAnimationUI::SetDamage(Unit& _Unit)
 {
-	if (true == _Unit.GetIsPlayer())
+	if (PlayerData.GetIdentityCode() == _Unit.GetIdentityCode())
 	{
 		Number_PlayerHP->SetValueLerp(_Unit.GetHP());
 		PlayerHPBar->SetHPAnimation(_Unit.GetHP());
@@ -118,7 +118,7 @@ void BattleAnimationUI::SetDamage(Unit& _Unit)
 
 void BattleAnimationUI::SetEXP(int _Before, int _Get, Unit& _UnitData)
 {
-	PlayerData = _UnitData;
+	
 	EXPUI->SetEXP(_Before);
 	EXPUI->AddEXP(_Get, [this] {
 			TimeEvent->AddEvent(0.7f, std::bind(&BattleAnimationUI::EndExpUI, this));

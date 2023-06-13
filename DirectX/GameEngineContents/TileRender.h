@@ -14,7 +14,9 @@ public:
 	void Clear();
 	void EnemyTileClear();
 	void SetTile(const std::vector<std::vector<bool>>& _Move, const std::vector<std::vector<bool>>& _Attack);
+	void SetTileMove(const std::vector<std::vector<bool>>& _Value);
 	void SetTileAttack(const std::vector<std::vector<bool>>& _Value);
+	void SetTileHeal(const std::vector<std::vector<bool>>& _Value);
 	void SetEnemyTile(const std::vector<std::vector<bool>>& _Value);
 
 	// delete Function

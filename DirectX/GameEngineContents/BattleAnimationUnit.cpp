@@ -416,7 +416,9 @@ std::shared_ptr<SpriteRenderer> BattleAnimationUnit::CreateAnimation(UnitIdentit
 			GameEngineSprite::LoadSheet(Dir.GetPlusFileName("Battle_Serra.png").GetFullPath(), 3, 3);
 		}
 		NewAnim->CreateAnimation({ "Idle", "Battle_Serra.png", 0, 0 });
-		NewAnim->CreateAnimation({ .AnimationName = "Heal", .SpriteName = "Battle_Serra.png", .Start = 0, .End = 6, .FrameInter = 0.08f, .Loop = false, });
+		NewAnim->CreateAnimation({ .AnimationName = "Attack", .SpriteName = "Battle_Serra.png", .Start = 0, .End = 6, .FrameInter = 0.08f, .Loop = false, });
+		NewAnim->SetAnimationStartEvent("Attack", 2, std::bind(&BattleAnimationLevel::HitEvent, Level));
+		NewAnim->SetAnimationStartEvent("Attack", 5, std::bind(&BattleAnimationUnit::AttackEnd, this));
 		NewAnim->CreateAnimation({ .AnimationName = "Dodge", .SpriteName = "Battle_Serra.png", .Loop = false, .FrameIndex = {7, 8, 7, 0}, .FrameTime = {.1f, .6f, .04f, 1.0f} });
 		break;
 	}

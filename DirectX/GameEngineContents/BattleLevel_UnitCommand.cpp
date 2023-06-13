@@ -21,6 +21,11 @@ void BattleLevel::UnitCommand_Attack()
 	BattleUI->AttackOn(SelectUnit, AttackableUnits);
 }
 
+void BattleLevel::UnitCommand_Heal()
+{
+	BattleUI->HealOn(SelectUnit, CloseUnits);
+}
+
 void BattleLevel::UnitCommand_Exchange()
 {
 	UnitCommand::Wait(SelectUnit);
@@ -45,7 +50,13 @@ void BattleLevel::UnitCommand_TargetAttack(std::shared_ptr<BattleUnit> _Target)
 	ChangeState(BattleState::Battle);
 	return;
 }
-
+void BattleLevel::UnitCommand_TargetHeal(std::shared_ptr<BattleUnit> _Target, std::list<std::shared_ptr<Item>>::iterator& _ItemIter)
+{
+	TargetUnit = _Target;
+	UseItem = _ItemIter;
+	ChangeState(BattleState::Heal);
+	return;
+}
 void BattleLevel::UnitCommand_ItemUse(std::list<std::shared_ptr<Item>>::iterator& _ItemIter)
 {
 	ItemCode _ItemCode = (*_ItemIter)->GetItemCode();

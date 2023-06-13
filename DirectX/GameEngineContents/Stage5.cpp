@@ -28,7 +28,7 @@ void Stage5::StageSetting()
 	SetStage(5);
 
 	// 세라, 에르크 (중립)
-	NewPlayerUnit(UnitIdentityCode::Serra, 1, { 6, 3 }, { ItemCode::Heal, ItemCode::Vulnerary });
+	NewPlayerUnit(UnitIdentityCode::Serra, 1, { 6, 3 }, { ItemCode::Heal,ItemCode::Heal, ItemCode::Vulnerary });
 	NewPlayerUnit(UnitIdentityCode::Erk, 1, { 7, 3 }, { ItemCode::Fire });
 
 	NewEnemyUnit(UnitIdentityCode::Brigand, 2, { 3, 9 }, { ItemCode::IronAxe });

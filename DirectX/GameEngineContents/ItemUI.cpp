@@ -367,6 +367,10 @@ void ItemUI::ItemSelect()
 		UseButtons[i]->On();
 		UseButtons[i]->GetTransform()->SetLocalPosition({ -75, 192.0f - (64 * (i + CurrentCursor))});
 	}
+	for (size_t i = UseFunctions.size(); i < 2; i++)
+	{
+		UseButtons[i]->Off();
+	}
 }
 
 void ItemUI::ItemUseUpdate(float _DeltaTime)

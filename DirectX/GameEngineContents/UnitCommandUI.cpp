@@ -53,6 +53,37 @@ void UnitCommandUI::SetCommand(bool _IsAttackable, bool _IsCloseUnit, bool _IsIt
 	}
 }
 
+void UnitCommandUI::SetCommandHeal(bool _IsCloseUnit, bool _IsItem)
+{
+	CommandFunctions.clear();
+
+	if (true == _IsCloseUnit)
+	{
+		CommandFunctions.push_back(std::bind(&BattleLevel::UnitCommand_Heal, LevelPtr)); // 지팡이 커맨드
+	}
+	if (true == _IsItem)
+	{
+		CommandFunctions.push_back(std::bind(&BattleLevel::UnitCommand_Item, LevelPtr));		// 소지품 커맨드
+	}
+	if (true == _IsCloseUnit)
+	{
+		CommandFunctions.push_back(std::bind(&BattleLevel::UnitCommand_Exchange, LevelPtr)); // 교환 커맨드
+	}
+
+	CommandFunctions.push_back(std::bind(&BattleLevel::UnitCommand_Wait, LevelPtr));// 대기 커맨드
+
+	WindowRender->SetFrame(CommandFunctions.size() - 1);
+
+	for (int i = 0; i < CommandFunctions.size(); i++)
+	{
+		ButtonCols[i]->On();
+	}
+	for (size_t i = CommandFunctions.size(); i < 5; i++)
+	{
+		ButtonCols[i]->Off();
+	}
+}
+
 void UnitCommandUI::SetConquer()
 {
 	CommandFunctions.clear();

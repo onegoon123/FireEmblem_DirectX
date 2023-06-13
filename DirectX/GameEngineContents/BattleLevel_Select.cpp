@@ -106,7 +106,7 @@ void BattleLevel::CursorUnitSelect()
 			SelectUnit = _Unit;
 			SetUI_UnitData();	// 유닛 정보 UI로 띄우기
 			MoveSearch();	// 이동범위 탐색, 자동으로 공격범위도 탐색
-			Tiles->SetTile(IsMove, IsAttack);
+			SetTile();
 			MainCursor->Select();
 			return;
 		}
@@ -119,7 +119,7 @@ void BattleLevel::CursorUnitSelect()
 			SelectUnit = _Unit;
 			SetUI_UnitData();	// 유닛 정보 UI로 띄우기
 			MoveSearchForEnemy();	// 이동범위 탐색, 자동으로 공격범위도 탐색
-			Tiles->SetTile(IsMove, IsAttack);
+			SetTile();
 			return;
 		}
 	}
@@ -360,7 +360,7 @@ void BattleLevel::UnitSelect()
 			}
 			EnemyTileCheck();
 			MoveSearchForEnemy();
-			Tiles->SetTile(IsMove, IsAttack);
+			SetTile();
 		}
 		return;
 	}
@@ -383,7 +383,7 @@ void BattleLevel::UnitSelect()
 				CursorDirCheck();
 				SetUI_UnitData();
 				MoveSearch();
-				Tiles->SetTile(IsMove, IsAttack);
+				SetTile();
 				return;
 			}
 		}
@@ -408,7 +408,7 @@ void BattleLevel::UnitSelect()
 						CursorDirCheck();
 						SetUI_UnitData();
 						MoveSearch();
-						Tiles->SetTile(IsMove, IsAttack);
+						SetTile();
 						return;
 					}
 					for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
@@ -423,7 +423,7 @@ void BattleLevel::UnitSelect()
 						CursorDirCheck();
 						SetUI_UnitData();
 						MoveSearch();
-						Tiles->SetTile(IsMove, IsAttack);
+						SetTile();
 						return;
 					}
 					return;
@@ -452,7 +452,7 @@ void BattleLevel::UnitSelect()
 		{
 			MoveSearchForEnemy();
 		}
-		Tiles->SetTile(IsMove, IsAttack);
+		SetTile();
 		return;
 
 	}

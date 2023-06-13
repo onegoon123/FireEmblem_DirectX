@@ -336,6 +336,20 @@ void BattleLevel::AttackSearchForEnemy()
 
 }
 
+void BattleLevel::SetTile()
+{
+	Tiles->Clear();
+	if (SelectUnit == nullptr) { return; }
+	if (SelectUnit->GetUnitData().GetClassValue() == BattleClass::Cleric)
+	{
+		Tiles->SetTileMove(IsMove);	// 이동 및 공격 범위를 타일로 표시
+		Tiles->SetTileHeal(IsAttack);	// 이동 및 공격 범위를 타일로 표시
+	}
+	else
+	{
+		Tiles->SetTile(IsMove, IsAttack);	// 이동 및 공격 범위를 타일로 표시
+	}
+}
 
 void BattleLevel::AddArrow(int2 _TargetPos)
 {

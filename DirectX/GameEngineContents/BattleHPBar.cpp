@@ -92,10 +92,7 @@ void BattleHPBar::SetCurrentHP(int _Value)
 
 void BattleHPBar::SetHPAnimation(int _Value)
 {
-	if (_Value >= HP)
-	{
-		return;
-	}
+	IsPlus = _Value >= HP;
 	TargetHP = _Value;
 	Timer = Time;
 	IsLerp = true;
@@ -121,7 +118,7 @@ void BattleHPBar::Update(float _DeltaTime)
 	Timer -= _DeltaTime;
 	if (Timer < 0)
 	{
-		SetCurrentHP(HP - 1);
+		SetCurrentHP(HP + (IsPlus ? 1 : -1));
 		if (TargetHP == HP)
 		{
 			IsLerp = false;

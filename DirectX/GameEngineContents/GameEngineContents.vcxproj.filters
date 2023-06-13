@@ -180,6 +180,9 @@
     <ClCompile Include="LevelUpUI.cpp">
       <Filter>Battle\UI</Filter>
     </ClCompile>
+    <ClCompile Include="HealUI.cpp">
+      <Filter>Battle\UI\Parts</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FECore.h" />
@@ -337,6 +340,9 @@
     </ClInclude>
     <ClInclude Include="LevelUpUI.h">
       <Filter>Battle\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="HealUI.h">
+      <Filter>Battle\UI\Parts</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

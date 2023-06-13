@@ -71,6 +71,7 @@ private:
 		Battle,		// 유닛끼리 전투를 하는 단계
 		BattleReturn,	// 공격레벨에서 돌아옴
 		Potion,	        // 회복약 사용
+		Heal,	        // 힐 사용
 
 		EnemyPhase,	// 적의 턴이 시작
 		EnemySelect,	// 적 선택
@@ -159,6 +160,9 @@ private:
 	void BattleReturnUpdate(float _DeltaTime);
 	void BattleReturnEnd();
 
+	void HealStart();
+	void HealUpdate(float _DeltaTime);
+	void HealEnd();
 
 	void EnemyPhaseStart();
 	void EnemyPhaseUpdate(float _DeltaTime);
@@ -237,6 +241,8 @@ private:
 	// 다음턴의 적이 공격 가능한 범위를 표시하는 기능 (IsCheckTile가 true인 적 한정)
 	void EnemyTileCheck();
 
+	void SetTile();
+
 	Terrain GetTerrain(int2 _Pos);
 	// 지상유닛기준 지형에 대한 이동 코스트를 계산. 이동 불가능 지형은 99가 반환
 	int GetTerrainCostFoot(int2 _Pos);
@@ -271,10 +277,12 @@ public:
 	void UnitCommand_Item();
 	void UnitCommand_Wait();
 	void UnitCommand_Attack();
+	void UnitCommand_Heal();
 	void UnitCommand_Exchange();
 	void UnitCommand_Cancel();
 	void UnitCommand_CommandCancel();
 	void UnitCommand_TargetAttack(std::shared_ptr<BattleUnit> _Target);
+	void UnitCommand_TargetHeal(std::shared_ptr<BattleUnit> _Target, std::list<std::shared_ptr<Item>>::iterator& _ItemIter);
 	void UnitCommand_ItemUse(std::list<std::shared_ptr<class Item>>::iterator& _ItemIter);
 	void UnitCommand_Conquer();
 private:

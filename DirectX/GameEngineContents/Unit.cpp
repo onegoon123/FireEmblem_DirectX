@@ -16,6 +16,22 @@ int Unit::GetRangeStat()
 	{
 		Return = Return > _Weapon->GetRange() ? Return : _Weapon->GetRange();
 	}
+	if (GetClassValue() == BattleClass::Cleric)
+	{
+		bool Check = false;
+		for (std::shared_ptr<Item> _Item : Items)
+		{
+			if (_Item->GetItemCode() == ItemCode::Heal)
+			{
+				Check = true;
+				break;
+			}
+		}
+		if (Check == true)
+		{
+			return 1;
+		}
+	}
 	return Return;
 }
 
