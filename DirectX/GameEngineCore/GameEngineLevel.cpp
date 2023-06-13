@@ -7,18 +7,19 @@
 #include "GameEngineDebug3D.h"
 #include <GameEnginePlatform/GameEngineInput.h>
 
-bool GameEngineLevel::IsDebugRender = true;
+bool GameEngineLevel::IsDebugRender = false;
 
 GameEngineLevel::GameEngineLevel()
 {
-	MainCamera = CreateActor<GameEngineCamera>();
+	LevelCameraInit();
+}
 
-	Cameras.insert(std::make_pair(0, MainCamera));
+void GameEngineLevel::LevelCameraInit()
+{
+	MainCamera = CreateNewCamera(0);
 
-	std::shared_ptr<GameEngineCamera> UICamera = CreateActor<GameEngineCamera>();
+	std::shared_ptr<GameEngineCamera> UICamera = CreateNewCamera(100);
 	UICamera->SetProjectionType(CameraType::Orthogonal);
-
-	Cameras.insert(std::make_pair(100, UICamera));
 
 	LastTarget = GameEngineRenderTarget::Create(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::Null);
 }
@@ -114,12 +115,82 @@ void GameEngineLevel::ActorLevelChangeEnd()
 		}
 	}
 }
+//
+//void GameEngineLevel::CollisionDebugRender(GameEngineCamera* _Camera, float _Delta)
+//{
+//
+//	//{
+//	//	std::map<int, std::list<std::shared_ptr<GameEngineCollision>>>::iterator GroupStartIter = Collisions.begin();
+//	//	std::map<int, std::list<std::shared_ptr<GameEngineCollision>>>::iterator GroupEndIter = Collisions.end();
+//
+//	//	for (; GroupStartIter != GroupEndIter; ++GroupStartIter)
+//	//	{
+//	//		std::list<std::shared_ptr<GameEngineCollision>>& ObjectList = GroupStartIter->second;
+//
+//	//		std::list<std::shared_ptr<GameEngineCollision>>::iterator ObjectStart = ObjectList.begin();
+//	//		std::list<std::shared_ptr<GameEngineCollision>>::iterator ObjectEnd = ObjectList.end();
+//
+//	//		for (; ObjectStart != ObjectEnd; ++ObjectStart)
+//	//		{
+//	//			std::shared_ptr<GameEngineCollision> CollisionObject = (*ObjectStart);
+//
+//	//			if (nullptr == CollisionObject)
+//	//			{
+//	//				continue;
+//	//			}
+//
+//	//			if (false == CollisionObject->IsUpdate())
+//	//			{
+//	//				continue;
+//	//			}
+//
+//	//			if (CollisionObject->DebugCamera != _Camera)
+//	//			{
+//	//				continue;
+//	//			}
+//
+//	//			// CollisionObject->DebugRender(_Delta);
+//	//		}
+//	//	}
+//	//}
+//}
 
 void GameEngineLevel::ActorRender(float _DeltaTime)
 {
 	// GetMainCamera()->Setting();
 	// GetMainCamera()->CameraTransformUpdate();
 	// GetMainCamera()->Render(_DeltaTime);
+
+	if (true == IsDebugRender)
+	{
+		std::map<int, std::list<std::shared_ptr<GameEngineCollision>>>::iterator GroupStartIter = Collisions.begin();
+		std::map<int, std::list<std::shared_ptr<GameEngineCollision>>>::iterator GroupEndIter = Collisions.end();
+
+		for (; GroupStartIter != GroupEndIter; ++GroupStartIter)
+		{
+			std::list<std::shared_ptr<GameEngineCollision>>& ObjectList = GroupStartIter->second;
+
+			std::list<std::shared_ptr<GameEngineCollision>>::iterator ObjectStart = ObjectList.begin();
+			std::list<std::shared_ptr<GameEngineCollision>>::iterator ObjectEnd = ObjectList.end();
+
+			for (; ObjectStart != ObjectEnd; ++ObjectStart)
+			{
+				std::shared_ptr<GameEngineCollision> CollisionObject = (*ObjectStart);
+
+				if (nullptr == CollisionObject)
+				{
+					continue;
+				}
+
+				if (false == CollisionObject->IsUpdate())
+				{
+					continue;
+				}
+
+				CollisionObject->DebugRender(_DeltaTime);
+			}
+		}
+	}
 
 	for (std::pair<int, std::shared_ptr<GameEngineCamera>> Pair : Cameras)
 	{
@@ -136,6 +207,7 @@ void GameEngineLevel::ActorRender(float _DeltaTime)
 
 		GameEngineDebug::DebugRender(Cam.get(), _DeltaTime);
 
+		// CollisionDebugRender(Cam.get(), _DeltaTime);
 	}
 
 	LastTarget->Clear();
@@ -256,6 +328,8 @@ void GameEngineLevel::ActorRelease()
 			{
 				std::shared_ptr<GameEngineActor> RelaseActor = (*ActorStart);
 
+				RelaseActor->AllDestroy();
+
 				if (nullptr != RelaseActor && false == RelaseActor->IsDeath())
 				{
 					RelaseActor->AllRelease();
@@ -317,6 +391,20 @@ void GameEngineLevel::PushCameraRenderer(std::shared_ptr<GameEngineRenderer> _Re
 	FindCamera->PushRenderer(_Renderer);
 }
 
+std::shared_ptr<GameEngineCamera> GameEngineLevel::CreateNewCamera(int _Order)
+{
+	if (Cameras.find(_Order) != Cameras.end())
+	{
+		MsgAssert("이미 존재하는 오더의 카메라를 중복 생성하려했습니다 Order : " + std::to_string(_Order));
+		return nullptr;
+	}
+
+	std::shared_ptr<GameEngineCamera> NewCamera = CreateActor<GameEngineCamera>();
+	Cameras.insert(std::make_pair(_Order, NewCamera));
+
+	return NewCamera;
+}
+
 std::shared_ptr<GameEngineCamera> GameEngineLevel::GetCamera(int _CameraOrder)
 {
 	std::map<int, std::shared_ptr<GameEngineCamera>>::iterator FindIter = Cameras.find(_CameraOrder);
@@ -349,7 +437,6 @@ void GameEngineLevel::TextureUnLoad(GameEngineLevel* _NextLevel)
 
 void GameEngineLevel::TextureReLoad(GameEngineLevel* _PrevLevel)
 {
-
 	for (const std::pair<std::string, std::string>& Pair : TexturePath)
 	{
 		if (nullptr != _PrevLevel && true == _PrevLevel->TexturePath.contains(Pair.first))
@@ -362,4 +449,31 @@ void GameEngineLevel::TextureReLoad(GameEngineLevel* _PrevLevel)
 	}
 
 	TexturePath.clear();
+}
+
+void GameEngineLevel::AllActorDestroy()
+{
+	{
+		// 이건 나중에 만들어질 랜더러의 랜더가 다 끝나고 되는 랜더가 될겁니다.
+		std::map<int, std::list<std::shared_ptr<GameEngineActor>>>::iterator GroupStartIter = Actors.begin();
+		std::map<int, std::list<std::shared_ptr<GameEngineActor>>>::iterator GroupEndIter = Actors.end();
+
+		for (; GroupStartIter != GroupEndIter; ++GroupStartIter)
+		{
+			std::list<std::shared_ptr<GameEngineActor>>& ActorList = GroupStartIter->second;
+
+			std::list<std::shared_ptr<GameEngineActor>>::iterator ActorStart = ActorList.begin();
+			std::list<std::shared_ptr<GameEngineActor>>::iterator ActorEnd = ActorList.end();
+
+			for (; ActorStart != ActorEnd; ++ActorStart)
+			{
+				std::shared_ptr<GameEngineActor>& Actor = *ActorStart;
+				Actor->Death();
+			}
+		}
+
+		ActorRelease();
+	}
+
+	LevelCameraInit();
 }

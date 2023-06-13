@@ -34,7 +34,7 @@ namespace GameEngineDebug
 		DebugDrawDatas[_Cam].push_back({ DebugDrawType::Box, _Trans, Color });
 	}
 
-	void DrawSphere(class GameEngineCamera* _Cam, class GameEngineTransform* _Trans, float4 Color) 
+	void DrawSphere(class GameEngineCamera* _Cam, class GameEngineTransform* _Trans, float4 Color)
 	{
 		if (DebugDrawDatas.end() == DebugDrawDatas.find(_Cam))
 		{
@@ -75,9 +75,33 @@ namespace GameEngineDebug
 
 			CurData.Trans->SetCameraMatrix(_Camera->GetView(), _Camera->GetProjection());
 
-			const TransformData& TransData = CurData.Trans->GetTransDataRef();
+			static TransformData DrawData;
+			DrawData = CurData.Trans->GetTransDataRef();
 
-			DebugRenderUnit.ShaderResHelper.SetConstantBufferLink("TransformData", TransData);
+			switch (Type)
+			{
+			case GameEngineDebug::DebugDrawType::Box:
+				DebugRenderUnit.SetMesh("DebugBox");
+				break;
+			case GameEngineDebug::DebugDrawType::Sphere:
+				DebugRenderUnit.SetMesh("DebugSphere");
+				DrawData.Scale = { DrawData.Scale.x, DrawData.Scale.x, DrawData.Scale.x };
+				DrawData.LocalCalculation();
+				DrawData.WorldMatrix = DrawData.LocalWorldMatrix;
+				if (nullptr != CurData.Trans->GetParent())
+				{
+					DrawData.WorldCalculation(CurData.Trans->GetParent()->GetWorldMatrixRef(), CurData.Trans->IsAbsoluteScale(), CurData.Trans->IsAbsoluteRotation(), CurData.Trans->IsAbsolutePosition());
+				}
+				DrawData.SetViewAndProjection(_Camera->GetView(), _Camera->GetProjection());
+				break;
+			case GameEngineDebug::DebugDrawType::Point:
+				break;
+			default:
+				break;
+			}
+
+
+			DebugRenderUnit.ShaderResHelper.SetConstantBufferLink("TransformData", DrawData);
 			DebugRenderUnit.ShaderResHelper.SetConstantBufferLink("DebugColor", CurData.Color);
 
 			DebugRenderUnit.Render(_Delta);

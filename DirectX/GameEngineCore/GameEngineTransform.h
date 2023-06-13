@@ -76,6 +76,12 @@ struct TransformData
 	float4x4 ViewPort;
 	float4x4 WorldViewProjectionMatrix;
 
+	void WorldCalculation(const float4x4& _Parent, bool AbsoluteScale, bool AbsoluteRotation, bool AbsolutePosition);
+
+	void LocalCalculation();
+
+	void SetViewAndProjection(const float4x4& _View, const float4x4& _Projection);
+
 
 public:
 	TransformData()
@@ -296,9 +302,7 @@ public:
 
 	inline const void SetCameraMatrix(const float4x4& _View, const float4x4& _Projection)
 	{
-		TransData.View = _View;
-		TransData.Projection = _Projection;
-		TransData.WorldViewProjectionMatrix = TransData.WorldMatrix * TransData.View * TransData.Projection;
+		TransData.SetViewAndProjection(_View, _Projection);
 	}
 
 	inline const void SetViewPort(const float4x4& _ViewPort)
@@ -310,6 +314,21 @@ public:
 	void CalChild();
 
 	void SetParent(GameEngineTransform* _Parent, bool _IsParentWorld = true);
+
+	bool IsAbsoluteScale()
+	{
+		return  AbsoluteScale;
+	}
+	bool IsAbsoluteRotation()
+	{
+		return  AbsoluteRotation;
+	}
+	bool IsAbsolutePosition()
+	{
+		return  AbsolutePosition;
+	}
+
+
 
 	GameEngineTransform* GetParent()
 	{

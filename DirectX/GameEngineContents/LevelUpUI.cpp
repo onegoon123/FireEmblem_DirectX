@@ -1,8 +1,10 @@
 #include "PrecompileHeader.h"
 #include "LevelUpUI.h"
+#include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEngineCore/GameEngineUIRenderer.h>
 #include "ContentsEnum.h"
 #include "NumberActor.h"
+#include "BattleAnimationLevel.h"
 LevelUpUI::LevelUpUI()
 {
 }
@@ -34,6 +36,8 @@ void LevelUpUI::LevelUpStart(Unit& _UnitData)
 
 void LevelUpUI::Start()
 {
+	CurLevel = dynamic_cast<BattleAnimationLevel*>(GetLevel());
+
 	UIBack = CreateComponent<GameEngineUIRenderer>(14);
 	UIBack->SetTexture("Black.png");
 	UIBack->GetTransform()->SetLocalScale({ 960, 640 });
@@ -58,7 +62,7 @@ void LevelUpUI::Start()
 	UIPortraitRender->GetTransform()->SetLocalPosition({ 272, -160 });
 	UIPortraitRender->Off();
 
-	Number_Level = GetLevel()->CreateActor<NumberActor>();
+	Number_Level = CurLevel->CreateActor<NumberActor>();
 	Number_Level->NumberCreate(17);
 	Number_Level->GetTransform()->SetParent(UIRender->GetTransform(), false);
 	Number_Level->GetTransform()->SetLocalPosition({ 184, 156 });
@@ -69,7 +73,7 @@ void LevelUpUI::Start()
 	UpStatArrows.resize(8);
 	for (int i = 0; i < 4; i++)
 	{
-		Number_Stats[i] = GetLevel()->CreateActor<NumberActor>();
+		Number_Stats[i] = CurLevel->CreateActor<NumberActor>();
 		Number_Stats[i]->NumberCreate(17);
 		Number_Stats[i]->GetTransform()->SetParent(UIRender->GetTransform(), false);
 		Number_Stats[i]->GetTransform()->SetLocalPosition({ -82, 32.0f - (64.0f * i)});
@@ -92,7 +96,7 @@ void LevelUpUI::Start()
 	}
 	for (int i = 4; i < 8; i++)
 	{
-		Number_Stats[i] = GetLevel()->CreateActor<NumberActor>();
+		Number_Stats[i] = CurLevel->CreateActor<NumberActor>();
 		Number_Stats[i]->NumberCreate(17);
 		Number_Stats[i]->GetTransform()->SetParent(UIRender->GetTransform(), false);
 		Number_Stats[i]->GetTransform()->SetLocalPosition({ 174, 32.0f - (64.0f * (i - 4)) });
@@ -212,6 +216,7 @@ void LevelUpUI::Start()
 		{
 			if (Count == Number_Stats.size())
 			{
+				FSM.ChangeState("ButtonWait");
 				return;
 			}
 
@@ -227,11 +232,18 @@ void LevelUpUI::Start()
 				UpStatArrows[Count]->On();
 				TimeEvent.AddEvent(0.5f, std::bind(&GameEngineFSM::ChangeState, &FSM, "StatCheck"));
 			}
+			else
+			{
+				Count++;
+				FSM.ChangeState("StatCheck");
+				return;
+			}
 			Count++;
 
 		},
 			.Update = [this](float _DeltaTime)
 		{
+
 		},
 			.End = [this]()
 		{
@@ -239,6 +251,26 @@ void LevelUpUI::Start()
 		}
 		});
 
+	FSM.CreateState(
+		{
+			.Name = "ButtonWait",
+			.Start = [this]()
+		{
+		},
+			.Update = [this](float _DeltaTime)
+		{
+			if (GameEngineInput::IsDown("ButtonA") || GameEngineInput::IsUp("LeftClick"))
+			{
+				CurLevel->BattleEnd();
+				//Off();
+			}
+		},
+			.End = [this]()
+		{
+			UIRender->Off();
+			UIPortraitRender->Off();
+		}
+		});
 }
 
 void LevelUpUI::Update(float _DeltaTime)

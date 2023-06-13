@@ -14,6 +14,15 @@ enum class RenderOrder
 	UI,		// UI
 	UIText,		// UI
 	UICursor,	// UI위 표시되는 이미지
+
+	UI2,
+	UI3,
+	UI4,
+	UI5,
+	UI6,
+	UI7,
+	UI8,
+	UI9,
 	Fade,
 };
 enum class CollisionOrder

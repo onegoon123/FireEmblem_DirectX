@@ -199,12 +199,9 @@ void BattleAnimationLevel::PlayAttack()
 
 		if (true == BattleData.back().IsLevelUp)
 		{
-			//TimeEvent.AddEvent(3.0f, std::bind(&BattleAnimationUI::SetFadeOut, UI, 0.3f));
-			//TimeEvent.AddEvent(3.5f, std::bind(&BattleAnimationLevel::End, this));
 			return;
 		}
 
-		return;
 		if (true == LeftUnit->GetIsDie() || true == RightUnit->GetIsDie())
 		{
 			TimeEvent.AddEvent(3.0f, std::bind(&BattleAnimationUI::SetFadeOut, UI, 0.3f));

@@ -23,8 +23,8 @@ protected:
 	void Update(float _DeltaTime);
 
 private:
+	class BattleAnimationLevel* CurLevel = nullptr;
 	GameEngineFSM FSM;
-
 	GameEngineTimeEvent TimeEvent;
 	std::shared_ptr<class GameEngineUIRenderer> LevelUpImage = nullptr;
 	std::shared_ptr<GameEngineUIRenderer> UIBack = nullptr;
