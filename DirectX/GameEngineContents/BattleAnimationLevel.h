@@ -51,5 +51,8 @@ private:
 
 	void PlayAttack();
 	void End();
+
+	std::string_view GetTerrainTexture(Terrain _Value);
+	std::string_view GetBackgroundTexture(Terrain _Value);
 };
 

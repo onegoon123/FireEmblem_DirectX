@@ -41,8 +41,14 @@ void BattleAnimationLevel::HitEvent()
 	{
 		DamageUnit = TargetAnimation;
 		AttackUnit = SubjectUnit;
-		UI->SetDamage((*BattleIter).TargetUnit);
-
+		if (AttackUnit->GetUnitData().GetClassValue() == BattleClass::Mage)
+		{
+			TimeEvent.AddEvent(1.0f, std::bind(&BattleAnimationUI::SetDamage, UI, (*BattleIter).TargetUnit));
+		}
+		else
+		{
+			UI->SetDamage((*BattleIter).TargetUnit);
+		}
 		if (true == (*BattleIter).TargetUnit.GetIsDie())
 		{
 			TimeEvent.AddEvent(1.0f, std::bind(&BattleAnimationUnit::Die, DamageUnit));
@@ -52,8 +58,14 @@ void BattleAnimationLevel::HitEvent()
 	{
 		DamageUnit = SubjectAnimation;
 		AttackUnit = TargetUnit;
-		UI->SetDamage((*BattleIter).SubjectUnit);
-
+		if (AttackUnit->GetUnitData().GetClassValue() == BattleClass::Mage)
+		{
+			TimeEvent.AddEvent(1.0f, std::bind(&BattleAnimationUI::SetDamage, UI, (*BattleIter).SubjectUnit));
+		}
+		else
+		{
+			UI->SetDamage((*BattleIter).SubjectUnit);
+		}
 		if (true == (*BattleIter).SubjectUnit.GetIsDie())
 		{
 			TimeEvent.AddEvent(1.0f, std::bind(&BattleAnimationUnit::Die, DamageUnit));
@@ -87,7 +99,7 @@ void BattleAnimationLevel::HitEvent()
 void BattleAnimationLevel::HealEvent()
 {
 	TargetAnimation->HitEffect("Heal");
-	UI->SetDamage((*BattleIter).TargetUnit);
+	TimeEvent.AddEvent(1.5f, std::bind(&BattleAnimationUI::SetDamage, UI, (*BattleIter).TargetUnit));
 }
 
 void BattleAnimationLevel::TurnEnd()
@@ -170,12 +182,22 @@ void BattleAnimationLevel::LevelChangeStart()
 	{
 		SubjectAnimation = LeftUnit;
 		TargetAnimation = RightUnit;
+
+		// 지형 지정
+		TerrainLeft->SetTexture(GetTerrainTexture(SubjectUnit->GetUnitData().GetTerrainData()));
+		TerrainRight->SetTexture(GetTerrainTexture(TargetUnit->GetUnitData().GetTerrainData()));
+		
 	}
 	else
 	{
 		SubjectAnimation = RightUnit;
 		TargetAnimation = LeftUnit;
+
+		// 지형 지정
+		TerrainLeft->SetTexture(GetTerrainTexture(TargetUnit->GetUnitData().GetTerrainData()));
+		TerrainRight->SetTexture(GetTerrainTexture(SubjectUnit->GetUnitData().GetTerrainData()));
 	}
+	BackgroundRender->SetTexture(GetBackgroundTexture(SubjectUnit->GetUnitData().GetTerrainData()));
 
 	SubjectAnimation->SetAnimation(SubjectUnit);
 	TargetAnimation->SetAnimation(TargetUnit);
@@ -260,4 +282,82 @@ void BattleAnimationLevel::PlayAttack()
 void BattleAnimationLevel::End()
 {
 	GameEngineCore::ChangeLevel(ReturnLevelStr);
+}
+
+std::string_view BattleAnimationLevel::GetTerrainTexture(Terrain _Value)
+{
+	switch (_Value)
+	{
+	case Terrain::None:
+	case Terrain::Plain:
+	case Terrain::Gate:
+		return "Plain_Close.png";
+	case Terrain::Floor:
+	case Terrain::Door:
+	case Terrain::Wall:
+	case Terrain::Fort:
+	case Terrain::Pillar:
+	case Terrain::Throne:
+		return "Castle_Close.png";
+	case Terrain::Road:
+	case Terrain::Bridge:
+		return "Path_Close.png";
+	case Terrain::Forest:
+	case Terrain::Cliff:
+		return "Forest_Close.png";
+	case Terrain::Mountain:
+	case Terrain::Peak:
+		return "Mountain_Close.png";
+	case Terrain::Ruins:
+	case Terrain::House:
+	case Terrain::Shop:
+		return "Building_Close.png";
+	case Terrain::Sea:
+	case Terrain::Lake:
+	case Terrain::River:
+		return "River_Close.png";
+	default:
+		break;
+	}
+
+	return "Plain_Close.png";
+}
+
+std::string_view BattleAnimationLevel::GetBackgroundTexture(Terrain _Value)
+{
+	switch (_Value)
+	{
+	case Terrain::None:
+	case Terrain::Plain:
+	case Terrain::Gate:
+		return "BattleBackground_Plains.png";
+	case Terrain::Floor:
+	case Terrain::Door:
+	case Terrain::Wall:
+	case Terrain::Fort:
+	case Terrain::Pillar:
+	case Terrain::Throne:
+		return "BattleBackground_Castle.png";
+	case Terrain::Road:
+	case Terrain::Bridge:
+		return "BattleBackground_Town.png";
+	case Terrain::Forest:
+	case Terrain::Cliff:
+		return "BattleBackground_Forest.png";
+	case Terrain::Mountain:
+	case Terrain::Peak:
+		return "BattleBackground_Mountain.png";
+	case Terrain::Ruins:
+	case Terrain::House:
+	case Terrain::Shop:
+		return "BattleBackground_Town.png";
+	case Terrain::Sea:
+	case Terrain::Lake:
+	case Terrain::River:
+		return "BattleBackground_River.png";
+	default:
+		break;
+	}
+
+	return "BattleBackground_Plains.png";
 }
