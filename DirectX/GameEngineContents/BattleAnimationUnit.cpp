@@ -115,6 +115,7 @@ void BattleAnimationUnit::Start()
 		GameEngineSprite::LoadSheet(Dir.GetPlusFileName("Effect_Hit.png").GetFullPath(), 3, 9);
 		GameEngineSprite::LoadSheet(Dir.GetPlusFileName("Effect_Miss.png").GetFullPath(), 4, 5);
 		GameEngineSprite::LoadSheet(Dir.GetPlusFileName("Effect_Fire.png").GetFullPath(), 5, 7);
+		GameEngineSprite::LoadSheet(Dir.GetPlusFileName("Effect_Heal.png").GetFullPath(), 5, 9);
 
 	}
 
@@ -158,6 +159,10 @@ void BattleAnimationUnit::Start()
 
 	EffectAnimation->CreateAnimation({ .AnimationName = "FireDodge", .SpriteName = "Effect_Fire.png", .Start = 0, .End = 19, .FrameInter = 0.05f, .Loop = false, });
 	EffectAnimation->SetAnimationStartEvent("FireDodge", 14, std::bind(&BattleAnimationUnit::Dodge, this));
+
+	EffectAnimation->CreateAnimation({ .AnimationName = "Heal", .SpriteName = "Effect_Heal.png", .Start = 0, .End = 40, .FrameInter = 0.05f });
+	EffectAnimation->SetAnimationStartEvent("Heal", 10, SetBright1);
+	EffectAnimation->SetAnimationStartEvent("Heal", 20, SetBright0);
 
 	EffectAnimation->ChangeAnimation("Idle");
 }
@@ -416,9 +421,10 @@ std::shared_ptr<SpriteRenderer> BattleAnimationUnit::CreateAnimation(UnitIdentit
 			GameEngineSprite::LoadSheet(Dir.GetPlusFileName("Battle_Serra.png").GetFullPath(), 3, 3);
 		}
 		NewAnim->CreateAnimation({ "Idle", "Battle_Serra.png", 0, 0 });
-		NewAnim->CreateAnimation({ .AnimationName = "Attack", .SpriteName = "Battle_Serra.png", .Start = 0, .End = 6, .FrameInter = 0.08f, .Loop = false, });
-		NewAnim->SetAnimationStartEvent("Attack", 2, std::bind(&BattleAnimationLevel::HitEvent, Level));
-		NewAnim->SetAnimationStartEvent("Attack", 5, std::bind(&BattleAnimationUnit::AttackEnd, this));
+		NewAnim->CreateAnimation({ .AnimationName = "Attack", .SpriteName = "Battle_Serra.png", .Start = 0, .End = 6, .Loop = false, 
+			.FrameTime = {.08f, .08f, .08f, .08f, .08f, 2.0f, .08f} });
+		NewAnim->SetAnimationStartEvent("Attack", 1, std::bind(&BattleAnimationLevel::HealEvent, Level));
+		NewAnim->SetAnimationStartEvent("Attack", 6, std::bind(&BattleAnimationUnit::AttackEnd, this));
 		NewAnim->CreateAnimation({ .AnimationName = "Dodge", .SpriteName = "Battle_Serra.png", .Loop = false, .FrameIndex = {7, 8, 7, 0}, .FrameTime = {.1f, .6f, .04f, 1.0f} });
 		break;
 	}

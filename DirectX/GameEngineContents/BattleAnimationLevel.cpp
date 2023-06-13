@@ -84,6 +84,12 @@ void BattleAnimationLevel::HitEvent()
 	DamageUnit->HitEffect(EffectName);
 }
 
+void BattleAnimationLevel::HealEvent()
+{
+	TargetAnimation->HitEffect("Heal");
+	UI->SetDamage((*BattleIter).TargetUnit);
+}
+
 void BattleAnimationLevel::TurnEnd()
 {
 	BattleIter++;

@@ -19,6 +19,7 @@ public:
 	static void SetBattleData(std::shared_ptr<BattleUnit> _SubjectUnit, std::shared_ptr<BattleUnit> _TargetUnit, const std::list<AttackCommand>& _Data, const std::string_view& _Level);
 
 	void HitEvent();
+	void HealEvent();
 	void TurnEnd();
 
 	void BattleEnd();

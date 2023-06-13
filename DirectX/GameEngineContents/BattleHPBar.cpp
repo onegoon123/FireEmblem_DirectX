@@ -118,6 +118,11 @@ void BattleHPBar::Update(float _DeltaTime)
 	Timer -= _DeltaTime;
 	if (Timer < 0)
 	{
+		if (TargetHP == HP)
+		{
+			IsLerp = false;
+			return;
+		}
 		SetCurrentHP(HP + (IsPlus ? 1 : -1));
 		if (TargetHP == HP)
 		{
