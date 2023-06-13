@@ -118,7 +118,7 @@ void BattleAnimationUI::SetDamage(Unit& _Unit)
 
 void BattleAnimationUI::SetEXP(int _Before, int _Get, Unit& _UnitData)
 {
-	
+	PlayerData = _UnitData;
 	EXPUI->SetEXP(_Before);
 	EXPUI->AddEXP(_Get, [this] {
 			TimeEvent->AddEvent(0.7f, std::bind(&BattleAnimationUI::EndExpUI, this));

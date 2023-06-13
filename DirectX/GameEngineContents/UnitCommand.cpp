@@ -354,6 +354,21 @@ std::list<AttackCommand>& UnitCommand::AttackEnd(std::list<AttackCommand>& _Atta
 	}
 	_AttackList.back().IsLevelUp = Player.AddExp(_AttackList.back().Exp);
 
+	if (true == Enemy.GetIsDie())
+	{
+		std::list<std::shared_ptr<Item>> Items = Enemy.GetItems();
+		if (1 < Items.size())
+		{
+			std::list<std::shared_ptr<Item>>::iterator ItemIter = Items.begin();
+			ItemIter++;
+
+			for (; ItemIter != Items.end(); ItemIter++)
+			{
+				Player.NewItem((*ItemIter)->GetItemCode());
+			}
+		}
+	}
+
 	return _AttackList;
 
 }

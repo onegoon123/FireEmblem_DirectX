@@ -28,13 +28,12 @@ void BattleLevel::UnitCommand_Heal()
 
 void BattleLevel::UnitCommand_Exchange()
 {
-	UnitCommand::Wait(SelectUnit);
-	SelectUnit->SetIsTurnEnd(true);
-	ChangeState(BattleState::Select);
+	BattleUI->ExchangeOn(SelectUnit, CloseUnits);
 }
 
 void BattleLevel::UnitCommand_Cancel()
 {
+	//BattleUI->AllOff();
 	SelectUnit->SetMapPos(BeforePos);
 	ChangeState(BattleState::Move);
 }

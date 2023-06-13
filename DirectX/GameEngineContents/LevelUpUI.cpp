@@ -124,8 +124,11 @@ void LevelUpUI::Start()
 			.Name = "LevelUpText",
 			.Start = [this]()
 		{
+			UIRender->Off();
+			UIPortraitRender->Off();
 			LevelUpImage->GetTransform()->SetLocalPosition({762, 64});
 			Timer = 0;
+			TimeEvent.Clear();
 			TimeEvent.AddEvent(1.2f, std::bind(&GameEngineFSM::ChangeState, &FSM, "LevelUpText2"));
 		},
 			.Update = [this](float _DeltaTime)
@@ -174,7 +177,7 @@ void LevelUpUI::Start()
 		},
 			.End = [this]()
 		{
-
+			LevelUpImage->GetTransform()->SetLocalPosition({-780, 64});
 		}
 		});
 

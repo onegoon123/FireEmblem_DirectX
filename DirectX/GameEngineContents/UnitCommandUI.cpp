@@ -110,11 +110,7 @@ void UnitCommandUI::On()
 	Cursor->GetTransform()->SetLocalPosition(StartCursorPos);
 	CursorPos = StartCursorPos;
 }
-void UnitCommandUI::Off()
-{
-	GameEngineActor::Off();
-	Cursor->Off();
-}
+
 void UnitCommandUI::Start()
 {
 	WindowRender = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);

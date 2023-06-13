@@ -23,7 +23,6 @@ public:
 	void SetConquer();	// 목표 점령시 나오는 커맨드
 
 	void On();
-	void Off();
 
 	void SetLeft()
 	{

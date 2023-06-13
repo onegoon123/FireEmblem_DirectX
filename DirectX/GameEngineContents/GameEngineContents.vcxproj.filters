@@ -183,6 +183,9 @@
     <ClCompile Include="HealUI.cpp">
       <Filter>Battle\UI\Parts</Filter>
     </ClCompile>
+    <ClCompile Include="ExchangeUI.cpp">
+      <Filter>Battle\UI\Parts</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FECore.h" />
@@ -342,6 +345,9 @@
       <Filter>Battle\UI</Filter>
     </ClInclude>
     <ClInclude Include="HealUI.h">
+      <Filter>Battle\UI\Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="ExchangeUI.h">
       <Filter>Battle\UI\Parts</Filter>
     </ClInclude>
   </ItemGroup>

@@ -11,6 +11,7 @@
 #include "ItemUI.h"
 #include "UICursor.h"
 #include "HealUI.h"
+#include "ExchangeUI.h"
 BattleLevelUI::BattleLevelUI()
 {
 }
@@ -41,22 +42,17 @@ void BattleLevelUI::AllOff()
 {
 	UI_Select->Off();
 	UI_UnitCommand->Off();
+	UI_FieldCommand->Off();
 	UI_Attack->Off();
 	UI_Heal->Off();
 	UI_Item->Off();
-	UI_FieldCommand->Off();
+	UI_Exchange->Off();
 	UI_Phase->Off();
 }
 
 void BattleLevelUI::SelectOn()
 {
-	UI_Select->Off();
-	UI_UnitCommand->Off();
-	UI_Attack->Off();
-	UI_Heal->Off();
-	UI_Item->Off();
-	UI_FieldCommand->Off();
-	UI_Phase->Off();
+	AllOff();
 
 	UI_Select->On();
 }
@@ -100,26 +96,14 @@ void BattleLevelUI::SetTerrain(Terrain _Value)
 
 void BattleLevelUI::UnitCommandOn()
 {
-	UI_Select->Off();
-	UI_UnitCommand->Off();
-	UI_Attack->Off();
-	UI_Heal->Off();
-	UI_Item->Off();
-	UI_FieldCommand->Off();
-	UI_Phase->Off();
+	AllOff();
 
 	UI_UnitCommand->On();
 }
 
 void BattleLevelUI::UnitCommandSet(bool _IsAttackable, bool _IsCloseUnit, bool _IsItem)
 {
-	UI_Select->Off();
-	UI_UnitCommand->Off();
-	UI_Attack->Off();
-	UI_Heal->Off();
-	UI_Item->Off();
-	UI_FieldCommand->Off();
-	UI_Phase->Off();
+	AllOff();
 
 	UI_UnitCommand->On();
 	UI_UnitCommand->SetCommand(_IsAttackable, _IsCloseUnit, _IsItem);
@@ -127,13 +111,7 @@ void BattleLevelUI::UnitCommandSet(bool _IsAttackable, bool _IsCloseUnit, bool _
 
 void BattleLevelUI::UnitCommandHealSet(bool _IsCloseUnit, bool _IsItem)
 {
-	UI_Select->Off();
-	UI_UnitCommand->Off();
-	UI_Attack->Off();
-	UI_Heal->Off();
-	UI_Item->Off();
-	UI_FieldCommand->Off();
-	UI_Phase->Off();
+	AllOff();
 
 	UI_UnitCommand->On();
 	UI_UnitCommand->SetCommandHeal(_IsCloseUnit, _IsItem);
@@ -141,13 +119,7 @@ void BattleLevelUI::UnitCommandHealSet(bool _IsCloseUnit, bool _IsItem)
 
 void BattleLevelUI::UnitCommandConquer()
 {
-	UI_Select->Off();
-	UI_UnitCommand->Off();
-	UI_Attack->Off();
-	UI_Heal->Off();
-	UI_Item->Off();
-	UI_FieldCommand->Off();
-	UI_Phase->Off();
+	AllOff();
 
 	UI_UnitCommand->On();
 	UI_UnitCommand->SetConquer();
@@ -155,65 +127,42 @@ void BattleLevelUI::UnitCommandConquer()
 
 void BattleLevelUI::FieldCommandOn()
 {
-	UI_Select->Off();
-	UI_UnitCommand->Off();
-	UI_Attack->Off();
-	UI_Heal->Off();
-	UI_Item->Off();
-	UI_FieldCommand->Off();
-	UI_Phase->Off();
+	AllOff();
 
 	UI_FieldCommand->On();
 }
 
 void BattleLevelUI::AttackOn(std::shared_ptr<class BattleUnit> _SelectUnit, std::list<std::shared_ptr<BattleUnit>>& _TargetUnits)
 {
-	UI_Select->Off();
-	UI_UnitCommand->Off();
-	UI_Attack->Off();
-	UI_Heal->Off();
-	UI_Item->Off();
-	UI_FieldCommand->Off();
-	UI_Phase->Off();
+	AllOff();
 
 	UI_Attack->On(_SelectUnit, _TargetUnits);
 }
 
 void BattleLevelUI::HealOn(std::shared_ptr<class BattleUnit> _SelectUnit, std::list<std::shared_ptr<BattleUnit>>& _TargetUnits)
 {
-	UI_Select->Off();
-	UI_UnitCommand->Off();
-	UI_Attack->Off();
-	UI_Heal->Off();
-	UI_Item->Off();
-	UI_FieldCommand->Off();
-	UI_Phase->Off();
+	AllOff();
 
 	UI_Heal->On(_SelectUnit, _TargetUnits);
 }
 
 void BattleLevelUI::ItemOn(std::shared_ptr<BattleUnit> _SelectUnit)
 {
-	UI_Select->Off();
-	UI_UnitCommand->Off();
-	UI_Attack->Off();
-	UI_Heal->Off();
-	UI_Item->Off();
-	UI_FieldCommand->Off();
-	UI_Phase->Off();
+	AllOff();
 
 	UI_Item->On(_SelectUnit);
 }
 
+void BattleLevelUI::ExchangeOn(std::shared_ptr<BattleUnit> _SelectUnit, std::list<std::shared_ptr<BattleUnit>>& _TargetUnits)
+{
+	AllOff();
+
+	UI_Exchange->On(_SelectUnit, _TargetUnits);
+}
+
 void BattleLevelUI::PhaseOn(Faction _Faction)
 {
-	UI_Select->Off();
-	UI_UnitCommand->Off();
-	UI_Attack->Off();
-	UI_Heal->Off();
-	UI_Item->Off();
-	UI_FieldCommand->Off();
-	UI_Phase->Off();
+	AllOff();
 
 	UI_Phase->PhaseOn(_Faction);
 }
@@ -293,6 +242,7 @@ void BattleLevelUI::Start()
 		UI_Attack = CurLevel->CreateActor<AttackUI>();
 		UI_Heal = CurLevel->CreateActor<HealUI>();
 		UI_Item = CurLevel->CreateActor<ItemUI>();
+		UI_Exchange = CurLevel->CreateActor<ExchangeUI>();
 		UI_FieldCommand = CurLevel->CreateActor<FieldCommandUI>();
 		UI_Phase = CurLevel->CreateActor<PhaseUI>();
 
@@ -302,6 +252,7 @@ void BattleLevelUI::Start()
 		UI_Attack->Setting(CurLevel, UI_Cursor);
 		UI_Heal->Setting(CurLevel, UI_Cursor);
 		UI_Item->Setting(CurLevel, UI_Cursor);
+		UI_Exchange->Setting(CurLevel, UI_Cursor);
 		UI_FieldCommand->Setting(CurLevel, UI_Cursor);
 
 		UI_Fade = CreateComponent<GameEngineUIRenderer>(RenderOrder::Fade);

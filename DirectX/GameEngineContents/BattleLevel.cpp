@@ -14,6 +14,7 @@
 #include "UnitInformationUI.h"
 #include "DebugWindow.h"
 #include "FEData.h"
+#include "UnitCommand.h"
 BattleLevel::BattleLevel()
 {
 	StateUpdate = std::bind(&BattleLevel::PlayerPhaseUpdate, this, std::placeholders::_1);
@@ -152,7 +153,7 @@ void BattleLevel::LevelChangeStart()
 	CurState = BattleState::None;
 	ChangeState(BattleState::Opening);
 
-
+	UnitCommand::ResetCommandList();
 
 }
 

@@ -30,6 +30,7 @@ public:
 	void AttackOn(std::shared_ptr<class BattleUnit> _SelectUnit, std::list<std::shared_ptr<BattleUnit>>& _TargetUnits);
 	void HealOn(std::shared_ptr<class BattleUnit> _SelectUnit, std::list<std::shared_ptr<BattleUnit>>& _TargetUnits);
 	void ItemOn(std::shared_ptr<BattleUnit> _SelectUnit);
+	void ExchangeOn(std::shared_ptr<BattleUnit> _SelectUnit, std::list<std::shared_ptr<BattleUnit>>& _TargetUnits);
 	void PhaseOn(Faction _Faction);
 	bool IsPhaseEnd();
 	void PhaseOff();
@@ -50,6 +51,7 @@ private:
 	std::shared_ptr <class AttackUI> UI_Attack = nullptr;
 	std::shared_ptr <class HealUI> UI_Heal = nullptr;
 	std::shared_ptr <class ItemUI> UI_Item = nullptr;
+	std::shared_ptr <class ExchangeUI> UI_Exchange = nullptr;
 	std::shared_ptr <class PhaseUI> UI_Phase = nullptr;
 	std::shared_ptr <class UICursor> UI_Cursor = nullptr;
 	std::shared_ptr <class GameEngineUIRenderer> UI_Fade = nullptr;

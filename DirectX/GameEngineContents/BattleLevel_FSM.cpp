@@ -292,6 +292,7 @@ void BattleLevel::MoveStart()
 	ArrowPos.push_back(SelectUnit->GetMapPos());	// 엑터 위치에서부터 화살표 시작
 	AddArrow(ArrowPos.front());
 
+	BattleUI->AllOff();
 }
 
 void BattleLevel::MoveUpdate(float _DeltaTime)

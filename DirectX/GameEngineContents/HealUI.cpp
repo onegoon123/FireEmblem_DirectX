@@ -117,15 +117,6 @@ void HealUI::Off()
 	}
 }
 
-void HealUI::SetLeft()
-{
-	//BattleEx->GetTransform()->SetLocalPosition({ -318, 62 });
-}
-
-void HealUI::SetRight()
-{
-	//BattleEx->GetTransform()->SetLocalPosition({ 318, 62 });
-}
 
 void HealUI::Start()
 {
