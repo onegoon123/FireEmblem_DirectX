@@ -30,8 +30,8 @@ void Stage2::StageSetting()
 	NewEnemyUnit(UnitIdentityCode::Brigand, 1, { 11, 0 }, { ItemCode::IronAxe });
 	NewEnemyUnit(UnitIdentityCode::Brigand, 2, { 13, 1 }, { ItemCode::IronAxe });
 	NewEnemyUnit(UnitIdentityCode::Brigand, 2, { 11, 6 }, { ItemCode::IronAxe });
-	// 바타
-	NewEnemyUnit(UnitIdentityCode::Mercenary, 3, { 11, 8 }, { ItemCode::IronSword, ItemCode::Vulnerary });
+	// 글라스
+	NewEnemyUnit(UnitIdentityCode::Glass, 1, { 11, 8 }, { ItemCode::IronSword, ItemCode::Vulnerary });
 
 }
 

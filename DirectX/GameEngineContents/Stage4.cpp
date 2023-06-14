@@ -45,6 +45,6 @@ void Stage4::StageSetting()
 	NewEnemyUnit(UnitIdentityCode::Archer, 1, { 1, 4 }, { ItemCode::IronBow });
 	NewEnemyUnit(UnitIdentityCode::Archer, 1, { 12, 0 }, { ItemCode::IronBow });
 	// Ä«Áö°¡
-	NewEnemyUnit(UnitIdentityCode::Brigand, 9, { 13, 0 }, { ItemCode::IronAxe });
+	NewEnemyUnit(UnitIdentityCode::Carjiga, 1, { 13, 0 }, { ItemCode::IronAxe });
 }
 

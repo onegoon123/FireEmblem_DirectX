@@ -76,6 +76,10 @@ enum class UnitIdentityCode
 	Mage,
 
 	Batta,
+	Zugu,
+	Glass,
+	Migal,
+	Carjiga,
 };
 
 enum class ItemCode

@@ -97,6 +97,18 @@ void Stat::SetIdentity(UnitIdentityCode _IdentityCode)
 	case UnitIdentityCode::Batta:
 		SetStat_Batta();
 		break;
+	case UnitIdentityCode::Zugu:
+		SetStat_Zugu();
+		break;
+	case UnitIdentityCode::Glass:
+		SetStat_Glass();
+		break;
+	case UnitIdentityCode::Migal:
+		SetStat_Migal();
+		break;
+	case UnitIdentityCode::Carjiga:
+		SetStat_Carjiga();
+		break;
 	}
 
 }
@@ -682,7 +694,6 @@ void Stat::SetStat_Mage()
 
 void Stat::SetStat_Batta()
 {
-	// Brigand
 	Level = 2;
 	MainStatValue.HP = 21;
 	MainStatValue.Strength = 5;
@@ -693,6 +704,102 @@ void Stat::SetStat_Batta()
 	MainStatValue.Defense = 3;
 	MainStatValue.Resistance = 0;
 	MainStatValue.Constitution = 10;
+	ClassValue = BattleClass::Brigand;
+	Movement = 5;
+	GrowthRates_HP = 82;
+	GrowthRates_Strength = 50;
+	GrowthRates_Magic = 40;
+	GrowthRates_Dexterity = 30;
+	GrowthRates_Speed = 20;
+	GrowthRates_Luck = 15;
+	GrowthRates_Defense = 10;
+	GrowthRates_Resistance = 13;
+}
+
+void Stat::SetStat_Zugu()
+{
+	Level = 4;
+	MainStatValue.HP = 23;
+	MainStatValue.Strength = 6;
+	MainStatValue.Magic = 2;
+	MainStatValue.Dexterity = 2;
+	MainStatValue.Speed = 4;
+	MainStatValue.Luck = 1;
+	MainStatValue.Defense = 4;
+	MainStatValue.Resistance = 0;
+	MainStatValue.Constitution = 11;
+	ClassValue = BattleClass::Brigand;
+	Movement = 5;
+	GrowthRates_HP = 82;
+	GrowthRates_Strength = 50;
+	GrowthRates_Magic = 40;
+	GrowthRates_Dexterity = 30;
+	GrowthRates_Speed = 20;
+	GrowthRates_Luck = 15;
+	GrowthRates_Defense = 10;
+	GrowthRates_Resistance = 13;
+}
+
+void Stat::SetStat_Glass()
+{
+	Level = 3;
+	MainStatValue.HP = 20;
+	MainStatValue.Strength = 5;
+	MainStatValue.Magic = 2;
+	MainStatValue.Dexterity = 4;
+	MainStatValue.Speed = 5;
+	MainStatValue.Luck = 0;
+	MainStatValue.Defense = 3;
+	MainStatValue.Resistance = 0;
+	MainStatValue.Constitution = 9;
+	ClassValue = BattleClass::Mercenary;
+	Movement = 5;
+	GrowthRates_HP = 82;
+	GrowthRates_Strength = 50;
+	GrowthRates_Magic = 40;
+	GrowthRates_Dexterity = 30;
+	GrowthRates_Speed = 20;
+	GrowthRates_Luck = 15;
+	GrowthRates_Defense = 10;
+	GrowthRates_Resistance = 13;
+}
+
+void Stat::SetStat_Migal()
+{
+	Level = 6;
+	MainStatValue.HP = 25;
+	MainStatValue.Strength = 7;
+	MainStatValue.Magic = 2;
+	MainStatValue.Dexterity = 3;
+	MainStatValue.Speed = 5;
+	MainStatValue.Luck = 2;
+	MainStatValue.Defense = 5;
+	MainStatValue.Resistance = 0;
+	MainStatValue.Constitution = 12;
+	ClassValue = BattleClass::Brigand;
+	Movement = 5;
+	GrowthRates_HP = 82;
+	GrowthRates_Strength = 50;
+	GrowthRates_Magic = 40;
+	GrowthRates_Dexterity = 30;
+	GrowthRates_Speed = 20;
+	GrowthRates_Luck = 15;
+	GrowthRates_Defense = 10;
+	GrowthRates_Resistance = 13;
+}
+
+void Stat::SetStat_Carjiga()
+{
+	Level = 8;
+	MainStatValue.HP = 27;
+	MainStatValue.Strength = 6;
+	MainStatValue.Magic = 2;
+	MainStatValue.Dexterity = 5;
+	MainStatValue.Speed = 4;
+	MainStatValue.Luck = 2;
+	MainStatValue.Defense = 7;
+	MainStatValue.Resistance = 0;
+	MainStatValue.Constitution = 15;
 	ClassValue = BattleClass::Brigand;
 	Movement = 5;
 	GrowthRates_HP = 82;

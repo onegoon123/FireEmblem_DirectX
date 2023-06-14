@@ -39,7 +39,7 @@ void Stage3::StageSetting()
 	NewEnemyUnit(UnitIdentityCode::Mercenary, 1, { 11, 9 }, { ItemCode::IronSword });
 
 	// ¹Ì°¥
-	NewEnemyUnit(UnitIdentityCode::Brigand, 8, { 13, 9 }, { ItemCode::IronAxe });
+	NewEnemyUnit(UnitIdentityCode::Migal, 1, { 13, 9 }, { ItemCode::IronAxe });
 
 }
 

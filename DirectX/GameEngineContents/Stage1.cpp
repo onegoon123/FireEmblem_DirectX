@@ -35,7 +35,7 @@ void Stage1::StageSetting()
 	NewEnemyUnit(UnitIdentityCode::Brigand, 2, { 12, 8 }, { ItemCode::IronAxe });
 	NewEnemyUnit(UnitIdentityCode::Brigand, 2, { 13, 4 }, { ItemCode::IronAxe })->SetDetectionRange(5);
 	// аж╠в
-	NewEnemyUnit(UnitIdentityCode::Brigand, 4, { 13, 8 }, { ItemCode::IronAxe })->SetDetectionRange(3);
+	NewEnemyUnit(UnitIdentityCode::Zugu, 1, { 13, 8 }, { ItemCode::IronAxe })->SetDetectionRange(3);
 
 	OpeningEventInit();
 }

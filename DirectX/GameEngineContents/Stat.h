@@ -134,5 +134,9 @@ private:
 	void SetStat_Mage();
 
 	void SetStat_Batta();
+	void SetStat_Zugu();
+	void SetStat_Glass();
+	void SetStat_Migal();
+	void SetStat_Carjiga();
 
 };

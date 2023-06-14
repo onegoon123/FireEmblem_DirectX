@@ -231,6 +231,37 @@ void BattleUnit::SetUnitCode(UnitIdentityCode _Code)
 		IsShortWalk = true;
 		UnitData.IsPlayer = false;
 		break;
+	case UnitIdentityCode::Zugu:
+		UnitData.UnitCode = EnemyNum++;
+		SetName("주그");
+		UnitData.SetName("Zugu");
+		MapSpriteName = "Map_EnemyBrigand.png";
+		IsShortWalk = true;
+		UnitData.IsPlayer = false;
+		break;
+	case UnitIdentityCode::Glass:
+		UnitData.UnitCode = EnemyNum++;
+		SetName("글라스");
+		UnitData.SetName("Glass");
+		MapSpriteName = "Map_EnemyMercenary.png";
+		UnitData.IsPlayer = false;
+		break;
+	case UnitIdentityCode::Migal:
+		UnitData.UnitCode = EnemyNum++;
+		SetName("미갈");
+		UnitData.SetName("Migal");
+		MapSpriteName = "Map_EnemyBrigand.png";
+		IsShortWalk = true;
+		UnitData.IsPlayer = false;
+		break;
+	case UnitIdentityCode::Carjiga:
+		UnitData.UnitCode = EnemyNum++;
+		SetName("카지가");
+		UnitData.SetName("Carjiga");
+		MapSpriteName = "Map_EnemyBrigand.png";
+		IsShortWalk = true;
+		UnitData.IsPlayer = false;
+		break;
 	default:
 		break;
 	}
