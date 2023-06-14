@@ -38,6 +38,7 @@ void Stage1::StageSetting()
 	NewEnemyUnit(UnitIdentityCode::Zugu, 1, { 13, 8 }, { ItemCode::IronAxe })->SetDetectionRange(3);
 
 	OpeningEventInit();
+	ClearEventInit();
 }
 
 void Stage1::OpeningEventInit()
@@ -51,5 +52,16 @@ void Stage1::OpeningEventInit()
 
 void Stage1::ClearEventInit()
 {
+	ClearEvent->PushEvent([this] {
+		ClearEvent->SetFadeOut(0.5f);
+		}, false, 1.0f);
+
+	ClearEvent->PushEvent([this] {
+		GameEngineCore::ChangeLevel("Stage2");
+		}, false, .6f);
+
+	ClearEvent->SkipFunction = [this] {
+		GameEngineCore::ChangeLevel("Stage2");
+	};
 }
 

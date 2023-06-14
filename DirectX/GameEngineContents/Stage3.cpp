@@ -40,6 +40,31 @@ void Stage3::StageSetting()
 
 	// ¹Ì°¥
 	NewEnemyUnit(UnitIdentityCode::Migal, 1, { 13, 9 }, { ItemCode::IronAxe });
+	OpeningEventInit();
+	ClearEventInit();
+}
 
+void Stage3::OpeningEventInit()
+{
+	OpeningEvent->PushEvent([this] {
+		OpeningEvent->SetFadeIn(1.0f);
+		}
+	, false, 1.0f);
+
+}
+
+void Stage3::ClearEventInit()
+{
+	ClearEvent->PushEvent([this] {
+		ClearEvent->SetFadeOut(0.5f);
+		}, false, 1.0f);
+
+	ClearEvent->PushEvent([this] {
+		GameEngineCore::ChangeLevel("Stage4");
+		}, false, .6f);
+
+	ClearEvent->SkipFunction = [this] {
+		GameEngineCore::ChangeLevel("Stage4");
+	};
 }
 

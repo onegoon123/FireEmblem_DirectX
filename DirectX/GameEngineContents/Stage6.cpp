@@ -23,5 +23,30 @@ void Stage6::StageSetting()
 {
 	SetStage(6);
 
+	OpeningEventInit();
+	ClearEventInit();
 }
 
+void Stage6::OpeningEventInit()
+{
+	OpeningEvent->PushEvent([this] {
+		OpeningEvent->SetFadeIn(1.0f);
+		}
+	, false, 1.0f);
+
+}
+
+void Stage6::ClearEventInit()
+{
+	ClearEvent->PushEvent([this] {
+		ClearEvent->SetFadeOut(0.5f);
+		}, false, 1.0f);
+
+	ClearEvent->PushEvent([this] {
+		GameEngineCore::ChangeLevel("Stage7");
+		}, false, .6f);
+
+	ClearEvent->SkipFunction = [this] {
+		GameEngineCore::ChangeLevel("Stage7");
+	};
+}

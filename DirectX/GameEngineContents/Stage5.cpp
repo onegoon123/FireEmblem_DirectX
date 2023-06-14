@@ -41,5 +41,30 @@ void Stage5::StageSetting()
 	NewEnemyUnit(UnitIdentityCode::Mercenary, 2, { 12, 2 }, { ItemCode::IronSword });
 	// ¹Ù±×
 	NewEnemyUnit(UnitIdentityCode::Brigand, 10, { 14, 0 }, { ItemCode::IronAxe });
+	OpeningEventInit();
+	ClearEventInit();
 }
 
+void Stage5::OpeningEventInit()
+{
+	OpeningEvent->PushEvent([this] {
+		OpeningEvent->SetFadeIn(1.0f);
+		}
+	, false, 1.0f);
+
+}
+
+void Stage5::ClearEventInit()
+{
+	ClearEvent->PushEvent([this] {
+		ClearEvent->SetFadeOut(0.5f);
+		}, false, 1.0f);
+
+	ClearEvent->PushEvent([this] {
+		GameEngineCore::ChangeLevel("Stage6");
+		}, false, .6f);
+
+	ClearEvent->SkipFunction = [this] {
+		GameEngineCore::ChangeLevel("Stage6");
+	};
+}

@@ -87,7 +87,10 @@ void EventSystem::Update(float _DeltaTime)
 
 	if (GameEngineInput::IsDown("Start"))
 	{
-		SkipFunction();
+		if (nullptr != SkipFunction)
+		{
+			SkipFunction();
+		}
 		IsEnd = true;
 	}
 

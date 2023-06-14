@@ -17,6 +17,7 @@ public:
 protected:
 	void StageSetting() override;
 private:
-
+	void OpeningEventInit();
+	void ClearEventInit();
 };
 

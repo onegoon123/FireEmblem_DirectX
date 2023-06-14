@@ -46,5 +46,30 @@ void Stage4::StageSetting()
 	NewEnemyUnit(UnitIdentityCode::Archer, 1, { 12, 0 }, { ItemCode::IronBow });
 	// Ä«Áö°¡
 	NewEnemyUnit(UnitIdentityCode::Carjiga, 1, { 13, 0 }, { ItemCode::IronAxe });
+	OpeningEventInit();
+	ClearEventInit();
 }
 
+void Stage4::OpeningEventInit()
+{
+	OpeningEvent->PushEvent([this] {
+		OpeningEvent->SetFadeIn(1.0f);
+		}
+	, false, 1.0f);
+
+}
+
+void Stage4::ClearEventInit()
+{
+	ClearEvent->PushEvent([this] {
+		ClearEvent->SetFadeOut(0.5f);
+		}, false, 1.0f);
+
+	ClearEvent->PushEvent([this] {
+		GameEngineCore::ChangeLevel("Stage5");
+		}, false, .6f);
+
+	ClearEvent->SkipFunction = [this] {
+		GameEngineCore::ChangeLevel("Stage5");
+	};
+}
