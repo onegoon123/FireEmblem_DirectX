@@ -94,6 +94,9 @@ void Stat::SetIdentity(UnitIdentityCode _IdentityCode)
 	case UnitIdentityCode::Mage:
 		SetStat_Mage();
 		break;
+	case UnitIdentityCode::Batta:
+		SetStat_Batta();
+		break;
 	}
 
 }
@@ -537,7 +540,7 @@ void Stat::SetStat_Brigand()
 	MainStatValue.Strength = 5;
 	MainStatValue.Magic = 2;
 	MainStatValue.Dexterity = 1;
-	MainStatValue.Speed = 2;
+	MainStatValue.Speed = 4;
 	MainStatValue.Luck = 0;
 	MainStatValue.Defense = 3;
 	MainStatValue.Resistance = 0;
@@ -675,4 +678,29 @@ void Stat::SetStat_Mage()
 	GrowthRates_Luck = 20;
 	GrowthRates_Defense = 5;
 	GrowthRates_Resistance = 30;
+}
+
+void Stat::SetStat_Batta()
+{
+	// Brigand
+	Level = 2;
+	MainStatValue.HP = 21;
+	MainStatValue.Strength = 5;
+	MainStatValue.Magic = 2;
+	MainStatValue.Dexterity = 1;
+	MainStatValue.Speed = 3;
+	MainStatValue.Luck = 2;
+	MainStatValue.Defense = 3;
+	MainStatValue.Resistance = 0;
+	MainStatValue.Constitution = 10;
+	ClassValue = BattleClass::Brigand;
+	Movement = 5;
+	GrowthRates_HP = 82;
+	GrowthRates_Strength = 50;
+	GrowthRates_Magic = 40;
+	GrowthRates_Dexterity = 30;
+	GrowthRates_Speed = 20;
+	GrowthRates_Luck = 15;
+	GrowthRates_Defense = 10;
+	GrowthRates_Resistance = 13;
 }

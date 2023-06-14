@@ -204,6 +204,8 @@ void BattleAnimationLevel::LevelChangeStart()
 	UI->SetData(SubjectUnit->GetUnitData(), TargetUnit->GetUnitData());
 	TimeEvent.Clear();
 	UI->SetFadeIn(0.3f);
+
+	
 	TimeEvent.AddEvent(0.3f, std::bind(&BattleAnimationLevel::PlayAttack, this));
 }
 

@@ -133,4 +133,6 @@ private:
 	void SetStat_Knight();
 	void SetStat_Mage();
 
+	void SetStat_Batta();
+
 };

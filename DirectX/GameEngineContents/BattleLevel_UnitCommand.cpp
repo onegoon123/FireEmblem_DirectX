@@ -70,5 +70,5 @@ void BattleLevel::UnitCommand_ItemUse(std::list<std::shared_ptr<Item>>::iterator
 
 void BattleLevel::UnitCommand_Conquer()
 {
-	BattleUI->AllOff();
+	ChangeState(BattleState::Clear);
 }

@@ -74,6 +74,8 @@ enum class UnitIdentityCode
 	Archer,
 	Knight,
 	Mage,
+
+	Batta,
 };
 
 enum class ItemCode

@@ -223,6 +223,14 @@ void BattleUnit::SetUnitCode(UnitIdentityCode _Code)
 		MapSpriteName = "Map_EnemyMage.png";
 		UnitData.IsPlayer = false;
 		break;
+	case UnitIdentityCode::Batta:
+		UnitData.UnitCode = EnemyNum++;
+		SetName("πŸ≈∏");
+		UnitData.SetName("Batta");
+		MapSpriteName = "Map_EnemyBrigand.png";
+		IsShortWalk = true;
+		UnitData.IsPlayer = false;
+		break;
 	default:
 		break;
 	}

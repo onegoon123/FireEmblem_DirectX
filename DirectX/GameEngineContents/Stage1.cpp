@@ -1,6 +1,6 @@
 #include "PrecompileHeader.h"
 #include "Stage1.h"
-
+#include <GameEngineCore/GameEngineUIRenderer.h>
 Stage1::Stage1()
 {
 	StartPos.push_back({ 2, 1 });
@@ -32,10 +32,24 @@ void Stage1::StageSetting()
 	// 산적
 	NewEnemyUnit(UnitIdentityCode::Brigand, 1, { 4, 3 }, { ItemCode::IronAxe});
 	NewEnemyUnit(UnitIdentityCode::Brigand, 1, { 9, 0 }, { ItemCode::IronAxe });
-	NewEnemyUnit(UnitIdentityCode::Brigand, 2, { 13, 4 }, { ItemCode::IronAxe });
 	NewEnemyUnit(UnitIdentityCode::Brigand, 2, { 12, 8 }, { ItemCode::IronAxe });
+	NewEnemyUnit(UnitIdentityCode::Brigand, 2, { 13, 4 }, { ItemCode::IronAxe })->SetDetectionRange(5);
 	// 주그
-	NewEnemyUnit(UnitIdentityCode::Brigand, 4, { 13, 8 }, { ItemCode::IronAxe });
+	NewEnemyUnit(UnitIdentityCode::Brigand, 4, { 13, 8 }, { ItemCode::IronAxe })->SetDetectionRange(3);
 
+	OpeningEventInit();
+}
+
+void Stage1::OpeningEventInit()
+{
+	OpeningEvent->PushEvent([this] {
+		OpeningEvent->SetFadeIn(1.0f);
+		}
+	, false, 1.0f);
+
+}
+
+void Stage1::ClearEventInit()
+{
 }
 

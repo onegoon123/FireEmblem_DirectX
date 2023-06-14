@@ -34,6 +34,7 @@ void TitleLevel::Start()
 		GameEngineInput::CreateKey("LeftClick", VK_LBUTTON);
 		GameEngineInput::CreateKey("RightClick", VK_RBUTTON);
 		GameEngineInput::CreateKey("MiddleClick", VK_MBUTTON);
+		GameEngineInput::CreateKey("Cheet", VK_F1);
 	}
 
 	// 카메라 세팅
@@ -51,6 +52,7 @@ void TitleLevel::Start()
 		{
 			GameEngineTexture::Load(File[i].GetFullPath());
 		}
+
 	}
 
 	// 타이틀 이미지 생성
@@ -75,12 +77,74 @@ void TitleLevel::Start()
 		};
 
 	}
+
+	StateInit();
 }
 
 void TitleLevel::Update(float _DeltaTime)
 {
-	if (true == GameEngineInput::IsAnyKey())
+	FSM.Update(_DeltaTime);
+}
+
+void TitleLevel::StateInit()
+{
+	FSM.CreateState({ .Name = "Start",
+		.Start = [this]
+		{
+			TitleRenderer->ColorOptionValue.MulColor = float4::Zero;
+			Timer = 0;
+		},
+		.Update = [this](float _DeltaTime)
+		{
+			Timer += _DeltaTime * 2;
+			TitleRenderer->ColorOptionValue.MulColor = float4::One * Timer;
+			if (1 < Timer)
+			{
+				FSM.ChangeState("Wait");
+			}
+		},
+		.End = [this]
+		{
+			TitleRenderer->ColorOptionValue.MulColor = float4::One;
+			Timer = 0;
+		}
+		});
+
+	FSM.CreateState({ .Name = "Wait",
+	.Start = [this]
+	{
+	},
+	.Update = [this](float _DeltaTime)
+	{
+		if (true == GameEngineInput::IsAnyKey())
+		{
+			FSM.ChangeState("End");
+		}
+	},
+	.End = [this]
+	{
+	}
+	});
+
+	FSM.CreateState({ .Name = "End",
+	.Start = [this]
+	{
+		Timer = 0;
+	},
+	.Update = [this](float _DeltaTime)
+	{
+		Timer += _DeltaTime * 2;
+		TitleRenderer->ColorOptionValue.MulColor = float4::One * (1.0f - Timer);
+		if (1 < Timer)
+		{
+			FSM.ChangeState("Start");
+		}
+	},
+	.End = [this]
 	{
 		GameEngineCore::ChangeLevel("Stage0");
 	}
+	});
+
+	FSM.ChangeState("Start");
 }

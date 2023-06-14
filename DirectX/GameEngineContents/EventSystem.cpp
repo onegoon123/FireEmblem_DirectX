@@ -15,10 +15,12 @@ void EventSystem::EventStart()
 {
 	if (Events.size() == 0)
 	{
+		
 		IsEnd = true;
 		return;
 	}
 	EventIndex = 0;
+	Reset();
 	Events[0].Function();
 	On();
 }
@@ -29,6 +31,7 @@ void EventSystem::SetFadeIn(float _Timer)
 	FadeTimer = 1;
 	IsFadeIn = true;
 	Foreground->ColorOptionValue.MulColor.a = 1;
+	Foreground->On();
 }
 
 void EventSystem::SetFadeOut(float _Timer)
@@ -37,6 +40,7 @@ void EventSystem::SetFadeOut(float _Timer)
 	FadeTimer = 0;
 	IsFadeOut = true;
 	Foreground->ColorOptionValue.MulColor.a = 0;
+	Foreground->On();
 }
 
 void EventSystem::Start()
@@ -48,13 +52,15 @@ void EventSystem::Start()
 	Foreground = CreateComponent<GameEngineUIRenderer>(2);
 	Foreground->GetTransform()->SetLocalScale({ 960, 640 });
 	Foreground->SetTexture("Black.png");
+	Foreground->Off();
 
 	Portrait1 = CreateComponent<GameEngineUIRenderer>(1);
-	Portrait1->GetTransform()->SetLocalScale({ 384, 320 });
 	Portrait1->GetTransform()->SetLocalPosition({ 0, -160 });
+	Portrait1->GetTransform()->SetLocalScale({ 384, 320 });
 	Portrait1->Off();
 
 	Portrait2 = CreateComponent<GameEngineUIRenderer>(1);
+	Portrait2->GetTransform()->SetLocalPosition({ 284, -160 }); // 오른쪽 구석
 	Portrait2->GetTransform()->SetLocalScale({ 384, 320 });
 	Portrait2->Off();
 
@@ -76,8 +82,8 @@ void EventSystem::Start()
 void EventSystem::Update(float _DeltaTime)
 {
 	
-	FadeUpdate(_DeltaTime);
 	if (true == IsEnd) { return; }
+	FadeUpdate(_DeltaTime);
 
 	if (GameEngineInput::IsDown("Start"))
 	{
@@ -130,5 +136,37 @@ void EventSystem::FadeUpdate(float _DeltaTime)
 		}
 		Foreground->ColorOptionValue.MulColor.a = FadeTimer;
 	}
+}
+
+void EventSystem::Reset()
+{
+	Background->GetTransform()->SetLocalScale({ 960, 640 });
+	Background->Off();
+
+	Foreground->GetTransform()->SetLocalScale({ 960, 640 });
+	Foreground->SetTexture("Black.png");
+	Foreground->Off();
+
+	Portrait1->GetTransform()->SetLocalPosition({ 0, -160 });
+	Portrait1->GetTransform()->SetLocalScale({ 384, 320 });
+	Portrait1->Off();
+
+	Portrait2->GetTransform()->SetLocalPosition({ 284, -160 }); // 오른쪽 구석
+	Portrait2->GetTransform()->SetLocalScale({ 384, 320 });
+	Portrait2->Off();
+
+	Portrait3->GetTransform()->SetLocalScale({ 384, 320 });
+	Portrait3->Off();
+
+	Portrait4->GetTransform()->SetLocalScale({ 384, 320 });
+	Portrait4->Off();
+
+	Dialogue->GetTransform()->SetParent(GetTransform());
+	Dialogue->Off();
+
+	FadeTimer = 0;
+	IsFadeIn = false;
+	IsFadeOut = false;
+	IsEnd = false;
 }
 

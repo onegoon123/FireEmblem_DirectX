@@ -31,9 +31,15 @@ void Stage0::StageSetting()
 	// 산적
 	NewEnemyUnit(UnitIdentityCode::Brigand, 1, { 2, 3 }, { ItemCode::IronAxe});
 	// 바타
-	NewEnemyUnit(UnitIdentityCode::Brigand, 1, { 3, 7 }, { ItemCode::IronAxe})->SetDetectionRange(1);
+	NewEnemyUnit(UnitIdentityCode::Batta, 1, { 3, 7 }, { ItemCode::IronAxe})->SetDetectionRange(1);
 
 	
+	OpeningEventInit();
+	ClearEventInit();
+}
+
+void Stage0::OpeningEventInit()
+{
 	OpeningEvent->PushEvent([this] {
 		OpeningEvent->Background->SetTexture("EventBackground_House.png");
 		OpeningEvent->Portrait1->SetTexture("Portrait_Lyn.png");
@@ -115,6 +121,27 @@ void Stage0::StageSetting()
 	OpeningEvent->SkipFunction = [this] {
 		Unit_Lyn->SetMapPos({ 13, 2 });
 		Unit_Lyn->SetMoveSpeed(15.0f);
+	};
+}
+
+void Stage0::ClearEventInit()
+{
+	ClearEvent->PushEvent([this] {
+		ClearEvent->Portrait2->SetTexture("Portrait_Lyn.png");
+		ClearEvent->Portrait2->On();
+	}, true);
+
+	ClearEvent->PushEvent([this] {
+		ClearEvent->Foreground->On();
+		ClearEvent->SetFadeOut(0.5f);
+	}, false, 1.0f);
+
+	ClearEvent->PushEvent([this] {
+		GameEngineCore::ChangeLevel("Stage1");
+		}, false, .6f);
+
+	ClearEvent->SkipFunction = [this] {
+		GameEngineCore::ChangeLevel("Stage1");
 	};
 }
 

@@ -126,6 +126,11 @@ void BattleLevel::ChangeState(BattleState _State)
 		StateEnd = std::bind(&BattleLevel::EnemyPotionEnd, this);
 		EnemyPotionStart();
 		break;
+	case BattleLevel::BattleState::Clear:
+		StateUpdate = std::bind(&BattleLevel::ClearUpdate, this, std::placeholders::_1);
+		StateEnd = std::bind(&BattleLevel::ClearEnd, this);
+		ClearStart();
+		break;
 	default:
 	{
 		MsgAssert("아직 지정하지 않은 State 입니다");
@@ -1846,4 +1851,18 @@ void BattleLevel::EnemyPotionUpdate(float _DeltaTime)
 
 void BattleLevel::EnemyPotionEnd()
 {
+}
+
+void BattleLevel::ClearStart()
+{
+	BattleUI->AllOff();
+	MainCursor->Off();
+	ClearEvent->EventStart();
+}
+void BattleLevel::ClearUpdate(float _DeltaTime)
+{
+}
+void BattleLevel::ClearEnd()
+{
+
 }

@@ -36,6 +36,10 @@ void BattleLevel::Start()
 void BattleLevel::Update(float _DeltaTime)
 {
 	StateUpdate(_DeltaTime);
+	if (GameEngineInput::IsDown("Cheet"))
+	{
+		ChangeState(BattleState::Clear);
+	}
 }
 
 void BattleLevel::LevelChangeStart()

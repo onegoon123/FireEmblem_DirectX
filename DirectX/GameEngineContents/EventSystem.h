@@ -44,7 +44,7 @@ protected:
 
 private:
 	void FadeUpdate(float _DeltaTime);
-
+	void Reset();
 
 	struct EventData
 	{

@@ -210,6 +210,10 @@ private:
 	void EnemyPotionStart();
 	void EnemyPotionUpdate(float _DeltaTime);
 	void EnemyPotionEnd();
+
+	void ClearStart();
+	void ClearUpdate(float _DeltaTime);
+	void ClearEnd();
 #pragma endregion
 
 

@@ -29,13 +29,14 @@ void PhaseUI::PhaseOn(Faction _Faction)
 	}
 	Renderer->GetTransform()->SetLocalPosition({ 1316, 0 });
 	Renderer->On();
+	CurState = PhaseState::Start;
 	On();
 	Timer = 0;
 }
 
 bool PhaseUI::PhaseUIEnd()
 {
-	if (2.2f < Timer)
+	if (CurState == PhaseState::End)
 	{
 		PhaseOff();
 		return true;
@@ -68,6 +69,9 @@ void PhaseUI::Update(float _DeltaTime)
 	case PhaseUI::PhaseState::Wait:
 		WaitUpdate(_DeltaTime);
 		break;
+	case PhaseUI::PhaseState::Disapear:
+		DisapearUpdate(_DeltaTime);
+		break;
 	case PhaseUI::PhaseState::End:
 		EndUpdate(_DeltaTime);
 		break;
@@ -82,10 +86,36 @@ void PhaseUI::StartUpdate(float _DeltaTime)
 {
 	Timer += _DeltaTime * 3;
 	Renderer->GetTransform()->SetLocalPosition(float4::LerpClamp({ 1316, 0 }, { 0,0 }, Timer));
+	if (1 < Timer)
+	{
+		Timer = 0;
+		CurState = PhaseState::Wait;
+		return;
+	}
 }
 
 void PhaseUI::WaitUpdate(float _DeltaTime)
 {
+	Timer += _DeltaTime;
+	if (0.5f < Timer)
+	{
+		Timer = 0;
+		CurState = PhaseState::Disapear;
+		return;
+	}
+}
+
+void PhaseUI::DisapearUpdate(float _DeltaTime)
+{
+	Timer += _DeltaTime * 3;
+	Renderer->GetTransform()->SetLocalPosition(float4::LerpClamp({ 0, 0 }, { -1316,0 }, Timer));
+	if (1 < Timer)
+	{
+		Renderer->Off();
+		Timer = 0;
+		CurState = PhaseState::End;
+		return;
+	}
 }
 
 void PhaseUI::EndUpdate(float _DeltaTime)

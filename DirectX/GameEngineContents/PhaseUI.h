@@ -29,6 +29,7 @@ private:
 	{
 		Start,
 		Wait,
+		Disapear,
 		End
 	};
 	PhaseState CurState = PhaseState::Start;
@@ -39,6 +40,7 @@ private:
 
 	void StartUpdate(float _DeltaTime);
 	void WaitUpdate(float _DeltaTime);
+	void DisapearUpdate(float _DeltaTime);
 	void EndUpdate(float _DeltaTime);
 };
 

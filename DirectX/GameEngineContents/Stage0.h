@@ -19,5 +19,8 @@ protected:
 private:
 
 	std::shared_ptr<BattleUnit> Unit_Lyn = nullptr;
+
+	void OpeningEventInit();
+	void ClearEventInit();
 };
 
