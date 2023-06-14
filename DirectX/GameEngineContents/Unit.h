@@ -218,10 +218,15 @@ public:
 
 	// 아이템 추가
 	void NewItem(ItemCode _Code);
+	// 아이템 등록
+	void AddItem(std::shared_ptr<Item> _Item);
+	// 아이템 교체
+	void ChangeItem(std::shared_ptr<Item> _Item, int _Index);
 	// 아이템 사용
 	void UseItem(std::list<std::shared_ptr<Item>>::iterator& _ItemIter);
 	// 아이템 버리기
 	void DropItem(std::list<std::shared_ptr<Item>>::iterator& _ItemIter);
+	void DropItem(std::shared_ptr<Item> _Item);
 	// 아이템 장비
 	void EquipWeapon(std::shared_ptr<Weapon> _Weapon);
 	// 무기 리스트받기

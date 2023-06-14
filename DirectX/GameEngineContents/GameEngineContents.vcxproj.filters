@@ -18,32 +18,8 @@
     <ClCompile Include="Weapon.cpp">
       <Filter>Battle\Item</Filter>
     </ClCompile>
-    <ClCompile Include="MapUnit.cpp">
-      <Filter>Battle\Map</Filter>
-    </ClCompile>
     <ClCompile Include="BattleUnit.cpp">
       <Filter>Battle\Unit</Filter>
-    </ClCompile>
-    <ClCompile Include="BattleMap.cpp">
-      <Filter>Battle\Map</Filter>
-    </ClCompile>
-    <ClCompile Include="BattleLevel.cpp">
-      <Filter>Battle\System</Filter>
-    </ClCompile>
-    <ClCompile Include="BattleLevel_Map.cpp">
-      <Filter>Battle\System</Filter>
-    </ClCompile>
-    <ClCompile Include="BattleLevel_FSM.cpp">
-      <Filter>Battle\System</Filter>
-    </ClCompile>
-    <ClCompile Include="MapCursor.cpp">
-      <Filter>Battle\Map</Filter>
-    </ClCompile>
-    <ClCompile Include="ArrowRender.cpp">
-      <Filter>Battle\Map</Filter>
-    </ClCompile>
-    <ClCompile Include="TileRender.cpp">
-      <Filter>Battle\Map</Filter>
     </ClCompile>
     <ClCompile Include="Unit.cpp">
       <Filter>Battle\Unit</Filter>
@@ -51,20 +27,8 @@
     <ClCompile Include="SpriteRenderer.cpp">
       <Filter>Component</Filter>
     </ClCompile>
-    <ClCompile Include="BattleLevel_Select.cpp">
-      <Filter>Battle\System</Filter>
-    </ClCompile>
-    <ClCompile Include="BattleLevel_UnitCommand.cpp">
-      <Filter>Battle\System</Filter>
-    </ClCompile>
-    <ClCompile Include="BattleAnimationLevel.cpp">
-      <Filter>Battle\Animation</Filter>
-    </ClCompile>
     <ClCompile Include="DebugWindow.cpp">
       <Filter>UI</Filter>
-    </ClCompile>
-    <ClCompile Include="BattleLevel_Battle.cpp">
-      <Filter>Battle\System</Filter>
     </ClCompile>
     <ClCompile Include="FERandom.cpp">
       <Filter>System</Filter>
@@ -72,14 +36,8 @@
     <ClCompile Include="UnitCommand.cpp">
       <Filter>Battle\System</Filter>
     </ClCompile>
-    <ClCompile Include="BattleLevel_FieldCommand.cpp">
-      <Filter>Battle\System</Filter>
-    </ClCompile>
     <ClCompile Include="Unit_StatCalculator.cpp">
       <Filter>Battle\Unit</Filter>
-    </ClCompile>
-    <ClCompile Include="BattleAnimationUnit.cpp">
-      <Filter>Battle\Animation</Filter>
     </ClCompile>
     <ClCompile Include="BattleLevelUI.cpp">
       <Filter>Battle\UI</Filter>
@@ -108,23 +66,14 @@
     <ClCompile Include="UnitCommandUI.cpp">
       <Filter>Battle\UI\Parts</Filter>
     </ClCompile>
-    <ClCompile Include="BattleAnimationUI.cpp">
-      <Filter>Battle\Animation</Filter>
-    </ClCompile>
     <ClCompile Include="DoubleIconActor.cpp">
       <Filter>Battle\UI\Parts</Filter>
     </ClCompile>
     <ClCompile Include="UnitInformationUI.cpp">
       <Filter>Battle\UI</Filter>
     </ClCompile>
-    <ClCompile Include="BattleLevel_UnitInformation.cpp">
-      <Filter>Battle\System</Filter>
-    </ClCompile>
     <ClCompile Include="StatBar.cpp">
       <Filter>Battle\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="BattleHPBar.cpp">
-      <Filter>Battle\Animation</Filter>
     </ClCompile>
     <ClCompile Include="StageSelectWindow.cpp">
       <Filter>UI</Filter>
@@ -174,17 +123,68 @@
     <ClCompile Include="UIButtonSystem.cpp">
       <Filter>UI</Filter>
     </ClCompile>
-    <ClCompile Include="EXPBar.cpp">
-      <Filter>Battle\Animation</Filter>
-    </ClCompile>
-    <ClCompile Include="LevelUpUI.cpp">
-      <Filter>Battle\UI</Filter>
-    </ClCompile>
     <ClCompile Include="HealUI.cpp">
       <Filter>Battle\UI\Parts</Filter>
     </ClCompile>
     <ClCompile Include="ExchangeUI.cpp">
       <Filter>Battle\UI\Parts</Filter>
+    </ClCompile>
+    <ClCompile Include="BattleAnimationLevel.cpp">
+      <Filter>Battle\Animation\Level</Filter>
+    </ClCompile>
+    <ClCompile Include="BattleAnimationUI.cpp">
+      <Filter>Battle\Animation\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="BattleAnimationUnit.cpp">
+      <Filter>Battle\Animation\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="BattleHPBar.cpp">
+      <Filter>Battle\Animation\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="EXPBar.cpp">
+      <Filter>Battle\Animation\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="ArrowRender.cpp">
+      <Filter>Battle\Map\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="TileRender.cpp">
+      <Filter>Battle\Map\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="BattleMap.cpp">
+      <Filter>Battle\Map\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="MapUnit.cpp">
+      <Filter>Battle\Map\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="MapCursor.cpp">
+      <Filter>Battle\Map\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="BattleLevel.cpp">
+      <Filter>Battle\System\Level</Filter>
+    </ClCompile>
+    <ClCompile Include="BattleLevel_Battle.cpp">
+      <Filter>Battle\System\Level\State</Filter>
+    </ClCompile>
+    <ClCompile Include="BattleLevel_FieldCommand.cpp">
+      <Filter>Battle\System\Level\State</Filter>
+    </ClCompile>
+    <ClCompile Include="BattleLevel_FSM.cpp">
+      <Filter>Battle\System\Level\State</Filter>
+    </ClCompile>
+    <ClCompile Include="BattleLevel_Map.cpp">
+      <Filter>Battle\System\Level\State</Filter>
+    </ClCompile>
+    <ClCompile Include="BattleLevel_Select.cpp">
+      <Filter>Battle\System\Level\State</Filter>
+    </ClCompile>
+    <ClCompile Include="BattleLevel_UnitCommand.cpp">
+      <Filter>Battle\System\Level\State</Filter>
+    </ClCompile>
+    <ClCompile Include="BattleLevel_UnitInformation.cpp">
+      <Filter>Battle\System\Level\State</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelUpUI.cpp">
+      <Filter>Battle\Animation\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -205,36 +205,15 @@
     <ClInclude Include="Weapon.h">
       <Filter>Battle\Item</Filter>
     </ClInclude>
-    <ClInclude Include="MapUnit.h">
-      <Filter>Battle\Map</Filter>
-    </ClInclude>
     <ClInclude Include="ContentsEnum.h" />
     <ClInclude Include="BattleUnit.h">
       <Filter>Battle\Unit</Filter>
-    </ClInclude>
-    <ClInclude Include="BattleMap.h">
-      <Filter>Battle\Map</Filter>
-    </ClInclude>
-    <ClInclude Include="BattleLevel.h">
-      <Filter>Battle\System</Filter>
-    </ClInclude>
-    <ClInclude Include="MapCursor.h">
-      <Filter>Battle\Map</Filter>
-    </ClInclude>
-    <ClInclude Include="ArrowRender.h">
-      <Filter>Battle\Map</Filter>
-    </ClInclude>
-    <ClInclude Include="TileRender.h">
-      <Filter>Battle\Map</Filter>
     </ClInclude>
     <ClInclude Include="Unit.h">
       <Filter>Battle\Unit</Filter>
     </ClInclude>
     <ClInclude Include="SpriteRenderer.h">
       <Filter>Component</Filter>
-    </ClInclude>
-    <ClInclude Include="BattleAnimationLevel.h">
-      <Filter>Battle\Animation</Filter>
     </ClInclude>
     <ClInclude Include="DebugWindow.h">
       <Filter>UI</Filter>
@@ -244,9 +223,6 @@
     </ClInclude>
     <ClInclude Include="UnitCommand.h">
       <Filter>Battle\System</Filter>
-    </ClInclude>
-    <ClInclude Include="BattleAnimationUnit.h">
-      <Filter>Battle\Animation</Filter>
     </ClInclude>
     <ClInclude Include="BattleLevelUI.h">
       <Filter>Battle\UI</Filter>
@@ -275,9 +251,6 @@
     <ClInclude Include="UnitCommandUI.h">
       <Filter>Battle\UI\Parts</Filter>
     </ClInclude>
-    <ClInclude Include="BattleAnimationUI.h">
-      <Filter>Battle\Animation</Filter>
-    </ClInclude>
     <ClInclude Include="DoubleIconActor.h">
       <Filter>Battle\UI\Parts</Filter>
     </ClInclude>
@@ -286,9 +259,6 @@
     </ClInclude>
     <ClInclude Include="StatBar.h">
       <Filter>Battle\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="BattleHPBar.h">
-      <Filter>Battle\Animation</Filter>
     </ClInclude>
     <ClInclude Include="StageSelectWindow.h">
       <Filter>UI</Filter>
@@ -338,17 +308,47 @@
     <ClInclude Include="UIButtonSystem.h">
       <Filter>UI</Filter>
     </ClInclude>
-    <ClInclude Include="EXPBar.h">
-      <Filter>Battle\Animation</Filter>
-    </ClInclude>
-    <ClInclude Include="LevelUpUI.h">
-      <Filter>Battle\UI</Filter>
-    </ClInclude>
     <ClInclude Include="HealUI.h">
       <Filter>Battle\UI\Parts</Filter>
     </ClInclude>
     <ClInclude Include="ExchangeUI.h">
       <Filter>Battle\UI\Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="BattleAnimationLevel.h">
+      <Filter>Battle\Animation\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="BattleAnimationUI.h">
+      <Filter>Battle\Animation\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="BattleAnimationUnit.h">
+      <Filter>Battle\Animation\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="BattleHPBar.h">
+      <Filter>Battle\Animation\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="EXPBar.h">
+      <Filter>Battle\Animation\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="ArrowRender.h">
+      <Filter>Battle\Map\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="TileRender.h">
+      <Filter>Battle\Map\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="BattleMap.h">
+      <Filter>Battle\Map\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="MapUnit.h">
+      <Filter>Battle\Map\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="MapCursor.h">
+      <Filter>Battle\Map\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="BattleLevel.h">
+      <Filter>Battle\System\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelUpUI.h">
+      <Filter>Battle\Animation\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -396,6 +396,27 @@
     </Filter>
     <Filter Include="Event">
       <UniqueIdentifier>{9e303086-c44f-44eb-b076-5482520234c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\Animation\Level">
+      <UniqueIdentifier>{9c0fa856-8975-4cb6-a317-404c0b211949}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\Animation\UI">
+      <UniqueIdentifier>{1f9c6bfb-8f98-43a4-890c-9c1a426e9a6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\Animation\Actor">
+      <UniqueIdentifier>{c2d074a2-807c-46ff-89d8-6a24e7b49370}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\Map\UI">
+      <UniqueIdentifier>{cfb97d26-e2f6-48b7-a7ae-9d5b99f6b3b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\Map\Actor">
+      <UniqueIdentifier>{e68c9da1-cbd8-44fe-92b9-06bad963f533}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\System\Level">
+      <UniqueIdentifier>{dfe69590-2665-4572-a663-cb5d928de40d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\System\Level\State">
+      <UniqueIdentifier>{ccd37b53-084f-4d22-95c6-b346c75bc971}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

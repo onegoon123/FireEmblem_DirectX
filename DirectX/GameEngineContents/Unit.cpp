@@ -104,10 +104,33 @@ void Unit::DropItem(std::list<std::shared_ptr<Item>>::iterator& _ItemIter)
 		if (true == _Weapon->IsUseWeapon(UnitStat.ClassValue))
 		{
 			std::list<std::shared_ptr<Weapon>>::iterator WeaponIter = std::find(Weapons.begin(), Weapons.end(), *_ItemIter);
+			if (CurWeapon == *WeaponIter)
+			{
+				CurWeapon = nullptr;
+			}
 			Weapons.erase(WeaponIter);
 		}
 	}
 	Items.erase(_ItemIter);
+}
+
+void Unit::DropItem(std::shared_ptr<Item> _Item)
+{
+	if (_Item->GetItemType() == ItemType::Weapon)
+	{
+		std::shared_ptr<Weapon> _Weapon = std::dynamic_pointer_cast<Weapon>(_Item);
+		if (true == _Weapon->IsUseWeapon(UnitStat.ClassValue))
+		{
+			std::list<std::shared_ptr<Weapon>>::iterator WeaponIter = std::find(Weapons.begin(), Weapons.end(), _Item);
+			if (CurWeapon == *WeaponIter)
+			{
+				CurWeapon = nullptr;
+			}
+			Weapons.erase(WeaponIter);
+		}
+	}
+	std::list<std::shared_ptr<Item>>::iterator ItemIter = std::find(Items.begin(), Items.end(), _Item);
+	Items.erase(ItemIter);
 }
 
 
@@ -130,6 +153,60 @@ void Unit::NewItem(ItemCode _Code)
 
 	}
 	return;
+}
+
+void Unit::AddItem(std::shared_ptr<Item> _Item)
+{
+	Items.push_back(_Item);
+	if (_Item->GetItemType() == ItemType::Weapon)
+	{
+		std::shared_ptr<Weapon> NewWeapon = std::dynamic_pointer_cast<Weapon>(_Item);
+
+		if (NewWeapon->IsUseWeapon(UnitStat.ClassValue))
+		{
+			Weapons.push_back(NewWeapon);
+			if (nullptr == CurWeapon)
+			{
+				EquipWeapon(NewWeapon);
+			}
+		}
+	}
+	return;
+}
+
+void Unit::ChangeItem(std::shared_ptr<Item> _Item, int _Index)
+{
+	std::list<std::shared_ptr<Item>>::iterator ItemIter = Items.begin();
+	std::advance(ItemIter, _Index);
+
+	if ((*ItemIter)->GetItemType() == ItemType::Weapon)
+	{
+		std::shared_ptr<Weapon> _Weapon = std::dynamic_pointer_cast<Weapon>(*ItemIter);
+		if (true == _Weapon->IsUseWeapon(UnitStat.ClassValue))
+		{
+			std::list<std::shared_ptr<Weapon>>::iterator WeaponIter = std::find(Weapons.begin(), Weapons.end(), _Weapon);
+			if (CurWeapon == *WeaponIter)
+			{
+				CurWeapon = nullptr;
+			}
+			Weapons.erase(WeaponIter);
+		}
+	}
+
+	*ItemIter = _Item;
+	if (_Item->GetItemType() == ItemType::Weapon)
+	{
+		std::shared_ptr<Weapon> NewWeapon = std::dynamic_pointer_cast<Weapon>(_Item);
+
+		if (NewWeapon->IsUseWeapon(UnitStat.ClassValue))
+		{
+			Weapons.push_back(NewWeapon);
+			if (nullptr == CurWeapon)
+			{
+				EquipWeapon(NewWeapon);
+			}
+		}
+	}
 }
 
 void Unit::LoadItemData(std::list<Item>& _Data)

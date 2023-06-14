@@ -238,9 +238,9 @@ void ItemUI::ItemSelectUpdate(float _DeltaTime)
 		return;
 	}
 
-	CursorTimer += _DeltaTime * 10;
 	Cursor->GetTransform()->SetLocalPosition(float4::Lerp(Cursor->GetTransform()->GetLocalPosition(), CursorPos, _DeltaTime * 20));
 
+	CursorTimer += _DeltaTime * 10;
 	if (CursorTimer < 1) { return; }
 
 

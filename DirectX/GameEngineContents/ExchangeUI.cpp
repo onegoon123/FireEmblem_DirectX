@@ -30,6 +30,7 @@ void ExchangeUI::On(std::shared_ptr<BattleUnit> _SelectUnit, std::list<std::shar
 	LeftItems = LeftUnit->GetUnitData().GetItems();
 	TargetUnits = _TargetUnits;
 	TargetIter = TargetUnits.begin();
+	Cursor_UI->GetTransform()->SetLocalPosition(StartCursorPos);
 	SetTarget();
 	TargetSelectStart();
 }
@@ -42,27 +43,37 @@ void ExchangeUI::Off()
 
 void ExchangeUI::Start()
 {
-	LeftWindow = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
+	LeftWindow = CreateComponent<GameEngineUIRenderer>(RenderOrder::UIBackground);
 	LeftWindow->SetSprite("ItemUI.png", 4);
 	LeftWindow->GetTransform()->SetLocalPosition({-228, -128});
 	LeftWindow->GetTransform()->SetLocalScale({420, 356});
 
-	LeftPortrait = CreateComponent<GameEngineUIRenderer>(RenderOrder::UIBackground);
+	LeftPortrait = CreateComponent<GameEngineUIRenderer>(RenderOrder::Unit);
 	LeftPortrait->GetTransform()->SetParent(LeftWindow->GetTransform());
 	LeftPortrait->GetTransform()->SetWorldScale({ -384, 320 });
 	LeftPortrait->GetTransform()->SetLocalPosition({ 0, 298 });
 	LeftPortrait->GetTransform()->SetWorldRotation(float4::Zero);
 
-	RightWindow = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
+	RightWindow = CreateComponent<GameEngineUIRenderer>(RenderOrder::UIBackground);
 	RightWindow->SetSprite("ItemUI.png", 4);
 	RightWindow->GetTransform()->SetLocalPosition({ 228, -128 });
 	RightWindow->GetTransform()->SetLocalScale({ 420, 356 });
 
-	RightPortrait = CreateComponent<GameEngineUIRenderer>(RenderOrder::UIBackground);
+	RightPortrait = CreateComponent<GameEngineUIRenderer>(RenderOrder::Unit);
 	RightPortrait->GetTransform()->SetParent(RightWindow->GetTransform());
 	RightPortrait->GetTransform()->SetWorldScale({ 384, 320 });
 	RightPortrait->GetTransform()->SetLocalPosition({ 0, 298 });
 	RightPortrait->GetTransform()->SetWorldRotation(float4::Zero);
+
+	SelectRender = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
+	SelectRender->SetTexture("ItemSelect.png");
+	SelectRender->GetTransform()->SetLocalPosition(StartSelectPos);
+	SelectRender->GetTransform()->SetLocalScale({368, 20});
+
+	CursorRender = CreateComponent<GameEngineUIRenderer>(RenderOrder::UICursor);
+	CursorRender->SetTexture("CommandCursor.png");
+	CursorRender->GetTransform()->SetLocalPosition(StartCursorPos);
+	CursorRender->GetTransform()->SetLocalScale({64, 64});
 
 	if (nullptr == GameEngineSprite::Find("items.png"))
 	{
@@ -115,7 +126,11 @@ void ExchangeUI::Start()
 
 void ExchangeUI::Update(float _DeltaTime)
 {
-	if (true == IsUnitSelect)
+	if (true == IsItemSelect)
+	{
+		ItemSelectUpdate(_DeltaTime);
+	}
+	else if (true == IsUnitSelect)
 	{
 		ExchangeUpdate(_DeltaTime);
 	}
@@ -132,6 +147,8 @@ void ExchangeUI::TargetSelectStart()
 	Cursor_UI->Off();
 	LeftWindow->Off();
 	RightWindow->Off();
+	SelectRender->Off();
+	CursorRender->Off();
 }
 
 void ExchangeUI::TargetSelectUpdate(float _DeltaTime)
@@ -185,7 +202,7 @@ void ExchangeUI::ExchangeStart()
 	RightItems = RightUnit->GetUnitData().GetItems();
 
 	std::list<std::shared_ptr<Item>>::iterator ItemIter = LeftItems.begin();
-	for (int i = 0; i < LeftItems.size(); i++)
+	for (int i = 0; i < (int)LeftItems.size(); i++)
 	{
 		LeftIcons[i]->SetFrame(static_cast<size_t>((*ItemIter)->GetItemCode()) - 1);
 		LeftIcons[i]->On();
@@ -193,8 +210,13 @@ void ExchangeUI::ExchangeStart()
 		LeftUses[i]->On();
 		ItemIter++;
 	}
+	for (int i = (int)LeftItems.size(); i < 5; i++)
+	{
+		LeftIcons[i]->Off();
+		LeftUses[i]->Off();
+	}
 	ItemIter = RightItems.begin();
-	for (int i = 0; i < RightItems.size(); i++)
+	for (int i = 0; i < (int)RightItems.size(); i++)
 	{
 		RightIcons[i]->SetFrame(static_cast<size_t>((*ItemIter)->GetItemCode()) - 1);
 		RightIcons[i]->On();
@@ -202,11 +224,18 @@ void ExchangeUI::ExchangeStart()
 		RightUses[i]->On();
 		ItemIter++;
 	}
+	for (int i = (int)RightItems.size(); i < 5; i++)
+	{
+		RightIcons[i]->Off();
+		RightUses[i]->Off();
+	}
 
 	IsUnitSelect = true;
+	IsItemSelect = false;
 	Cursor_Map->Off();
 	Cursor_UI->On();
-
+	SelectRender->On();
+	CursorRender->Off();
 	LeftWindow->On();
 	RightWindow->On();
 
@@ -221,18 +250,29 @@ void ExchangeUI::ExchangeStart()
 	TextStr += ".png";
 	RightPortrait->SetTexture(TextStr);
 
-	CurrentCursor = { 0, 0 };
-	CursorPos = StartCursorPos + float4(456 * CurrentCursor.x, -64 * CurrentCursor.y);
-	Cursor_UI->GetTransform()->SetLocalPosition(CursorPos);
+	if (CurrentCursor.x == 0 && CurrentCursor.y == (int)LeftItems.size())
+	{
+		CurrentCursor.y = (int)LeftItems.size() - 1;
+	}
+	else if (CurrentCursor.x == 1 && CurrentCursor.y == (int)RightItems.size())
+	{
+		CurrentCursor.y = (int)RightItems.size() - 1;
+	}
+	CursorTimer = 0;
+	CursorPos = StartCursorPos + float4(456.0f * CurrentCursor.x, -64.0f * CurrentCursor.y);
+	SelectRender->GetTransform()->SetLocalPosition(StartSelectPos + float4(456.0f * CurrentCursor.x, -64.0f * CurrentCursor.y));
+	//Cursor_UI->GetTransform()->SetLocalPosition(CursorPos);
 }
 
 void ExchangeUI::ExchangeUpdate(float _DeltaTime)
 {
 	Cursor_UI->GetTransform()->SetLocalPosition(float4::LerpClamp(Cursor_UI->GetTransform()->GetLocalPosition(), CursorPos, _DeltaTime * 20));
+	CursorTimer += _DeltaTime * 10;
+	if (CursorTimer < 1) { return; }
 
 	if (GameEngineInput::IsDown("ButtonA") || GameEngineInput::IsUp("LeftClick"))
 	{
-		//ExchangeStart();
+		ItemSelectStart();
 		return;
 	}
 
@@ -242,28 +282,166 @@ void ExchangeUI::ExchangeUpdate(float _DeltaTime)
 		return;
 	}
 
-	if (GameEngineInput::IsDown("Left"))
+	if (PreesTime < GameEngineInput::GetPressTime("Up") || PreesTime < GameEngineInput::GetPressTime("Down"))
 	{
-		CurrentCursor += int2::Left;
-		CursorPos = StartCursorPos + float4(456 * CurrentCursor.x, -64 * CurrentCursor.y);
+		PressOK = true;
+	}
+	else if (GameEngineInput::IsFree("Up") && GameEngineInput::IsFree("Down"))
+	{
+		PressOK = false;
+	}
+
+	if (GameEngineInput::IsDown("Left") || GameEngineInput::IsDown("Right"))
+	{
+		if (CurrentCursor.x == 0)
+		{ 
+			CurrentCursor.x = 1;
+			CurrentCursor.y = std::min<int>(CurrentCursor.y, (int)RightItems.size() - 1);
+		}
+		else
+		{
+			CurrentCursor.x = 0;
+			CurrentCursor.y = std::min<int>(CurrentCursor.y, (int)LeftItems.size() - 1);
+		}
+			
+		CursorTimer = 0;
+		CursorPos = StartCursorPos + float4(456.0f * CurrentCursor.x, -64.0f * CurrentCursor.y);
+		SelectRender->GetTransform()->SetLocalPosition(StartSelectPos + float4(456.0f * CurrentCursor.x, -64.0f * CurrentCursor.y));
 		return;
 	}
-	if (GameEngineInput::IsDown("Right"))
+
+	if (GameEngineInput::IsDown("Up") || (GameEngineInput::IsPress("Up") && PressOK))
 	{
-		CurrentCursor += int2::Right;
-		CursorPos = StartCursorPos + float4(456 * CurrentCursor.x, -64 * CurrentCursor.y);
+		if (CurrentCursor.y == 0)
+		{ 
+			if (false == GameEngineInput::IsDown("Up")) { return; }
+			if (CurrentCursor.x == 0)
+			{
+				CurrentCursor.y = (int)LeftItems.size() - 1;
+			}
+			else
+			{
+				CurrentCursor.y = (int)RightItems.size() - 1;
+			}
+		}
+		else
+		{
+			CurrentCursor.y--;
+		}
+		CursorTimer = 0;
+		CursorPos = StartCursorPos + float4(456.0f * CurrentCursor.x, -64.0f * CurrentCursor.y);
+		SelectRender->GetTransform()->SetLocalPosition(StartSelectPos + float4(456.0f * CurrentCursor.x, -64.0f * CurrentCursor.y));
 		return;
 	}
-	if (GameEngineInput::IsDown("Up"))
+	if (GameEngineInput::IsDown("Down") || (GameEngineInput::IsPress("Down") && PressOK))
 	{
-		CurrentCursor += int2::Down;
-		CursorPos = StartCursorPos + float4(456 * CurrentCursor.x, -64 * CurrentCursor.y);
+		if (CurrentCursor.x == 0 && CurrentCursor.y + 1 >= LeftItems.size() || (CurrentCursor.x == 1 && CurrentCursor.y + 1 >= RightItems.size()))
+		{ 
+			if (false == GameEngineInput::IsDown("Down")) { return; }
+			CurrentCursor.y = 0;
+		}
+		else
+		{
+			CurrentCursor.y++;
+		}
+		CursorTimer = 0;
+		CursorPos = StartCursorPos + float4(456.0f * CurrentCursor.x, -64.0f * CurrentCursor.y);
+		SelectRender->GetTransform()->SetLocalPosition(StartSelectPos + float4(456.0f * CurrentCursor.x, -64.0f * CurrentCursor.y));
 		return;
 	}
-	if (GameEngineInput::IsDown("Down"))
+}
+
+void ExchangeUI::ItemSelectStart()
+{
+	IsItemSelect = true;
+	CursorRender->On();
+	ItemCursor = CurrentCursor;
+	CursorRender->GetTransform()->SetLocalPosition(StartCursorPos + float4(456.0f * CurrentCursor.x, -64.0f * CurrentCursor.y));
+
+	if (CurrentCursor.x == 0)
 	{
-		CurrentCursor += int2::Up;
-		CursorPos = StartCursorPos + float4(456 * CurrentCursor.x, -64 * CurrentCursor.y);
+		CurrentCursor.x = 1;
+		CurrentCursor.y = std::min<int>(4, (int)RightItems.size());
+	}
+	else
+	{
+		CurrentCursor.x = 0;
+		CurrentCursor.y = std::min<int>(4, (int)LeftItems.size());
+	}
+	CursorTimer = 0;
+	CursorPos = StartCursorPos + float4(456.0f * CurrentCursor.x, -64.0f * CurrentCursor.y);
+	SelectRender->GetTransform()->SetLocalPosition(StartSelectPos + float4(456.0f * CurrentCursor.x, -64.0f * CurrentCursor.y));
+}
+
+void ExchangeUI::ItemSelectUpdate(float _DeltaTime)
+{
+	Cursor_UI->GetTransform()->SetLocalPosition(float4::LerpClamp(Cursor_UI->GetTransform()->GetLocalPosition(), CursorPos, _DeltaTime * 20));
+	CursorTimer += _DeltaTime * 10;
+	if (CursorTimer < 1) { return; }
+
+	if (GameEngineInput::IsDown("ButtonA") || GameEngineInput::IsUp("LeftClick"))
+	{
+		ItemChange();
+		return;
+	}
+
+	if (GameEngineInput::IsDown("ButtonB") || GameEngineInput::IsUp("RightClick"))
+	{
+		ExchangeStart();
+		return;
+	}
+
+	if (PreesTime < GameEngineInput::GetPressTime("Up") || PreesTime < GameEngineInput::GetPressTime("Down"))
+	{
+		PressOK = true;
+	}
+	else if (GameEngineInput::IsFree("Up") && GameEngineInput::IsFree("Down"))
+	{
+		PressOK = false;
+	}
+
+	if (GameEngineInput::IsDown("Up") || (GameEngineInput::IsPress("Up") && PressOK))
+	{
+		if (CurrentCursor.y == 0)
+		{
+			if (false == GameEngineInput::IsDown("Up")) { return; }
+			if (CurrentCursor.x == 0)
+			{
+				CurrentCursor.y = (int)LeftItems.size();
+			}
+			else
+			{
+				CurrentCursor.y = (int)RightItems.size();
+			}
+		}
+		else
+		{
+			CurrentCursor.y--;
+		}
+		CursorTimer = 0;
+		CursorPos = StartCursorPos + float4(456.0f * CurrentCursor.x, -64.0f * CurrentCursor.y);
+		SelectRender->GetTransform()->SetLocalPosition(StartSelectPos + float4(456.0f * CurrentCursor.x, -64.0f * CurrentCursor.y));
+		return;
+	}
+	if (GameEngineInput::IsDown("Down") || (GameEngineInput::IsPress("Down") && PressOK))
+	{
+		if (CurrentCursor.x == 0 && CurrentCursor.y == std::min<int>((int)LeftItems.size(), 4))
+		{
+			if (false == GameEngineInput::IsDown("Down")) { return; }
+			CurrentCursor.y = 0;
+		}
+		else if (CurrentCursor.x == 1 && CurrentCursor.y == std::min<int>((int)RightItems.size(), 4))
+		{
+			if (false == GameEngineInput::IsDown("Down")) { return; }
+			CurrentCursor.y = 0;
+		}
+		else
+		{
+			CurrentCursor.y++;
+		}
+		CursorTimer = 0;
+		CursorPos = StartCursorPos + float4(456.0f * CurrentCursor.x, -64.0f * CurrentCursor.y);
+		SelectRender->GetTransform()->SetLocalPosition(StartSelectPos + float4(456.0f * CurrentCursor.x, -64.0f * CurrentCursor.y));
 		return;
 	}
 }
@@ -272,4 +450,57 @@ void ExchangeUI::SetTarget()
 {
 	RightUnit = *TargetIter;
 	Cursor_Map->SetMapPos(RightUnit->GetMapPos());
+}
+
+void ExchangeUI::ItemChange()
+{
+	std::list<std::shared_ptr<Item>>::iterator LeftItemIter = LeftItems.begin();
+	std::list<std::shared_ptr<Item>>::iterator RightItemIter = RightItems.begin();
+	int LeftIndex = -1;
+	int RightIndex = -1;
+	LeftItem = nullptr;
+	RightItem = nullptr;
+	if (ItemCursor.x == 0)
+	{
+		LeftIndex = ItemCursor.y;
+		std::advance(LeftItemIter, ItemCursor.y);
+		LeftItem = *LeftItemIter;
+		if (CurrentCursor.y != RightItems.size())
+		{
+			RightIndex = CurrentCursor.y;
+			std::advance(RightItemIter, CurrentCursor.y);
+			RightItem = *RightItemIter;
+		}
+	}
+	else
+	{
+		RightIndex = ItemCursor.y;
+		std::advance(RightItemIter, ItemCursor.y);
+		RightItem = *RightItemIter;
+		if (CurrentCursor.y != LeftItems.size())
+		{
+			LeftIndex = CurrentCursor.y;
+			std::advance(LeftItemIter, CurrentCursor.y);
+			LeftItem = *LeftItemIter;
+		}
+	}
+	
+	if (nullptr == LeftItem)
+	{
+		LeftUnit->GetUnitData().AddItem(RightItem);
+		RightUnit->GetUnitData().DropItem(RightItem);
+	}
+	else if (nullptr == RightItem)
+	{
+		RightUnit->GetUnitData().AddItem(LeftItem);
+		LeftUnit->GetUnitData().DropItem(LeftItem);
+	}
+	else
+	{
+		LeftUnit->GetUnitData().ChangeItem(RightItem, LeftIndex);
+		RightUnit->GetUnitData().ChangeItem(LeftItem, RightIndex);
+	}
+
+	LeftItems = LeftUnit->GetUnitData().GetItems();
+	ExchangeStart();
 }
