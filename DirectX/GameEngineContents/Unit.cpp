@@ -109,6 +109,10 @@ void Unit::DropItem(std::list<std::shared_ptr<Item>>::iterator& _ItemIter)
 				CurWeapon = nullptr;
 			}
 			Weapons.erase(WeaponIter);
+			if (0 != Weapons.size())
+			{
+				CurWeapon = Weapons.front();
+			}
 		}
 	}
 	Items.erase(_ItemIter);
@@ -127,6 +131,10 @@ void Unit::DropItem(std::shared_ptr<Item> _Item)
 				CurWeapon = nullptr;
 			}
 			Weapons.erase(WeaponIter);
+			if (0 != Weapons.size())
+			{
+				CurWeapon = Weapons.front();
+			}
 		}
 	}
 	std::list<std::shared_ptr<Item>>::iterator ItemIter = std::find(Items.begin(), Items.end(), _Item);
@@ -190,6 +198,10 @@ void Unit::ChangeItem(std::shared_ptr<Item> _Item, int _Index)
 				CurWeapon = nullptr;
 			}
 			Weapons.erase(WeaponIter);
+			if (0 != Weapons.size())
+			{
+				CurWeapon = Weapons.front();
+			}
 		}
 	}
 

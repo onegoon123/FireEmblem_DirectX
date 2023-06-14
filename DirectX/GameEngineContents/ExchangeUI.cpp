@@ -31,6 +31,8 @@ void ExchangeUI::On(std::shared_ptr<BattleUnit> _SelectUnit, std::list<std::shar
 	TargetUnits = _TargetUnits;
 	TargetIter = TargetUnits.begin();
 	Cursor_UI->GetTransform()->SetLocalPosition(StartCursorPos);
+	CurrentCursor = int2::Zero;
+	ItemCursor = int2::Zero;
 	SetTarget();
 	TargetSelectStart();
 }
@@ -45,8 +47,8 @@ void ExchangeUI::Start()
 {
 	LeftWindow = CreateComponent<GameEngineUIRenderer>(RenderOrder::UIBackground);
 	LeftWindow->SetSprite("ItemUI.png", 4);
-	LeftWindow->GetTransform()->SetLocalPosition({-228, -128});
-	LeftWindow->GetTransform()->SetLocalScale({420, 356});
+	LeftWindow->GetTransform()->SetLocalPosition({ -228, -128 });
+	LeftWindow->GetTransform()->SetLocalScale({ 420, 356 });
 
 	LeftPortrait = CreateComponent<GameEngineUIRenderer>(RenderOrder::Unit);
 	LeftPortrait->GetTransform()->SetParent(LeftWindow->GetTransform());
@@ -68,12 +70,12 @@ void ExchangeUI::Start()
 	SelectRender = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
 	SelectRender->SetTexture("ItemSelect.png");
 	SelectRender->GetTransform()->SetLocalPosition(StartSelectPos);
-	SelectRender->GetTransform()->SetLocalScale({368, 20});
+	SelectRender->GetTransform()->SetLocalScale({ 368, 20 });
 
 	CursorRender = CreateComponent<GameEngineUIRenderer>(RenderOrder::UICursor);
 	CursorRender->SetTexture("CommandCursor.png");
 	CursorRender->GetTransform()->SetLocalPosition(StartCursorPos);
-	CursorRender->GetTransform()->SetLocalScale({64, 64});
+	CursorRender->GetTransform()->SetLocalScale({ 64, 64 });
 
 	if (nullptr == GameEngineSprite::Find("items.png"))
 	{
@@ -241,7 +243,7 @@ void ExchangeUI::ExchangeStart()
 
 	// 초상화 변경
 	std::string TextStr = "Portrait_";
-	TextStr += LeftUnit ->GetUnitData().GetName();
+	TextStr += LeftUnit->GetUnitData().GetName();
 	TextStr += ".png";
 	LeftPortrait->SetTexture(TextStr);
 
@@ -250,13 +252,29 @@ void ExchangeUI::ExchangeStart()
 	TextStr += ".png";
 	RightPortrait->SetTexture(TextStr);
 
-	if (CurrentCursor.x == 0 && CurrentCursor.y == (int)LeftItems.size())
+	if (LeftItems.size() == 0)
 	{
-		CurrentCursor.y = (int)LeftItems.size() - 1;
+		CurrentCursor = int2(1, 0);
 	}
-	else if (CurrentCursor.x == 1 && CurrentCursor.y == (int)RightItems.size())
+	else if (RightItems.size() == 0)
 	{
-		CurrentCursor.y = (int)RightItems.size() - 1;
+		CurrentCursor = int2(0, 0);
+	}
+
+	if (CurrentCursor.x == 0)
+	{
+		if (CurrentCursor.y >= (int)LeftItems.size())
+		{
+			CurrentCursor.y = (int)LeftItems.size() - 1;
+		}
+
+	}
+	else if (CurrentCursor.x == 1)
+	{
+		if (CurrentCursor.y == (int)RightItems.size())
+		{
+			CurrentCursor.y = (int)RightItems.size() - 1;
+		}
 	}
 	CursorTimer = 0;
 	CursorPos = StartCursorPos + float4(456.0f * CurrentCursor.x, -64.0f * CurrentCursor.y);
@@ -294,16 +312,18 @@ void ExchangeUI::ExchangeUpdate(float _DeltaTime)
 	if (GameEngineInput::IsDown("Left") || GameEngineInput::IsDown("Right"))
 	{
 		if (CurrentCursor.x == 0)
-		{ 
+		{
+			if (0 == RightItems.size()) { return; }
 			CurrentCursor.x = 1;
 			CurrentCursor.y = std::min<int>(CurrentCursor.y, (int)RightItems.size() - 1);
 		}
 		else
 		{
+			if (0 == LeftItems.size()) { return; }
 			CurrentCursor.x = 0;
 			CurrentCursor.y = std::min<int>(CurrentCursor.y, (int)LeftItems.size() - 1);
 		}
-			
+
 		CursorTimer = 0;
 		CursorPos = StartCursorPos + float4(456.0f * CurrentCursor.x, -64.0f * CurrentCursor.y);
 		SelectRender->GetTransform()->SetLocalPosition(StartSelectPos + float4(456.0f * CurrentCursor.x, -64.0f * CurrentCursor.y));
@@ -313,7 +333,7 @@ void ExchangeUI::ExchangeUpdate(float _DeltaTime)
 	if (GameEngineInput::IsDown("Up") || (GameEngineInput::IsPress("Up") && PressOK))
 	{
 		if (CurrentCursor.y == 0)
-		{ 
+		{
 			if (false == GameEngineInput::IsDown("Up")) { return; }
 			if (CurrentCursor.x == 0)
 			{
@@ -336,7 +356,7 @@ void ExchangeUI::ExchangeUpdate(float _DeltaTime)
 	if (GameEngineInput::IsDown("Down") || (GameEngineInput::IsPress("Down") && PressOK))
 	{
 		if (CurrentCursor.x == 0 && CurrentCursor.y + 1 >= LeftItems.size() || (CurrentCursor.x == 1 && CurrentCursor.y + 1 >= RightItems.size()))
-		{ 
+		{
 			if (false == GameEngineInput::IsDown("Down")) { return; }
 			CurrentCursor.y = 0;
 		}
@@ -484,7 +504,7 @@ void ExchangeUI::ItemChange()
 			LeftItem = *LeftItemIter;
 		}
 	}
-	
+
 	if (nullptr == LeftItem)
 	{
 		LeftUnit->GetUnitData().AddItem(RightItem);
