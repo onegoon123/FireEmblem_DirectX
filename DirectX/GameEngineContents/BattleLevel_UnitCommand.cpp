@@ -30,7 +30,12 @@ void BattleLevel::UnitCommand_Exchange()
 {
 	BattleUI->ExchangeOn(SelectUnit, CloseUnits);
 }
-
+void BattleLevel::UnitCommand_ExchangeEnd(std::shared_ptr<BattleUnit> _Target)
+{
+	UnitCommand::Wait(SelectUnit);
+	SelectUnit->SetIsTurnEnd(true);
+	ChangeState(BattleState::Select);
+}
 void BattleLevel::UnitCommand_Cancel()
 {
 	//BattleUI->AllOff();

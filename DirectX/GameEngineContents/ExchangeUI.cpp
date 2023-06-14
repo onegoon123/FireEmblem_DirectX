@@ -19,6 +19,7 @@ void ExchangeUI::Setting(BattleLevel* _Level, std::shared_ptr<UICursor> _Cursor)
 	Cursor_UI = _Cursor;
 	Cursor_Map = _Level->GetMapCursor();
 	CancelFunction = std::bind(&BattleLevel::UnitCommand_CommandCancel, _Level);
+	ExchangeFunction = std::bind(&BattleLevel::UnitCommand_ExchangeEnd, _Level, std::placeholders::_1);
 }
 
 void ExchangeUI::On(std::shared_ptr<BattleUnit> _SelectUnit, std::list<std::shared_ptr<BattleUnit>>& _TargetUnits)
@@ -26,6 +27,7 @@ void ExchangeUI::On(std::shared_ptr<BattleUnit> _SelectUnit, std::list<std::shar
 	GameEngineActor::On();
 
 	IsOnFrame = true;
+	IsChange = false;
 	LeftUnit = _SelectUnit;
 	LeftItems = LeftUnit->GetUnitData().GetItems();
 	TargetUnits = _TargetUnits;
@@ -296,6 +298,11 @@ void ExchangeUI::ExchangeUpdate(float _DeltaTime)
 
 	if (GameEngineInput::IsDown("ButtonB") || GameEngineInput::IsUp("RightClick"))
 	{
+		if (true == IsChange)
+		{
+			ExchangeFunction(RightUnit);
+			return;
+		}
 		TargetSelectStart();
 		return;
 	}
@@ -474,6 +481,7 @@ void ExchangeUI::SetTarget()
 
 void ExchangeUI::ItemChange()
 {
+	IsChange = true;
 	std::list<std::shared_ptr<Item>>::iterator LeftItemIter = LeftItems.begin();
 	std::list<std::shared_ptr<Item>>::iterator RightItemIter = RightItems.begin();
 	int LeftIndex = -1;

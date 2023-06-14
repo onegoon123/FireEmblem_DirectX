@@ -78,6 +78,7 @@ private:
 	bool IsOnFrame = false;	// UI를 켠 프레임인가
 	bool IsUnitSelect = false;// 무기를 선택했는가
 	bool IsItemSelect = false;
+	bool IsChange = false;
 
 	void SetTarget();
 	void ItemChange();
