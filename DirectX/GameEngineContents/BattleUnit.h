@@ -54,6 +54,10 @@ public:
 	// 유닛 데이터를 지정
 	void SetUnitData(Unit _Value)
 	{
+		if (UnitData.IdentityCode != _Value.IdentityCode)
+		{
+			SetUnitAnimation(_Value.IdentityCode);
+		}
 		UnitData = _Value;
 		if (false == UnitData.IsDie)
 		{
@@ -141,5 +145,7 @@ private:
 
 	int DetectionRange = 0;		// 적이 플레이어를 발견하는 범위 (0은 거리제한 X)
 	bool IsCheckTile = false;
+
+	void SetUnitAnimation(UnitIdentityCode _Value);
 };
 

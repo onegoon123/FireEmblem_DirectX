@@ -233,6 +233,27 @@ void UnitCommand::ItemUse(std::shared_ptr<BattleUnit> _SubjectUnit, std::list<st
 	CommandList.push_back(CommandRecord);
 }
 
+void UnitCommand::ClassChange(std::shared_ptr<BattleUnit> _SubjectUnit, BattleClass _ClassValue, std::list<std::shared_ptr<Item>>::iterator& _ItemIter)
+{
+	UnitCommand CommandRecord;
+	Unit UnitData = Unit(_SubjectUnit->GetUnitData());
+
+	CommandRecord.TypeValue = CommandType::Item;
+	CommandRecord.BeforeSubjectUnit = UnitData;
+	CommandRecord.BeforeSubjectUnitPos = _SubjectUnit->GetBeforeMapPos();
+	CommandRecord.BeforeSubjectItems = Item::SaveItemDataList(CommandRecord.BeforeSubjectUnit.GetItems());
+
+	CommandRecord.Record = std::string(_SubjectUnit->GetName()) + "이(가) " + std::string((*_ItemIter)->GetName()) + "를(을) 사용했다.";
+	_SubjectUnit->GetUnitData().UseItem(_ItemIter);
+
+	UnitData.ClassChange(_ClassValue);
+	CommandRecord.AfterSubjectItems = Item::SaveItemDataList(_SubjectUnit->GetUnitData().GetItems());
+	CommandRecord.AfterSubjectUnit = UnitData;
+	CommandRecord.AfterSubjectUnitPos = _SubjectUnit->GetMapPos();
+	CommandRecord.AfterSubjectUnit.SetIsTurnEnd(true);
+	CommandList.push_back(CommandRecord);
+}
+
 std::list<AttackCommand> UnitCommand::Heal(std::shared_ptr<BattleUnit> _SubjectUnit, std::shared_ptr<BattleUnit> _TargetUnit, std::list<std::shared_ptr<Item>>::iterator& _ItemIter)
 {
 	std::list<AttackCommand> AttackList;

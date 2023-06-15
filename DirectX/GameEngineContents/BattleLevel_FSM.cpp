@@ -131,6 +131,11 @@ void BattleLevel::ChangeState(BattleState _State)
 		StateEnd = std::bind(&BattleLevel::ClearEnd, this);
 		ClearStart();
 		break;
+	case BattleLevel::BattleState::ClassChange:
+		StateUpdate = std::bind(&BattleLevel::ClassChangeUpdate, this, std::placeholders::_1);
+		StateEnd = std::bind(&BattleLevel::ClassChangeEnd, this);
+		ClassChangeStart();
+		break;
 	default:
 	{
 		MsgAssert("아직 지정하지 않은 State 입니다");
@@ -659,8 +664,11 @@ void BattleLevel::BattleReturnUpdate(float _DeltaTime)
 	if (0.5f < ReturnTimer)
 	{
 		ReturnTimer = 0;
-		SelectUnit->SetUnitData(Unit(AttackRecord.back().SubjectUnit));
-		TargetUnit->SetUnitData(Unit(AttackRecord.back().TargetUnit));
+		if (AttackRecord.size() != 0)
+		{
+			SelectUnit->SetUnitData(Unit(AttackRecord.back().SubjectUnit));
+			TargetUnit->SetUnitData(Unit(AttackRecord.back().TargetUnit));
+		}
 		if (false == GameOverCheck())
 		{
 			ChangeState(BattleState::Select);
@@ -683,6 +691,7 @@ void BattleLevel::BattleReturnUpdate(float _DeltaTime)
 
 void BattleLevel::BattleReturnEnd()
 {
+	AttackRecord.clear();
 	SelectUnit->SetIsTurnEnd(true);
 	if (SelectUnit->GetIsDie())
 	{
@@ -1755,7 +1764,7 @@ bool BattleLevel::GameOverCheck()
 	bool IsAliveUnit = false;
 	for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
 	{
-		if (UnitIdentityCode::Lyn == _Unit->GetUnitData().GetIdentityCode())
+		if (UnitIdentityCode::Lyn == _Unit->GetUnitData().GetIdentityCode() || UnitIdentityCode::BladeLordLyn == _Unit->GetUnitData().GetIdentityCode())
 		{
 			IsAliveUnit = true;
 			break;
@@ -1858,4 +1867,52 @@ void BattleLevel::ClearUpdate(float _DeltaTime)
 void BattleLevel::ClearEnd()
 {
 
+}
+
+void BattleLevel::ClassChangeStart()
+{
+	for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
+	{
+		_Unit->GetRenderer()->SetIsBlur(true);
+	}
+	for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
+	{
+		_Unit->GetRenderer()->SetIsBlur(true);
+	}
+	MainMap->GetRenderer()->SetIsBlur(true);
+	BattleUI->SetFadeOut(0.3f);
+	BeforeCamPos = MainCamera->GetTransform()->GetLocalPosition();
+	MainCamera->SetProjectionType(CameraType::Perspective);
+
+	return;
+}
+
+void BattleLevel::ClassChangeUpdate(float _DeltaTime)
+{
+	static float CloseUpTimer = 0;
+	CloseUpTimer += _DeltaTime;
+	if (0.5f < CloseUpTimer)
+	{
+		CloseUpTimer = 0;
+		GameEngineCore::ChangeLevel("BattleAnimationLevel");
+
+		ChangeState(BattleState::BattleReturn);
+		return;
+	}
+
+	for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
+	{
+		_Unit->GetRenderer()->SetBlurLevel(CloseUpTimer * 5);
+	}
+	for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
+	{
+		_Unit->GetRenderer()->SetBlurLevel(CloseUpTimer * 5);
+	}
+	MainMap->GetRenderer()->SetBlurLevel(CloseUpTimer * 5);
+	MainCamera->GetTransform()->SetLocalPosition(float4::LerpClamp(MainCamera->GetTransform()->GetWorldPosition(), SelectUnit->GetTransform()->GetWorldPosition(), _DeltaTime * 5));
+}
+
+void BattleLevel::ClassChangeEnd()
+{
+	SelectUnit->SetUnitData(Unit(UnitCommand::GetCommandList().back().AfterSubjectUnit));
 }

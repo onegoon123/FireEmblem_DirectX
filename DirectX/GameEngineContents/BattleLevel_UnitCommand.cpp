@@ -5,6 +5,7 @@
 #include "Item.h"
 #include "BattleLevelUI.h"
 #include "MapCursor.h"
+#include "BattleAnimationLevel.h"
 void BattleLevel::UnitCommand_Item()
 {
 	BattleUI->ItemOn(SelectUnit);
@@ -74,7 +75,36 @@ void BattleLevel::UnitCommand_ItemUse(std::list<std::shared_ptr<Item>>::iterator
 		ChangeState(BattleState::Potion);
 		break;
 	case ItemCode::MasterSeal:
+	{
+		UnitIdentityCode Before = SelectUnit->GetUnitData().GetIdentityCode();
+		UnitIdentityCode After;
+		BattleClass AfterClass;
+		switch (Before)
+		{
+		case UnitIdentityCode::Lyn:
+			After = UnitIdentityCode::BladeLordLyn;
+			AfterClass = BattleClass::BladeLord;
+			break;
+		case UnitIdentityCode::Dorcas:
+			After = UnitIdentityCode::WarriorDorcas;
+			AfterClass = BattleClass::Warrior;
+			break;
+		case UnitIdentityCode::Matthew:
+			After = UnitIdentityCode::AssassinMatthew;
+			AfterClass = BattleClass::Assassin;
+			break;
+		case UnitIdentityCode::Wallace:
+			After = UnitIdentityCode::GeneralWallace;
+			AfterClass = BattleClass::General;
+			break;
+		default:
+			return;
+		}
+		BattleAnimationLevel::SetClassChange(Before, After, GetName());
+		UnitCommand::ClassChange(SelectUnit, AfterClass, UseItem);
+		ChangeState(BattleState::ClassChange);
 		break;
+	}
 	default:
 		break;
 	}

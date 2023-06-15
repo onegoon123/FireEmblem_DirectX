@@ -76,11 +76,11 @@ void Unit::UseItem(std::list<std::shared_ptr<Item>>::iterator& _ItemIter)
 	case ItemCode::DoorKey:
 	case ItemCode::ChestKey:
 	case ItemCode::GoldCard:
-	case ItemCode::MasterSeal:
 	{
 		MsgAssert("아직 지정하지 않은 아이템입니다.");
 	}
 	break;
+	case ItemCode::MasterSeal:
 	default:
 		break;
 	}

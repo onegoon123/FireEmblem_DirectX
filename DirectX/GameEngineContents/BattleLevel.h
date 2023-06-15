@@ -72,6 +72,7 @@ private:
 		BattleReturn,	// 공격레벨에서 돌아옴
 		Potion,	        // 회복약 사용
 		Heal,	        // 힐 사용
+		ClassChange,
 
 		EnemyPhase,	// 적의 턴이 시작
 		EnemySelect,	// 적 선택
@@ -214,6 +215,10 @@ private:
 	void ClearStart();
 	void ClearUpdate(float _DeltaTime);
 	void ClearEnd();
+
+	void ClassChangeStart();
+	void ClassChangeUpdate(float _DeltaTime);
+	void ClassChangeEnd();
 #pragma endregion
 
 

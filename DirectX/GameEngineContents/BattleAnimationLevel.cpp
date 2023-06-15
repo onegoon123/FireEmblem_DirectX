@@ -8,11 +8,16 @@
 #include "SpriteRenderer.h"
 #include "BattleAnimationUnit.h"
 #include "BattleAnimationUI.h"
+#include "ContentsEnum.h"
+
 std::shared_ptr<BattleUnit> BattleAnimationLevel::SubjectUnit = nullptr;
 std::shared_ptr<BattleUnit> BattleAnimationLevel::TargetUnit = nullptr;
+bool BattleAnimationLevel::IsClassChange = false;
 std::list<AttackCommand> BattleAnimationLevel::BattleData = std::list<AttackCommand>();
 std::list<AttackCommand>::iterator BattleAnimationLevel::BattleIter = std::list<AttackCommand>::iterator();
 std::string_view BattleAnimationLevel::ReturnLevelStr = "";
+UnitIdentityCode BattleAnimationLevel::BeforeIdentity = UnitIdentityCode::Lyn;
+UnitIdentityCode BattleAnimationLevel::AfterIdentity = UnitIdentityCode::BladeLordLyn;
 
 BattleAnimationLevel::BattleAnimationLevel()
 {
@@ -24,10 +29,19 @@ BattleAnimationLevel::~BattleAnimationLevel()
 
 void BattleAnimationLevel::SetBattleData(std::shared_ptr<BattleUnit> _SubjectUnit, std::shared_ptr<BattleUnit> _TargetUnit, const std::list<AttackCommand>& _Data, const std::string_view& _Level)
 {
+	IsClassChange = false;
 	SubjectUnit = _SubjectUnit;
 	TargetUnit = _TargetUnit;
 	BattleData = _Data;
 	BattleIter = BattleData.begin();
+	ReturnLevelStr = _Level;
+}
+
+void BattleAnimationLevel::SetClassChange(UnitIdentityCode _BeforeIdentity, UnitIdentityCode _AfterIdentity, const std::string_view& _Level)
+{
+	IsClassChange = true;
+	BeforeIdentity = _BeforeIdentity;
+	AfterIdentity = _AfterIdentity;
 	ReturnLevelStr = _Level;
 }
 
@@ -187,6 +201,24 @@ void BattleAnimationLevel::LevelChangeStart()
 		LeftUnit->GetTransform()->SetLocalNegativeScaleX();
 
 		UI = CreateActor<BattleAnimationUI>(RenderOrder::UI);
+	}
+
+	if (true == IsClassChange)
+	{
+		TerrainLeft->SetTexture("Castle_Close.png");
+		TerrainRight->SetTexture("Castle_Close.png");
+		BackgroundRender->SetTexture("BattleBackground_ClassChange.png");
+		LeftUnit->SetAnimation(BeforeIdentity);
+		UI->SetClassChange();
+		UI->SetFadeIn(0.3f);
+		RightUnit->Off();
+		TimeEvent.AddEvent(1.0f, std::bind(&BattleAnimationLevel::ClassChangeEvent, this));
+		return;
+	}
+	else
+	{
+		UI->SetDefault();
+		RightUnit->On();
 	}
 
 	// À¯´Ö ÁöÁ¤
@@ -377,4 +409,12 @@ std::string_view BattleAnimationLevel::GetBackgroundTexture(Terrain _Value)
 	}
 
 	return "BattleBackground_Plains.png";
+}
+
+void BattleAnimationLevel::ClassChangeEvent()
+{
+	UI->SetFadeWhite();
+	UI->SetFadeIn(0.5f);
+	UI->SetFadeWait(0.5f);
+	LeftUnit->SetAnimation(AfterIdentity);
 }

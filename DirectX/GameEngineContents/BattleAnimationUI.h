@@ -15,6 +15,10 @@ public:
 	BattleAnimationUI& operator=(const BattleAnimationUI& _Other) = delete;
 	BattleAnimationUI& operator=(BattleAnimationUI&& _Other) noexcept = delete;
 
+	void SetClassChange();
+	void SetDefault();
+	void SetFadeWhite();
+	void SetFadeWait(float _Timer);
 	void SetFadeIn(float _Timer);
 	void SetFadeOut(float _Timer);
 	
@@ -60,6 +64,7 @@ private:
 
 	float FadeSpeed = 0.0f;
 	float FadeTimer = 0.0f;
+	float WaitTimer = 0.0f;
 	bool IsFadeIn = false;
 	bool IsFadeOut = false;
 	bool IsLevelUp = false;

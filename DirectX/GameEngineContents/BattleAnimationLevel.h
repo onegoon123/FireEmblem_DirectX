@@ -17,6 +17,7 @@ public:
 	BattleAnimationLevel& operator=(BattleAnimationLevel&& _Other) noexcept = delete;
 
 	static void SetBattleData(std::shared_ptr<BattleUnit> _SubjectUnit, std::shared_ptr<BattleUnit> _TargetUnit, const std::list<AttackCommand>& _Data, const std::string_view& _Level);
+	static void SetClassChange(UnitIdentityCode _BeforeIdentity, UnitIdentityCode _AfterIdentity, const std::string_view& _Level);
 
 	void HitEvent();
 	void HealEvent();
@@ -48,10 +49,13 @@ private:
 	std::shared_ptr<class BattleAnimationUI> UI;
 
 	bool IsTurnEnd = false;
+	static bool IsClassChange;
+	static UnitIdentityCode BeforeIdentity;
+	static UnitIdentityCode AfterIdentity;
 
 	void PlayAttack();
 	void End();
-
+	void ClassChangeEvent();
 	std::string_view GetTerrainTexture(Terrain _Value);
 	std::string_view GetBackgroundTexture(Terrain _Value);
 };

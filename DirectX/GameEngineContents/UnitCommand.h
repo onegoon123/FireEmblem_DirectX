@@ -48,6 +48,7 @@ public:
 	static AttackCommand AttackCalculationNoRandom(Unit& _SubjectUnit, Unit& _TargetUnit);
 	static void Wait(std::shared_ptr<BattleUnit> _SubjectUnit);
 	static void ItemUse(std::shared_ptr<BattleUnit> _SubjectUnit, std::list<std::shared_ptr<Item>>::iterator& _ItemIter);
+	static void ClassChange(std::shared_ptr<BattleUnit> _SubjectUnit, BattleClass _ClassValue, std::list<std::shared_ptr<Item>>::iterator& _ItemIter);
 	static std::list<AttackCommand> Heal(std::shared_ptr<BattleUnit> _SubjectUnit, std::shared_ptr<BattleUnit> _TargetUnit, std::list<std::shared_ptr<Item>>::iterator& _ItemIter);
 	static void PhaseStart(Faction _Faction);
 

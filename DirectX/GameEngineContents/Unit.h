@@ -153,20 +153,24 @@ public:
 		switch (_Value)
 		{
 		case BattleClass::BladeLord:
+			IdentityCode = UnitIdentityCode::BladeLordLyn;
 			CurrentHP += 3;
-			UnitStat.ClassChange_BladeLord();
+			LevelUpData = UnitStat.ClassChange_BladeLord();
 			break;
 		case BattleClass::Warrior:
+			IdentityCode = UnitIdentityCode::WarriorDorcas;
 			CurrentHP += 3;
-			UnitStat.ClassChange_Warrior();
+			LevelUpData = UnitStat.ClassChange_Warrior();
 			break;
 		case BattleClass::Assassin:
+			IdentityCode = UnitIdentityCode::AssassinMatthew;
 			CurrentHP += 3;
-			UnitStat.ClassChange_Assassin();
+			LevelUpData = UnitStat.ClassChange_Assassin();
 			break;
 		case BattleClass::General:
+			IdentityCode = UnitIdentityCode::GeneralWallace;
 			CurrentHP += 4;
-			UnitStat.ClassChange_General();
+			LevelUpData = UnitStat.ClassChange_General();
 			break;
 		default:
 			break;

@@ -16,6 +16,59 @@ BattleAnimationUI::~BattleAnimationUI()
 {
 }
 
+void BattleAnimationUI::SetClassChange()
+{
+	UIRenderer->Off();
+	PlayerHPBar->Off();
+	EnemyHPBar->Off();
+	Number_PlayerHP->Off();
+	Number_PlayerDamage->Off();
+	Number_PlayerHit->Off();
+	Number_PlayerCritical->Off();
+	Number_EnemyHP->Off();
+	Number_EnemyDamage->Off();
+	Number_EnemyHit->Off();
+	Number_EnemyCritical->Off();
+	PlayerWeaponIcon->Off();
+	EnemyWeaponIcon->Off();
+	PlayerTriangle->Off();
+	EnemyTriangle->Off();
+
+	EXPUI->Off();
+	LevelUI->Off();
+}
+
+void BattleAnimationUI::SetDefault()
+{
+	UIRenderer->On();
+	PlayerHPBar->On();
+	EnemyHPBar->On();
+	Number_PlayerHP->On();
+	Number_PlayerDamage->On();
+	Number_PlayerHit->On();
+	Number_PlayerCritical->On();
+	Number_EnemyHP->On();
+	Number_EnemyDamage->On();
+	Number_EnemyHit->On();
+	Number_EnemyCritical->On();
+	PlayerWeaponIcon->On();
+	EnemyWeaponIcon->On();
+	PlayerTriangle->On();
+	EnemyTriangle->On();
+
+	FadeRenderer->ColorOptionValue.PlusColor = float4::Null;
+}
+
+void BattleAnimationUI::SetFadeWhite()
+{
+	FadeRenderer->ColorOptionValue.PlusColor = float4( 1.0f, 1.0f, 1.0f, 0.0f);
+}
+
+void BattleAnimationUI::SetFadeWait(float _Timer)
+{
+	WaitTimer = _Timer;
+}
+
 void BattleAnimationUI::SetFadeIn(float _Timer)
 {
 	FadeSpeed = 1 / _Timer;
@@ -271,6 +324,11 @@ void BattleAnimationUI::Start()
 
 void BattleAnimationUI::Update(float _DeltaTime)
 {
+	if (0 < WaitTimer)
+	{
+		WaitTimer -= _DeltaTime;
+		return;
+	}
 	if (true == IsFadeIn)
 	{
 		FadeTimer -= _DeltaTime * FadeSpeed;
