@@ -24,6 +24,7 @@ Stage1::~Stage1()
 void Stage1::StageSetting()
 {
 	SetStage(1);
+	ClearTarget = BattleClearTarget::AllKill;
 
 	// ÄËÆ®, ¼¼ÀÎ
 	NewPlayerUnit(UnitIdentityCode::Kent, 1, { 0, 2 }, { ItemCode::IronSword, ItemCode::IronLance, ItemCode::Vulnerary });

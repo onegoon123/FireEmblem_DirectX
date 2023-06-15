@@ -643,6 +643,7 @@ void BattleLevel::BattleEnd()
 		TargetUnit->Off();
 		TargetUnit = nullptr;
 	}
+	MainCursor->SetCursorPos(SelectUnit->GetMapPos());
 }
 
 void BattleLevel::BattleReturnStart()
@@ -1750,11 +1751,11 @@ void BattleLevel::TimeStoneEnd()
 
 bool BattleLevel::GameOverCheck()
 {
-	// 플레이어 유닛이 모두 죽었는지 체크
+	// 주인공 유닛(린)이 죽었는지 체크
 	bool IsAliveUnit = false;
 	for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
 	{
-		if (false == _Unit->GetIsDie())
+		if (UnitIdentityCode::Lyn == _Unit->GetUnitData().GetIdentityCode())
 		{
 			IsAliveUnit = true;
 			break;
@@ -1762,10 +1763,13 @@ bool BattleLevel::GameOverCheck()
 	}
 	if (false == IsAliveUnit)
 	{
+		// 게임오버
 		ChangeState(BattleState::TimeStone);
 		return true;
 	}
-	return false;
+
+	if (ClearTarget != BattleClearTarget::AllKill) { return false; }
+	// 적 전멸이 클리어 목표일때
 	// 적 유닛이 모두 죽었는지 체크
 	IsAliveUnit = false;
 	for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
@@ -1777,18 +1781,7 @@ bool BattleLevel::GameOverCheck()
 	}
 	if (false == IsAliveUnit)
 	{
-		CurState = BattleState::None;
-		MainCamera->GetTransform()->SetLocalPosition({ 448, 288, -554.0f });
-		for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
-		{
-			_Unit->GetRenderer()->SetIsBlur(false);
-		}
-		for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
-		{
-			_Unit->GetRenderer()->SetIsBlur(false);
-		}
-		MainMap->GetRenderer()->SetIsBlur(false);
-		GameEngineCore::ChangeLevel("TitleLevel");
+		ChangeState(BattleState::Clear);
 		return true;
 	}
 

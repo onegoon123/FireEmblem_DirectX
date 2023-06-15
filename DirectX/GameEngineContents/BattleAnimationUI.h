@@ -18,7 +18,7 @@ public:
 	void SetFadeIn(float _Timer);
 	void SetFadeOut(float _Timer);
 	
-	void SetData(Unit& _Unit1, Unit& _Unit2);
+	void SetData(Unit& _Unit1, Unit& _Unit2, bool _Unit1Attackable, bool _Unit2Attackable);
 	void SetDamage(Unit& _Unit);
 
 	void SetEXP(int _Before, int _Get, Unit& _UnitData);

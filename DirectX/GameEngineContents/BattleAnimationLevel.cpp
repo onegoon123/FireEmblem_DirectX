@@ -213,7 +213,7 @@ void BattleAnimationLevel::LevelChangeStart()
 
 	SubjectAnimation->SetAnimation(SubjectUnit);
 	TargetAnimation->SetAnimation(TargetUnit);
-	UI->SetData(SubjectUnit->GetUnitData(), TargetUnit->GetUnitData());
+	UI->SetData(SubjectUnit->GetUnitData(), TargetUnit->GetUnitData(), SubjectUnit->IsAttackable(TargetUnit), TargetUnit->IsAttackable(SubjectUnit));
 	TimeEvent.Clear();
 	UI->SetFadeIn(0.3f);
 
@@ -230,18 +230,21 @@ void BattleAnimationLevel::PlayAttack()
 {
 	if (BattleIter == BattleData.end())
 	{
-		if (SubjectUnit->GetIsPlayer())
+		if (false == LeftUnit->GetIsDie())
 		{
-			UI->SetEXP(SubjectUnit->GetUnitData().GetExp(), BattleData.back().Exp, BattleData.back().SubjectUnit);
-		}
-		else
-		{
-			UI->SetEXP(TargetUnit->GetUnitData().GetExp(), BattleData.back().Exp, BattleData.back().TargetUnit);
-		}
+			if (SubjectUnit->GetIsPlayer())
+			{
+				UI->SetEXP(SubjectUnit->GetUnitData().GetExp(), BattleData.back().Exp, BattleData.back().SubjectUnit);
+			}
+			else
+			{
+				UI->SetEXP(TargetUnit->GetUnitData().GetExp(), BattleData.back().Exp, BattleData.back().TargetUnit);
+			}
 
-		if (true == BattleData.back().IsLevelUp)
-		{
-			return;
+			if (true == BattleData.back().IsLevelUp)
+			{
+				return;
+			}
 		}
 
 		if (true == LeftUnit->GetIsDie() || true == RightUnit->GetIsDie())

@@ -34,7 +34,7 @@ void BattleAnimationUI::SetFadeOut(float _Timer)
 	FadeRenderer->ColorOptionValue.MulColor.a = 0;
 }
 
-void BattleAnimationUI::SetData(Unit& _Unit1, Unit& _Unit2)
+void BattleAnimationUI::SetData(Unit& _Unit1, Unit& _Unit2, bool _Unit1Attackable, bool _Unit2Attackable)
 {
 	Unit& Player = _Unit1.GetIsPlayer() == true ? _Unit1 : _Unit2;
 	Unit& Enemy = _Unit1.GetIsPlayer() == false ? _Unit1 : _Unit2;
@@ -42,16 +42,34 @@ void BattleAnimationUI::SetData(Unit& _Unit1, Unit& _Unit2)
 	PlayerHPBar->Setting(Player.GetHP(), Player.GetMaxHP());
 
 	Number_PlayerHP->Setting(Player.GetHP());
-	Number_PlayerDamage->SetValue(Player.GetAttackPoint(Enemy));
-	Number_PlayerHit->SetValue(Player.GetHitPoint(Enemy));
-	Number_PlayerCritical->SetValue(Player.GetCriticalPoint(Enemy));
 
+	if (true == _Unit1Attackable)
+	{
+		Number_PlayerDamage->SetValue(Player.GetAttackPoint(Enemy));
+		Number_PlayerHit->SetValue(Player.GetHitPoint(Enemy));
+		Number_PlayerCritical->SetValue(Player.GetCriticalPoint(Enemy));
+	}
+	else
+	{
+		Number_PlayerDamage->SetValue(0);
+		Number_PlayerHit->SetValue(0);
+		Number_PlayerCritical->SetValue(0);
+	}
 	EnemyHPBar->Setting(Enemy.GetHP(), Enemy.GetMaxHP());
 
 	Number_EnemyHP->Setting(Enemy.GetHP());
-	Number_EnemyDamage->SetValue(Enemy.GetAttackPoint(Player));
-	Number_EnemyHit->SetValue(Enemy.GetHitPoint(Player));
-	Number_EnemyCritical->SetValue(Enemy.GetCriticalPoint(Player));
+	if (true == _Unit2Attackable)
+	{
+		Number_EnemyDamage->SetValue(Enemy.GetAttackPoint(Player));
+		Number_EnemyHit->SetValue(Enemy.GetHitPoint(Player));
+		Number_EnemyCritical->SetValue(Enemy.GetCriticalPoint(Player));
+	}
+	else
+	{
+		Number_EnemyDamage->SetValue(0);
+		Number_EnemyHit->SetValue(0);
+		Number_EnemyCritical->SetValue(0);
+	}
 
 	if (nullptr == Player.GetCurWeapon())
 	{
