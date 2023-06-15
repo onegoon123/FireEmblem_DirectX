@@ -293,6 +293,9 @@
     <ClInclude Include="GameEngineButton.h">
       <Filter>Content\UI</Filter>
     </ClInclude>
+    <ClInclude Include="ThirdParty\FW1Font\Inc\FW1FontWrapper.h">
+      <Filter>ThirdParty\Fw1Font\Header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Resources">
@@ -376,6 +379,21 @@
     <Filter Include="Content\UI">
       <UniqueIdentifier>{33e45f5f-ec95-4404-b095-76a12713a168}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ThirdParty\Fw1Font">
+      <UniqueIdentifier>{8c5d3cde-0169-49b3-8aa1-8571a00bd0be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\Fw1Font\bin">
+      <UniqueIdentifier>{dbc22f8e-b39c-496e-8cb7-30869628c080}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\Fw1Font\Header">
+      <UniqueIdentifier>{38c83fc6-c423-4a97-843f-f83100c930a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\Fw1Font\bin\Debug">
+      <UniqueIdentifier>{ea9f2e82-2cdb-4bc8-97bf-cdbc69bb653e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\Fw1Font\bin\Release">
+      <UniqueIdentifier>{3114691d-db3b-4f38-beb5-9d2507187ff7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ThirdParty\DirectXTex\inc\DirectXTex.inl">
@@ -387,5 +405,19 @@
     <None Include="ThirdParty\DirectXTex\lib\x64\Debug\DirectXTex.lib">
       <Filter>ThirdParty\DirectXTex\bin\Debug</Filter>
     </None>
+    <None Include="ThirdParty\FW1Font\lib\x64\Debug\FW1FontWrapper.dll">
+      <Filter>ThirdParty\Fw1Font\bin\Debug</Filter>
+    </None>
+    <None Include="ThirdParty\FW1Font\lib\x64\Debug\FW1FontWrapper.lib">
+      <Filter>ThirdParty\Fw1Font\bin\Debug</Filter>
+    </None>
+    <None Include="ThirdParty\FW1Font\lib\x64\Release\FW1FontWrapper.lib">
+      <Filter>ThirdParty\Fw1Font\bin\Release</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="ThirdParty\FW1Font\lib\x64\Release\FW1FontWrapper.dll">
+      <Filter>ThirdParty\Fw1Font\bin\Release</Filter>
+    </CopyFileToFolders>
   </ItemGroup>
 </Project>

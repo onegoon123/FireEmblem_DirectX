@@ -4,6 +4,7 @@
 #include "UnitCommand.h"
 #include "Item.h"
 #include "BattleLevelUI.h"
+#include "MapCursor.h"
 void BattleLevel::UnitCommand_Item()
 {
 	BattleUI->ItemOn(SelectUnit);
@@ -33,6 +34,7 @@ void BattleLevel::UnitCommand_Exchange()
 void BattleLevel::UnitCommand_ExchangeEnd(std::shared_ptr<BattleUnit> _Target)
 {
 	UnitCommand::Wait(SelectUnit);
+	MainCursor->SetMapPos(SelectUnit->GetMapPos());
 	SelectUnit->SetIsTurnEnd(true);
 	ChangeState(BattleState::Select);
 }
