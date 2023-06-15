@@ -45,6 +45,11 @@ void HealUI::On(std::shared_ptr<BattleUnit> _SelectUnit, std::list<std::shared_p
 		}
 	}
 
+	if (Staves.size() == 0)
+	{
+		CancelFunction();
+		return;
+	}
 	// 무기 갯수만큼 UI창 지정
 	WindowRender->SetFrame(Staves.size() - 1);
 

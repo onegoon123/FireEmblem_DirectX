@@ -75,11 +75,15 @@ enum class UnitIdentityCode
 	Knight,
 	Mage,
 
-	Batta,
-	Zugu,
-	Glass,
-	Migal,
-	Carjiga,
+	Batta,	// 0보스
+	Zugu,	// 1보스
+	Glass,	// 2보스
+	Migal,	// 3보스
+	Carjiga,// 4보스
+	Bool,	// 6보스
+	Yogi,	// 8보스
+	Eagler,	// 9보스
+	Lundgren,//10보스
 };
 
 enum class ItemCode

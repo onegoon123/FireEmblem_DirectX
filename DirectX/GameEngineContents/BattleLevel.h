@@ -322,5 +322,7 @@ private:
 	void CameraMove(int2 _Value);
 	void CameraSetPos();
 	void CameraUpdate(float _DeltaTime);
+
+	void DebugCheet();
 };
 

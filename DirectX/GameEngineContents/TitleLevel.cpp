@@ -34,7 +34,10 @@ void TitleLevel::Start()
 		GameEngineInput::CreateKey("LeftClick", VK_LBUTTON);
 		GameEngineInput::CreateKey("RightClick", VK_RBUTTON);
 		GameEngineInput::CreateKey("MiddleClick", VK_MBUTTON);
-		GameEngineInput::CreateKey("Cheet", VK_F1);
+		GameEngineInput::CreateKey("Cheet1", VK_F1);
+		GameEngineInput::CreateKey("Cheet2", VK_F2);
+		GameEngineInput::CreateKey("Cheet3", VK_F3);
+		GameEngineInput::CreateKey("Cheet4", VK_F4);
 	}
 
 	// 카메라 세팅

@@ -144,6 +144,7 @@ void Unit::DropItem(std::shared_ptr<Item> _Item)
 
 void Unit::NewItem(ItemCode _Code)
 {
+	if (Items.size() == 5) { return; }
 	std::shared_ptr <Item> NewItem = Item::CreateItem(_Code);
 	Items.push_back(NewItem);
 	if (NewItem->GetItemType() == ItemType::Weapon)
@@ -165,6 +166,8 @@ void Unit::NewItem(ItemCode _Code)
 
 void Unit::AddItem(std::shared_ptr<Item> _Item)
 {
+	if (Items.size() == 5) { return; }
+
 	Items.push_back(_Item);
 	if (_Item->GetItemType() == ItemType::Weapon)
 	{

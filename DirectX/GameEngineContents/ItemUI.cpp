@@ -31,7 +31,11 @@ void ItemUI::On(std::shared_ptr<BattleUnit> _SelectUnit)
 
 	SelectUnit = _SelectUnit;
 	ItemSize = SelectUnit->GetUnitData().GetItems().size();
-
+	if (ItemSize == 0)
+	{
+		CancelFunction();
+		return;
+	}
 	WindowRender->SetFrame(ItemSize - 1);
 	std::string TextStr = "Portrait_";
 	TextStr += SelectUnit->GetUnitData().GetName();

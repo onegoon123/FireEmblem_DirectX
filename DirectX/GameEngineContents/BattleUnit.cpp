@@ -262,6 +262,34 @@ void BattleUnit::SetUnitCode(UnitIdentityCode _Code)
 		IsShortWalk = true;
 		UnitData.IsPlayer = false;
 		break;
+	case UnitIdentityCode::Bool:
+		UnitData.UnitCode = EnemyNum++;
+		SetName("불");
+		UnitData.SetName("Bool");
+		MapSpriteName = "Map_EnemyKnight.png";
+		UnitData.IsPlayer = false;
+		break;
+	case UnitIdentityCode::Yogi:
+		UnitData.UnitCode = EnemyNum++;
+		SetName("요기");
+		UnitData.SetName("Yogi");
+		MapSpriteName = "Map_EnemyKnight.png";
+		UnitData.IsPlayer = false;
+		break;
+	case UnitIdentityCode::Eagler:
+		UnitData.UnitCode = EnemyNum++;
+		SetName("애글러");
+		UnitData.SetName("Eagler");
+		MapSpriteName = "Map_EnemyGeneral.png";
+		UnitData.IsPlayer = false;
+		break;
+	case UnitIdentityCode::Lundgren:
+		UnitData.UnitCode = EnemyNum++;
+		SetName("루드그렌");
+		UnitData.SetName("Lundgren");
+		MapSpriteName = "Map_EnemyGeneral.png";
+		UnitData.IsPlayer = false;
+		break;
 	default:
 		break;
 	}

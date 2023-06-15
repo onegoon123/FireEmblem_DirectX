@@ -204,7 +204,11 @@ void ExchangeUI::ExchangeStart()
 {
 	// 아이템 목록 세팅
 	RightItems = RightUnit->GetUnitData().GetItems();
-
+	if (LeftItems.size() == 0 && RightItems.size() == 0)
+	{
+		TargetSelectStart();
+		return;
+	}
 	std::list<std::shared_ptr<Item>>::iterator ItemIter = LeftItems.begin();
 	for (int i = 0; i < (int)LeftItems.size(); i++)
 	{

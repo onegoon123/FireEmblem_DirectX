@@ -475,17 +475,20 @@ void Stat::SetStat_Wallace()
 
 
 
-void Stat::ClassChange_BladeLord()
+MainStat Stat::ClassChange_BladeLord()
 {
+	MainStat UpStat;
 	ClassValue = BattleClass::BladeLord;
-	MainStatValue.HP += 3;
-	MainStatValue.Strength += 2;
-	MainStatValue.Magic += 1;
-	MainStatValue.Dexterity += 2;
-	MainStatValue.Defense += 3;
-	MainStatValue.Resistance += 5;
+	
+	UpStat.HP = 3;
+	UpStat.Strength = 2;
+	UpStat.Magic = 1;
+	UpStat.Dexterity = 2;
+	UpStat.Defense = 3;
+	UpStat.Resistance = 5;
+	UpStat.Constitution = 1;
+	MainStatValue += UpStat;
 	Movement += 1;
-	MainStatValue.Constitution += 1;
 
 	MaximumStat.Strength = 24;
 	MaximumStat.Dexterity = 29;
@@ -493,55 +496,70 @@ void Stat::ClassChange_BladeLord()
 	MaximumStat.Defense = 22;
 	MaximumStat.Resistance = 22;
 	MaximumStat.Constitution = 25;
+
+	return UpStat;
 }
 
-void Stat::ClassChange_Warrior()
+MainStat Stat::ClassChange_Warrior()
 {
+	MainStat UpStat;
 	ClassValue = BattleClass::Warrior;
-	MainStatValue.HP += 3;
-	MainStatValue.Strength += 1;
-	MainStatValue.Dexterity += 2;
-	MainStatValue.Defense += 3;
-	MainStatValue.Resistance += 3;
-	Movement += 1;
-	MainStatValue.Constitution += 2;
+	UpStat.HP = 3;
+	UpStat.Strength = 1;
+	UpStat.Dexterity = 2;
+	UpStat.Defense = 3;
+	UpStat.Resistance = 3;
+	UpStat.Constitution = 2;
+	MainStatValue += UpStat;
 
+	Movement += 1;
 	MaximumStat.Strength = 30;
 	MaximumStat.Dexterity = 28;
 	MaximumStat.Speed = 26;
 	MaximumStat.Defense = 26;
 	MaximumStat.Resistance = 22;
+
+	return UpStat;
 }
 
-void Stat::ClassChange_Assassin()
+MainStat Stat::ClassChange_Assassin()
 {
+	MainStat UpStat;
 	ClassValue = BattleClass::Assassin;
-	MainStatValue.HP += 3;
-	MainStatValue.Strength += 1;
-	MainStatValue.Defense += 2;
-	MainStatValue.Resistance += 2;
+	UpStat.HP = 3;
+	UpStat.Strength = 1;
+	UpStat.Defense = 2;
+	UpStat.Resistance = 2;
+	MainStatValue += UpStat;
 
 	MaximumStat.Dexterity = 30;
 	MaximumStat.Speed = 30;
+
+	return UpStat;
 }
 
-void Stat::ClassChange_General()
+MainStat Stat::ClassChange_General()
 {
+	MainStat UpStat;
 	ClassValue = BattleClass::General;
-	MainStatValue.HP += 4;
-	MainStatValue.Strength += 2;
-	MainStatValue.Dexterity += 2;
-	MainStatValue.Speed += 3;
-	MainStatValue.Defense += 2;
-	MainStatValue.Resistance += 3;
+	UpStat.HP = 4;
+	UpStat.Strength = 2;
+	UpStat.Dexterity = 2;
+	UpStat.Speed = 3;
+	UpStat.Defense = 2;
+	UpStat.Resistance = 3;
+	UpStat.Constitution = 2;
+	MainStatValue += UpStat;
+
 	Movement += 1;
-	MainStatValue.Constitution += 2;
 
 	MaximumStat.Strength = 29;
 	MaximumStat.Dexterity = 27;
 	MaximumStat.Speed = 24;
 	MaximumStat.Defense = 30;
 	MaximumStat.Resistance = 25;
+
+	return UpStat;
 }
 
 void Stat::SetStat_Brigand()

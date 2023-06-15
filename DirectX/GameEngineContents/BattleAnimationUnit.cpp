@@ -816,6 +816,94 @@ std::shared_ptr<SpriteRenderer> BattleAnimationUnit::CreateAnimation(UnitIdentit
 		NewAnim->CreateAnimation({ .AnimationName = "Dodge", .SpriteName = "Battle_Carjiga.png", .Loop = false, .FrameIndex = {2, 0}, .FrameTime = {.6f, 1.0f} });
 		break;
 	}
+	case UnitIdentityCode::Bool:
+	{
+		if (nullptr == GameEngineSprite::Find("Battle_Bool.png"))
+		{
+			GameEngineSprite::LoadSheet(Dir.GetPlusFileName("Battle_Bool.png").GetFullPath(), 5, 5);
+		}
+		NewAnim->CreateAnimation({ "Idle", "Battle_Bool.png", 0, 0 });
+
+		NewAnim->CreateAnimation({ .AnimationName = "Attack", .SpriteName = "Battle_Bool.png", .Loop = false,
+			.FrameIndex = {0, 1, 2, 3, 4, 5, 6, 7, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24},
+			.FrameTime = { .08f, .08f, .08f, .08f, .08f, .08f, .08f, .6f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f} });
+		NewAnim->SetAnimationStartEvent("Attack", 7, std::bind(&BattleAnimationLevel::HitEvent, Level));
+		NewAnim->SetAnimationStartEvent("Attack", 24, std::bind(&BattleAnimationUnit::AttackEnd, this));
+
+		NewAnim->CreateAnimation({ .AnimationName = "Critical", .SpriteName = "Battle_Bool.png", .Loop = false,
+			.FrameIndex = {0, 1, 2, 3, 4, 5, 6, 7, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24},
+			.FrameTime = { .08f, .08f, .08f, .08f, .08f, .08f, .08f, .6f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f} });
+		NewAnim->SetAnimationStartEvent("Critical", 7, std::bind(&BattleAnimationLevel::HitEvent, Level));
+		NewAnim->SetAnimationStartEvent("Critical", 24, std::bind(&BattleAnimationUnit::AttackEnd, this));
+
+		NewAnim->CreateAnimation({ .AnimationName = "Dodge", .SpriteName = "Battle_Bool.png", .Loop = false, .FrameIndex = {1, 0}, .FrameTime = {.1f, 1.0f} });
+		break;
+	}
+	case UnitIdentityCode::Yogi:
+	{
+		if (nullptr == GameEngineSprite::Find("Battle_Yogi.png"))
+		{
+			GameEngineSprite::LoadSheet(Dir.GetPlusFileName("Battle_Yogi.png").GetFullPath(), 5, 5);
+		}
+		NewAnim->CreateAnimation({ "Idle", "Battle_Yogi.png", 0, 0 });
+
+		NewAnim->CreateAnimation({ .AnimationName = "Attack", .SpriteName = "Battle_Yogi.png", .Loop = false,
+			.FrameIndex = {0, 1, 2, 3, 4, 5, 6, 7, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24},
+			.FrameTime = { .08f, .08f, .08f, .08f, .08f, .08f, .08f, .6f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f} });
+		NewAnim->SetAnimationStartEvent("Attack", 7, std::bind(&BattleAnimationLevel::HitEvent, Level));
+		NewAnim->SetAnimationStartEvent("Attack", 24, std::bind(&BattleAnimationUnit::AttackEnd, this));
+
+		NewAnim->CreateAnimation({ .AnimationName = "Critical", .SpriteName = "Battle_Yogi.png", .Loop = false,
+			.FrameIndex = {0, 1, 2, 3, 4, 5, 6, 7, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24},
+			.FrameTime = { .08f, .08f, .08f, .08f, .08f, .08f, .08f, .6f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f} });
+		NewAnim->SetAnimationStartEvent("Critical", 7, std::bind(&BattleAnimationLevel::HitEvent, Level));
+		NewAnim->SetAnimationStartEvent("Critical", 24, std::bind(&BattleAnimationUnit::AttackEnd, this));
+
+		NewAnim->CreateAnimation({ .AnimationName = "Dodge", .SpriteName = "Battle_Yogi.png", .Loop = false, .FrameIndex = {1, 0}, .FrameTime = {.1f, 1.0f} });
+		break;
+	}
+	case UnitIdentityCode::Eagler:
+	{
+		if (nullptr == GameEngineSprite::Find("Battle_Eagler.png"))
+		{
+			GameEngineSprite::LoadSheet(Dir.GetPlusFileName("Battle_Eagler.png").GetFullPath(), 5, 12);
+		}
+		NewAnim->CreateAnimation({ "Idle", "Battle_Eagler.png", 0, 0 });
+
+		NewAnim->CreateAnimation({ .AnimationName = "Attack", .SpriteName = "Battle_Eagler.png", .Start = 0, .End = 28, .Loop = false,
+			.FrameTime = { .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, } });
+		NewAnim->SetAnimationStartEvent("Attack", 10, std::bind(&BattleAnimationLevel::HitEvent, Level));
+		NewAnim->SetAnimationStartEvent("Attack", 28, std::bind(&BattleAnimationUnit::AttackEnd, this));
+
+		NewAnim->CreateAnimation({ .AnimationName = "Critical", .SpriteName = "Battle_Eagler.png", .Start = 0, .End = 28, .Loop = false,
+			.FrameTime = { .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, } });
+		NewAnim->SetAnimationStartEvent("Critical", 10, std::bind(&BattleAnimationLevel::HitEvent, Level));
+		NewAnim->SetAnimationStartEvent("Critical", 28, std::bind(&BattleAnimationUnit::AttackEnd, this));
+
+		NewAnim->CreateAnimation({ .AnimationName = "Dodge", .SpriteName = "Battle_Eagler.png", .Loop = false, .FrameIndex = {1, 2, 1, 0}, .FrameTime = {.08f, .7f, .08f, 1.0f} });
+		break;
+	}
+	case UnitIdentityCode::Lundgren:
+	{
+		if (nullptr == GameEngineSprite::Find("Battle_Lundgren.png"))
+		{
+			GameEngineSprite::LoadSheet(Dir.GetPlusFileName("Battle_Lundgren.png").GetFullPath(), 5, 12);
+		}
+		NewAnim->CreateAnimation({ "Idle", "Battle_Lundgren.png", 0, 0 });
+
+		NewAnim->CreateAnimation({ .AnimationName = "Attack", .SpriteName = "Battle_Lundgren.png", .Start = 0, .End = 28, .Loop = false,
+			.FrameTime = { .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, } });
+		NewAnim->SetAnimationStartEvent("Attack", 10, std::bind(&BattleAnimationLevel::HitEvent, Level));
+		NewAnim->SetAnimationStartEvent("Attack", 28, std::bind(&BattleAnimationUnit::AttackEnd, this));
+
+		NewAnim->CreateAnimation({ .AnimationName = "Critical", .SpriteName = "Battle_Lundgren.png", .Start = 0, .End = 28, .Loop = false,
+			.FrameTime = { .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, } });
+		NewAnim->SetAnimationStartEvent("Critical", 10, std::bind(&BattleAnimationLevel::HitEvent, Level));
+		NewAnim->SetAnimationStartEvent("Critical", 28, std::bind(&BattleAnimationUnit::AttackEnd, this));
+
+		NewAnim->CreateAnimation({ .AnimationName = "Dodge", .SpriteName = "Battle_Lundgren.png", .Loop = false, .FrameIndex = {1, 2, 1, 0}, .FrameTime = {.08f, .7f, .08f, 1.0f} });
+		break;
+	}
 	default:
 		break;
 	}

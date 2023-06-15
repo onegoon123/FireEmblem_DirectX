@@ -67,7 +67,17 @@ void BattleLevel::UnitCommand_ItemUse(std::list<std::shared_ptr<Item>>::iterator
 {
 	ItemCode _ItemCode = (*_ItemIter)->GetItemCode();
 	UseItem = _ItemIter;
-	ChangeState(BattleState::Potion);
+	switch (_ItemCode)
+	{
+	case ItemCode::Vulnerary:
+	case ItemCode::Elixir:
+		ChangeState(BattleState::Potion);
+		break;
+	case ItemCode::MasterSeal:
+		break;
+	default:
+		break;
+	}
 }
 
 void BattleLevel::UnitCommand_Conquer()

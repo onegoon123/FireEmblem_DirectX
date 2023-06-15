@@ -36,12 +36,27 @@ void BattleLevel::Start()
 void BattleLevel::Update(float _DeltaTime)
 {
 	StateUpdate(_DeltaTime);
-	if (GameEngineInput::IsDown("Cheet"))
+	DebugCheet();
+
+}
+void BattleLevel::DebugCheet()
+{
+	if (GameEngineInput::IsDown("Cheet1"))
+	{
+		PlayerUnits.front()->SetMapPos(MainCursor->GetMapPos());
+	}
+	if (GameEngineInput::IsDown("Cheet2"))
+	{
+		if (nullptr == SelectUnit) { return; }
+		SelectUnit->SetIsDie(true);
+		SelectUnit->Off();
+		GameOverCheck();
+	}
+	if (GameEngineInput::IsDown("Cheet4"))
 	{
 		ChangeState(BattleState::Clear);
 	}
 }
-
 void BattleLevel::LevelChangeStart()
 {
 	GameEngineLevel::LevelChangeStart();

@@ -37,6 +37,11 @@ void AttackUI::On(std::shared_ptr<BattleUnit> _SelectUnit, std::list<std::shared
 	TargetUnits = _TargetUnits;
 	Weapons = SelectUnit->GetUnitData().GetWeapons();
 
+	if (Weapons.size() == 0)
+	{
+		CancelFunction();
+		return;
+	}
 	// 무기 갯수만큼 UI창 지정
 	WindowRender->SetFrame(Weapons.size() - 1);
 

@@ -49,6 +49,18 @@ struct MainStat
 		ReturnStat.Constitution = Constitution - _Other.Constitution;
 		return ReturnStat;
 	}
+	void operator+=(MainStat& _Other)
+	{
+		HP += _Other.HP;
+		Strength += _Other.Strength;
+		Magic += _Other.Magic;
+		Dexterity +=  _Other.Dexterity;
+		Speed += _Other.Speed;
+		Defense += _Other.Defense;
+		Resistance += _Other.Resistance;
+		Luck += _Other.Luck;
+		Constitution +=  _Other.Constitution;
+	}
 
 public:
 	int GetAttackStat(WeaponType _Value) const;
@@ -109,10 +121,10 @@ public:
 
 
 
-	void ClassChange_BladeLord();
-	void ClassChange_Warrior();
-	void ClassChange_Assassin();
-	void ClassChange_General();
+	MainStat ClassChange_BladeLord();
+	MainStat ClassChange_Warrior();
+	MainStat ClassChange_Assassin();
+	MainStat ClassChange_General();
 
 private:
 	void SetStat_Lyn();
