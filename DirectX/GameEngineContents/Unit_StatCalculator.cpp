@@ -7,7 +7,7 @@ int Unit::GetAttackPoint() const
 {
 	if (nullptr != CurWeapon)
 	{
-		int Result = UnitStat.MainStatValue.Strength + CurWeapon->GetDamage();
+		int Result = UnitStat.MainStatValue.GetAttackStat(CurWeapon->GetWeaponTypeValue()) + CurWeapon->GetDamage();
 		return Result;
 	}
 	return 0;
@@ -17,7 +17,7 @@ int Unit::GetAttackPoint(BattleClass _TargetClass) const
 {
 	if (nullptr == CurWeapon)
 	{
-		return GetAttackPoint();
+		return 0;
 	}
 	// Áß°© Æ¯È¿
 	if (true == CurWeapon->GetValidArmour())
@@ -26,7 +26,7 @@ int Unit::GetAttackPoint(BattleClass _TargetClass) const
 		{
 		case BattleClass::Knight:
 		case BattleClass::General:
-			return UnitStat.MainStatValue.Strength + CurWeapon->GetDamage() * 3;
+			return UnitStat.MainStatValue.GetAttackStat(CurWeapon->GetWeaponTypeValue()) + CurWeapon->GetDamage() * 3;
 		default:
 			break;
 		}
@@ -38,7 +38,7 @@ int Unit::GetAttackPoint(BattleClass _TargetClass) const
 		{
 		case BattleClass::Cavalier:
 		case BattleClass::Nomad:
-			return UnitStat.MainStatValue.Strength + CurWeapon->GetDamage() * 3;
+			return UnitStat.MainStatValue.GetAttackStat(CurWeapon->GetWeaponTypeValue()) + CurWeapon->GetDamage() * 3;
 		default:
 			break;
 		}
@@ -49,7 +49,7 @@ int Unit::GetAttackPoint(BattleClass _TargetClass) const
 		switch (_TargetClass)
 		{
 		case BattleClass::PegasusKnight:
-			return UnitStat.MainStatValue.Strength + CurWeapon->GetDamage() * 3;
+			return UnitStat.MainStatValue.GetAttackStat(CurWeapon->GetWeaponTypeValue()) + CurWeapon->GetDamage() * 3;
 		default:
 			break;
 		}
@@ -60,8 +60,7 @@ int Unit::GetAttackPoint(BattleClass _TargetClass) const
 int Unit::GetAttackPoint(const Unit& _Other) const
 {
 	int Result = GetAttackPoint(_Other.UnitStat.ClassValue);
-	Result -= _Other.UnitStat.MainStatValue.Defense;
-	Result -= _Other.TerrainDeffence;
+	Result -= _Other.GetDefPoint(GetWeaponTypeValue());
 
 	int Triangle;
 	Triangle = Weapon::GetWeaponeTriangle(CurWeapon, _Other.CurWeapon);
@@ -74,6 +73,29 @@ int Unit::GetAttackPoint(const Unit& _Other) const
 int Unit::GetDefPoint() const
 {
 	return UnitStat.MainStatValue.Defense + TerrainDeffence;
+}
+
+int Unit::GetDefPoint(WeaponType _Type) const
+{
+	switch (_Type)
+	{
+	case WeaponType::None:
+	case WeaponType::Sword:
+	case WeaponType::LanceReaver:
+	case WeaponType::Lance:
+	case WeaponType::AxeReaver:
+	case WeaponType::Axe:
+	case WeaponType::SwordReaver:
+	case WeaponType::Bow:
+		return UnitStat.MainStatValue.Defense + TerrainDeffence;
+	case WeaponType::AnimaTome:
+	case WeaponType::DarkTome:
+	case WeaponType::LightTome:
+		return UnitStat.MainStatValue.Resistance + TerrainDeffence;
+	default:
+		return UnitStat.MainStatValue.Defense + TerrainDeffence;
+	}
+	
 }
 
 int Unit::GetMagicAttackPoint() const
@@ -96,7 +118,6 @@ int Unit::GetHitPoint(const Unit& _Other) const
 {
 	int Result = GetHitPoint();
 	Result -= _Other.GetDodgePoint();
-	Result -= _Other.TerrainDodge;
 
 	int Triangle;
 	Triangle = Weapon::GetWeaponeTriangle(CurWeapon, _Other.CurWeapon);

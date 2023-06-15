@@ -134,9 +134,9 @@ MainStat Stat::LevelUp()
 
 	// 성장률 확률만큼 레벨업시 스텟 성장
 	MainStat UpValue;
-	
+
 	// 최대 수치만큼 찍은 스텟은 스킵
-	if (MainStatValue.HP < MaximumStat.HP && FERandom::RandomInt() < GrowthRates_HP == true) { MainStatValue.HP++; UpValue.HP++;}
+	if (MainStatValue.HP < MaximumStat.HP && FERandom::RandomInt() < GrowthRates_HP == true) { MainStatValue.HP++; UpValue.HP++; }
 	if (MainStatValue.Strength < MaximumStat.Strength && FERandom::RandomInt() < GrowthRates_Strength == true) { MainStatValue.Strength++; UpValue.Strength++; }
 	if (MainStatValue.Magic < MaximumStat.Magic && FERandom::RandomInt() < GrowthRates_Magic == true) { MainStatValue.Magic++; UpValue.Magic++; }
 	if (MainStatValue.Dexterity < MaximumStat.Dexterity && FERandom::RandomInt() < GrowthRates_Dexterity == true) { MainStatValue.Dexterity++; UpValue.Dexterity++; }
@@ -810,4 +810,26 @@ void Stat::SetStat_Carjiga()
 	GrowthRates_Luck = 15;
 	GrowthRates_Defense = 10;
 	GrowthRates_Resistance = 13;
+}
+
+int MainStat::GetAttackStat(WeaponType _Value) const
+{
+	switch (_Value)
+	{
+	case WeaponType::None:
+	case WeaponType::Sword:
+	case WeaponType::LanceReaver:
+	case WeaponType::Lance:
+	case WeaponType::AxeReaver:
+	case WeaponType::Axe:
+	case WeaponType::SwordReaver:
+	case WeaponType::Bow:
+		return Strength;
+	case WeaponType::AnimaTome:
+	case WeaponType::DarkTome:
+	case WeaponType::LightTome:
+		return Magic;
+	default:
+		return Strength;
+	}
 }

@@ -134,32 +134,14 @@ AttackCommand UnitCommand::AttackCalculation(Unit& _SubjectUnit, Unit& _TargetUn
 
 	AttackCommand NewAttack;
 
-	// 명중 회피 스텟
-	int UnitHit = _SubjectUnit.GetHitPoint();
-	int TargetDodge = _TargetUnit.GetDodgePoint();
-
-	// 무기 상성
-	int Triangle = 0;
-	int TriangleDamage = 0;
-	int TriangleHit = 0;
-
-	if (nullptr != _TargetUnit.GetCurWeapon())
-	{
-		Triangle = Weapon::GetWeaponeTriangle(_SubjectUnit.GetCurWeapon(), _TargetUnit.GetCurWeapon());
-		TriangleDamage = Triangle;
-		TriangleHit = Triangle * 15;
-	}
-
-	// 명중률, 치명타 확률 계산
-	int HitPercentage = UnitHit + TriangleHit - TargetDodge;
-	int CriticalPercentage = _SubjectUnit.GetCriticalPoint() - _TargetUnit.GetCriticalDodgePoint();
+	int HitPercentage = _SubjectUnit.GetHitPoint(_TargetUnit);
+	int CriticalPercentage = _SubjectUnit.GetCriticalPoint(_TargetUnit);
 
 	NewAttack.IsHit = FERandom::RandomInt() < HitPercentage;
 	NewAttack.IsCritical = FERandom::RandomInt() < CriticalPercentage && NewAttack.IsHit;
 
 	// 공격력 계산
-	NewAttack.Damage = _SubjectUnit.GetAttackPoint(_TargetUnit.GetClassValue()) + TriangleDamage;	// 상성에 따른 대미지 적용
-	NewAttack.Damage -= _TargetUnit.GetDefPoint();	// 방어력에 의한 수치 감소, 지형 수치 적용
+	NewAttack.Damage = _SubjectUnit.GetAttackPoint(_TargetUnit);	// 대미지 계산
 	NewAttack.Damage *= NewAttack.IsCritical ? 3 : 1;	// 치명타 시 3배로 적용
 
 	// 대미지가 0이하 일때
@@ -185,32 +167,21 @@ AttackCommand UnitCommand::AttackCalculationNoRandom(Unit& _SubjectUnit, Unit& _
 {
 	AttackCommand NewAttack;
 
-	// 명중 회피 스텟
-	int UnitHit = _SubjectUnit.GetHitPoint();
-	int TargetDodge = _TargetUnit.GetDodgePoint();
+	int HitPercentage = _SubjectUnit.GetHitPoint(_TargetUnit);
+	int CriticalPercentage = _SubjectUnit.GetCriticalPoint(_TargetUnit);
 
-	// 무기 상성
-	int Triangle = 0;
-	int TriangleDamage = 0;
-	int TriangleHit = 0;
+	NewAttack.IsHit = FERandom::RandomInt() < HitPercentage;
+	NewAttack.IsCritical = FERandom::RandomInt() < CriticalPercentage && NewAttack.IsHit;
 
-	if (nullptr != _TargetUnit.GetCurWeapon())
-	{
-		Triangle = Weapon::GetWeaponeTriangle(_SubjectUnit.GetCurWeapon(), _TargetUnit.GetCurWeapon());
-		TriangleDamage = Triangle;
-		TriangleHit = Triangle * 15;
-	}
-
-	// 명중률, 치명타 확률 계산
-	int HitPercentage = UnitHit + TriangleHit - TargetDodge;
-	int CriticalPercentage = _SubjectUnit.GetCriticalPoint() - _TargetUnit.GetCriticalDodgePoint();
+	// 공격력 계산
+	NewAttack.Damage = _SubjectUnit.GetAttackPoint(_TargetUnit);	// 대미지 계산
+	NewAttack.Damage *= NewAttack.IsCritical ? 3 : 1;	// 치명타 시 3배로 적용
 
 	NewAttack.IsHit = 0 < HitPercentage;
 	NewAttack.IsCritical = 50 < CriticalPercentage && NewAttack.IsHit;
 
 	// 공격력 계산
-	NewAttack.Damage = _SubjectUnit.GetAttackPoint(_TargetUnit.GetClassValue()) + TriangleDamage;	// 상성에 따른 대미지 적용
-	NewAttack.Damage -= _TargetUnit.GetDefPoint();	// 방어력에 의한 수치 감소, 지형 수치 적용
+	NewAttack.Damage = _SubjectUnit.GetAttackPoint(_TargetUnit);	// 상성에 따른 대미지 적용
 	NewAttack.Damage *= NewAttack.IsCritical ? 3 : 1;	// 치명타 시 3배로 적용
 
 	// 대미지가 0이하 일때

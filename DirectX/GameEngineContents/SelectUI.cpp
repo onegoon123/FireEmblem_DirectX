@@ -211,21 +211,21 @@ void SelectUI::Start()
 	PortraitRender->GetTransform()->SetLocalPosition({ -96, 0 });
 	CursorDir = UIDir::None;
 
-	TerrainDodge = GetLevel()->CreateActor<NumberActor>();
-	TerrainDodge->SetBlackFont();
-	TerrainDodge->SetValue(0);
-	TerrainDodge->GetTransform()->SetParent(TerrainUI.Render->GetTransform());
-	TerrainDodge->GetTransform()->SetLocalPosition({48, -32});
-	TerrainDodge->GetTransform()->SetWorldRotation(float4::Zero);
-	TerrainDodge->GetTransform()->SetWorldScale({ 1, 0.8f });
-
 	TerrainDef = GetLevel()->CreateActor<NumberActor>();
 	TerrainDef->SetBlackFont();
 	TerrainDef->SetValue(0);
 	TerrainDef->GetTransform()->SetParent(TerrainUI.Render->GetTransform());
-	TerrainDef->GetTransform()->SetLocalPosition({48, -64});
+	TerrainDef->GetTransform()->SetLocalPosition({48, -32});
 	TerrainDef->GetTransform()->SetWorldRotation(float4::Zero);
-	TerrainDef->GetTransform()->SetWorldScale({1, 0.8f});
+	TerrainDef->GetTransform()->SetWorldScale({ 1, 0.8f });
+
+	TerrainDodge = GetLevel()->CreateActor<NumberActor>();
+	TerrainDodge->SetBlackFont();
+	TerrainDodge->SetValue(0);
+	TerrainDodge->GetTransform()->SetParent(TerrainUI.Render->GetTransform());
+	TerrainDodge->GetTransform()->SetLocalPosition({48, -64});
+	TerrainDodge->GetTransform()->SetWorldRotation(float4::Zero);
+	TerrainDodge->GetTransform()->SetWorldScale({1, 0.8f});
 
 	UnitHP = GetLevel()->CreateActor<NumberActor>();
 	UnitHP->SetBlackFont();

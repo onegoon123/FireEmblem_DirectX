@@ -49,6 +49,10 @@ struct MainStat
 		ReturnStat.Constitution = Constitution - _Other.Constitution;
 		return ReturnStat;
 	}
+
+public:
+	int GetAttackStat(WeaponType _Value) const;
+
 };
 
 

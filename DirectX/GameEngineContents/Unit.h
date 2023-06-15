@@ -245,7 +245,7 @@ public:
 		return CurWeapon;
 	}
 	// 장비중인 무기의 타입 (장비중인 무기가 없을시 None리턴)
-	WeaponType GetWeaponTypeValue()
+	WeaponType GetWeaponTypeValue() const
 	{
 		if (nullptr == CurWeapon)
 		{
@@ -260,6 +260,7 @@ public:
 	int GetAttackPoint(BattleClass _TargetClass) const;
 	int GetAttackPoint(const class Unit& _Other) const;
 	int GetDefPoint() const;
+	int GetDefPoint(WeaponType _Type) const;
 	int GetMagicAttackPoint() const;
 	int GetHitPoint() const;
 	int GetHitPoint(const class Unit& _Other) const;
