@@ -3,12 +3,11 @@
 #include <GameEngineBase/GameEngineDirectory.h>
 #include <GameEngineCore/GameEngineUIRenderer.h>
 #include "ContentsEnum.h"
-BattleHPBar::BattleHPBar() 
+BattleHPBar::BattleHPBar()
 {
-	Renders.reserve(50);
 }
 
-BattleHPBar::~BattleHPBar() 
+BattleHPBar::~BattleHPBar()
 {
 }
 
@@ -21,32 +20,14 @@ void BattleHPBar::Setting(int _HP, int _MaxHP)
 
 void BattleHPBar::SetMaxHP(int _Value)
 {
-	
-	if (Renders.size() < _Value)
+
+	for (int i = 0; i < _Value; i++)
 	{
-		for (int i = 0; i < Renders.size(); i++)
-		{
-			Renders[i]->On();
-		}
-		Renders.resize(_Value);
-		for (int i = MaxHP; i < _Value; i++)
-		{
-			Renders[i] = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
-			Renders[i]->SetSprite("BattleHPBar.png", 0);
-			Renders[i]->GetTransform()->SetLocalPosition({ 8.0f * i, 0});
-			Renders[i]->GetTransform()->SetLocalScale({ 12, 24 });
-		}
+		Renders[i]->On();
 	}
-	else
+	for (int i = _Value; i < Renders.size(); i++)
 	{
-		for (int i = 0; i < _Value; i++)
-		{
-			Renders[i]->On();
-		}
-		for (int i = _Value; i < Renders.size(); i++)
-		{
-			Renders[i]->Off();
-		}
+		Renders[i]->Off();
 	}
 	MaxHP = _Value;
 
@@ -92,7 +73,8 @@ void BattleHPBar::SetCurrentHP(int _Value)
 
 void BattleHPBar::SetHPAnimation(int _Value)
 {
-	IsPlus = _Value >= HP;
+	if (HP == _Value) { return; }
+	IsPlus = _Value > HP;
 	TargetHP = _Value;
 	Timer = Time;
 	IsLerp = true;
@@ -108,6 +90,16 @@ void BattleHPBar::Start()
 		Dir.Move("Battle");
 		Dir.Move("UI");
 		GameEngineSprite::LoadSheet(Dir.GetPlusFileName("BattleHPBar.png").GetFullPath(), 2, 1);
+	}
+
+	Renders.resize(60);
+	for (int i = MaxHP; i < 60; i++)
+	{
+		Renders[i] = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
+		Renders[i]->SetSprite("BattleHPBar.png", 0);
+		Renders[i]->GetTransform()->SetLocalPosition({ 8.0f * i, 0 });
+		Renders[i]->GetTransform()->SetLocalScale({ 12, 24 });
+		Renders[i]->Off();
 	}
 }
 
@@ -127,6 +119,7 @@ void BattleHPBar::Update(float _DeltaTime)
 		if (TargetHP == HP)
 		{
 			IsLerp = false;
+			return;
 		}
 		Timer = Time;
 	}

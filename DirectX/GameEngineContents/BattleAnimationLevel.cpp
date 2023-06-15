@@ -76,9 +76,21 @@ void BattleAnimationLevel::HitEvent()
 	{
 		EffectName = "Fire";
 		// 마법사 경우 다른 이펙트
-	}
 
-	if ((*BattleIter).IsCritical)
+		if ((*BattleIter).IsCritical)
+		{
+			EffectName += "Critical";
+		}
+		else if ((*BattleIter).IsHit)
+		{
+			EffectName += "Hit";
+		}
+		else
+		{
+			EffectName += "Dodge";
+		}
+	}
+	else if ((*BattleIter).IsCritical)
 	{
 		EffectName += "Critical";
 	}
@@ -89,7 +101,7 @@ void BattleAnimationLevel::HitEvent()
 	else
 	{
 		DamageUnit->Dodge();
-		EffectName += "Dodge";
+		EffectName = "Dodge";
 	}
 
 
