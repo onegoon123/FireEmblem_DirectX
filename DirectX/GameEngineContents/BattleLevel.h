@@ -35,7 +35,7 @@ protected:
 	std::vector<int2> StartPos;
 	void LoadPlayerUnits(std::list<Unit>& _Units);
 	std::shared_ptr<BattleUnit> LoadPlayerUnit(const Unit& _Unit);
-
+	std::shared_ptr<BattleUnit> FindPlayerUnit(UnitIdentityCode _Code);
 	std::shared_ptr<BattleUnit> NewPlayerUnit(UnitIdentityCode _Code, int _Level, int2 _Pos, std::vector<ItemCode> _Items);
 
 	std::shared_ptr<BattleUnit> NewEnemyUnit(UnitIdentityCode _Code, int _Level, int2 _Pos, std::vector<ItemCode> _Items);
@@ -50,6 +50,7 @@ protected:
 
 	BattleClearTarget ClearTarget = BattleClearTarget::AllKill;
 	int2 ConquerPos = { -1, -1 };
+	int SurvivalTurn = 0;
 
 	std::shared_ptr<EventSystem> OpeningEvent;
 	std::shared_ptr <EventSystem> ClearEvent;

@@ -52,6 +52,7 @@ public:
 	static std::list<AttackCommand> Heal(std::shared_ptr<BattleUnit> _SubjectUnit, std::shared_ptr<BattleUnit> _TargetUnit, std::list<std::shared_ptr<Item>>::iterator& _ItemIter);
 	static void PhaseStart(Faction _Faction);
 
+	static int GetCountTurn();
 
 	static std::list<UnitCommand>& GetCommandList() { return CommandList; }
 	static void SetCommandList(std::list<UnitCommand> _Value) { CommandList = _Value; }

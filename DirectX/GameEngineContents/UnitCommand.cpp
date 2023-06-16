@@ -318,6 +318,19 @@ void UnitCommand::PhaseStart(Faction _Faction)
 	CommandList.push_back(CommandRecord);
 }
 
+int UnitCommand::GetCountTurn()
+{
+	int Count = 0;
+	for (UnitCommand _Command : CommandList)
+	{
+		if (_Command.TypeValue == CommandType::PlayerPhaseStart)
+		{
+			Count++;
+		}
+	}
+	return Count;
+}
+
 std::list<AttackCommand>& UnitCommand::AttackEnd(std::list<AttackCommand>& _AttackList, UnitCommand& _CommandRecord, Unit& _SubjectUnit, Unit& _TargetUnit)
 {
 	_CommandRecord.AfterSubjectUnit = _SubjectUnit;

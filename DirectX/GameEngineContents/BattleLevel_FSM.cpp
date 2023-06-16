@@ -156,6 +156,14 @@ void BattleLevel::PlayerPhaseStart()
 		_Unit->SetIdle();
 	}
 
+	if (ClearTarget == BattleClearTarget::Survival)
+	{
+		if (SurvivalTurn < UnitCommand::GetCountTurn())
+		{
+			ChangeState(BattleState::Clear);
+			return;
+		}
+	}
 	// 지형에 따른 체력회복
 	for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
 	{

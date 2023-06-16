@@ -49,6 +49,7 @@ void Stage2::OpeningEventInit()
 void Stage2::ClearEventInit()
 {
 	ClearEvent->PushEvent([this] {
+		FindPlayerUnit(UnitIdentityCode::Lyn)->NewItem(ItemCode::ManiKatti);
 		ClearEvent->SetFadeOut(0.5f);
 		}, false, 1.0f);
 

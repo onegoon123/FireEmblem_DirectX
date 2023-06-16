@@ -26,6 +26,9 @@ void Stage4::StageSetting()
 {
 	SetStage(4);
 
+	ClearTarget = BattleClearTarget::Survival;
+	SurvivalTurn = 1;
+
 	// Àª
 	NewPlayerUnit(UnitIdentityCode::Wil, 2, { 8, 7 }, { ItemCode::IronBow });
 
