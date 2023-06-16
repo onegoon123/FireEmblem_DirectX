@@ -133,11 +133,6 @@ void BattleAnimationLevel::TurnEnd()
 	IsTurnEnd = true;
 }
 
-void BattleAnimationLevel::BattleEnd()
-{
-	UI->SetFadeOut(0.3f);
-	TimeEvent.AddEvent(0.5f, std::bind(&BattleAnimationLevel::End, this));
-}
 
 void BattleAnimationLevel::Start()
 {
@@ -153,6 +148,15 @@ void BattleAnimationLevel::Start()
 void BattleAnimationLevel::Update(float _DeltaTime)
 {
 	TimeEvent.Update(_DeltaTime);
+
+	if (true == IsFadeOut)
+	{
+		return;
+	}
+	if (true == IsClassChange)
+	{
+		return;
+	}
 
 	if (GameEngineInput::IsPress("ButtonA") || GameEngineInput::IsPress("LeftClick"))
 	{
@@ -177,6 +181,8 @@ void BattleAnimationLevel::Update(float _DeltaTime)
 
 void BattleAnimationLevel::LevelChangeStart()
 {
+	IsFadeOut = false;
+	TimeEvent.Clear();
 	// ¿¢ÅÍ ¹× ·»´õ·¯ »ý¼º
 	if (nullptr == BackgroundRender)
 	{
@@ -245,7 +251,6 @@ void BattleAnimationLevel::LevelChangeStart()
 	SubjectAnimation->SetAnimation(SubjectUnit);
 	TargetAnimation->SetAnimation(TargetUnit);
 	UI->SetData(SubjectUnit->GetUnitData(), TargetUnit->GetUnitData(), SubjectUnit->IsAttackable(TargetUnit), TargetUnit->IsAttackable(SubjectUnit));
-	TimeEvent.Clear();
 	UI->SetFadeIn(0.3f);
 
 	
@@ -280,12 +285,12 @@ void BattleAnimationLevel::PlayAttack()
 
 		if (true == LeftUnit->GetIsDie() || true == RightUnit->GetIsDie())
 		{
-			TimeEvent.AddEvent(3.0f, std::bind(&BattleAnimationUI::SetFadeOut, UI, 0.3f));
-			TimeEvent.AddEvent(3.5f, std::bind(&BattleAnimationLevel::End, this));
+			TimeEvent.AddEvent(3.0f, std::bind(&BattleAnimationLevel::FadeOut, this, 0.15f));
+			TimeEvent.AddEvent(3.3f, std::bind(&BattleAnimationLevel::End, this));
 			return;
 		}
-		TimeEvent.AddEvent(2.0f, std::bind(&BattleAnimationUI::SetFadeOut, UI, 0.3f));
-		TimeEvent.AddEvent(2.5f, std::bind(&BattleAnimationLevel::End, this));
+		TimeEvent.AddEvent(2.0f, std::bind(&BattleAnimationLevel::FadeOut, this, 0.15f));
+		TimeEvent.AddEvent(2.3f, std::bind(&BattleAnimationLevel::End, this));
 		return;
 	}
 
@@ -415,8 +420,23 @@ void BattleAnimationLevel::ClassChangeEvent()
 	UI->SetFadeWhite();
 	UI->SetFadeIn(0.5f);
 	UI->SetFadeWait(0.5f);
-	SubjectUnit->GetUnitData().ClassChange(ChangeClass);
+	SubjectUnit->ClassChange(ChangeClass);
 	LeftUnit->SetAnimation(SubjectUnit->GetUnitData().GetIdentityCode());
 
-	TimeEvent.AddEvent(1.5f, std::bind(&BattleAnimationUI::LevelUpStart, UI, SubjectUnit->GetUnitData()));
+	TimeEvent.AddEvent(1.5f, std::bind(&BattleAnimationUI::ClassChangeStart, UI, SubjectUnit->GetUnitData()));
+}
+
+void BattleAnimationLevel::FadeOut(float _Time)
+{
+	IsFadeOut = true;
+	UI->SetFadeOut(_Time);
+	GameEngineTime::GlobalTime.SetGlobalTimeScale(1.0f);
+}
+
+void BattleAnimationLevel::BattleEnd()
+{
+	IsFadeOut = true;
+	UI->SetFadeOut(0.15f);
+	TimeEvent.AddEvent(0.3f, std::bind(&BattleAnimationLevel::End, this));
+	GameEngineTime::GlobalTime.SetGlobalTimeScale(1.0f);
 }

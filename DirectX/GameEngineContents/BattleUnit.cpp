@@ -75,6 +75,12 @@ void BattleUnit::SetUnitCode(UnitIdentityCode _Code)
 	SetUnitAnimation(_Code);
 }
 
+void BattleUnit::ClassChange(BattleClass _Value)
+{
+	UnitData.ClassChange(_Value);
+	SetUnitAnimation(UnitData.IdentityCode);
+}
+
 void BattleUnit::LoadUnitData(Unit _Value)
 {
 	UnitData = _Value;
@@ -233,6 +239,19 @@ void BattleUnit::LoadUnitData(Unit _Value)
 	default:
 		break;
 	}
+
+	if (Renderer != nullptr)
+	{
+		Renderer->Death();
+		Renderer = nullptr;
+		FrontRenderer->Death();
+		FrontRenderer = nullptr;
+	}
+	Renderer = CreateComponent<SpriteRenderer>(RenderOrder::Unit);
+	Renderer->SetLocalScale({ 192,192 });
+	FrontRenderer = CreateComponent<SpriteRenderer>(RenderOrder::SelectUnit);
+	FrontRenderer->SetLocalScale({ 192,192 });
+	FrontRenderer->Off();
 
 	if (nullptr == GameEngineSprite::Find(MapSpriteName))
 	{

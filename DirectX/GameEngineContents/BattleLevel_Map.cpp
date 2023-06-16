@@ -1,5 +1,6 @@
 #include "PrecompileHeader.h"
 #include "BattleLevel.h"
+#include <deque>
 #include <queue>
 #include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEnginePlatform/GameEngineWindow.h>
@@ -20,7 +21,7 @@ bool BattleLevel::UnitMoveAnim()
 		SelectUnit->SetMapPosLerp(ArrowPos[MoveIndex]);
 	}
 
-	
+
 	return false;
 }
 
@@ -258,14 +259,14 @@ void BattleLevel::MoveSearchForEnemy()
 				continue;
 			}
 
-	
+
 			NextMove.MoveStat -= GetTerrainCostFoot(NextMove.Pos);
 			if (NextMove.MoveStat < 0)
 			{
 				continue;
 			}
 
-			
+
 
 
 			IsMove[NextMove.Pos.y][NextMove.Pos.x] = true;
@@ -289,6 +290,189 @@ void BattleLevel::MoveSearchForEnemy()
 		return;
 	}
 	AttackSearchForEnemy();
+}
+
+void BattleLevel::TargetSearchForEnemy()
+{
+
+	int2 StartPos = SelectUnit->GetMapPos();
+	std::vector<int2> Targets;
+	Targets.reserve(PlayerUnits.size());
+
+	for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
+	{
+		Targets.push_back(_Unit->GetMapPos());
+	}
+
+	std::vector<CalData> MoveData;
+	MoveData.resize(PlayerUnits.size());
+	for (int i = 0; i < MoveData.size(); i++)
+	{
+		MoveData[i].MoveStat = 99;
+	}
+
+	for (int UnitIndex = 0; UnitIndex < PlayerUnits.size(); UnitIndex++)
+	{
+		int2 TargetPos = Targets[UnitIndex];
+
+		MainCursor->SetCursorPos(TargetPos);
+
+		BattleClass ClassValue = SelectUnit->GetUnitData().GetClassValue();
+
+		std::vector<std::vector<bool>> Moved;
+		Moved.resize(IsMove.size());
+		for (int i = 0; i < IsMove.size(); i++)
+		{
+			Moved[i].resize(IsMove[i].size());
+		}
+
+
+
+
+		CalData NewData = CalData();
+		NewData.Pos = StartPos;
+		NewData.MoveStat = 0;
+
+		std::deque<CalData> Queue;
+		Queue.push_back(NewData);
+		
+		while (false == Queue.empty())
+		{
+			CalData CurrentData = Queue.front();
+			Queue.pop_front();
+			bool Check = false;
+			for (int i = 0; i < 4; i++)
+			{
+				CalData NextMove = CurrentData;
+				NextMove.Pos += int2(DirX[i], DirY[i]);
+				NextMove.History.push_back(CurrentData.Pos);
+
+				if (true == IsMapOut(NextMove.Pos))
+				{
+					continue;
+				}
+				if (true == Moved[NextMove.Pos.y][NextMove.Pos.x])
+				{
+					continue;
+				}
+				if (NextMove.Pos == TargetPos)
+				{
+					if (NextMove.MoveStat < MoveData[UnitIndex].MoveStat)
+					{
+						NextMove.History.push_back(TargetPos);
+						MoveData[UnitIndex] = NextMove;
+						Check = true;
+						break;
+					}
+					continue;
+				}
+
+				if (ClassValue == BattleClass::PegasusKnight)
+				{
+					NextMove.MoveStat += GetTerrainCostFly(NextMove.Pos);
+				}
+				else
+				{
+					NextMove.MoveStat += GetTerrainCostFoot(NextMove.Pos);
+				}
+				if (99 <= NextMove.MoveStat)
+				{
+					continue;
+				}
+
+				Moved[NextMove.Pos.y][NextMove.Pos.x] = true;
+				std::deque<CalData>::const_iterator QueIter = Queue.begin();
+				while (true)
+				{
+					if (QueIter == Queue.end())
+					{
+						Queue.push_back(NextMove);
+						break;
+					}
+					if (NextMove.Pos.GetDistance(TargetPos) > (*QueIter).Pos.GetDistance(TargetPos))
+					{
+						Queue.insert(QueIter, NextMove);
+						break;
+					}
+					QueIter++;
+				}
+			}
+			if (true == Check)
+			{
+				//break;
+			}
+		}
+	}
+
+	std::list<std::shared_ptr<BattleUnit>>::iterator UnitIter = PlayerUnits.begin();
+
+	std::vector<int2> ResultMove;
+	
+	int Min = 9999;
+	for (int i = 0; UnitIter != PlayerUnits.end(); UnitIter++)
+	{
+		if (true == (*UnitIter)->GetIsDie()) { 
+			i++;
+			continue; 
+		}
+		int MoveSize = MoveData[i].MoveStat;
+		if (MoveSize < Min)
+		{
+			Min = MoveSize;
+			ResultMove = MoveData[i].History;
+		}
+		i++;
+	}
+
+	int Size = (int)ResultMove.size() < SelectUnit->GetMoveStat() ? (int)ResultMove.size() : SelectUnit->GetMoveStat();
+	ArrowPos.resize(Size);
+	for (int i = 0; i < Size; i++)
+	{
+		ArrowPos[i] = ResultMove[i];
+	}
+	if (0 == ArrowPos.size())
+	{
+		return;
+	}
+	for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
+	{
+		std::vector<int2>::iterator ArrowIter = ArrowPos.begin();
+		for (; ArrowIter != ArrowPos.end(); ArrowIter++)
+		{
+			if (*ArrowIter == _Unit->GetMapPos())
+			{
+				ArrowPos.erase(ArrowIter);
+				break;;
+			}
+		}
+		if (0 == ArrowPos.size())
+		{
+			return;
+		}
+	}
+	bool Check = true;
+	while (true == Check)
+	{
+		Check = false;
+		for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
+		{
+			if (_Unit->GetUnitCode() == SelectUnit->GetUnitCode())
+			{
+				continue;
+			}
+			std::vector<int2>::reverse_iterator ArrowIter = ArrowPos.rbegin();
+			if (_Unit->GetMapPos() == ArrowPos.back())
+			{
+				Check = true;
+				ArrowPos.resize(ArrowPos.size() - 1);
+				break;
+			}
+		}
+		if (0 == ArrowPos.size())
+		{
+			return;
+		}
+	}
 }
 
 void BattleLevel::AttackSearchForEnemy()
@@ -552,7 +736,7 @@ void BattleLevel::EnemyFindTarget()
 			TargetPriority = Priority;
 		}
 	}
-	
+
 
 }
 
@@ -712,7 +896,7 @@ void BattleLevel::UnitMove()
 		{
 			// 나 자신, 죽은 유닛을 제외한 유닛들 중
 			if (true == _Actor->GetIsDie()) { continue; }
-			if (_Actor->GetUnitCode() == SelectUnit->GetUnitCode()) {continue;}
+			if (_Actor->GetUnitCode() == SelectUnit->GetUnitCode()) { continue; }
 
 			// 이동할 위치에 있는 유닛이 있다면 종료
 			if (_Actor->GetMapPos() == MainCursor->WorldPos)

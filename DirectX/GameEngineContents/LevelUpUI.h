@@ -17,6 +17,7 @@ public:
 	LevelUpUI& operator=(LevelUpUI&& _Other) noexcept = delete;
 
 	void LevelUpStart(Unit& _UnitData);
+	void ClassChangeStart(Unit& _UnitData);
 
 protected:
 	void Start() override;

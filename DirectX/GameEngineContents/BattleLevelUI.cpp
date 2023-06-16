@@ -193,6 +193,11 @@ void BattleLevelUI::SetFadeOut(float _Timer)
 	UI_Fade->ColorOptionValue.MulColor.a = 0;
 }
 
+void BattleLevelUI::SetFadeWait(float _Timer)
+{
+	FadeWait = _Timer;
+}
+
 void BattleLevelUI::PotionUIOn()
 {
 	UI_Select->On();
@@ -266,6 +271,11 @@ void BattleLevelUI::Start()
 
 void BattleLevelUI::Update(float _DeltaTime)
 {
+	if (0 < FadeWait)
+	{
+		FadeWait -= _DeltaTime;
+		return;
+	}
 	if (true == IsFadeIn)
 	{
 		FadeTimer -= _DeltaTime * FadeSpeed;

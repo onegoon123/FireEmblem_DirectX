@@ -47,7 +47,7 @@ public:
 	{
 		return UnitData.UnitCode;
 	}
-
+	void ClassChange(BattleClass _Value);
 	// 이전의 유닛 데이터를 받아서 적용시킨다
 	void LoadUnitData(Unit _Value);
 

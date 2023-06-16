@@ -832,6 +832,7 @@ void BattleLevel::EnemyPhaseUpdate(float _DeltaTime)
 	{
 		IsSkip = true;
 		BattleUI->SetFadeIn(0.2f);
+		BattleUI->SetFadeWait(0.3f);
 		BattleUI->PhaseOff();
 		ChangeState(BattleState::EnemySelect);
 		return;
@@ -897,6 +898,7 @@ void BattleLevel::EnemySelectUpdate(float _DeltaTime)
 	{
 		IsSkip = true;
 		BattleUI->SetFadeIn(0.2f);
+		BattleUI->SetFadeWait(0.3f);
 	}
 	if (true == IsSkip)
 	{
@@ -950,7 +952,7 @@ void BattleLevel::EnemyMoveStart()
 		MainCursor->SetCursorPos(MovePos);
 		CameraSetPos();
 		ArrowPos.clear();
-		MoveCalculationForEnemy();
+		TargetSearchForEnemy();
 		MoveIndex = 0;
 		return;
 	}
@@ -981,6 +983,7 @@ void BattleLevel::EnemyMoveUpdate(float _DeltaTime)
 	{
 		IsSkip = true;
 		BattleUI->SetFadeIn(0.2f);
+		BattleUI->SetFadeWait(0.3f);
 	}
 	if (true == IsSkip)
 	{
@@ -1022,6 +1025,8 @@ void BattleLevel::EnemyBattleStart()
 		return;
 	}
 
+	BeforeCamPos = MainCamera->GetTransform()->GetLocalPosition();
+
 	if (true == IsSkip)
 	{
 		return;
@@ -1036,7 +1041,6 @@ void BattleLevel::EnemyBattleStart()
 	}
 	BattleUI->SetFadeOut(0.3f);
 	MainMap->GetRenderer()->SetIsBlur(true);
-	BeforeCamPos = MainCamera->GetTransform()->GetLocalPosition();
 	MainCamera->SetProjectionType(CameraType::Perspective);
 
 }
@@ -1074,7 +1078,10 @@ void BattleLevel::EnemyBattleEnd()
 
 void BattleLevel::EnemyBattleReturnStart()
 {
-	BattleUI->SetFadeIn(0.3f);
+	if (false == IsSkip)
+	{
+		BattleUI->SetFadeIn(0.3f);
+	}
 }
 
 void BattleLevel::EnemyBattleReturnUpdate(float _DeltaTime)
@@ -1109,8 +1116,7 @@ void BattleLevel::EnemyBattleReturnUpdate(float _DeltaTime)
 
 void BattleLevel::EnemyBattleReturnEnd()
 {
-
-
+	AttackRecord.clear();
 	SelectUnit->SetIsTurnEnd(true);
 	if (SelectUnit->GetIsDie())
 	{

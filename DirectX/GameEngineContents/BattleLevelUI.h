@@ -36,6 +36,7 @@ public:
 	void PhaseOff();
 	void SetFadeIn(float _Timer);
 	void SetFadeOut(float _Timer);
+	void SetFadeWait(float _Timer);
 	void PotionUIOn();
 	void PotionUIOff();
 	void SetHPLerp(int _Value);
@@ -58,6 +59,7 @@ private:
 
 	float FadeSpeed = 0.0f;
 	float FadeTimer = 0.0f;
+	float FadeWait = 0.0f;
 	bool IsFadeIn = false;
 	bool IsFadeOut = false;
 };

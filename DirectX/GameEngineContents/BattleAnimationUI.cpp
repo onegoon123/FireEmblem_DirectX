@@ -36,6 +36,9 @@ void BattleAnimationUI::SetClassChange()
 
 	EXPUI->Off();
 	LevelUI->Off();
+	WaitTimer = 0;
+	IsFadeIn = false;
+	IsFadeOut = false;
 }
 
 void BattleAnimationUI::SetDefault()
@@ -55,7 +58,9 @@ void BattleAnimationUI::SetDefault()
 	EnemyWeaponIcon->On();
 	PlayerTriangle->On();
 	EnemyTriangle->On();
-
+	WaitTimer = 0;
+	IsFadeIn = false;
+	IsFadeOut = false;
 	FadeRenderer->ColorOptionValue.PlusColor = float4::Null;
 }
 
@@ -80,6 +85,7 @@ void BattleAnimationUI::SetFadeIn(float _Timer)
 
 void BattleAnimationUI::SetFadeOut(float _Timer)
 {
+	WaitTimer = 0;
 	FadeSpeed = 1 / _Timer;
 	FadeTimer = 0;
 	IsFadeOut = true;
@@ -192,7 +198,7 @@ void BattleAnimationUI::SetEXP(int _Before, int _Get, Unit& _UnitData)
 	PlayerData = _UnitData;
 	EXPUI->SetEXP(_Before);
 	EXPUI->AddEXP(_Get, [this] {
-			TimeEvent->AddEvent(0.7f, std::bind(&BattleAnimationUI::EndExpUI, this));
+			TimeEvent->AddEvent(1.0f, std::bind(&BattleAnimationUI::EndExpUI, this));
 		});
 	EXPUI->On();
 	IsLevelUp = 100 <= _Before + _Get;
@@ -201,6 +207,11 @@ void BattleAnimationUI::SetEXP(int _Before, int _Get, Unit& _UnitData)
 void BattleAnimationUI::LevelUpStart(Unit& _UnitData)
 {
 	LevelUI->LevelUpStart(_UnitData);
+}
+
+void BattleAnimationUI::ClassChangeStart(Unit& _UnitData)
+{
+	LevelUI->ClassChangeStart(_UnitData);
 }
 
 bool BattleAnimationUI::IsTurnEnd()
@@ -361,14 +372,9 @@ void BattleAnimationUI::Update(float _DeltaTime)
 
 void BattleAnimationUI::EndExpUI()
 {
-	EXPUI->Off();
 	if (true == IsLevelUp)
 	{
 		LevelUI->LevelUpStart(PlayerData);
-	}
-	else
-	{
-		CurLevel->BattleEnd();
 	}
 }
 

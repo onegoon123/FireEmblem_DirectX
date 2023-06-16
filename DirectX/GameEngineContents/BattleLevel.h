@@ -231,6 +231,8 @@ private:
 	void AttackSearchBow();
 
 	void MoveSearchForEnemy();
+	// 공격범위에 플레이어가 없을 시 쫓을 플레이어 유닛을 찾아내서 이동한다
+	void TargetSearchForEnemy();
 	void AttackSearchForEnemy();
 	// 커서의 위치에 다른 플레이어 유닛이 없다면 MoveWait State로 전환
 	void UnitMove();

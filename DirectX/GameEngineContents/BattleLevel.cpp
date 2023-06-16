@@ -43,7 +43,7 @@ void BattleLevel::DebugCheet()
 {
 	if (GameEngineInput::IsDown("Cheet1"))
 	{
-		PlayerUnits.front()->SetMapPos(MainCursor->GetMapPos());
+		PlayerUnits.front()->SetMapPos(MainCursor->WorldPos);
 	}
 	if (GameEngineInput::IsDown("Cheet2"))
 	{
@@ -51,6 +51,14 @@ void BattleLevel::DebugCheet()
 		SelectUnit->SetIsDie(true);
 		SelectUnit->Off();
 		GameOverCheck();
+	}
+	if (GameEngineInput::IsDown("Cheet3"))
+	{
+		std::shared_ptr<BattleUnit> NewActor = CreateActor<BattleUnit>(RenderOrder::Unit);
+		NewActor->SetUnitCode(0);
+		NewActor->SetMapPos(MainCursor->WorldPos);
+		NewActor->NewItem(ItemCode::IronSword);
+		PlayerUnits.push_back(NewActor);
 	}
 	if (GameEngineInput::IsDown("Cheet4"))
 	{

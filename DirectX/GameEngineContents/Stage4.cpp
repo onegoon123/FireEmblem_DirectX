@@ -30,7 +30,7 @@ void Stage4::StageSetting()
 	NewPlayerUnit(UnitIdentityCode::Wil, 2, { 8, 7 }, { ItemCode::IronBow });
 
 	// 돌카스 (적대)
-	NewEnemyUnit(UnitIdentityCode::Dorcas, 3, { 13, 6 }, { ItemCode::HandAxe });
+	NewPlayerUnit(UnitIdentityCode::Dorcas, 3, { 13, 6 }, { ItemCode::HandAxe, ItemCode::MasterSeal });
 
 	NewEnemyUnit(UnitIdentityCode::Brigand, 1, { 8, 3 }, { ItemCode::IronAxe });
 	NewEnemyUnit(UnitIdentityCode::Brigand, 1, { 7, 2 }, { ItemCode::IronAxe });

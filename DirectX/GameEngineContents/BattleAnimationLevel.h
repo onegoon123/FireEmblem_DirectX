@@ -49,11 +49,13 @@ private:
 	std::shared_ptr<class BattleAnimationUI> UI;
 
 	bool IsTurnEnd = false;
+	bool IsFadeOut = false;
 	static bool IsClassChange;
 	static BattleClass ChangeClass;
 
 	void PlayAttack();
 	void End();
+	void FadeOut(float _Time);
 	void ClassChangeEvent();
 	std::string_view GetTerrainTexture(Terrain _Value);
 	std::string_view GetBackgroundTexture(Terrain _Value);

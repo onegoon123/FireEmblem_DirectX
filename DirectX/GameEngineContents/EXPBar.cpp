@@ -105,6 +105,13 @@ void EXPBar::Update(float _DeltaTime)
 			IsLerp = false;
 			if (true == IsLevelUp)
 			{
+				if (PlusEXP == 0)
+				{
+					SetEXPBar(0);
+					Number->Setting(0);
+					EndEvent();
+					return;
+				}
 				AddEXP(PlusEXP);
 			}
 			else if (nullptr != EndEvent)

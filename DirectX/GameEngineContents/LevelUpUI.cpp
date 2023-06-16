@@ -34,6 +34,27 @@ void LevelUpUI::LevelUpStart(Unit& _UnitData)
 	}
 }
 
+void LevelUpUI::ClassChangeStart(Unit& _UnitData)
+{
+	On();
+	FSM.ChangeState("LevelUIOn");
+	Count = 0;
+	// 초상화 지정
+	std::string TextStr = "Portrait_";
+	TextStr += _UnitData.GetName();
+	TextStr += ".png";
+	UIPortraitRender->SetTexture(TextStr);
+
+	UpStat = _UnitData.GetLevelUpData();
+	MainStat Stat = _UnitData.GetMainStat() - UpStat;
+
+	Number_Level->SetValue(_UnitData.GetLevel());
+	for (int i = 0; i < 8; i++)
+	{
+		Number_Stats[i]->SetValue(Stat.Array[i]);
+	}
+}
+
 void LevelUpUI::Start()
 {
 	CurLevel = dynamic_cast<BattleAnimationLevel*>(GetLevel());
@@ -127,7 +148,9 @@ void LevelUpUI::Start()
 			UIRender->Off();
 			UIPortraitRender->Off();
 			LevelUpImage->GetTransform()->SetLocalPosition({762, 64});
+			LevelUpImage->On();
 			Timer = 0;
+			Count = -1;
 			TimeEvent.Clear();
 			TimeEvent.AddEvent(1.2f, std::bind(&GameEngineFSM::ChangeState, &FSM, "LevelUpText2"));
 		},
@@ -186,13 +209,13 @@ void LevelUpUI::Start()
 			.Name = "LevelUIOn",
 			.Start = [this]()
 		{
+			LevelUpImage->Off();
 			UIRender->On();
 			UIPortraitRender->On();
 			UIRender->GetTransform()->SetLocalPosition({ -612, -64 });
 			UIPortraitRender->GetTransform()->SetLocalPosition({ 272, -500 });
 			TimeEvent.AddEvent(0.6f, std::bind(&GameEngineFSM::ChangeState, &FSM, "StatCheck"));
 			Timer = 0;
-			Count = -1;
 			for (int i = 0; i < 8; i++)
 			{
 				UpStatBacks[i]->Off();

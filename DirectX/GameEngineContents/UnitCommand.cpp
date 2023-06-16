@@ -334,7 +334,10 @@ std::list<AttackCommand>& UnitCommand::AttackEnd(std::list<AttackCommand>& _Atta
 		if (true == _Attack.SubjectAttack && false == _SubjectUnit.GetIsPlayer()) { continue; }
 		if (false == _Attack.SubjectAttack && true == _SubjectUnit.GetIsPlayer()) { continue; }
 		// 플레이어 유닛이 공격한 대미지를 더함
-		SumDamage += _Attack.Damage;
+		if (true == _Attack.IsHit)
+		{
+			SumDamage += _Attack.Damage;
+		}
 	}
 
 	Unit& Player = _AttackList.back().SubjectUnit.GetIsPlayer() == true ? _AttackList.back().SubjectUnit : _AttackList.back().TargetUnit;
@@ -342,6 +345,10 @@ std::list<AttackCommand>& UnitCommand::AttackEnd(std::list<AttackCommand>& _Atta
 
 	if (1 <= SumDamage)
 	{
+		if (Enemy.GetIsDie() == true)
+		{
+			SumDamage += 10;
+		}
 		_AttackList.back().Exp = SumDamage + Enemy.GetLevel() - Player.GetLevel() + 20;
 	}
 	_AttackList.back().IsLevelUp = Player.AddExp(_AttackList.back().Exp);
