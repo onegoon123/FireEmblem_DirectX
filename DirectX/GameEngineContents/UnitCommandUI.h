@@ -47,6 +47,8 @@ private:
 
 	std::shared_ptr<class UIButtonSystem> ButtonSystem;
 	std::vector<std::shared_ptr<class GameEngineCollision>> ButtonCols;
+	std::vector<std::shared_ptr<class TextRenderer>> FontRenders;
+
 
 	std::function<void()> CancelFunction;
 	float4 CursorPos;

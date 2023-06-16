@@ -3,6 +3,7 @@
 #include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEngineCore/GameEngineLevel.h>
 #include <GameEngineCore/GameEngineUIRenderer.h>
+#include <GameEngineCore/GameEngineFontRenderer.h>
 #include "ContentsEnum.h"
 #include "BattleUnit.h"
 #include "NumberActor.h"

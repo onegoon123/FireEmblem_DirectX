@@ -4,6 +4,7 @@
 #include <GameEngineCore/GameEngineResource.h>
 #include <GameEngineCore/GameEngineRenderingPipeLine.h>
 #include <GameEngineCore/GameEnginePixelShader.h>
+#include <GameEngineCore/GameEngineFont.h>
 #include "TitleLevel.h"
 #include "BattleAnimationLevel.h"
 #include "FERandom.h"
@@ -91,4 +92,6 @@ void FECore::ResourcesCreate()
 	Pipe->SetPixelShader("EffectPixelShader.hlsl");
 	Pipe->SetBlendState("AlphaBlend");
 	Pipe->SetDepthState("EngineDepth");
+
+	GameEngineFont::Load("Silhoua14");
 }

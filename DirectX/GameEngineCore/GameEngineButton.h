@@ -8,6 +8,8 @@ class GameEngineCollision;
 class GameEngineButton : public GameEngineActor
 {
 public:
+	static GameEngineButton* SelectButton;
+
 	// constrcuter destructer
 	GameEngineButton();
 	~GameEngineButton();

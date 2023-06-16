@@ -30,7 +30,8 @@ BattleLevel::~BattleLevel()
 
 void BattleLevel::Start()
 {
-
+	std::shared_ptr<GameEngineCamera> NewCamera = CreateNewCamera(101);
+	NewCamera->SetProjectionType(CameraType::Orthogonal);
 }
 
 void BattleLevel::Update(float _DeltaTime)

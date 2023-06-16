@@ -67,7 +67,7 @@ void GameEngineCore::CoreResourcesInit()
 		D3D11_SAMPLER_DESC SamperData = {};
 
 		// 
-		SamperData.Filter = D3D11_FILTER_MIN_MAG_MIP_POINT;
+		SamperData.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
 		SamperData.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
 		SamperData.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
 		SamperData.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
@@ -138,8 +138,98 @@ void GameEngineCore::CoreResourcesInit()
 		GameEngineMesh::Create("FullRect");
 	}
 
+
+	{
+		std::vector<GameEngineVertex> Vertex;
+		Vertex.resize(24);
+		// 앞면
+		Vertex[0] = { float4(-0.5f, 0.5f, 0.5f) , float4(0.0f, 0.0f) };
+		Vertex[1] = { float4(0.5f, 0.5f, 0.5f)  , float4(1.0f, 0.0f) };
+		Vertex[2] = { float4(0.5f, -0.5f, 0.5f) , float4(1.0f, 1.0f) };
+		Vertex[3] = { float4(-0.5f, -0.5f, 0.5f), float4(0.0f, 1.0f) };
+
+		// 뒷면
+		Vertex[4] = { float4(-0.5f, 0.5f, 0.5f).RotaitonXDegReturn(180) , float4(0.0f, 0.0f) };
+		Vertex[5] = { float4(0.5f, 0.5f, 0.5f).RotaitonXDegReturn(180)  , float4(1.0f, 0.0f) };
+		Vertex[6] = { float4(0.5f, -0.5f, 0.5f).RotaitonXDegReturn(180) , float4(1.0f, 1.0f) };
+		Vertex[7] = { float4(-0.5f, -0.5f, 0.5f).RotaitonXDegReturn(180), float4(0.0f, 1.0f) };
+
+		// 왼쪽
+		Vertex[8] = { float4(-0.5f, 0.5f, 0.5f).RotaitonYDegReturn(90) , float4(0.0f, 0.0f) };
+		Vertex[9] = { float4(0.5f, 0.5f, 0.5f).RotaitonYDegReturn(90)  , float4(1.0f, 0.0f) };
+		Vertex[10] = { float4(0.5f, -0.5f, 0.5f).RotaitonYDegReturn(90) , float4(1.0f, 1.0f) };
+		Vertex[11] = { float4(-0.5f, -0.5f, 0.5f).RotaitonYDegReturn(90), float4(0.0f, 1.0f) };
+
+		// 오른쪽
+		Vertex[12] = { float4(-0.5f, 0.5f, 0.5f).RotaitonYDegReturn(-90) , float4(0.0f, 0.0f) };
+		Vertex[13] = { float4(0.5f, 0.5f, 0.5f).RotaitonYDegReturn(-90)  , float4(1.0f, 0.0f) };
+		Vertex[14] = { float4(0.5f, -0.5f, 0.5f).RotaitonYDegReturn(-90) , float4(1.0f, 1.0f) };
+		Vertex[15] = { float4(-0.5f, -0.5f, 0.5f).RotaitonYDegReturn(-90), float4(0.0f, 1.0f) };
+
+
+		// 위
+		Vertex[16] = { float4(-0.5f, 0.5f, 0.5f).RotaitonXDegReturn(90) , float4(0.0f, 0.0f) };
+		Vertex[17] = { float4(0.5f, 0.5f, 0.5f).RotaitonXDegReturn(90)  , float4(1.0f, 0.0f) };
+		Vertex[18] = { float4(0.5f, -0.5f, 0.5f).RotaitonXDegReturn(90) , float4(1.0f, 1.0f) };
+		Vertex[19] = { float4(-0.5f, -0.5f, 0.5f).RotaitonXDegReturn(90), float4(0.0f, 1.0f) };
+
+		// 아래
+		Vertex[20] = { float4(-0.5f, 0.5f, 0.5f).RotaitonXDegReturn(-90) , float4(0.0f, 0.0f) };
+		Vertex[21] = { float4(0.5f, 0.5f, 0.5f).RotaitonXDegReturn(-90)  , float4(1.0f, 0.0f) };
+		Vertex[22] = { float4(0.5f, -0.5f, 0.5f).RotaitonXDegReturn(-90) , float4(1.0f, 1.0f) };
+		Vertex[23] = { float4(-0.5f, -0.5f, 0.5f).RotaitonXDegReturn(-90), float4(0.0f, 1.0f) };
+
+
+		GameEngineVertexBuffer::Create("Box", Vertex);
+	}
+
+	{
+		std::vector<int> Index;
+
+		Index.push_back(0);
+		Index.push_back(1);
+		Index.push_back(1);
+		Index.push_back(2);
+		Index.push_back(2);
+		Index.push_back(3);
+		Index.push_back(3);
+		Index.push_back(0);
+
+		Index.push_back(4 + 0);
+		Index.push_back(4 + 1);
+		Index.push_back(4 + 1);
+		Index.push_back(4 + 2);
+		Index.push_back(4 + 2);
+		Index.push_back(4 + 3);
+		Index.push_back(4 + 3);
+		Index.push_back(4 + 0);
+
+		Index.push_back(8 + 0);
+		Index.push_back(8 + 1);
+		Index.push_back(8 + 1);
+		Index.push_back(8 + 2);
+		Index.push_back(8 + 2);
+		Index.push_back(8 + 3);
+		Index.push_back(8 + 3);
+		Index.push_back(8 + 0);
+
+		Index.push_back(12 + 0);
+		Index.push_back(12 + 1);
+		Index.push_back(12 + 1);
+		Index.push_back(12 + 2);
+		Index.push_back(12 + 2);
+		Index.push_back(12 + 3);
+		Index.push_back(12 + 3);
+		Index.push_back(12 + 0);
+
+		GameEngineIndexBuffer::Create("DebugBox", Index);
+		std::shared_ptr<GameEngineMesh> Mesh = GameEngineMesh::Create("DebugBox", "Box", "DebugBox");
+		Mesh->SetTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
+	}
+
+
 	// Sphere
-	// 스피어
+		// 스피어
 	{
 		GameEngineVertex V;
 		std::vector<GameEngineVertex> VBVector;
@@ -158,8 +248,8 @@ void GameEngineCore::CoreResourcesInit()
 
 		VBVector.push_back(V);
 
-		UINT iStackCount = 10; // 가로 분할 개수입니다.
-		UINT iSliceCount = 10; // 세로분할 개수
+		UINT iStackCount = 16; // 가로 분할 개수입니다.
+		UINT iSliceCount = 16; // 세로분할 개수
 
 		float yRotAngle = GameEngineMath::PIE / (float)iStackCount;
 		float zRotAngle = (GameEngineMath::PIE * 2) / (float)iSliceCount;
@@ -247,6 +337,7 @@ void GameEngineCore::CoreResourcesInit()
 		Mesh->SetTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP);
 	}
 
+
 	{
 		// 블랜드
 		D3D11_BLEND_DESC Desc = { 0, };
@@ -273,6 +364,34 @@ void GameEngineCore::CoreResourcesInit()
 		Desc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ONE;
 
 		GameEngineBlend::Create("AlphaBlend", Desc);
+	}
+
+	{
+		// 블랜드
+		D3D11_BLEND_DESC Desc = { 0, };
+
+		// 자동으로 알파부분을 제거해서 출력해주는 건데
+		// 졸라느립니다.
+		// Desc.AlphaToCoverageEnable = false;
+
+		// 
+		Desc.AlphaToCoverageEnable = false;
+		// 블랜드를 여러개 넣을거냐
+		// TRUE면 블랜드를 여러개 넣습니다.
+		// false면 몇개의 랜더타겟이 있건 0번에 세팅된 걸로 전부다 블랜드.
+		Desc.IndependentBlendEnable = false;
+
+		Desc.RenderTarget[0].BlendEnable = true;
+		Desc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+		Desc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
+		Desc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
+		Desc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
+
+		Desc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_MAX;
+		Desc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
+		Desc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ONE;
+
+		GameEngineBlend::Create("MergeBlend", Desc);
 	}
 
 
@@ -437,7 +556,7 @@ void GameEngineCore::CoreResourcesInit()
 			Pipe->SetVertexShader("MergeShader.hlsl");
 			Pipe->SetRasterizer("Engine2DBase");
 			Pipe->SetPixelShader("MergeShader.hlsl");
-			Pipe->SetBlendState("AlphaBlend");
+			Pipe->SetBlendState("MergeBlend");
 			Pipe->SetDepthState("AlwayDepth");
 
 			GameEngineRenderTarget::RenderTargetUnitInit();
@@ -445,13 +564,13 @@ void GameEngineCore::CoreResourcesInit()
 
 		{
 			std::shared_ptr<GameEngineRenderingPipeLine> Pipe = GameEngineRenderingPipeLine::Create("DebugMeshRender");
-			//Pipe->SetVertexBuffer("Rect");
-			//Pipe->SetIndexBuffer("Rect");
+			//Pipe->SetVertexBuffer("FullRect");
+			//Pipe->SetIndexBuffer("FullRect");
 			Pipe->SetVertexShader("DebugMeshRender.hlsl");
 			Pipe->SetRasterizer("Engine2DBase");
 			Pipe->SetPixelShader("DebugMeshRender.hlsl");
 			Pipe->SetBlendState("AlphaBlend");
-			Pipe->SetDepthState("EngineDepth");
+			Pipe->SetDepthState("AlwayDepth");
 		}
 
 	}

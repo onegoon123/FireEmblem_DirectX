@@ -5,6 +5,15 @@
 
 #pragma comment(lib, "FW1FontWrapper.lib")
 
+enum class FontAligned
+{
+	Left,
+	Center,
+	Right,
+	Top,
+	Bottom
+};
+
 // Ό³Έν :
 class GameEngineFont : public GameEngineResource<GameEngineFont>
 {
@@ -29,7 +38,8 @@ public:
 		return Res;
 	}
 
-	void FontDraw(const std::string_view& _Text);
+	void FontDraw(const std::string_view& _Text, const float4& _Pos, float _FontScale, const float4& _Color);
+	void FontDraw(const std::string_view& _Text, const float4& _Pos, float _FontScale, const float4& _Color, FontAligned _Aligned);
 
 protected:
 

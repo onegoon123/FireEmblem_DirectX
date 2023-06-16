@@ -92,6 +92,8 @@ void GameEngineRenderer::RenderTransformUpdate(GameEngineCamera* _Camera)
 		return;
 	}
 
+	// RenderCamera = _Camera;
+
 	GetTransform()->SetCameraMatrix(_Camera->GetView(), _Camera->GetProjection());
 }
 

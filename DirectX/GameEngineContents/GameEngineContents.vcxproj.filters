@@ -186,6 +186,9 @@
     <ClCompile Include="UnitInformationUI.cpp">
       <Filter>Battle\UI\Information</Filter>
     </ClCompile>
+    <ClCompile Include="TextRenderer.cpp">
+      <Filter>Battle\UI\Text</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FECore.h" />
@@ -349,6 +352,9 @@
     </ClInclude>
     <ClInclude Include="UnitInformationUI.h">
       <Filter>Battle\UI\Information</Filter>
+    </ClInclude>
+    <ClInclude Include="TextRenderer.h">
+      <Filter>Battle\UI\Text</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

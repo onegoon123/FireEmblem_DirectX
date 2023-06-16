@@ -69,6 +69,7 @@ private:
 	std::shared_ptr<class NumberActor> UnitHP = nullptr;
 	std::shared_ptr<class NumberActor> UnitMaxHP= nullptr;
 
+
 	bool UnitDataOn = false;
 	UIDir CursorDir = UIDir::LeftUp;
 	float Timer = 0;
