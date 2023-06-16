@@ -16,8 +16,7 @@ bool BattleAnimationLevel::IsClassChange = false;
 std::list<AttackCommand> BattleAnimationLevel::BattleData = std::list<AttackCommand>();
 std::list<AttackCommand>::iterator BattleAnimationLevel::BattleIter = std::list<AttackCommand>::iterator();
 std::string_view BattleAnimationLevel::ReturnLevelStr = "";
-UnitIdentityCode BattleAnimationLevel::BeforeIdentity = UnitIdentityCode::Lyn;
-UnitIdentityCode BattleAnimationLevel::AfterIdentity = UnitIdentityCode::BladeLordLyn;
+BattleClass BattleAnimationLevel::ChangeClass = BattleClass::BladeLord;
 
 BattleAnimationLevel::BattleAnimationLevel()
 {
@@ -37,11 +36,11 @@ void BattleAnimationLevel::SetBattleData(std::shared_ptr<BattleUnit> _SubjectUni
 	ReturnLevelStr = _Level;
 }
 
-void BattleAnimationLevel::SetClassChange(UnitIdentityCode _BeforeIdentity, UnitIdentityCode _AfterIdentity, const std::string_view& _Level)
+void BattleAnimationLevel::SetClassChange(std::shared_ptr<BattleUnit> _BattleUnit, BattleClass _ClassValue, const std::string_view& _Level)
 {
+	SubjectUnit = _BattleUnit;
 	IsClassChange = true;
-	BeforeIdentity = _BeforeIdentity;
-	AfterIdentity = _AfterIdentity;
+	ChangeClass = _ClassValue;
 	ReturnLevelStr = _Level;
 }
 
@@ -208,7 +207,7 @@ void BattleAnimationLevel::LevelChangeStart()
 		TerrainLeft->SetTexture("Castle_Close.png");
 		TerrainRight->SetTexture("Castle_Close.png");
 		BackgroundRender->SetTexture("BattleBackground_ClassChange.png");
-		LeftUnit->SetAnimation(BeforeIdentity);
+		LeftUnit->SetAnimation(SubjectUnit->GetUnitData().GetIdentityCode());
 		UI->SetClassChange();
 		UI->SetFadeIn(0.3f);
 		RightUnit->Off();
@@ -416,5 +415,8 @@ void BattleAnimationLevel::ClassChangeEvent()
 	UI->SetFadeWhite();
 	UI->SetFadeIn(0.5f);
 	UI->SetFadeWait(0.5f);
-	LeftUnit->SetAnimation(AfterIdentity);
+	SubjectUnit->GetUnitData().ClassChange(ChangeClass);
+	LeftUnit->SetAnimation(SubjectUnit->GetUnitData().GetIdentityCode());
+
+	TimeEvent.AddEvent(1.5f, std::bind(&BattleAnimationUI::LevelUpStart, UI, SubjectUnit->GetUnitData()));
 }

@@ -1914,5 +1914,5 @@ void BattleLevel::ClassChangeUpdate(float _DeltaTime)
 
 void BattleLevel::ClassChangeEnd()
 {
-	SelectUnit->SetUnitData(Unit(UnitCommand::GetCommandList().back().AfterSubjectUnit));
+	//SelectUnit->SetUnitData(Unit(UnitCommand::GetCommandList().back().AfterSubjectUnit));
 }

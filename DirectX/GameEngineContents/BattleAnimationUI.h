@@ -26,7 +26,7 @@ public:
 	void SetDamage(Unit& _Unit);
 
 	void SetEXP(int _Before, int _Get, Unit& _UnitData);
-
+	void LevelUpStart(Unit& _UnitData);
 	bool IsTurnEnd();
 
 protected:

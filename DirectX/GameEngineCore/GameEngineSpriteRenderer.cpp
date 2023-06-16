@@ -313,6 +313,7 @@ void GameEngineSpriteRenderer::Update(float _Delta)
 		if (true == CurAnimation->ScaleToTexture)
 		{
 			std::shared_ptr<GameEngineTexture> Texture = Info.Texture;
+			CurTexture = Texture;
 
 			float4 Scale = Texture->GetScale();
 
@@ -324,13 +325,57 @@ void GameEngineSpriteRenderer::Update(float _Delta)
 
 			GetTransform()->SetLocalScale(Scale);
 		}
+
+		if (ClippingPercent != 1.0f)
+		{
+			OriginAtlasData = AtlasData;
+
+			switch (ScalePivot)
+			{
+			case Left:
+				break;
+			case Right:
+				break;
+			case Top:
+				break;
+			case Bot:
+				OriginAtlasData.SizeY *= ClippingPercent;
+				break;
+			default:
+				break;
+			}
+
+			if (nullptr != CurTexture)
+			{
+				float4 Scale = CurTexture->GetScale();
+
+				Scale.x *= OriginAtlasData.SizeX;
+				Scale.y *= OriginAtlasData.SizeY;
+				Scale.z = 1.0f;
+
+				Scale *= ScaleRatio;
+
+				GetTransform()->SetLocalScale(Scale);
+			}
+		}
+
 	}
 }
 
 void GameEngineSpriteRenderer::Render(float _Delta)
 {
+	if (ClippingPercent != 1.0f)
+	{
+		GetShaderResHelper().SetConstantBufferLink("AtlasData", OriginAtlasData);
+	}
 
 	GameEngineRenderer::Render(_Delta);
+
+	if (ClippingPercent != 1.0f)
+	{
+		GetShaderResHelper().SetConstantBufferLink("AtlasData", AtlasData);
+	}
+
 }
 
 void GameEngineSpriteRenderer::SetAnimationUpdateEvent(const std::string_view& _AnimationName, size_t _Frame, std::function<void()> _Event)

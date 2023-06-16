@@ -17,7 +17,7 @@ public:
 	BattleAnimationLevel& operator=(BattleAnimationLevel&& _Other) noexcept = delete;
 
 	static void SetBattleData(std::shared_ptr<BattleUnit> _SubjectUnit, std::shared_ptr<BattleUnit> _TargetUnit, const std::list<AttackCommand>& _Data, const std::string_view& _Level);
-	static void SetClassChange(UnitIdentityCode _BeforeIdentity, UnitIdentityCode _AfterIdentity, const std::string_view& _Level);
+	static void SetClassChange(std::shared_ptr<BattleUnit> _BattleUnit, BattleClass _ClassValue, const std::string_view& _Level);
 
 	void HitEvent();
 	void HealEvent();
@@ -50,8 +50,7 @@ private:
 
 	bool IsTurnEnd = false;
 	static bool IsClassChange;
-	static UnitIdentityCode BeforeIdentity;
-	static UnitIdentityCode AfterIdentity;
+	static BattleClass ChangeClass;
 
 	void PlayAttack();
 	void End();

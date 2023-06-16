@@ -69,6 +69,14 @@ public:
 	std::vector<float> FrameTime = std::vector<float>();
 };
 
+enum ImagePivot
+{
+	Left,
+	Right,
+	Top,
+	Bot,
+};
+
 
 // 설명 :
 class GameEngineSpriteRenderer : public GameEngineRenderer
@@ -122,6 +130,21 @@ public:
 		return AtlasData;
 	}
 
+	// 내 눈에 보이는 이미지에서 0.1;
+	void ImageClipping(float _Ratio, ImagePivot _ScalePivot = ImagePivot::Bot, ImagePivot _PosPivot = ImagePivot::Bot)
+	{
+		ClippingPercent = _Ratio;
+
+		if (0.0f >= ClippingPercent)
+		{
+			ClippingPercent = 0.0f;
+		}
+
+
+		ScalePivot = _ScalePivot;
+		PosPivot = _PosPivot;
+	}
+
 	inline float GetScaleRatio() const
 	{
 		return ScaleRatio;
@@ -165,11 +188,14 @@ private:
 
 	std::shared_ptr<AnimationInfo> CurAnimation;
 
-
-
 	std::shared_ptr<GameEngineSprite> Sprite = nullptr;
 	size_t Frame = -1;
 
+	float ClippingPercent = 1.0f;
+	float4 OriginAtlasData;
+	ImagePivot ScalePivot = ImagePivot::Bot;
+	ImagePivot PosPivot = ImagePivot::Bot;
+	std::shared_ptr<GameEngineTexture> CurTexture;
 
 	float ScaleRatio = 1.0f;
 

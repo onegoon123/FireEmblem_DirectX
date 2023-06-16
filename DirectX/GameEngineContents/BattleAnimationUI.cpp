@@ -198,6 +198,11 @@ void BattleAnimationUI::SetEXP(int _Before, int _Get, Unit& _UnitData)
 	IsLevelUp = 100 <= _Before + _Get;
 }
 
+void BattleAnimationUI::LevelUpStart(Unit& _UnitData)
+{
+	LevelUI->LevelUpStart(_UnitData);
+}
+
 bool BattleAnimationUI::IsTurnEnd()
 {
 	return false == PlayerHPBar->GetIsLerp() && false == Number_PlayerHP->GetIsLerp() && false == EnemyHPBar->GetIsLerp() && false == Number_EnemyHP->GetIsLerp();

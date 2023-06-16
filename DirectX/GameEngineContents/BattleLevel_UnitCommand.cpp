@@ -100,7 +100,7 @@ void BattleLevel::UnitCommand_ItemUse(std::list<std::shared_ptr<Item>>::iterator
 		default:
 			return;
 		}
-		BattleAnimationLevel::SetClassChange(Before, After, GetName());
+		BattleAnimationLevel::SetClassChange(SelectUnit, AfterClass, GetName());
 		UnitCommand::ClassChange(SelectUnit, AfterClass, UseItem);
 		ChangeState(BattleState::ClassChange);
 		break;

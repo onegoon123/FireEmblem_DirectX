@@ -302,6 +302,21 @@ public:
 		return (x < y) ? (y < z ? z : y) : (x < z ? z : x);
 	}
 
+	UINT ColorToUint()
+	{
+		UINT Return;
+
+		char* Ptr = reinterpret_cast<char*>(&Return);
+
+		// 0~1
+		Ptr[0] = static_cast<int>(r * 255.0f);
+		Ptr[1] = static_cast<int>(g * 255.0f);
+		Ptr[2] = static_cast<int>(b * 255.0f);
+		Ptr[3] = static_cast<int>(a * 255.0f);
+
+		return Return;
+	}
+
 
 	float4 RotaitonXDegReturn(float _Deg)
 	{

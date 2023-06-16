@@ -39,41 +39,29 @@
     <ClCompile Include="Unit_StatCalculator.cpp">
       <Filter>Battle\Unit</Filter>
     </ClCompile>
-    <ClCompile Include="BattleLevelUI.cpp">
-      <Filter>Battle\UI</Filter>
-    </ClCompile>
     <ClCompile Include="NumberActor.cpp">
       <Filter>UI</Filter>
     </ClCompile>
     <ClCompile Include="AttackUI.cpp">
-      <Filter>Battle\UI\Parts</Filter>
+      <Filter>Battle\UI\Battle</Filter>
     </ClCompile>
     <ClCompile Include="FieldCommandUI.cpp">
-      <Filter>Battle\UI\Parts</Filter>
+      <Filter>Battle\UI\Battle</Filter>
     </ClCompile>
     <ClCompile Include="ItemUI.cpp">
-      <Filter>Battle\UI\Parts</Filter>
+      <Filter>Battle\UI\Battle</Filter>
     </ClCompile>
     <ClCompile Include="PhaseUI.cpp">
-      <Filter>Battle\UI\Parts</Filter>
+      <Filter>Battle\UI\Battle</Filter>
     </ClCompile>
     <ClCompile Include="SelectUI.cpp">
-      <Filter>Battle\UI\Parts</Filter>
+      <Filter>Battle\UI\Battle</Filter>
     </ClCompile>
     <ClCompile Include="UICursor.cpp">
-      <Filter>Battle\UI\Parts</Filter>
+      <Filter>Battle\UI\Battle</Filter>
     </ClCompile>
     <ClCompile Include="UnitCommandUI.cpp">
-      <Filter>Battle\UI\Parts</Filter>
-    </ClCompile>
-    <ClCompile Include="DoubleIconActor.cpp">
-      <Filter>Battle\UI\Parts</Filter>
-    </ClCompile>
-    <ClCompile Include="UnitInformationUI.cpp">
-      <Filter>Battle\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="StatBar.cpp">
-      <Filter>Battle\UI</Filter>
+      <Filter>Battle\UI\Battle</Filter>
     </ClCompile>
     <ClCompile Include="StageSelectWindow.cpp">
       <Filter>UI</Filter>
@@ -124,10 +112,10 @@
       <Filter>UI</Filter>
     </ClCompile>
     <ClCompile Include="HealUI.cpp">
-      <Filter>Battle\UI\Parts</Filter>
+      <Filter>Battle\UI\Battle</Filter>
     </ClCompile>
     <ClCompile Include="ExchangeUI.cpp">
-      <Filter>Battle\UI\Parts</Filter>
+      <Filter>Battle\UI\Battle</Filter>
     </ClCompile>
     <ClCompile Include="BattleAnimationLevel.cpp">
       <Filter>Battle\Animation\Level</Filter>
@@ -186,6 +174,18 @@
     <ClCompile Include="LevelUpUI.cpp">
       <Filter>Battle\Animation\UI</Filter>
     </ClCompile>
+    <ClCompile Include="DoubleIconActor.cpp">
+      <Filter>Battle\UI\BattleAnimation</Filter>
+    </ClCompile>
+    <ClCompile Include="BattleLevelUI.cpp">
+      <Filter>Battle\UI\BattleAnimation</Filter>
+    </ClCompile>
+    <ClCompile Include="StatBar.cpp">
+      <Filter>Battle\UI\Information</Filter>
+    </ClCompile>
+    <ClCompile Include="UnitInformationUI.cpp">
+      <Filter>Battle\UI\Information</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FECore.h" />
@@ -224,41 +224,29 @@
     <ClInclude Include="UnitCommand.h">
       <Filter>Battle\System</Filter>
     </ClInclude>
-    <ClInclude Include="BattleLevelUI.h">
-      <Filter>Battle\UI</Filter>
-    </ClInclude>
     <ClInclude Include="NumberActor.h">
       <Filter>UI</Filter>
     </ClInclude>
     <ClInclude Include="AttackUI.h">
-      <Filter>Battle\UI\Parts</Filter>
+      <Filter>Battle\UI\Battle</Filter>
     </ClInclude>
     <ClInclude Include="FieldCommandUI.h">
-      <Filter>Battle\UI\Parts</Filter>
+      <Filter>Battle\UI\Battle</Filter>
     </ClInclude>
     <ClInclude Include="ItemUI.h">
-      <Filter>Battle\UI\Parts</Filter>
+      <Filter>Battle\UI\Battle</Filter>
     </ClInclude>
     <ClInclude Include="PhaseUI.h">
-      <Filter>Battle\UI\Parts</Filter>
+      <Filter>Battle\UI\Battle</Filter>
     </ClInclude>
     <ClInclude Include="SelectUI.h">
-      <Filter>Battle\UI\Parts</Filter>
+      <Filter>Battle\UI\Battle</Filter>
     </ClInclude>
     <ClInclude Include="UICursor.h">
-      <Filter>Battle\UI\Parts</Filter>
+      <Filter>Battle\UI\Battle</Filter>
     </ClInclude>
     <ClInclude Include="UnitCommandUI.h">
-      <Filter>Battle\UI\Parts</Filter>
-    </ClInclude>
-    <ClInclude Include="DoubleIconActor.h">
-      <Filter>Battle\UI\Parts</Filter>
-    </ClInclude>
-    <ClInclude Include="UnitInformationUI.h">
-      <Filter>Battle\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="StatBar.h">
-      <Filter>Battle\UI</Filter>
+      <Filter>Battle\UI\Battle</Filter>
     </ClInclude>
     <ClInclude Include="StageSelectWindow.h">
       <Filter>UI</Filter>
@@ -309,10 +297,10 @@
       <Filter>UI</Filter>
     </ClInclude>
     <ClInclude Include="HealUI.h">
-      <Filter>Battle\UI\Parts</Filter>
+      <Filter>Battle\UI\Battle</Filter>
     </ClInclude>
     <ClInclude Include="ExchangeUI.h">
-      <Filter>Battle\UI\Parts</Filter>
+      <Filter>Battle\UI\Battle</Filter>
     </ClInclude>
     <ClInclude Include="BattleAnimationLevel.h">
       <Filter>Battle\Animation\Level</Filter>
@@ -350,6 +338,18 @@
     <ClInclude Include="LevelUpUI.h">
       <Filter>Battle\Animation\UI</Filter>
     </ClInclude>
+    <ClInclude Include="DoubleIconActor.h">
+      <Filter>Battle\UI\BattleAnimation</Filter>
+    </ClInclude>
+    <ClInclude Include="BattleLevelUI.h">
+      <Filter>Battle\UI\BattleAnimation</Filter>
+    </ClInclude>
+    <ClInclude Include="StatBar.h">
+      <Filter>Battle\UI\Information</Filter>
+    </ClInclude>
+    <ClInclude Include="UnitInformationUI.h">
+      <Filter>Battle\UI\Information</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Levels">
@@ -385,9 +385,6 @@
     <Filter Include="UI">
       <UniqueIdentifier>{5390e7d9-1648-4336-8256-76abc8484a4c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Battle\UI\Parts">
-      <UniqueIdentifier>{33726127-7d62-45f9-8ed8-27ae560b1199}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Battle\Animation">
       <UniqueIdentifier>{75acbddf-1fed-49e6-8ee3-3c540b8221fb}</UniqueIdentifier>
     </Filter>
@@ -417,6 +414,18 @@
     </Filter>
     <Filter Include="Battle\System\Level\State">
       <UniqueIdentifier>{ccd37b53-084f-4d22-95c6-b346c75bc971}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\UI\Battle">
+      <UniqueIdentifier>{33726127-7d62-45f9-8ed8-27ae560b1199}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\UI\BattleAnimation">
+      <UniqueIdentifier>{e33c9d8e-8cfd-4f2a-a678-78d17924bacd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\UI\Information">
+      <UniqueIdentifier>{1b59ffb3-246f-4ac4-b7d8-3c918286e089}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\UI\Text">
+      <UniqueIdentifier>{f43c02ef-4cf2-45c3-987c-cca641ebd385}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
