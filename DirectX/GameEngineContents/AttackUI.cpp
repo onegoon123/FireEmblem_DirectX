@@ -11,6 +11,7 @@
 #include "NumberActor.h"
 #include "DoubleIconActor.h"
 #include "UIButtonSystem.h"
+#include "TextRenderer.h"
 AttackUI::AttackUI()
 {
 }
@@ -79,9 +80,17 @@ void AttackUI::On(std::shared_ptr<BattleUnit> _SelectUnit, std::list<std::shared
 	{
 		WeaponUses[i]->On();
 		WeaponUses[i]->SetValue((*WeaponIter)->GetUses());
+		ButtonCols[i]->On();
+		ItemNameTexts[i]->On();
+		ItemNameTexts[i]->SetText((*WeaponIter)->GetName());
 		WeaponIter++;
 	}
 
+	for (size_t i = Weapons.size(); i < 5; i++)
+	{
+		ButtonCols[i]->Off();
+		ItemNameTexts[i]->Off();
+	}
 
 	std::shared_ptr<DebugWindow> Window = GameEngineGUI::FindGUIWindowConvert<DebugWindow>("DebugWindow");
 	Window->Text = "";
@@ -91,15 +100,6 @@ void AttackUI::On(std::shared_ptr<BattleUnit> _SelectUnit, std::list<std::shared
 		Window->Text += " ";
 		Window->Text += std::to_string(_Weapon->GetUses());
 		Window->Text += " / " + std::to_string(_Weapon->GetMaxUses()) + '\n';
-	}
-
-	for (int i = 0; i < Weapons.size(); i++)
-	{
-		ButtonCols[i]->On();
-	}
-	for (size_t i = Weapons.size(); i < 5; i++)
-	{
-		ButtonCols[i]->Off();
 	}
 }
 
@@ -184,6 +184,26 @@ void AttackUI::Start()
 		TargetWeapon->GetTransform()->SetWorldScale({ 64, 64 });
 		TargetWeapon->Off();
 
+		SubjectName = CreateComponent<TextRenderer>(RenderOrder::UIText);
+		SubjectName->GetTransform()->SetParent(BattleEx->GetTransform());
+		SubjectName->GetTransform()->SetLocalPosition({ -32, 222 });
+		SubjectName->GetTransform()->SetWorldRotation(float4::Zero);
+		SubjectName->GetTransform()->SetWorldScale(float4::One);
+		SubjectName->Setting("Silhoua14", 55, float4::White, float4::Black, FontAligned::Center);
+
+		TargetName = CreateComponent<TextRenderer>(RenderOrder::UIText);
+		TargetName->GetTransform()->SetParent(BattleEx->GetTransform());
+		TargetName->GetTransform()->SetLocalPosition({ 32, -100});
+		TargetName->GetTransform()->SetWorldRotation(float4::Zero);
+		TargetName->GetTransform()->SetWorldScale(float4::One);
+		TargetName->Setting("Silhoua14", 55, float4::White, float4::Black, FontAligned::Center);
+
+		TargetWeaponName = CreateComponent<TextRenderer>(RenderOrder::UIText);
+		TargetWeaponName->GetTransform()->SetParent(BattleEx->GetTransform());
+		TargetWeaponName->GetTransform()->SetLocalPosition({ 32, -164 });
+		TargetWeaponName->GetTransform()->SetWorldRotation(float4::Zero);
+		TargetWeaponName->GetTransform()->SetWorldScale(float4::One);
+		TargetWeaponName->Setting("Silhoua14", 55, float4::White, float4::Black, FontAligned::Center);
 
 		// 무기 상성 이미지
 		SubjectTriangle = CreateComponent<GameEngineUIRenderer>(RenderOrder::UICursor);
@@ -302,6 +322,7 @@ void AttackUI::Start()
 	ButtonSystem->GetTransform()->SetParent(GetTransform());
 
 	ButtonCols.resize(5);
+	ItemNameTexts.resize(5);
 	for (int i = 0; i < 5; i++)
 	{
 		ButtonCols[i] = CreateComponent<GameEngineCollision>(CollisionOrder::Button);
@@ -320,7 +341,10 @@ void AttackUI::Start()
 				IsClick = true;
 			}
 		);
-
+		ItemNameTexts[i] = CreateComponent<TextRenderer>(RenderOrder::UIText);
+		ItemNameTexts[i]->GetTransform()->SetLocalPosition({ -332, 220.0f - (64 * i) });
+		ItemNameTexts[i]->Setting("Silhoua14", 55, float4::White, float4::Black, FontAligned::Left);
+		ItemNameTexts[i]->Off();
 	}
 
 	GameEngineActor::Off();
@@ -368,10 +392,12 @@ void AttackUI::WeaponSelectStart()
 	for (int i = 0; i < Weapons.size(); i++)
 	{
 		ButtonCols[i]->On();
+		ItemNameTexts[i]->On();
 	}
 	for (size_t i = Weapons.size(); i < 5; i++)
 	{
 		ButtonCols[i]->Off();
+		ItemNameTexts[i]->Off();
 	}
 }
 
@@ -463,6 +489,7 @@ void AttackUI::WeaponSelectEnd()
 	for (int i = 0; i < Weapons.size(); i++)
 	{
 		WeaponeIcon[i]->Off();
+		ItemNameTexts[i]->Off();
 	}
 	for (int i = 0; i < 5; i++)
 	{
@@ -562,6 +589,9 @@ void AttackUI::SetTarget()
 	SubjectWeapon->SetFrame(static_cast<size_t>(SelectWeapon->GetItemCode()) - 1);
 	TargetWeapon->SetFrame(static_cast<size_t>(TargetUnit->GetUnitData().GetCurWeapon()->GetItemCode()) - 1);
 
+	SubjectName->SetText(SelectUnit->GetName());
+	TargetName->SetText(TargetUnit->GetName());
+	TargetWeaponName->SetText(TargetUnit->GetUnitData().GetCurWeapon()->GetName());
 	// 체력
 	SubjectHP->SetValue(SelectUnit->GetUnitData().GetHP());
 	// 공격이 가능한가 (사거리)

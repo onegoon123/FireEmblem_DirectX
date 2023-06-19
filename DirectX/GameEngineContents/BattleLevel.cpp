@@ -160,6 +160,7 @@ void BattleLevel::LevelChangeStart()
 
 	BattleUI = CreateActor<BattleLevelUI>(RenderOrder::UI);
 	BattleUI->AllOff();
+	BattleUI->SetClearTargetText(ClearTargetText);
 	InfoUI = CreateActor<UnitInformationUI>(RenderOrder::UI);
 
 	// 조건 초기화

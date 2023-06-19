@@ -24,6 +24,7 @@ void Stage0::StageSetting()
 	SetStage(0);
 	ClearTarget = BattleClearTarget::Conquer;
 	ConquerPos = { 3, 7 };
+	ClearTargetText = "목표:문 제압";
 
 	// 린
 	Unit_Lyn = NewPlayerUnit(UnitIdentityCode::Lyn, 1, { 14, 0 }, { ItemCode::IronSword, ItemCode::Vulnerary, ItemCode::Vulnerary, ItemCode::MasterSeal });

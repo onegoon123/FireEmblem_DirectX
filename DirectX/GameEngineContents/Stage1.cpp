@@ -25,6 +25,7 @@ void Stage1::StageSetting()
 {
 	SetStage(1);
 	ClearTarget = BattleClearTarget::AllKill;
+	ClearTargetText = "목표:적 전멸";
 
 	// 켄트, 세인
 	NewPlayerUnit(UnitIdentityCode::Kent, 1, { 0, 2 }, { ItemCode::IronSword, ItemCode::IronLance, ItemCode::Vulnerary });

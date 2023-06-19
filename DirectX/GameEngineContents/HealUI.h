@@ -62,6 +62,9 @@ private:
 	std::shared_ptr<class UIButtonSystem> ButtonSystem;
 	std::vector<std::shared_ptr<class GameEngineCollision>> ButtonCols;
 
+	std::vector<std::shared_ptr<class TextRenderer>> ItemNameTexts;
+	std::shared_ptr<TextRenderer> ItemInfoText;
+
 	const float4 StartCursorPos = { -432, 192 };
 	const float4 StartSelectPos = { -232, 192 };
 	float4 CursorPos;

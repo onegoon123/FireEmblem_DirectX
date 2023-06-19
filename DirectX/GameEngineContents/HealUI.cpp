@@ -11,6 +11,7 @@
 #include "NumberActor.h"
 #include "DoubleIconActor.h"
 #include "UIButtonSystem.h"
+#include "TextRenderer.h"
 HealUI::HealUI()
 {
 }
@@ -75,6 +76,18 @@ void HealUI::On(std::shared_ptr<BattleUnit> _SelectUnit, std::list<std::shared_p
 	{
 		StaveIcon[i]->SetFrame(static_cast<size_t>(_Item->GetItemCode()) - 1);
 		StaveIcon[i]->On();
+		ItemNameTexts[i]->SetText(_Item->GetName());
+
+		switch (_Item->GetItemCode())
+		{
+		case ItemCode::Heal:
+			ItemInfoText->SetText("아군의 HP를 회복합니다");
+			break;
+		case ItemCode::Rescue:
+			break;
+		default:
+			break;
+		}
 		i++;
 	}
 	for (i = Staves.size(); i < 5; i++)
@@ -104,10 +117,12 @@ void HealUI::On(std::shared_ptr<BattleUnit> _SelectUnit, std::list<std::shared_p
 	for (int i = 0; i < Staves.size(); i++)
 	{
 		ButtonCols[i]->On();
+		ItemNameTexts[i]->On();
 	}
 	for (size_t i = Staves.size(); i < 5; i++)
 	{
 		ButtonCols[i]->Off();
+		ItemNameTexts[i]->Off();
 	}
 }
 
@@ -138,7 +153,11 @@ void HealUI::Start()
 	InfoRender = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
 	InfoRender->GetTransform()->SetWorldScale({ 420, 356 });
 	InfoRender->GetTransform()->SetLocalPosition({ 224, -224 });
-	InfoRender->SetTexture("UnitInfo.png");
+	InfoRender->SetSprite("ItemUI.png", 2);
+
+	ItemInfoText = CreateComponent<TextRenderer>(RenderOrder::UIText);
+	ItemInfoText->GetTransform()->SetLocalPosition({ 40, -74 });
+	ItemInfoText->Setting("Silhoua14", 45, float4::White, float4::Black, FontAligned::Left);
 
 	Portrait = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
 	Portrait->GetTransform()->SetWorldScale({ 384, 320 });
@@ -176,6 +195,7 @@ void HealUI::Start()
 	ButtonSystem->GetTransform()->SetParent(GetTransform());
 
 	ButtonCols.resize(5);
+	ItemNameTexts.resize(5);
 	for (int i = 0; i < 5; i++)
 	{
 		ButtonCols[i] = CreateComponent<GameEngineCollision>(CollisionOrder::Button);
@@ -194,7 +214,10 @@ void HealUI::Start()
 				IsClick = true;
 			}
 			);
-
+		ItemNameTexts[i] = CreateComponent<TextRenderer>(RenderOrder::UIText);
+		ItemNameTexts[i]->GetTransform()->SetLocalPosition({ -332, 220.0f - (64 * i) });
+		ItemNameTexts[i]->Setting("Silhoua14", 55, float4::White, float4::Black, FontAligned::Left);
+		ItemNameTexts[i]->Off();
 	}
 
 	GameEngineActor::Off();
@@ -228,10 +251,12 @@ void HealUI::StaveSelectStart()
 	for (int i = 0; i < Staves.size(); i++)
 	{
 		ButtonCols[i]->On();
+		ItemNameTexts[i]->On();
 	}
 	for (size_t i = Staves.size(); i < 5; i++)
 	{
 		ButtonCols[i]->Off();
+		ItemNameTexts[i]->Off();
 	}
 }
 
@@ -326,6 +351,7 @@ void HealUI::StaveSelectEnd()
 	for (int i = 0; i < 5; i++)
 	{
 		ButtonCols[i]->Off();
+		ItemNameTexts[i]->Off();
 	}
 }
 

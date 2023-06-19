@@ -23,7 +23,7 @@ void TextRenderer::Start()
 		OutlineRenders[i]->Off();
 	}
 }
-
+//Setting("Silhoua14", 55, float4::White, float4::Black, FontAligned::Center);
 void TextRenderer::Setting(const std::string_view& _Font, float _FontScale, float4 _FontColor, float4 _OutLineColor, FontAligned _Aligned)
 {
 	SetFont(_Font);
@@ -80,4 +80,8 @@ void TextRenderer::SetOutLine(float4 _FontColor)
 void TextRenderer::SetAligned(FontAligned _Aligned)
 {
 	FontRender->SetAligned(_Aligned);
+	for (int i = 0; i < OutlineRenders.size(); i++)
+	{
+		OutlineRenders[i]->SetAligned(_Aligned);
+	}
 }

@@ -31,6 +31,7 @@ protected:
 	virtual void StageSetting() = 0;
 
 	void SetStage(int _StageNum);
+	std::string_view ClearTargetText = "";
 
 	std::vector<int2> StartPos;
 	void LoadPlayerUnits(std::list<Unit>& _Units);

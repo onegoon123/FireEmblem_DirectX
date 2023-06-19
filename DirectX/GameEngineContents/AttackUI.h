@@ -64,11 +64,14 @@ private:
 	std::shared_ptr<GameEngineUIRenderer> TargetWeapon;
 	std::shared_ptr<GameEngineUIRenderer> TargetTriangle;
 
+	std::shared_ptr<class TextRenderer> SubjectName;
 	std::shared_ptr<NumberActor> SubjectHP;
 	std::shared_ptr<NumberActor> SubjectDamage;
 	std::shared_ptr<class DoubleIconActor> SubjectDoubleAttack;
 	std::shared_ptr<NumberActor> SubjectHit;
 	std::shared_ptr<NumberActor> SubjectCritical;
+	std::shared_ptr<TextRenderer> TargetName;
+	std::shared_ptr<TextRenderer> TargetWeaponName;
 	std::shared_ptr<NumberActor> TargetHP;
 	std::shared_ptr<NumberActor> TargetDamage;
 	std::shared_ptr<class DoubleIconActor> TargetDoubleAttack;
@@ -86,6 +89,7 @@ private:
 
 	std::shared_ptr<class UIButtonSystem> ButtonSystem;
 	std::vector<std::shared_ptr<class GameEngineCollision>> ButtonCols;
+	std::vector<std::shared_ptr<TextRenderer>> ItemNameTexts;
 
 	const float4 StartCursorPos = { -432, 192 };
 	const float4 StartSelectPos = { -232, 192 };

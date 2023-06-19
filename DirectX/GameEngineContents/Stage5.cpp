@@ -26,6 +26,8 @@ Stage5::~Stage5()
 void Stage5::StageSetting()
 {
 	SetStage(5);
+	ClearTarget = BattleClearTarget::AllKill;
+	ClearTargetText = "목표:적 전멸";
 
 	// 세라, 에르크 (중립)
 	NewPlayerUnit(UnitIdentityCode::Serra, 1, { 6, 3 }, { ItemCode::Heal,ItemCode::Heal, ItemCode::Vulnerary });

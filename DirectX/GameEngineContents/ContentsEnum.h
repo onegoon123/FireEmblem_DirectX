@@ -178,6 +178,7 @@ enum class Terrain
 	River,		//강
 	Bridge,		//다리
 	Wall,		//벽
+	Fence,		//담장
 	Fort,		//요새
 	Pillar,		//기둥
 	Throne,		//옥좌

@@ -37,6 +37,8 @@ private:
 	void Drop();
 	void Use();
 
+	void SetItemInfo();
+	void ItemUseCancel();
 	BattleLevel* LevelPtr = nullptr;
 	std::function<void(std::list<std::shared_ptr<Item>>::iterator&)> UseFunction;
 	std::function<void()> CancelFunction;
@@ -55,9 +57,18 @@ private:
 	std::vector<std::shared_ptr<class NumberActor>> ItemUses;
 	std::shared_ptr<BattleUnit> SelectUnit = nullptr;;
 
+	std::shared_ptr<NumberActor> WeaponDamage;
+	std::shared_ptr<NumberActor>  WeaponHit;
+	std::shared_ptr<NumberActor>  WeaponCritical;
+	std::shared_ptr<NumberActor>  WeaponWeight;
+
 	std::shared_ptr<class UIButtonSystem> ButtonSystem;
 	std::vector<std::shared_ptr<class GameEngineCollision>> ItemButtons;
 	std::vector<std::shared_ptr<class GameEngineCollision>> UseButtons;
+	std::vector<std::shared_ptr<class TextRenderer>> ItemNameTexts;
+	std::shared_ptr<TextRenderer> ItemInfoText;
+	std::shared_ptr<TextRenderer> ItemUseText1;
+	std::shared_ptr<TextRenderer> ItemUseText2;
 
 	const float4 StartCursorPos = { -432, 192 };
 	const float4 StartSelectPos = { -232, 192 };

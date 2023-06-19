@@ -5,6 +5,7 @@
 #include "BattleLevel.h"
 #include "NumberActor.h"
 #include "UICursor.h"
+#include "TextRenderer.h"
 ExchangeUI::ExchangeUI()
 {
 }
@@ -92,6 +93,8 @@ void ExchangeUI::Start()
 	RightIcons.resize(5);
 	LeftUses.resize(5);
 	RightUses.resize(5);
+	LeftItemNameTexts.resize(5);
+	RightItemNameTexts.resize(5);
 	for (int i = 0; i < 5; i++)
 	{
 		LeftIcons[i] = CreateComponent<GameEngineUIRenderer>(RenderOrder::UIText);
@@ -125,6 +128,22 @@ void ExchangeUI::Start()
 		RightUses[i]->GetTransform()->SetWorldRotation(float4::Zero);
 		RightUses[i]->GetTransform()->SetWorldScale(float4::One);
 		RightUses[i]->Off();
+
+		LeftItemNameTexts[i] = CreateComponent<TextRenderer>(RenderOrder::UIText);
+		LeftItemNameTexts[i]->GetTransform()->SetParent(LeftWindow->GetTransform());
+		LeftItemNameTexts[i]->GetTransform()->SetLocalPosition({ -106, 150.0f - (64 * i) });
+		LeftItemNameTexts[i]->GetTransform()->SetWorldRotation(float4::Zero);
+		LeftItemNameTexts[i]->GetTransform()->SetWorldScale(float4::One);
+		LeftItemNameTexts[i]->Setting("Silhoua14", 55, float4::White, float4::Black, FontAligned::Left);
+		LeftItemNameTexts[i]->Off();
+
+		RightItemNameTexts[i] = CreateComponent<TextRenderer>(RenderOrder::UIText);
+		RightItemNameTexts[i]->GetTransform()->SetParent(RightWindow->GetTransform());
+		RightItemNameTexts[i]->GetTransform()->SetLocalPosition({ -106, 150.0f - (64 * i) });
+		RightItemNameTexts[i]->GetTransform()->SetWorldRotation(float4::Zero);
+		RightItemNameTexts[i]->GetTransform()->SetWorldScale(float4::One);
+		RightItemNameTexts[i]->Setting("Silhoua14", 55, float4::White, float4::Black, FontAligned::Left);
+		RightItemNameTexts[i]->Off();
 	}
 }
 
@@ -216,12 +235,15 @@ void ExchangeUI::ExchangeStart()
 		LeftIcons[i]->On();
 		LeftUses[i]->SetValue((*ItemIter)->GetUses());
 		LeftUses[i]->On();
+		LeftItemNameTexts[i]->On();
+		LeftItemNameTexts[i]->SetText((*ItemIter)->GetName());
 		ItemIter++;
 	}
 	for (int i = (int)LeftItems.size(); i < 5; i++)
 	{
 		LeftIcons[i]->Off();
 		LeftUses[i]->Off();
+		LeftItemNameTexts[i]->Off();
 	}
 	ItemIter = RightItems.begin();
 	for (int i = 0; i < (int)RightItems.size(); i++)
@@ -230,12 +252,15 @@ void ExchangeUI::ExchangeStart()
 		RightIcons[i]->On();
 		RightUses[i]->SetValue((*ItemIter)->GetUses());
 		RightUses[i]->On();
+		RightItemNameTexts[i]->On();
+		RightItemNameTexts[i]->SetText((*ItemIter)->GetName());
 		ItemIter++;
 	}
 	for (int i = (int)RightItems.size(); i < 5; i++)
 	{
 		RightIcons[i]->Off();
 		RightUses[i]->Off();
+		RightItemNameTexts[i]->Off();
 	}
 
 	IsUnitSelect = true;

@@ -24,6 +24,8 @@ Stage3::~Stage3()
 void Stage3::StageSetting()
 {
 	SetStage(3);
+	ClearTarget = BattleClearTarget::AllKill;
+	ClearTargetText = "목표:적 전멸";
 
 	// 플로리나
 	NewPlayerUnit(UnitIdentityCode::Florina, 1, { 2, 2 }, { ItemCode::SlimLance, ItemCode::Vulnerary });

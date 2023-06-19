@@ -127,6 +127,9 @@ void SelectUI::SetTerrainData(Terrain _Data)
 	case Terrain::Throne:
 		TerrainStr = "¿ÁÁÂ";
 		break;
+	case Terrain::Fence :
+		TerrainStr = "´ãÀå";
+		break;
 	default:
 		break;
 	}
@@ -253,6 +256,14 @@ void SelectUI::Start()
 	Goal.BenchmarkShowPos = { -300, 254 };
 	Goal.CurDir = UIDir::None;
 	Goal.NextDir = UIDir::None;
+
+	ClearTargetText = CreateComponent<TextRenderer>(RenderOrder::UIText);
+	ClearTargetText->GetTransform()->SetParent(Goal.Render->GetTransform());
+	ClearTargetText->GetTransform()->SetLocalPosition({ 0, 28 });
+	ClearTargetText->GetTransform()->SetWorldScale(float4::One);
+	ClearTargetText->GetTransform()->SetWorldRotation(float4::Zero);
+	ClearTargetText->Setting("Silhoua14", 55, float4::White, float4::Black, FontAligned::Center);
+	ClearTargetText->SetText("¸ñÇ¥:Àû Àü¸ê");
 
 	TerrainUI.Render = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
 	TerrainUI.Render->SetTexture("TerrainUI.png");
@@ -468,4 +479,9 @@ void SelectUIObject::ChangeDir(UIDir _Dir)
 	NextDir = UIDir::None;
 	Timer = 0;
 
+}
+
+void SelectUI::SetClearTarget(const std::string_view& _Text)
+{
+	ClearTargetText->SetText(_Text);
 }

@@ -103,6 +103,7 @@ int BattleMap::GetTerrainCostFoot(Terrain _Value)
 	case Terrain::Sea:
 	case Terrain::Lake:
 	case Terrain::Wall:
+	case Terrain::Fence:
 	default:
 		return 99;
 	}
@@ -132,6 +133,7 @@ int BattleMap::GetTerrainDodge(Terrain _Value)
 	case Terrain::Door:
 	case Terrain::Bridge:
 	case Terrain::Wall:
+	case Terrain::Fence:
 		return 0;
 	case Terrain::House:
 	case Terrain::Shop:
@@ -173,6 +175,7 @@ int BattleMap::GetTerrainDef(Terrain _Value)
 	case Terrain::Shop:
 	case Terrain::Lake:
 	case Terrain::Sea:
+	case Terrain::Fence:
 		return 0;
 	case Terrain::Pillar:
 	case Terrain::Forest:
@@ -235,16 +238,16 @@ void BattleMap::SetTerrainData_Stage2()
 
 void BattleMap::SetTerrainData_Stage3()
 {
-	TerrainData[0] = { Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Road, Terrain::Plain, Terrain::Plain, Terrain::Road, Terrain::Wall, Terrain::Road, Terrain::Road, Terrain::Peak, Terrain::Peak };
-	TerrainData[1] = { Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Road, Terrain::Road, Terrain::Road, Terrain::Wall, Terrain::Road, Terrain::Road, Terrain::Road, Terrain::Peak };
-	TerrainData[2] = { Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Road, Terrain::Road, Terrain::Plain, Terrain::Road, Terrain::Wall, Terrain::Road, Terrain::Road, Terrain::Wall, Terrain::Road, Terrain::None, Terrain::Shop, Terrain::None };
-	TerrainData[3] = { Terrain::Plain, Terrain::Plain, Terrain::None, Terrain::House, Terrain::None, Terrain::Road, Terrain::Road, Terrain::Wall, Terrain::Road, Terrain::Road, Terrain::Forest, Terrain::Road, Terrain::None, Terrain::None, Terrain::None };
-	TerrainData[4] = { Terrain::Plain, Terrain::Peak, Terrain::None, Terrain::None, Terrain::None, Terrain::Wall, Terrain::Wall, Terrain::Wall, Terrain::Wall, Terrain::Wall, Terrain::Wall, Terrain::Plain, Terrain::Plain, Terrain::Forest, Terrain::Plain };
-	TerrainData[5] = { Terrain::Peak, Terrain::Peak, Terrain::Plain, Terrain::Road, Terrain::Plain, Terrain::Road, Terrain::Road, Terrain::Wall, Terrain::Road, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Road, Terrain::Plain, Terrain::Road };
-	TerrainData[6] = { Terrain::Forest, Terrain::Plain, Terrain::Road, Terrain::Road, Terrain::Road, Terrain::Wall, Terrain::Wall, Terrain::Wall, Terrain::Road, Terrain::Road, Terrain::Plain, Terrain::Forest, Terrain::Road, Terrain::Road, Terrain::Road };
-	TerrainData[7] = { Terrain::Plain, Terrain::None, Terrain::House, Terrain::None, Terrain::Road, Terrain::Wall, Terrain::Plain, Terrain::Road, Terrain::Road, Terrain::Plain, Terrain::Plain, Terrain::Ruins, Terrain::Ruins, Terrain::Ruins, Terrain::Wall };
+	TerrainData[0] = { Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Road, Terrain::Plain, Terrain::Plain, Terrain::Road, Terrain::Fence, Terrain::Road, Terrain::Road, Terrain::Peak, Terrain::Peak };
+	TerrainData[1] = { Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Road, Terrain::Road, Terrain::Road, Terrain::Fence, Terrain::Road, Terrain::Road, Terrain::Road, Terrain::Peak };
+	TerrainData[2] = { Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Road, Terrain::Road, Terrain::Plain, Terrain::Road, Terrain::Fence, Terrain::Road, Terrain::Road, Terrain::Fence, Terrain::Road, Terrain::None, Terrain::Shop, Terrain::None };
+	TerrainData[3] = { Terrain::Plain, Terrain::Plain, Terrain::None, Terrain::House, Terrain::None, Terrain::Road, Terrain::Road, Terrain::Fence, Terrain::Road, Terrain::Road, Terrain::Forest, Terrain::Road, Terrain::None, Terrain::None, Terrain::None };
+	TerrainData[4] = { Terrain::Plain, Terrain::Peak, Terrain::None, Terrain::None, Terrain::None, Terrain::Fence, Terrain::Fence, Terrain::Fence, Terrain::Fence, Terrain::Fence, Terrain::Fence, Terrain::Plain, Terrain::Plain, Terrain::Forest, Terrain::Plain };
+	TerrainData[5] = { Terrain::Peak, Terrain::Peak, Terrain::Plain, Terrain::Road, Terrain::Plain, Terrain::Road, Terrain::Road, Terrain::Fence, Terrain::Road, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Road, Terrain::Plain, Terrain::Road };
+	TerrainData[6] = { Terrain::Forest, Terrain::Plain, Terrain::Road, Terrain::Road, Terrain::Road, Terrain::Fence, Terrain::Fence, Terrain::Fence, Terrain::Road, Terrain::Road, Terrain::Plain, Terrain::Forest, Terrain::Road, Terrain::Road, Terrain::Road };
+	TerrainData[7] = { Terrain::Plain, Terrain::None, Terrain::House, Terrain::None, Terrain::Road, Terrain::Fence, Terrain::Plain, Terrain::Road, Terrain::Road, Terrain::Plain, Terrain::Plain, Terrain::Ruins, Terrain::Ruins, Terrain::Ruins, Terrain::Fence };
 	TerrainData[8] = { Terrain::Plain, Terrain::None, Terrain::None, Terrain::None, Terrain::Road, Terrain::Road, Terrain::Road, Terrain::Road, Terrain::Forest, Terrain::Plain, Terrain::Road, Terrain::Ruins, Terrain::Ruins, Terrain::Ruins, Terrain::Road };
-	TerrainData[9] = { Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Wall, Terrain::Road, Terrain::Road, Terrain::Plain, Terrain::Forest, Terrain::Road, Terrain::Road, Terrain::Road, Terrain::Plain, Terrain::Peak };
+	TerrainData[9] = { Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Fence, Terrain::Road, Terrain::Road, Terrain::Plain, Terrain::Forest, Terrain::Road, Terrain::Road, Terrain::Road, Terrain::Plain, Terrain::Peak };
 }
 
 void BattleMap::SetTerrainData_Stage4()

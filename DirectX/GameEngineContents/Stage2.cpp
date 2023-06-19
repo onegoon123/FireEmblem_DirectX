@@ -23,6 +23,9 @@ Stage2::~Stage2()
 void Stage2::StageSetting()
 {
 	SetStage(2);
+	ClearTarget = BattleClearTarget::Conquer;
+	ConquerPos = { 11, 8 };
+	ClearTargetText = "¸ñÇ¥:¿ÁÁÂ Á¦¾Ğ";
 
 	// »êÀû
 	NewEnemyUnit(UnitIdentityCode::Brigand, 1, { 7, 9 }, { ItemCode::IronAxe });

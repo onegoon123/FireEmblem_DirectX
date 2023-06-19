@@ -40,6 +40,7 @@ public:
 	void PotionUIOn();
 	void PotionUIOff();
 	void SetHPLerp(int _Value);
+	void SetClearTargetText(const std::string_view& _Text);
 
 protected:
 	void Start() override;

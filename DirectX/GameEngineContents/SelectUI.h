@@ -49,6 +49,7 @@ public:
 	void SetHPBar(float _Value);
 	void SetHPLerp(int _Value);
 	void SetUnitData(std::shared_ptr<BattleUnit> _Unit);
+	void SetClearTarget(const std::string_view& _Text);
 	void UnitUIOff();
 
 	void PotionUIOn();

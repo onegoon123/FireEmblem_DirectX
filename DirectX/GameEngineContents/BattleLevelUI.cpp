@@ -218,6 +218,11 @@ void BattleLevelUI::SetHPLerp(int _Value)
 	UI_Select->SetHPLerp(_Value);
 }
 
+void BattleLevelUI::SetClearTargetText(const std::string_view& _Text)
+{
+	UI_Select->SetClearTarget(_Text);
+}
+
 
 void BattleLevelUI::Start()
 {

@@ -59,6 +59,8 @@ private:
 	std::list<std::shared_ptr<Item>> RightItems;
 	std::shared_ptr<Item> LeftItem;
 	std::shared_ptr<Item> RightItem;
+	std::vector<std::shared_ptr<class TextRenderer>> LeftItemNameTexts;
+	std::vector<std::shared_ptr<class TextRenderer>> RightItemNameTexts;
 
 	std::list<std::shared_ptr<BattleUnit>>::iterator TargetIter;
 
