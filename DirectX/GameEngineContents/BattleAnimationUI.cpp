@@ -8,6 +8,8 @@
 #include "BattleHPBar.h"
 #include "EXPBar.h"
 #include "LevelUpUI.h"
+#include "TextRenderer.h"
+#include "BattleUnit.h"
 BattleAnimationUI::BattleAnimationUI()
 {
 }
@@ -39,6 +41,11 @@ void BattleAnimationUI::SetClassChange()
 	WaitTimer = 0;
 	IsFadeIn = false;
 	IsFadeOut = false;
+	FadeRenderer->On();
+	Text_PlayerName->Off();
+	Text_PlayerWeaponName->Off();
+	Text_EnemyName->Off();
+	Text_EnemyWeaponName->Off();
 }
 
 void BattleAnimationUI::SetDefault()
@@ -61,12 +68,17 @@ void BattleAnimationUI::SetDefault()
 	WaitTimer = 0;
 	IsFadeIn = false;
 	IsFadeOut = false;
+	FadeRenderer->Off();
 	FadeRenderer->ColorOptionValue.PlusColor = float4::Null;
+	Text_PlayerName->On();
+	Text_PlayerWeaponName->On();
+	Text_EnemyName->On();
+	Text_EnemyWeaponName->On();
 }
 
 void BattleAnimationUI::SetFadeWhite()
 {
-	FadeRenderer->ColorOptionValue.PlusColor = float4( 1.0f, 1.0f, 1.0f, 0.0f);
+	FadeRenderer->ColorOptionValue.PlusColor = float4(1.0f, 1.0f, 1.0f, 0.0f);
 }
 
 void BattleAnimationUI::SetFadeWait(float _Timer)
@@ -93,12 +105,20 @@ void BattleAnimationUI::SetFadeOut(float _Timer)
 	FadeRenderer->ColorOptionValue.MulColor.a = 0;
 }
 
-void BattleAnimationUI::SetData(Unit& _Unit1, Unit& _Unit2, bool _Unit1Attackable, bool _Unit2Attackable)
+void BattleAnimationUI::SetData(std::shared_ptr<BattleUnit> _Unit1, std::shared_ptr<BattleUnit> _Unit2, bool _Unit1Attackable, bool _Unit2Attackable)
 {
-	Unit& Player = _Unit1.GetIsPlayer() == true ? _Unit1 : _Unit2;
-	Unit& Enemy = _Unit1.GetIsPlayer() == false ? _Unit1 : _Unit2;
+	std::shared_ptr<BattleUnit> PlayerBattleUnit = _Unit1->GetUnitData().GetIsPlayer() == true ? _Unit1 : _Unit2;
+	std::shared_ptr<BattleUnit> EnemyBattleUnit = _Unit1->GetUnitData().GetIsPlayer() == false ? _Unit1 : _Unit2;
+	Unit& Player = PlayerBattleUnit->GetUnitData();
+	Unit& Enemy = EnemyBattleUnit->GetUnitData();
+	UnitName = PlayerBattleUnit->GetName();
 	PlayerData = Player;
 	PlayerHPBar->Setting(Player.GetHP(), Player.GetMaxHP());
+
+	Text_PlayerName->SetText(PlayerBattleUnit->GetName());
+	Text_EnemyName->SetText(EnemyBattleUnit->GetName());
+	Text_PlayerWeaponName->SetText(Player.GetCurWeapon()->GetName());
+	Text_EnemyWeaponName->SetText(Enemy.GetCurWeapon()->GetName());
 
 	Number_PlayerHP->Setting(Player.GetHP());
 
@@ -198,7 +218,7 @@ void BattleAnimationUI::SetEXP(int _Before, int _Get, Unit& _UnitData)
 	PlayerData = _UnitData;
 	EXPUI->SetEXP(_Before);
 	EXPUI->AddEXP(_Get, [this] {
-			TimeEvent->AddEvent(1.0f, std::bind(&BattleAnimationUI::EndExpUI, this));
+		TimeEvent->AddEvent(1.0f, std::bind(&BattleAnimationUI::EndExpUI, this));
 		});
 	EXPUI->On();
 	IsLevelUp = 100 <= _Before + _Get;
@@ -206,12 +226,12 @@ void BattleAnimationUI::SetEXP(int _Before, int _Get, Unit& _UnitData)
 
 void BattleAnimationUI::LevelUpStart(Unit& _UnitData)
 {
-	LevelUI->LevelUpStart(_UnitData);
+	LevelUI->LevelUpStart(_UnitData, UnitName);
 }
 
-void BattleAnimationUI::ClassChangeStart(Unit& _UnitData)
+void BattleAnimationUI::ClassChangeStart(Unit& _UnitData, const std::string_view& _Name)
 {
-	LevelUI->ClassChangeStart(_UnitData);
+	LevelUI->ClassChangeStart(_UnitData, _Name);
 }
 
 bool BattleAnimationUI::IsTurnEnd()
@@ -245,6 +265,22 @@ void BattleAnimationUI::Start()
 	EnemyHPBar->GetTransform()->SetLocalPosition({ 164, -272 });
 	EnemyHPBar->GetTransform()->SetWorldRotation(float4::Zero);
 	EnemyHPBar->GetTransform()->SetWorldScale(float4::One);
+
+	Text_PlayerName = CreateComponent<TextRenderer>(RenderOrder::UIText);
+	Text_PlayerName->GetTransform()->SetLocalPosition({ -384, 282 });
+	Text_PlayerName->Setting("Silhoua14", 55, float4::White, float4::Black, FontAligned::Center);
+
+	Text_EnemyName = CreateComponent<TextRenderer>(RenderOrder::UIText);
+	Text_EnemyName->GetTransform()->SetLocalPosition({ 384, 282 });
+	Text_EnemyName->Setting("Silhoua14", 55, float4::White, float4::Black, FontAligned::Center);
+
+	Text_PlayerWeaponName = CreateComponent<TextRenderer>(RenderOrder::UIText);
+	Text_PlayerWeaponName->GetTransform()->SetLocalPosition({ -132, -178 });
+	Text_PlayerWeaponName->Setting("Silhoua14", 55, float4::White, float4::Black, FontAligned::Center);
+
+	Text_EnemyWeaponName = CreateComponent<TextRenderer>(RenderOrder::UIText);
+	Text_EnemyWeaponName->GetTransform()->SetLocalPosition({ 172, -178 });
+	Text_EnemyWeaponName->Setting("Silhoua14", 55, float4::White, float4::Black, FontAligned::Center);
 
 	Number_PlayerHP = CurLevel->CreateActor<NumberActor>();
 	Number_PlayerHP->SetDamageFont();
@@ -374,7 +410,11 @@ void BattleAnimationUI::EndExpUI()
 {
 	if (true == IsLevelUp)
 	{
-		LevelUI->LevelUpStart(PlayerData);
+		Text_PlayerName->Off();
+		Text_PlayerWeaponName->Off();
+		Text_EnemyName->Off();
+		Text_EnemyWeaponName->Off();
+		LevelUI->LevelUpStart(PlayerData, UnitName);
 	}
 }
 

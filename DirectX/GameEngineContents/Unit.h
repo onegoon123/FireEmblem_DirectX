@@ -58,10 +58,6 @@ public:
 	void LevelUp()
 	{
 		LevelUpData = UnitStat.LevelUp();
-		if (1 <= LevelUpData.HP)
-		{
-			CurrentHP += LevelUpData.HP;
-		}
 	}
 	void LevelUp(int _Value)
 	{

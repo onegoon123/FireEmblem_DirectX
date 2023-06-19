@@ -16,8 +16,8 @@ public:
 	LevelUpUI& operator=(const LevelUpUI& _Other) = delete;
 	LevelUpUI& operator=(LevelUpUI&& _Other) noexcept = delete;
 
-	void LevelUpStart(Unit& _UnitData);
-	void ClassChangeStart(Unit& _UnitData);
+	void LevelUpStart(Unit& _UnitData, const std::string_view& _Name);
+	void ClassChangeStart(Unit& _UnitData, const std::string_view& _Name);
 
 protected:
 	void Start() override;
@@ -33,6 +33,7 @@ private:
 	std::shared_ptr<GameEngineUIRenderer> UIPortraitRender = nullptr;
 	std::shared_ptr<GameEngineUIRenderer> UITextRender = nullptr;
 
+	std::shared_ptr<class TextRenderer> UnitName = nullptr;
 	std::shared_ptr<class NumberActor> Number_Level = nullptr;
 	std::vector< std::shared_ptr<NumberActor>> Number_Stats;
 

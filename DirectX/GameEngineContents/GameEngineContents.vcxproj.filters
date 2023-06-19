@@ -189,6 +189,9 @@
     <ClCompile Include="BattleLevelUI.cpp">
       <Filter>Battle\UI\Battle</Filter>
     </ClCompile>
+    <ClCompile Include="FadeEffect.cpp">
+      <Filter>PostEffect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FECore.h" />
@@ -356,6 +359,9 @@
     <ClInclude Include="BattleLevelUI.h">
       <Filter>Battle\UI\Battle</Filter>
     </ClInclude>
+    <ClInclude Include="FadeEffect.h">
+      <Filter>PostEffect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Levels">
@@ -433,9 +439,15 @@
     <Filter Include="Battle\UI\Text">
       <UniqueIdentifier>{f43c02ef-4cf2-45c3-987c-cca641ebd385}</UniqueIdentifier>
     </Filter>
+    <Filter Include="PostEffect">
+      <UniqueIdentifier>{8742de81-9d42-4555-84f0-2bbb60f0f9e3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\ContentResources\Shader\EffectPixelShader.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="..\ContentResources\Shader\FadeShader.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
   </ItemGroup>

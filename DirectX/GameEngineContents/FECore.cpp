@@ -82,16 +82,40 @@ void FECore::ResourcesCreate()
 	NewDir.Move("ContentResources");
 	NewDir.Move("Shader");
 
-	std::shared_ptr<GameEnginePixelShader> Shader = GameEnginePixelShader::Load(NewDir.GetPlusFileName("EffectPixelShader.hlsl").GetFullPath(), "Texture_PS");
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("ContentResources");
+		NewDir.Move("ContentResources");
+		NewDir.Move("Shader");
+
+		std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".hlsl", ".fx" });
+
+		for (size_t i = 0; i < Files.size(); i++)
+		{
+			GameEngineShader::AutoCompile(Files[i]);
+		}
+
+	}
+
+
 	std::shared_ptr<GameEngineRenderingPipeLine> Pipe = GameEngineRenderingPipeLine::Create("2DTextureEffect");
 
-	//Pipe->SetVertexBuffer("Rect");
-	//Pipe->SetIndexBuffer("Rect");
 	Pipe->SetVertexShader("TextureShader.hlsl");
 	Pipe->SetRasterizer("Engine2DBase");
 	Pipe->SetPixelShader("EffectPixelShader.hlsl");
 	Pipe->SetBlendState("AlphaBlend");
 	Pipe->SetDepthState("EngineDepth");
+
+
+	{
+		std::shared_ptr<GameEngineRenderingPipeLine> Pipe = GameEngineRenderingPipeLine::Create("Fade");
+
+		Pipe->SetVertexShader("FadeShader.hlsl");
+		Pipe->SetRasterizer("Engine2DBase");
+		Pipe->SetPixelShader("FadeShader.hlsl");
+		Pipe->SetBlendState("AlphaBlend");
+		Pipe->SetDepthState("EngineDepth");
+	}
 
 	GameEngineFont::Load("Silhoua14");
 }

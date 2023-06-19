@@ -5,6 +5,7 @@
 #include "ContentsEnum.h"
 #include "NumberActor.h"
 #include "BattleAnimationLevel.h"
+#include "TextRenderer.h"
 LevelUpUI::LevelUpUI()
 {
 }
@@ -13,11 +14,12 @@ LevelUpUI::~LevelUpUI()
 {
 }
 
-void LevelUpUI::LevelUpStart(Unit& _UnitData)
+void LevelUpUI::LevelUpStart(Unit& _UnitData, const std::string_view& _Name)
 {
 	On();
 	FSM.ChangeState("LevelUpText");
 
+	UnitName->SetText(_Name);
 	// 초상화 지정
 	std::string TextStr = "Portrait_";
 	TextStr += _UnitData.GetName();
@@ -34,11 +36,12 @@ void LevelUpUI::LevelUpStart(Unit& _UnitData)
 	}
 }
 
-void LevelUpUI::ClassChangeStart(Unit& _UnitData)
+void LevelUpUI::ClassChangeStart(Unit& _UnitData, const std::string_view& _Name)
 {
 	On();
 	FSM.ChangeState("LevelUIOn");
 	Count = 0;
+	UnitName->SetText(_Name);
 	// 초상화 지정
 	std::string TextStr = "Portrait_";
 	TextStr += _UnitData.GetName();
@@ -82,6 +85,12 @@ void LevelUpUI::Start()
 	UIPortraitRender->GetTransform()->SetWorldScale({ 384, 320 });
 	UIPortraitRender->GetTransform()->SetLocalPosition({ 272, -160 });
 	UIPortraitRender->Off();
+
+	UnitName = CreateComponent<TextRenderer>(RenderOrder::UIText);
+	UnitName->GetTransform()->SetParent(UIRender->GetTransform(), false);
+	UnitName->GetTransform()->SetLocalPosition({-184, 186});
+	UnitName->GetTransform()->SetWorldScale(float4::One);
+	UnitName->Setting("Silhoua14", 55, float4::White, float4::Black, FontAligned::Left);
 
 	Number_Level = CurLevel->CreateActor<NumberActor>();
 	Number_Level->NumberCreate(17);

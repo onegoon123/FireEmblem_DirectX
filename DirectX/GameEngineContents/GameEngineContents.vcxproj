@@ -239,6 +239,10 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="FadeEffect.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="FECore.cpp" />
     <ClCompile Include="FEData.cpp">
       <SubType>
@@ -454,6 +458,10 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="FadeEffect.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="FECore.h" />
     <ClInclude Include="FEData.h">
       <SubType>
@@ -606,6 +614,12 @@
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\ContentResources\Shader\EffectPixelShader.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="..\ContentResources\Shader\FadeShader.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>

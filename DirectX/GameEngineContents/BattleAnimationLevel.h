@@ -48,6 +48,8 @@ private:
 	std::shared_ptr<BattleAnimationUnit> RightUnit;
 	std::shared_ptr<class BattleAnimationUI> UI;
 
+	std::shared_ptr<class FadeEffect> FEffect;
+
 	bool IsTurnEnd = false;
 	bool IsFadeOut = false;
 	static bool IsClassChange;

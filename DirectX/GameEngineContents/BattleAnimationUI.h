@@ -22,12 +22,12 @@ public:
 	void SetFadeIn(float _Timer);
 	void SetFadeOut(float _Timer);
 	
-	void SetData(Unit& _Unit1, Unit& _Unit2, bool _Unit1Attackable, bool _Unit2Attackable);
+	void SetData(std::shared_ptr<BattleUnit> _Unit1, std::shared_ptr<BattleUnit> _Unit2, bool _Unit1Attackable, bool _Unit2Attackable);
 	void SetDamage(Unit& _Unit);
 
 	void SetEXP(int _Before, int _Get, Unit& _UnitData);
 	void LevelUpStart(Unit& _UnitData);
-	void ClassChangeStart(Unit& _UnitData);
+	void ClassChangeStart(Unit& _UnitData, const std::string_view& _Name);
 	bool IsTurnEnd();
 
 protected:
@@ -42,6 +42,11 @@ private:
 
 	std::shared_ptr<class BattleHPBar> PlayerHPBar = nullptr;
 	std::shared_ptr<BattleHPBar> EnemyHPBar = nullptr;
+
+	std::shared_ptr<class TextRenderer> Text_PlayerName = nullptr;
+	std::shared_ptr<class TextRenderer> Text_PlayerWeaponName = nullptr;
+	std::shared_ptr<class TextRenderer> Text_EnemyName = nullptr;
+	std::shared_ptr<class TextRenderer> Text_EnemyWeaponName = nullptr;
 
 	std::shared_ptr<class NumberActor> Number_PlayerHP = nullptr;
 	std::shared_ptr<NumberActor> Number_PlayerDamage = nullptr;
@@ -61,6 +66,7 @@ private:
 	std::shared_ptr<class EXPBar> EXPUI = nullptr;
 	std::shared_ptr<class LevelUpUI> LevelUI = nullptr;
 
+	std::string_view UnitName = "";
 	Unit PlayerData;
 
 	float FadeSpeed = 0.0f;
