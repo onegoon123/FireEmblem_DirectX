@@ -15,6 +15,7 @@
 #include "DebugWindow.h"
 #include "FEData.h"
 #include "UnitCommand.h"
+#include "FadeEffect.h"
 BattleLevel::BattleLevel()
 {
 	StateUpdate = std::bind(&BattleLevel::PlayerPhaseUpdate, this, std::placeholders::_1);
@@ -162,6 +163,8 @@ void BattleLevel::LevelChangeStart()
 	BattleUI->AllOff();
 	BattleUI->SetClearTargetText(ClearTargetText);
 	InfoUI = CreateActor<UnitInformationUI>(RenderOrder::UI);
+
+	FEffect = GetLastTarget()->CreateEffect<FadeEffect>();
 
 	// 조건 초기화
 	IsMove.resize(MainMap->MapScaleInt2.y);

@@ -3,6 +3,7 @@
 #include "Weapon.h"
 #include "ContentsEnum.h"
 #include "BattleMap.h"
+
 class Unit : public GameEngineNameObject
 {
 	friend class BattleUnit;
@@ -144,6 +145,9 @@ public:
 	{
 		return UnitStat.ClassValue;
 	}
+	// 배틀클래스
+	std::string_view GetClassValueToString();
+
 	void ClassChange(BattleClass _Value)
 	{
 		switch (_Value)

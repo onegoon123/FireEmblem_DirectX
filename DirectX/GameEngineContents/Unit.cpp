@@ -11,11 +11,11 @@ Unit::~Unit()
 
 int Unit::GetRangeStat()
 {
-	int Return = 0;
-	for (std::shared_ptr<Weapon> _Weapon : Weapons)
-	{
-		Return = Return > _Weapon->GetRange() ? Return : _Weapon->GetRange();
-	}
+	//int Return = 0;
+	//for (std::shared_ptr<Weapon> _Weapon : Weapons)
+	//{
+	//	Return = Return > _Weapon->GetRange() ? Return : _Weapon->GetRange();
+	//}
 	if (GetClassValue() == BattleClass::Cleric)
 	{
 		bool Check = false;
@@ -32,7 +32,56 @@ int Unit::GetRangeStat()
 			return 1;
 		}
 	}
-	return Return;
+	return CurWeapon->GetRange();
+	//Return;
+}
+
+std::string_view Unit::GetClassValueToString()
+{
+	switch (UnitStat.ClassValue)
+	{
+	case BattleClass::Lord:
+		return "로드";
+	case BattleClass::BladeLord:
+		return "블레이드 로드";
+	case BattleClass::Cavalier:
+		return "소셜 나이트";
+	case BattleClass::PegasusKnight:
+		return "페가수스 나이트";
+	case BattleClass::Archer:
+		return "아처";
+	case BattleClass::Fighter:
+		return "전사";
+	case BattleClass::Warrior:
+		return "워리어";
+	case BattleClass::Cleric:
+		return "시스터";
+	case BattleClass::Mage:
+		return "마도사";
+	case BattleClass::Nomad:
+		return "유목민";
+	case BattleClass::Thief:
+		return "도적";
+	case BattleClass::Assassin:
+		return "어쌔신";
+	case BattleClass::Dancer:
+		return "무희";
+	case BattleClass::Monk:
+		return "수도사";
+	case BattleClass::Knight:
+		return "아머 나이트";
+	case BattleClass::General:
+		return "제너럴";
+	case BattleClass::Brigand:
+		return "산적";
+	case BattleClass::Soldier:
+		return "병사";
+	case BattleClass::Mercenary:
+		return "용병";
+	default:
+		break;
+	}
+	return "";
 }
 
 void Unit::EquipWeapon(std::shared_ptr<Weapon> _Weapon)

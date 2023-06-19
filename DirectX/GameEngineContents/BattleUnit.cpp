@@ -466,7 +466,7 @@ void BattleUnit::SetUnitAnimation(UnitIdentityCode _Value)
 		UnitData.IsPlayer = true;
 		break;
 	case UnitIdentityCode::Lucius:
-		SetName("风矫快胶");
+		SetName("风技酒");
 		UnitData.SetName("Lucius");
 		MapSpriteName = "Map_Lucius.png";
 		UnitData.IsPlayer = true;

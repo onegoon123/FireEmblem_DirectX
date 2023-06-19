@@ -31,6 +31,8 @@ private:
 
 
 	std::shared_ptr<GameEngineUIRenderer> PersonalDataWindow = nullptr;
+	std::shared_ptr<class TextRenderer> Text_Name = nullptr;
+	std::shared_ptr<TextRenderer> Text_Class = nullptr;
 	std::shared_ptr<class NumberActor> Number_Level = nullptr;
 	std::shared_ptr<NumberActor> Number_Exp = nullptr;
 	std::shared_ptr<NumberActor> Number_HP = nullptr;
@@ -61,6 +63,8 @@ private:
 	std::vector<std::shared_ptr<NumberActor>> ItemUses;
 	std::vector<std::shared_ptr<NumberActor>> ItemMaxUses;
 	std::vector<std::shared_ptr<GameEngineUIRenderer>> ItemUsesText;
+	std::vector <std::shared_ptr<TextRenderer>> ItemNames;
+
 
 	std::shared_ptr<NumberActor> Range;
 	std::shared_ptr<NumberActor> Attack;

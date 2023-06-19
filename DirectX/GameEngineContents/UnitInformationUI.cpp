@@ -7,6 +7,7 @@
 #include "BattleLevel.h"
 #include "NumberActor.h"
 #include "StatBar.h"
+#include "TextRenderer.h"
 
 UnitInformationUI::UnitInformationUI()
 {
@@ -66,11 +67,20 @@ void UnitInformationUI::SetUnit(std::shared_ptr<BattleUnit> _Unit)
 		UnitRenderer->CreateAnimation({ .AnimationName = _Unit->GetMapSpriteName(), .SpriteName = _Unit->GetMapSpriteName(), .FrameIndex = {0, 1, 2, 1}, .FrameTime = {0.5f, 0.1f, 0.5f, 0.1f} });
 	}
 	UnitRenderer->ChangeAnimation(_Unit->GetMapSpriteName());
+
+	Text_Name->SetText(_Unit->GetName());
+	Text_Class->SetText(_Unit->GetUnitData().GetClassValueToString());
+
 	Number_Level->SetValue(_Unit->GetUnitData().GetLevel());
 	Number_Exp->SetValue(_Unit->GetUnitData().GetExp());
 	Number_HP->SetValue(_Unit->GetUnitData().GetHP());
 	Number_MaxHP->SetValue(_Unit->GetUnitData().GetMaxHP());
 
+	Range->SetValue(_Unit->GetRangeStat());
+	Attack->SetValue(_Unit->GetUnitData().GetAttackPoint());
+	Critical->SetValue(_Unit->GetUnitData().GetCriticalPoint());
+	Hit->SetValue(_Unit->GetUnitData().GetHitPoint());
+	Dodge->SetValue(_Unit->GetUnitData().GetDodgePoint());
 	// ½ºÅÝ ¼ýÀÚ
 	MainStat StatValue = _Unit->GetUnitData().GetMainStat();
 	Number_Strength->SetValue(StatValue.Strength);
@@ -82,6 +92,7 @@ void UnitInformationUI::SetUnit(std::shared_ptr<BattleUnit> _Unit)
 	Number_Luck->SetValue(StatValue.Luck);
 	Number_Move->SetValue(_Unit->GetMoveStat());
 	Number_Constitution->SetValue(StatValue.Constitution);
+
 
 	// ½ºÅÈ °ÔÀÌÁö
 	MainStat MaximumStat = _Unit->GetUnitData().GetMaximumStat();
@@ -117,6 +128,8 @@ void UnitInformationUI::SetUnit(std::shared_ptr<BattleUnit> _Unit)
 		ItemMaxUses[i]->On();
 		ItemMaxUses[i]->SetValue((*ItemIter)->GetMaxUses());
 		ItemUsesText[i]->On();
+		ItemNames[i]->On();
+		ItemNames[i]->SetText((*ItemIter)->GetName());
 		ItemIter++;
 	}
 	for (size_t i = Items.size(); i < 5; i++)
@@ -125,6 +138,7 @@ void UnitInformationUI::SetUnit(std::shared_ptr<BattleUnit> _Unit)
 		ItemUses[i]->Off();
 		ItemMaxUses[i]->Off();
 		ItemUsesText[i]->Off();
+		ItemNames[i]->Off();
 	}
 }
 
@@ -161,6 +175,14 @@ void UnitInformationUI::Start()
 	UnitRenderer = CreateComponent<GameEngineUIRenderer>(6);
 	UnitRenderer->GetTransform()->SetLocalScale({ 192, 192 });
 	UnitRenderer->GetTransform()->SetLocalPosition({ -168, -182 });
+
+	Text_Name = CreateComponent<TextRenderer>(RenderOrder::UIText);
+	Text_Name->Setting("Silhoua14", 55, float4::White, float4::Black, FontAligned::Center);
+	Text_Name->GetTransform()->SetLocalPosition({-264, -12});
+
+	Text_Class = CreateComponent<TextRenderer>(RenderOrder::UIText);
+	Text_Class->Setting("Silhoua14", 55, float4::White, float4::Black, FontAligned::Center);
+	Text_Class->GetTransform()->SetLocalPosition({ -312, -112 });
 
 	Number_Level = CurLevel->CreateActor<NumberActor>();
 	Number_Level->GetTransform()->SetParent(GetTransform());
@@ -299,7 +321,38 @@ void UnitInformationUI::Start()
 		ItemDataWindow->GetTransform()->SetLocalPosition({ 164, -26 });
 		ItemDataWindow->GetTransform()->AddLocalPosition(float4::Right * 1000);
 
+		Range = GetLevel()->CreateActor<NumberActor>();
+		Range->GetTransform()->SetParent(ItemDataWindow->GetTransform());
+		Range->GetTransform()->SetLocalPosition({ 182, -96 });
+		Range->GetTransform()->SetWorldRotation(float4::Zero);
+		Range->GetTransform()->SetWorldScale(float4::One);
+
+		Attack = GetLevel()->CreateActor<NumberActor>();
+		Attack->GetTransform()->SetParent(ItemDataWindow->GetTransform());
+		Attack->GetTransform()->SetLocalPosition({ -42, -160 });
+		Attack->GetTransform()->SetWorldRotation(float4::Zero);
+		Attack->GetTransform()->SetWorldScale(float4::One);
+
+		Critical = GetLevel()->CreateActor<NumberActor>();
+		Critical->GetTransform()->SetParent(ItemDataWindow->GetTransform());
+		Critical->GetTransform()->SetLocalPosition({ 182, -160 });
+		Critical->GetTransform()->SetWorldRotation(float4::Zero);
+		Critical->GetTransform()->SetWorldScale(float4::One);
+
+		Hit = GetLevel()->CreateActor<NumberActor>();
+		Hit->GetTransform()->SetParent(ItemDataWindow->GetTransform());
+		Hit->GetTransform()->SetLocalPosition({ -42, -224 });
+		Hit->GetTransform()->SetWorldRotation(float4::Zero);
+		Hit->GetTransform()->SetWorldScale(float4::One);
+
+		Dodge = GetLevel()->CreateActor<NumberActor>();
+		Dodge->GetTransform()->SetParent(ItemDataWindow->GetTransform());
+		Dodge->GetTransform()->SetLocalPosition({ 182, -224 });
+		Dodge->GetTransform()->SetWorldRotation(float4::Zero);
+		Dodge->GetTransform()->SetWorldScale(float4::One);
+
 		ItemIcons.resize(5);
+		ItemNames.resize(5);
 		for (int i = 0; i < 5; i++)
 		{
 			ItemIcons[i] = CreateComponent<GameEngineUIRenderer>(4);
@@ -311,6 +364,12 @@ void UnitInformationUI::Start()
 			ItemIcons[i]->GetTransform()->SetWorldScale({ 64, 64 });
 
 			//ItemIcons[i]->Off();
+			ItemNames[i] = CreateComponent<TextRenderer>(RenderOrder::UIText);
+			ItemNames[i]->GetTransform()->SetParent(ItemDataWindow->GetTransform());
+			ItemNames[i]->Setting("Silhoua14", 55, float4::White, float4::Black, FontAligned::Left);
+			ItemNames[i]->GetTransform()->SetLocalPosition({ -164, i * -64.0f + 244.0f });
+			ItemNames[i]->GetTransform()->SetWorldRotation(float4::Zero);
+			ItemNames[i]->GetTransform()->SetWorldScale(float4::One);
 		}
 
 		ItemUses.resize(5);

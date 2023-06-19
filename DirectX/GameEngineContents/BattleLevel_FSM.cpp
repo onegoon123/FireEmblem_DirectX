@@ -15,6 +15,7 @@
 #include "BattleLevelUI.h"
 #include "UnitInformationUI.h"
 #include "DebugWindow.h" // юс╫ц
+#include "FadeEffect.h"
 void BattleLevel::ChangeState(BattleState _State)
 {
 
@@ -1154,7 +1155,7 @@ void BattleLevel::EnemyBattleReturnEnd()
 void BattleLevel::InformationStart()
 {
 	Tiles->Clear();
-	BattleUI->SetFadeIn(0.1f);
+	FEffect->FadeIn(0.1f);
 	MainCursor->Off();
 	InfoUI->On();
 	InfoUI->SetUnit(SelectUnit);
@@ -1166,7 +1167,7 @@ void BattleLevel::InformationUpdate(float _DeltaTime)
 
 void BattleLevel::InformationEnd()
 {
-	BattleUI->SetFadeIn(0.1f);
+	FEffect->FadeIn(0.1f);
 	MainCursor->On();
 	InfoUI->Off();
 }

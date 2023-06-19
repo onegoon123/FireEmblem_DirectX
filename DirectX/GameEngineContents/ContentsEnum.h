@@ -157,7 +157,6 @@ enum class BattleClass
 	Mercenary,	// 용병 (검든 적)
 };
 
-
 enum class Terrain
 {
 	Plain,	//평지

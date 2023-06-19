@@ -120,6 +120,8 @@ private:
 	std::shared_ptr<class BattleLevelUI> BattleUI = nullptr;
 	std::shared_ptr <class UnitInformationUI> InfoUI = nullptr;
 
+	std::shared_ptr<class FadeEffect> FEffect;
+
 	const float MoveSpeed = 10;
 	int MoveIndex = 0;
 
