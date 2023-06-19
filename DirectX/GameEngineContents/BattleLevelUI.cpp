@@ -76,11 +76,13 @@ void BattleLevelUI::SetCursorDir(UIDir _Dir)
 		break;
 	case UIDir::LeftUp:
 	case UIDir::LeftDown:
+		UI_FieldCommand->SetRight();
 		UI_UnitCommand->SetRight();
 		UI_Attack->SetRight();
 		break;
 	case UIDir::RightUp:
 	case UIDir::RightDown:
+		UI_FieldCommand->SetLeft();
 		UI_UnitCommand->SetLeft();
 		UI_Attack->SetLeft();
 		break;

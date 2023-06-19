@@ -4,6 +4,7 @@
 
 class GameEngineUIRenderer;
 class BattleUnit;
+class TextRenderer;
 class SelectUIObject
 {
 public:
@@ -69,6 +70,9 @@ private:
 	std::shared_ptr<class NumberActor> UnitHP = nullptr;
 	std::shared_ptr<class NumberActor> UnitMaxHP= nullptr;
 
+	std::shared_ptr<TextRenderer> UnitNameText = nullptr;
+	std::shared_ptr<TextRenderer> ClearTargetText = nullptr;
+	std::shared_ptr<TextRenderer> TerrainText = nullptr;
 
 	bool UnitDataOn = false;
 	UIDir CursorDir = UIDir::LeftUp;

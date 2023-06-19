@@ -20,7 +20,20 @@ void TextRenderer::Start()
 		OutlineRenders[i] = GetActor()->CreateComponent<GameEngineFontRenderer>(0);
 		OutlineRenders[i]->GetTransform()->SetParent(GetTransform());
 		OutlineRenders[i]->GetTransform()->SetLocalPosition(Pos[i]);
+		OutlineRenders[i]->Off();
 	}
+}
+
+void TextRenderer::Setting(const std::string_view& _Font, float _FontScale, float4 _FontColor, float4 _OutLineColor, FontAligned _Aligned)
+{
+	SetFont(_Font);
+	SetScale(_FontScale);
+	SetColor(_FontColor);
+	if (_OutLineColor.a != 0)
+	{
+		SetOutLine(_OutLineColor);
+	}
+	SetAligned(_Aligned);
 }
 
 void TextRenderer::SetFont(const std::string_view& _Font)

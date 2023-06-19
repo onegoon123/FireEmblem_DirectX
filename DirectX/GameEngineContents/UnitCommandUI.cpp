@@ -165,12 +165,8 @@ void UnitCommandUI::Start()
 			}
 		);
 		FontRenders[i] = CreateComponent<TextRenderer>(RenderOrder::UIText);
-		FontRenders[i]->SetFont("Silhoua14");
+		FontRenders[i]->Setting("Silhoua14", 55, float4::White, float4::Black, FontAligned::Center);
 		FontRenders[i]->GetTransform()->SetLocalPosition({ 328, 190.0f - (64 * i) });
-		FontRenders[i]->SetScale(55);
-		FontRenders[i]->SetColor(float4::White);
-		FontRenders[i]->SetAligned(FontAligned::Center);
-		FontRenders[i]->SetOutLine(float4::Black);
 		FontRenders[i]->Off();
 	}
 

@@ -27,12 +27,12 @@ public:
 	void SetLeft()
 	{
 		GetTransform()->SetLocalPosition({-668, 0});
-		StartCursorPos = { -420, 144 };
+		StartCursorPos = { -420, 152 };
 	}
 	void SetRight()
 	{
 		GetTransform()->SetLocalPosition({ 0, 0 });
-		StartCursorPos = { 224, 144 };
+		StartCursorPos = { 224, 152 };
 	}
 
 protected:
@@ -55,7 +55,7 @@ private:
 	size_t CurrentCursor = 0;
 	float CursorTimer = 0;
 
-	float4 StartCursorPos = { 224, 144 };
+	float4 StartCursorPos = { 224, 152 };
 	float4 StartSelectPos = { 330, 152 };
 
 	const float PreesTime = 0.2f;

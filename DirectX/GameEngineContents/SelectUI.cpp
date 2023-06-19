@@ -7,6 +7,7 @@
 #include "ContentsEnum.h"
 #include "BattleUnit.h"
 #include "NumberActor.h"
+#include "TextRenderer.h"
 SelectUI::SelectUI()
 {
 }
@@ -60,6 +61,76 @@ void SelectUI::SetCursorDir(UIDir _Dir)
 
 void SelectUI::SetTerrainData(Terrain _Data)
 {
+	std::string TerrainStr = "";
+	switch (_Data)
+	{
+	case Terrain::Plain:
+		TerrainStr = "ÆòÁö";
+		break;
+	case Terrain::Floor:
+		TerrainStr = "¹Ù´Ú";
+		break;
+	case Terrain::Road:
+		TerrainStr = "±æ";
+		break;
+	case Terrain::None:
+		TerrainStr = "--";
+		break;
+	case Terrain::Forest:
+		TerrainStr = "½£";
+		break;
+	case Terrain::Cliff:
+		TerrainStr = "º­¶û";
+		break;
+	case Terrain::Mountain:
+		TerrainStr = "»ê";
+		break;
+	case Terrain::Peak:
+		TerrainStr = "³ôÀº »ê";
+		break;
+	case Terrain::Door:
+		TerrainStr = "¹®";
+		break;
+	case Terrain::Gate:
+		TerrainStr = "¹®";
+		break;
+	case Terrain::Ruins:
+		TerrainStr = "ÆóÇã";
+		break;
+	case Terrain::House:
+		TerrainStr = "¹Î°¡";
+		break;
+	case Terrain::Shop:
+		TerrainStr = "°¡°Ô";
+		break;
+	case Terrain::Sea:
+		TerrainStr = "¹Ù´Ù";
+		break;
+	case Terrain::Lake:
+		TerrainStr = "È£¼ö";
+		break;
+	case Terrain::River:
+		TerrainStr = "°­";
+		break;
+	case Terrain::Bridge:
+		TerrainStr = "´Ù¸®";
+		break;
+	case Terrain::Wall:
+		TerrainStr = "º®";
+		break;
+	case Terrain::Fort:
+		TerrainStr = "¿ä»õ";
+		break;
+	case Terrain::Pillar:
+		TerrainStr = "±âµÕ";
+		break;
+	case Terrain::Throne:
+		TerrainStr = "¿ÁÁÂ";
+		break;
+	default:
+		break;
+	}
+	TerrainText->SetText(TerrainStr);
 	TerrainDodge->SetValue(BattleMap::GetTerrainDodge(_Data));
 	TerrainDef->SetValue(BattleMap::GetTerrainDef(_Data));
 }
@@ -152,6 +223,7 @@ void SelectUI::SetUnitData(std::shared_ptr<BattleUnit> _Unit)
 	SetHPBar(_Unit->GetUnitData().GetHP() / (float)_Unit->GetUnitData().GetMaxHP());
 	UnitHP->SetValue(_Unit->GetUnitData().GetHP());
 	UnitMaxHP->SetValue(_Unit->GetUnitData().GetMaxHP());
+	UnitNameText->SetText(_Unit->GetName());
 }
 
 void SelectUI::UnitUIOff()
@@ -198,6 +270,12 @@ void SelectUI::Start()
 	UnitData.CurDir = UIDir::None;
 	UnitData.NextDir = UIDir::None;
 
+	UnitNameText = CreateComponent<TextRenderer>(RenderOrder::UIText);
+	UnitNameText->GetTransform()->SetParent(UnitData.Render->GetTransform());
+	UnitNameText->GetTransform()->SetLocalPosition({ 64, 58 });
+	UnitNameText->GetTransform()->SetWorldScale(float4::One);
+	UnitNameText->Setting("Silhoua14", 50, float4::Black, float4::Null, FontAligned::Center);
+
 	std::shared_ptr<GameEngineActor> _Actor = GetLevel()->CreateActor<GameEngineActor>(RenderOrder::UI);
 	_Actor->GetTransform()->SetParent(UnitData.Render->GetTransform());
 	_Actor->GetTransform()->SetLocalPosition(float4::Zero);
@@ -227,6 +305,13 @@ void SelectUI::Start()
 	TerrainDodge->GetTransform()->SetLocalPosition({48, -64});
 	TerrainDodge->GetTransform()->SetWorldRotation(float4::Zero);
 	TerrainDodge->GetTransform()->SetWorldScale({1, 0.8f});
+
+	TerrainText = CreateComponent<TextRenderer>(RenderOrder::UIText);
+	TerrainText->GetTransform()->SetParent(TerrainUI.Render->GetTransform());
+	TerrainText->GetTransform()->SetLocalPosition({0, 44});
+	TerrainText->GetTransform()->SetWorldScale(float4::One);
+	TerrainText->GetTransform()->SetWorldRotation(float4::Zero);
+	TerrainText->Setting("Silhoua14", 55, float4::White, float4::Black , FontAligned::Center);
 
 	UnitHP = GetLevel()->CreateActor<NumberActor>();
 	UnitHP->SetBlackFont();

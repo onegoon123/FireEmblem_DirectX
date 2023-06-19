@@ -177,9 +177,6 @@
     <ClCompile Include="DoubleIconActor.cpp">
       <Filter>Battle\UI\BattleAnimation</Filter>
     </ClCompile>
-    <ClCompile Include="BattleLevelUI.cpp">
-      <Filter>Battle\UI\BattleAnimation</Filter>
-    </ClCompile>
     <ClCompile Include="StatBar.cpp">
       <Filter>Battle\UI\Information</Filter>
     </ClCompile>
@@ -188,6 +185,9 @@
     </ClCompile>
     <ClCompile Include="TextRenderer.cpp">
       <Filter>Battle\UI\Text</Filter>
+    </ClCompile>
+    <ClCompile Include="BattleLevelUI.cpp">
+      <Filter>Battle\UI\Battle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -344,9 +344,6 @@
     <ClInclude Include="DoubleIconActor.h">
       <Filter>Battle\UI\BattleAnimation</Filter>
     </ClInclude>
-    <ClInclude Include="BattleLevelUI.h">
-      <Filter>Battle\UI\BattleAnimation</Filter>
-    </ClInclude>
     <ClInclude Include="StatBar.h">
       <Filter>Battle\UI\Information</Filter>
     </ClInclude>
@@ -355,6 +352,9 @@
     </ClInclude>
     <ClInclude Include="TextRenderer.h">
       <Filter>Battle\UI\Text</Filter>
+    </ClInclude>
+    <ClInclude Include="BattleLevelUI.h">
+      <Filter>Battle\UI\Battle</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

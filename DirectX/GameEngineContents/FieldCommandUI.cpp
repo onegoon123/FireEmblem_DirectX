@@ -6,6 +6,7 @@
 #include "BattleLevel.h"
 #include "UICursor.h"
 #include "UIButtonSystem.h"
+#include "TextRenderer.h"
 FieldCommandUI::FieldCommandUI() 
 {
 	CommandFunctions.reserve(5);
@@ -62,6 +63,7 @@ void FieldCommandUI::Start()
 	ButtonSystem->GetTransform()->SetParent(GetTransform());
 
 	ButtonCols.resize(5);
+	TextRenders.resize(5);
 	for (int i = 0; i < 5; i++)
 	{
 		ButtonCols[i] = CreateComponent<GameEngineCollision>(CollisionOrder::Button);
@@ -78,8 +80,15 @@ void FieldCommandUI::Start()
 				CommandFunctions[CurrentCursor]();
 			}
 			);
-
+		TextRenders[i] = CreateComponent<TextRenderer>(RenderOrder::UIText);
+		TextRenders[i]->Setting("Silhoua14", 55, float4::White, float4::Black, FontAligned::Center);
+		TextRenders[i]->GetTransform()->SetLocalPosition({ 328, 190.0f - (64 * i) });
 	}
+	TextRenders[0]->SetText("시간석");
+	TextRenders[1]->SetText("부대");
+	TextRenders[2]->SetText("설정");
+	TextRenders[3]->SetText("종료");
+	TextRenders[4]->SetText("턴종료");
 
 	GameEngineActor::Off();
 }
