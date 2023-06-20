@@ -350,10 +350,10 @@ void ItemUI::ItemSelect()
 	Cursor->GetTransform()->SetLocalPosition(CursorPos);
 	IsItemSelect = true;
 
-	ItemUseWindow->GetTransform()->SetLocalPosition(float4(80.0f, 164.0f) + float4::Down * static_cast<float>(std::min<size_t>(CurrentCursor,2)) * 64);
+	ItemUseWindow->GetTransform()->SetLocalPosition(float4(80.0f, 164.0f) + float4::Down * static_cast<float>(CurrentCursor) * 64);
 
-	StartUseSelectPos = float4(80.0f, 198.0f) + float4::Down * static_cast<float>(std::min<size_t>(CurrentCursor, 2)) * 64;
-	StartUseCursorPos = float4(2, 198.0f) + float4::Down * static_cast<float>(std::min<size_t>(CurrentCursor, 2)) * 64;
+	StartUseSelectPos = float4(80.0f, 198.0f) + float4::Down * static_cast<float>(CurrentCursor) * 64;
+	StartUseCursorPos = float4(2, 198.0f) + float4::Down * static_cast<float>(CurrentCursor) * 64;
 
 	ItemUseSelect->GetTransform()->SetLocalPosition(StartUseSelectPos);
 	Cursor->GetTransform()->SetLocalPosition(StartUseCursorPos);
@@ -429,7 +429,7 @@ void ItemUI::ItemSelect()
 	for (int i = 0; i < UseFunctions.size(); i++)
 	{
 		UseButtons[i]->On();
-		UseButtons[i]->GetTransform()->SetLocalPosition({ 80, 192.0f - (64 * (i + std::min<size_t>(CurrentCursor,2)))});
+		UseButtons[i]->GetTransform()->SetLocalPosition({ 80, 192.0f - (64 * (i + CurrentCursor))});
 	}
 	for (size_t i = UseFunctions.size(); i < 2; i++)
 	{

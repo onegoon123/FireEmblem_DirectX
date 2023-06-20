@@ -90,6 +90,12 @@ public:
 		ZoomRatio -= _Value;
 	}
 
+	inline float GetZoomRatio() const
+	{
+		return ZoomRatio;
+	}
+
+
 protected:
 	void Start() override;
 

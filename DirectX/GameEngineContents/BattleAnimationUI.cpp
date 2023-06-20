@@ -410,10 +410,6 @@ void BattleAnimationUI::EndExpUI()
 {
 	if (true == IsLevelUp)
 	{
-		Text_PlayerName->Off();
-		Text_PlayerWeaponName->Off();
-		Text_EnemyName->Off();
-		Text_EnemyWeaponName->Off();
 		LevelUI->LevelUpStart(PlayerData, UnitName);
 	}
 }

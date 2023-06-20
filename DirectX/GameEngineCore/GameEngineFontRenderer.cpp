@@ -47,6 +47,6 @@ void GameEngineFontRenderer::Render(float _Delta)
 
 void GameEngineFontRenderer::Start()
 {
-	PushCameraRender(101);
+	PushCameraRender(100);
 	//GameEngineRenderer::Start();
 }

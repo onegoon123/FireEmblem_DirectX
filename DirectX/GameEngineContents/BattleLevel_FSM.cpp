@@ -1172,94 +1172,11 @@ void BattleLevel::InformationEnd()
 	InfoUI->Off();
 }
 
-static std::list<UnitCommand> Command;
-static std::list<UnitCommand>::reverse_iterator RIter;
-static std::list<UnitCommand>::reverse_iterator RIterEnd;
-
 void BattleLevel::GameOverStart()
 {
-	Command = UnitCommand::GetCommandList();
-	RIter = Command.rbegin();
-	RIterEnd = Command.rend();
 }
 void BattleLevel::GameOverUpdate(float _DeltaTime)
 {
-	static float Timer = 0;
-	Timer += _DeltaTime;
-
-	if (1.0f < Timer)
-	{
-		Timer = 0;
-
-
-		if (RIter != RIterEnd)
-		{
-			switch (RIter->TypeValue)
-			{
-			case CommandType::Attack:
-			{
-				for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
-				{
-					if ((*RIter).BeforeSubjectUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
-					{
-						_Unit->SetUnitData((*RIter).BeforeSubjectUnit);
-						_Unit->SetMapPos((*RIter).BeforeSubjectUnitPos);
-					}
-					else if ((*RIter).BeforeTargetUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
-					{
-						_Unit->SetUnitData((*RIter).BeforeTargetUnit);
-					}
-				}
-				for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
-				{
-					if ((*RIter).BeforeSubjectUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
-					{
-						_Unit->SetUnitData((*RIter).BeforeSubjectUnit);
-						_Unit->SetMapPos((*RIter).BeforeSubjectUnitPos);
-					}
-					else if ((*RIter).BeforeTargetUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
-					{
-						_Unit->SetUnitData((*RIter).BeforeTargetUnit);
-					}
-				}
-			}
-			break;
-			case CommandType::Item:
-				break;
-			case CommandType::Wait:
-			{
-				for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
-				{
-					if ((*RIter).BeforeSubjectUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
-					{
-						_Unit->SetUnitData((*RIter).BeforeSubjectUnit);
-						_Unit->SetMapPos((*RIter).BeforeSubjectUnitPos);
-					}
-				}
-				for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
-				{
-					if ((*RIter).BeforeSubjectUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
-					{
-						_Unit->SetUnitData((*RIter).BeforeSubjectUnit);
-						_Unit->SetMapPos((*RIter).BeforeSubjectUnitPos);
-					}
-				}
-			}
-			break;
-			default:
-				break;
-			}
-			FERandom::AddRandomCount(-(*RIter).RandomNum);
-			int randc = FERandom::GetRandomCount();
-			RIter++;
-		}
-		else
-		{
-			UnitCommand::ResetCommandList();
-			ChangeState(BattleState::PlayerPhase);
-			return;
-		}
-	}
 }
 
 void BattleLevel::GameOverEnd()
@@ -1277,8 +1194,13 @@ enum TimeStoneState
 };
 TimeStoneState CurTimeStoneState = EffectIn;
 
+static std::list<UnitCommand> Command;
+static std::list<UnitCommand>::reverse_iterator RIter;
+static std::list<UnitCommand>::reverse_iterator RIterEnd;
+
 void BattleLevel::TimeStoneStart()
 {
+	BattleUI->TimeStoneOn();
 	EffectTimer = 0;
 	MapEffectTimer = 0;
 	CurTimeStoneState = EffectIn;

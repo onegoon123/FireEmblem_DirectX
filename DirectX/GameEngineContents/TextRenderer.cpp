@@ -10,18 +10,18 @@ TextRenderer::~TextRenderer()
 
 void TextRenderer::Start()
 {
-	FontRender = GetActor()->CreateComponent<GameEngineFontRenderer>(1);
-	FontRender->GetTransform()->SetParent(GetTransform());
-
 	OutlineRenders.resize(4);
 	float4 Pos[4] = { {4, 0}, {-4, 0}, {0, 4}, {0, -4} };
 	for (int i = 0; i < OutlineRenders.size(); i++)
 	{
-		OutlineRenders[i] = GetActor()->CreateComponent<GameEngineFontRenderer>(0);
+		OutlineRenders[i] = GetActor()->CreateComponent<GameEngineFontRenderer>(GetOrder());
 		OutlineRenders[i]->GetTransform()->SetParent(GetTransform());
 		OutlineRenders[i]->GetTransform()->SetLocalPosition(Pos[i]);
 		OutlineRenders[i]->Off();
 	}
+	FontRender = GetActor()->CreateComponent<GameEngineFontRenderer>(GetOrder());
+	FontRender->GetTransform()->SetParent(GetTransform());
+
 }
 //Setting("Silhoua14", 55, float4::White, float4::Black, FontAligned::Center);
 void TextRenderer::Setting(const std::string_view& _Font, float _FontScale, float4 _FontColor, float4 _OutLineColor, FontAligned _Aligned)
