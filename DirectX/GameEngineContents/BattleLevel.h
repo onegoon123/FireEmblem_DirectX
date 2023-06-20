@@ -86,6 +86,7 @@ private:
 		Information,		// 유닛 정보창을 연상태
 		GameOver,			// 게임 오버
 		TimeStone,			// 시간석 사용
+		Store,
 		Clear,				// 클리어
 	};
 	BattleState CurState = BattleState::None;	// 스태이트
@@ -223,6 +224,10 @@ private:
 	void ClassChangeStart();
 	void ClassChangeUpdate(float _DeltaTime);
 	void ClassChangeEnd();
+
+	void StoreStart();
+	void StoreUpdate(float _DeltaTime);
+	void StoreEnd();
 #pragma endregion
 
 
@@ -301,6 +306,7 @@ public:
 	void UnitCommand_TargetHeal(std::shared_ptr<BattleUnit> _Target, std::list<std::shared_ptr<Item>>::iterator& _ItemIter);
 	void UnitCommand_ItemUse(std::list<std::shared_ptr<class Item>>::iterator& _ItemIter);
 	void UnitCommand_Conquer();
+	void UnitCommand_Store();
 private:
 
 #pragma endregion

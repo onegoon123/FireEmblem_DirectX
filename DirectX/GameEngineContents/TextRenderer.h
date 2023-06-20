@@ -23,11 +23,20 @@ public:
 	void SetOutLine(float4 _FontColor);
 	void SetAligned(FontAligned _Aligned);
 
+	void SetTextAnim(const std::string_view& _Text);
+
 protected:
 	void Start() override;
+	void Update(float _DeltaTime) override;
 
 private:
 	std::shared_ptr<class GameEngineFontRenderer> FontRender;
 	std::vector<std::shared_ptr<GameEngineFontRenderer>> OutlineRenders;
+
+	std::string AnimText = "";
+	int Index = 0;
+	bool IsTextAnim = false;
+	const float AnimTime = 0.12f;
+	float Timer;
 };
 

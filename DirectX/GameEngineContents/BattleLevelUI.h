@@ -26,6 +26,7 @@ public:
 	void UnitCommandSet(bool _IsAttackable, bool _IsCloseUnit, bool _IsItem);
 	void UnitCommandHealSet(bool _IsCloseUnit, bool _IsItem);
 	void UnitCommandConquer();
+	void UnitCommandStore();
 	void FieldCommandOn();
 	void TimeStoneOn(bool _IsGameOver = false);
 	void AttackOn(std::shared_ptr<class BattleUnit> _SelectUnit, std::list<std::shared_ptr<BattleUnit>>& _TargetUnits);
@@ -33,6 +34,7 @@ public:
 	void ItemOn(std::shared_ptr<BattleUnit> _SelectUnit);
 	void ExchangeOn(std::shared_ptr<BattleUnit> _SelectUnit, std::list<std::shared_ptr<BattleUnit>>& _TargetUnits);
 	void PhaseOn(Faction _Faction);
+	void StoreOn(std::shared_ptr<BattleUnit> _Unit);
 	bool IsPhaseEnd();
 	void PhaseOff();
 	void SetFadeIn(float _Timer);
@@ -59,6 +61,7 @@ private:
 	std::shared_ptr <class UICursor> UI_Cursor = nullptr;
 	std::shared_ptr <class GameEngineUIRenderer> UI_Fade = nullptr;
 	std::shared_ptr <class TimeStoneUI> UI_TimeStone = nullptr;
+	std::shared_ptr <class StoreUI> UI_Store = nullptr;
 
 	float FadeSpeed = 0.0f;
 	float FadeTimer = 0.0f;

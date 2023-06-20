@@ -135,14 +135,14 @@ void ItemUI::Start()
 	ItemUseWindow->GetTransform()->SetWorldScale({ 160, 192 });
 	ItemUseWindow->SetTexture("ItemUse.png");
 
-	ItemUseText1 = CreateComponent<TextRenderer>(RenderOrder::UIText);
+	ItemUseText1 = CreateComponent<TextRenderer>(RenderOrder::UI3);
 	ItemUseText1->GetTransform()->SetParent(ItemUseWindow->GetTransform());
 	ItemUseText1->GetTransform()->SetLocalPosition({ 0, 64 });
 	ItemUseText1->GetTransform()->SetWorldRotation(float4::Zero);
 	ItemUseText1->GetTransform()->SetWorldScale(float4::One);
 	ItemUseText1->Setting("Silhoua14", 55, float4::White, float4::Black, FontAligned::Center);
 
-	ItemUseText2 = CreateComponent<TextRenderer>(RenderOrder::UIText);
+	ItemUseText2 = CreateComponent<TextRenderer>(RenderOrder::UI3);
 	ItemUseText2->GetTransform()->SetParent(ItemUseWindow->GetTransform());
 	ItemUseText2->GetTransform()->SetLocalPosition({ 0, -12 });
 	ItemUseText2->GetTransform()->SetWorldRotation(float4::Zero);

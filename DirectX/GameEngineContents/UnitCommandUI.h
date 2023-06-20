@@ -21,6 +21,7 @@ public:
 	void SetCommand(bool _IsAttackable, bool _IsCloseUnit, bool _IsItem);
 	void SetCommandHeal(bool _IsCloseUnit, bool _IsItem);
 	void SetConquer();	// 목표 점령시 나오는 커맨드
+	void SetStore();	// 목표 점령시 나오는 커맨드
 
 	void On();
 

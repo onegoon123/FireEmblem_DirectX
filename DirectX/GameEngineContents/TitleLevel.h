@@ -22,6 +22,7 @@ private:
 	GameEngineFSM FSM;
 	std::shared_ptr<class GameEngineUIRenderer> TitleRenderer = nullptr;
 	float Timer = 0;
+	bool Exit = false;
 	void StateInit();
 };
 

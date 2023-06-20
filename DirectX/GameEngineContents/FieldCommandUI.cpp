@@ -21,8 +21,8 @@ void FieldCommandUI::Setting(BattleLevel* _Level, std::shared_ptr<UICursor> _Cur
 	LevelPtr = _Level;
 	CancelFunction = std::bind(&BattleLevel::FieldCommand_Cancel, LevelPtr);
 	CommandFunctions.push_back(std::bind(&BattleLevel::FieldCommand_TimeStone, LevelPtr));
-	CommandFunctions.push_back(std::bind(&BattleLevel::FieldCommand_ArmyUnit, LevelPtr));
-	CommandFunctions.push_back(std::bind(&BattleLevel::FieldCommand_Setting, LevelPtr));
+	//CommandFunctions.push_back(std::bind(&BattleLevel::FieldCommand_ArmyUnit, LevelPtr));
+	//CommandFunctions.push_back(std::bind(&BattleLevel::FieldCommand_Setting, LevelPtr));
 	CommandFunctions.push_back(std::bind(&BattleLevel::FieldCommand_Exit, LevelPtr));
 	CommandFunctions.push_back(std::bind(&BattleLevel::FieldCommand_PhaseEnd, LevelPtr));
 	CurrentCursor = 0;
@@ -52,7 +52,7 @@ void FieldCommandUI::Start()
 	WindowRender = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
 	WindowRender->GetTransform()->SetWorldScale({ 196, 356 });
 	WindowRender->GetTransform()->SetLocalPosition({ 334, 36 });
-	WindowRender->SetSprite("CommandUI.png", 4);
+	WindowRender->SetSprite("CommandUI.png", 2);
 
 	SelectRender = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
 	SelectRender->GetTransform()->SetWorldScale({ 144, 20 });
@@ -62,9 +62,9 @@ void FieldCommandUI::Start()
 	ButtonSystem = GetLevel()->CreateActor<UIButtonSystem>();
 	ButtonSystem->GetTransform()->SetParent(GetTransform());
 
-	ButtonCols.resize(5);
-	TextRenders.resize(5);
-	for (int i = 0; i < 5; i++)
+	ButtonCols.resize(3);
+	TextRenders.resize(3);
+	for (int i = 0; i < 3; i++)
 	{
 		ButtonCols[i] = CreateComponent<GameEngineCollision>(CollisionOrder::Button);
 		ButtonCols[i]->GetTransform()->SetLocalPosition({ 330, 164.0f - (64 * i) });
@@ -85,10 +85,10 @@ void FieldCommandUI::Start()
 		TextRenders[i]->GetTransform()->SetLocalPosition({ 328, 190.0f - (64 * i) });
 	}
 	TextRenders[0]->SetText("시간석");
-	TextRenders[1]->SetText("부대");
-	TextRenders[2]->SetText("설정");
-	TextRenders[3]->SetText("종료");
-	TextRenders[4]->SetText("턴종료");
+	//TextRenders[1]->SetText("부대");
+	//TextRenders[2]->SetText("설정");
+	TextRenders[1]->SetText("종료");
+	TextRenders[2]->SetText("턴종료");
 
 	GameEngineActor::Off();
 }

@@ -66,6 +66,10 @@ void BattleLevel::DebugCheet()
 	{
 		ChangeState(BattleState::Clear);
 	}
+	if (GameEngineInput::IsDown("Cheet5"))
+	{
+		ChangeState(BattleState::Store);
+	}
 }
 void BattleLevel::LevelChangeStart()
 {

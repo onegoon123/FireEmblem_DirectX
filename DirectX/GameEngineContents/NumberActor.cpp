@@ -40,7 +40,7 @@ void NumberActor::Setting(int _Value)
 	IsLerp = false;
 }
 
-void NumberActor::SetValue(int _Value)
+void NumberActor::SetValue(int _Value, bool _ChangeSize)
 {
 	if (0 == Renders.size()) { NumberCreate(); }
 	Value = _Value;
@@ -49,18 +49,21 @@ void NumberActor::SetValue(int _Value)
 		MsgAssert("아직 4자리수를 표현하지 못합니다.");
 		return;
 	}
-	if (100 <= _Value)
+	if (false == _ChangeSize)
 	{
-		for (int i = 0; i < 3; i++)
+		if (100 <= _Value)
 		{
-			Renders[i]->GetTransform()->SetLocalPosition({ -24.0f * i, 0 });
+			for (int i = 0; i < 3; i++)
+			{
+				Renders[i]->GetTransform()->SetLocalPosition({ -24.0f * i, 0 });
+			}
 		}
-	}
-	else
-	{
-		for (int i = 0; i < 3; i++)
+		else
 		{
-			Renders[i]->GetTransform()->SetLocalPosition({ -32.0f * i, 0 });
+			for (int i = 0; i < 3; i++)
+			{
+				Renders[i]->GetTransform()->SetLocalPosition({ -32.0f * i, 0 });
+			}
 		}
 	}
 	int i = 0;

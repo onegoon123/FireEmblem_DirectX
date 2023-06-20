@@ -27,7 +27,7 @@ public:
 	void NumberCreate(int _Order);
 
 	void Setting(int _Value);
-	void SetValue(int _Value);
+	void SetValue(int _Value, bool _ChangeSize = false);
 	void SetValueLerp(int _Value);
 	void StopLerp()
 	{

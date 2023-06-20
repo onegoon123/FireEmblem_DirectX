@@ -114,3 +114,8 @@ void BattleLevel::UnitCommand_Conquer()
 {
 	ChangeState(BattleState::Clear);
 }
+
+void BattleLevel::UnitCommand_Store()
+{
+	ChangeState(BattleState::Store);
+}

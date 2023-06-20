@@ -137,6 +137,11 @@ void BattleLevel::ChangeState(BattleState _State)
 		StateEnd = std::bind(&BattleLevel::ClassChangeEnd, this);
 		ClassChangeStart();
 		break;
+	case BattleLevel::BattleState::Store:
+		StateUpdate = std::bind(&BattleLevel::StoreUpdate, this, std::placeholders::_1);
+		StateEnd = std::bind(&BattleLevel::StoreEnd, this);
+		StoreStart();
+		break;
 	default:
 	{
 		MsgAssert("아직 지정하지 않은 State 입니다");
@@ -401,7 +406,12 @@ void BattleLevel::UnitCommandStart()
 		BattleUI->UnitCommandConquer();
 		return;
 	}
-
+	if (GetTerrain(SelectUnit->GetMapPos()) == Terrain::Shop)
+	{
+		BattleUI->UnitCommandOn();
+		BattleUI->UnitCommandStore();
+		return;
+	}
 	// IsMove를 현재 위치만 true로 변경
 	for (int y = 0; y < IsMove.size(); y++)
 	{
@@ -1172,11 +1182,20 @@ void BattleLevel::InformationEnd()
 	InfoUI->Off();
 }
 
+static float GameOverTimer = 0;
 void BattleLevel::GameOverStart()
 {
+	BattleUI->SetFadeOut(0.5f);
+	GameOverTimer = 0.7f;
 }
 void BattleLevel::GameOverUpdate(float _DeltaTime)
 {
+	GameOverTimer -= _DeltaTime;
+	if (GameOverTimer < 0)
+	{
+		GameEngineCore::ChangeLevel("TitleLevel");
+		return;
+	}
 }
 
 void BattleLevel::GameOverEnd()
@@ -1221,6 +1240,8 @@ void BattleLevel::TimeStoneStart()
 
 void BattleLevel::TimeStoneUpdate(float _DeltaTime)
 {
+	CameraUpdate(_DeltaTime);
+
 	EffectTimer += _DeltaTime;
 	MapEffectTimer += _DeltaTime * 2;
 
@@ -1469,4 +1490,24 @@ void BattleLevel::ClassChangeUpdate(float _DeltaTime)
 void BattleLevel::ClassChangeEnd()
 {
 	//SelectUnit->SetUnitData(Unit(UnitCommand::GetCommandList().back().AfterSubjectUnit));
+}
+
+void BattleLevel::StoreStart()
+{
+	BattleUI->SetFadeIn(0.3f);
+	BattleUI->StoreOn(SelectUnit);
+}
+
+void BattleLevel::StoreUpdate(float _DeltaTime)
+{
+	if (GameEngineInput::IsDown("ButtonB"))
+	{
+		ChangeState(BattleState::Select);
+	}
+}
+
+void BattleLevel::StoreEnd()
+{
+	SelectUnit->SetIsTurnEnd(true);
+	BattleUI->SetFadeIn(0.3f);
 }

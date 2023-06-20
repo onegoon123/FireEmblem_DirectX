@@ -1,6 +1,5 @@
 #include "PrecompileHeader.h"
 #include "BattleLevel.h"
-
 void BattleLevel::FieldCommand_TimeStone()
 {
 	ChangeState(BattleState::TimeStone);
@@ -18,6 +17,7 @@ void BattleLevel::FieldCommand_Setting()
 
 void BattleLevel::FieldCommand_Exit()
 {
+	ChangeState(BattleState::GameOver);
 	return;
 }
 

@@ -204,6 +204,9 @@
     <ClCompile Include="BattleLevel_TimeStone.cpp">
       <Filter>Battle\System\Level\State</Filter>
     </ClCompile>
+    <ClCompile Include="StoreUI.cpp">
+      <Filter>Battle\UI\Store</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FECore.h" />
@@ -383,6 +386,9 @@
     <ClInclude Include="DialogueBox.h">
       <Filter>UI\Text</Filter>
     </ClInclude>
+    <ClInclude Include="StoreUI.h">
+      <Filter>Battle\UI\Store</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Levels">
@@ -462,6 +468,9 @@
     </Filter>
     <Filter Include="UI\Text">
       <UniqueIdentifier>{f43c02ef-4cf2-45c3-987c-cca641ebd385}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle\UI\Store">
+      <UniqueIdentifier>{f089fc03-9aed-4fd0-800c-d50aa7011bfa}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

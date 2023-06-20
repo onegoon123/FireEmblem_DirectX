@@ -13,7 +13,7 @@
 #include "HealUI.h"
 #include "ExchangeUI.h"
 #include "TimeStoneUI.h"
-
+#include "StoreUI.h"
 BattleLevelUI::BattleLevelUI()
 {
 }
@@ -40,6 +40,8 @@ BattleLevelUI::~BattleLevelUI()
 	UI_Fade = nullptr;
 	UI_TimeStone->Death();
 	UI_TimeStone = nullptr;
+	UI_Store->Death();
+	UI_Store = nullptr;
 }
 
 void BattleLevelUI::AllOff()
@@ -53,6 +55,7 @@ void BattleLevelUI::AllOff()
 	UI_Exchange->Off();
 	UI_Phase->Off();
 	UI_TimeStone->Off();
+	UI_Store->Off();
 }
 
 void BattleLevelUI::SelectOn()
@@ -132,6 +135,14 @@ void BattleLevelUI::UnitCommandConquer()
 	UI_UnitCommand->SetConquer();
 }
 
+void BattleLevelUI::UnitCommandStore()
+{
+	AllOff();
+
+	UI_UnitCommand->On();
+	UI_UnitCommand->SetStore();
+}
+
 void BattleLevelUI::FieldCommandOn()
 {
 	AllOff();
@@ -179,6 +190,12 @@ void BattleLevelUI::PhaseOn(Faction _Faction)
 	AllOff();
 
 	UI_Phase->PhaseOn(_Faction);
+}
+
+void BattleLevelUI::StoreOn(std::shared_ptr<BattleUnit> _Unit)
+{
+	AllOff();
+	UI_Store->On(_Unit);
 }
 
 bool BattleLevelUI::IsPhaseEnd()
@@ -270,7 +287,7 @@ void BattleLevelUI::Start()
 		UI_FieldCommand = CurLevel->CreateActor<FieldCommandUI>();
 		UI_Phase = CurLevel->CreateActor<PhaseUI>();
 		UI_TimeStone = CurLevel->CreateActor<TimeStoneUI>();
-
+		UI_Store = CurLevel->CreateActor<StoreUI>();
 		UI_Cursor = CurLevel->CreateActor<UICursor>();
 
 		UI_UnitCommand->Setting(CurLevel, UI_Cursor);

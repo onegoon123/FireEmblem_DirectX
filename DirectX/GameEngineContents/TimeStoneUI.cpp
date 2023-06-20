@@ -80,7 +80,7 @@ void TimeStoneUI::Update(float _DeltaTime)
 		Select();
 		return;
 	}
-	if (GameEngineInput::IsDown("ButtonB"))
+	if (GameEngineInput::IsDown("ButtonB") && false == IsGameOver)
 	{
 		Cancel();
 		return;

@@ -1,6 +1,7 @@
 #include "PrecompileHeader.h"
 #include "BattleLevel.h"
 #include "FERandom.h"
+#include "MapCursor.h"
 void BattleLevel::TimeStone_Rewind()
 {
 	if (RIter == RIterEnd) {
@@ -24,6 +25,7 @@ void BattleLevel::TimeStone_Rewind()
 				_Unit->SetUnitData((*RIter).BeforeSubjectUnit);
 				_Unit->SetMapPos((*RIter).BeforeSubjectUnitPos);
 				_Unit->GetUnitData().LoadItemData((*RIter).BeforeSubjectItems);
+				MainCursor->SetCursorPos(_Unit->GetMapPos());
 			}
 			else if ((*RIter).BeforeTargetUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
 			{
@@ -38,6 +40,7 @@ void BattleLevel::TimeStone_Rewind()
 				_Unit->SetUnitData((*RIter).BeforeSubjectUnit);
 				_Unit->SetMapPos((*RIter).BeforeSubjectUnitPos);
 				_Unit->GetUnitData().LoadItemData((*RIter).BeforeSubjectItems);
+				MainCursor->SetCursorPos(_Unit->GetMapPos());
 			}
 			else if ((*RIter).BeforeTargetUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
 			{
@@ -56,6 +59,7 @@ void BattleLevel::TimeStone_Rewind()
 				_Unit->SetUnitData((*RIter).BeforeSubjectUnit);
 				_Unit->SetMapPos((*RIter).BeforeSubjectUnitPos);
 				_Unit->GetUnitData().LoadItemData((*RIter).BeforeSubjectItems);
+				MainCursor->SetCursorPos(_Unit->GetMapPos());
 			}
 		}
 		for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
@@ -65,6 +69,7 @@ void BattleLevel::TimeStone_Rewind()
 				_Unit->SetUnitData((*RIter).BeforeSubjectUnit);
 				_Unit->SetMapPos((*RIter).BeforeSubjectUnitPos);
 				_Unit->GetUnitData().LoadItemData((*RIter).BeforeSubjectItems);
+				MainCursor->SetCursorPos(_Unit->GetMapPos());
 			}
 		}
 		break;
@@ -77,6 +82,7 @@ void BattleLevel::TimeStone_Rewind()
 			{
 				_Unit->SetUnitData((*RIter).BeforeSubjectUnit);
 				_Unit->SetMapPos((*RIter).BeforeSubjectUnitPos);
+				MainCursor->SetCursorPos(_Unit->GetMapPos());
 			}
 		}
 		for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
@@ -85,6 +91,7 @@ void BattleLevel::TimeStone_Rewind()
 			{
 				_Unit->SetUnitData((*RIter).BeforeSubjectUnit);
 				_Unit->SetMapPos((*RIter).BeforeSubjectUnitPos);
+				MainCursor->SetCursorPos(_Unit->GetMapPos());
 			}
 		}
 
@@ -156,6 +163,7 @@ void BattleLevel::TimeStone_Rewind()
 
 	RIter++;
 
+	CameraSetPos();
 
 	return;
 }
@@ -180,6 +188,7 @@ void BattleLevel::TimeStone_Play()
 				_Unit->SetUnitData((*RIter).AfterSubjectUnit);
 				_Unit->SetMapPos((*RIter).AfterSubjectUnitPos);
 				_Unit->GetUnitData().LoadItemData((*RIter).AfterSubjectItems);
+				MainCursor->SetCursorPos(_Unit->GetMapPos());
 			}
 			else if ((*RIter).AfterTargetUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
 			{
@@ -194,6 +203,7 @@ void BattleLevel::TimeStone_Play()
 				_Unit->SetUnitData((*RIter).AfterSubjectUnit);
 				_Unit->SetMapPos((*RIter).AfterSubjectUnitPos);
 				_Unit->GetUnitData().LoadItemData((*RIter).AfterSubjectItems);
+				MainCursor->SetCursorPos(_Unit->GetMapPos());
 			}
 			else if ((*RIter).AfterTargetUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
 			{
@@ -212,6 +222,7 @@ void BattleLevel::TimeStone_Play()
 				_Unit->SetUnitData((*RIter).AfterSubjectUnit);
 				_Unit->SetMapPos((*RIter).AfterSubjectUnitPos);
 				_Unit->GetUnitData().LoadItemData((*RIter).AfterSubjectItems);
+				MainCursor->SetCursorPos(_Unit->GetMapPos());
 			}
 		}
 		for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
@@ -221,6 +232,7 @@ void BattleLevel::TimeStone_Play()
 				_Unit->SetUnitData((*RIter).AfterSubjectUnit);
 				_Unit->SetMapPos((*RIter).AfterSubjectUnitPos);
 				_Unit->GetUnitData().LoadItemData((*RIter).AfterSubjectItems);
+				MainCursor->SetCursorPos(_Unit->GetMapPos());
 			}
 		}
 		break;
@@ -233,6 +245,7 @@ void BattleLevel::TimeStone_Play()
 			{
 				_Unit->SetUnitData((*RIter).AfterSubjectUnit);
 				_Unit->SetMapPos((*RIter).AfterSubjectUnitPos);
+				MainCursor->SetCursorPos(_Unit->GetMapPos());
 			}
 		}
 		for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
@@ -241,6 +254,7 @@ void BattleLevel::TimeStone_Play()
 			{
 				_Unit->SetUnitData((*RIter).AfterSubjectUnit);
 				_Unit->SetMapPos((*RIter).AfterSubjectUnitPos);
+				MainCursor->SetCursorPos(_Unit->GetMapPos());
 			}
 		}
 		break;
@@ -269,7 +283,7 @@ void BattleLevel::TimeStone_Play()
 		break;
 	}
 	}
-
+	CameraSetPos();
 	return;
 }
 

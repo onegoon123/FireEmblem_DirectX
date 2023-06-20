@@ -465,7 +465,7 @@ void BattleLevel::UnitSelect()
 	}
 
 
-	// 시간을 되돌리는 기능 (테스트용)
+	// 시간석
 	if (GameEngineInput::IsDown("ButtonX"))
 	{
 		ChangeState(BattleState::TimeStone);

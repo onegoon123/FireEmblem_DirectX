@@ -23,7 +23,7 @@ std::list<AttackCommand> UnitCommand::Attack(std::shared_ptr<BattleUnit> _Subjec
 	CommandRecord.BeforeTargetUnit = Unit(TargetUnit);
 	CommandRecord.BeforeSubjectUnitPos = _SubjectUnit->GetBeforeMapPos();
 	CommandRecord.AfterSubjectUnitPos = _SubjectUnit->GetMapPos();
-	CommandRecord.Record = std::string(_SubjectUnit->GetName()) + "이(가) 공격했다.";
+	CommandRecord.Record = std::string(_SubjectUnit->GetName()) + "이(가) 공격했다";
 
 	CommandRecord.BeforeSubjectItems = Item::SaveItemDataList(SubjectUnit.GetItems());
 	CommandRecord.BeforeTargetItems = Item::SaveItemDataList(TargetUnit.GetItems());
