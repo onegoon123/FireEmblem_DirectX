@@ -209,6 +209,7 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="BattleLevel_Select.cpp" />
+    <ClCompile Include="BattleLevel_TimeStone.cpp" />
     <ClCompile Include="BattleLevel_UnitCommand.cpp" />
     <ClCompile Include="BattleLevel_UnitInformation.cpp" />
     <ClCompile Include="BattleMap.cpp">
@@ -362,6 +363,10 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="TileRender.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="TimeCommand.cpp">
       <SubType>
       </SubType>
     </ClCompile>
@@ -587,6 +592,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="TileRender.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="TimeCommand.h">
       <SubType>
       </SubType>
     </ClInclude>

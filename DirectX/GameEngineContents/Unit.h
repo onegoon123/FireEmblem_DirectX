@@ -94,7 +94,7 @@ public:
 	{
 		return IdentityCode;
 	}
-	bool GetIsPlayer()
+	bool GetIsPlayer() const
 	{
 		return IsPlayer;
 	}

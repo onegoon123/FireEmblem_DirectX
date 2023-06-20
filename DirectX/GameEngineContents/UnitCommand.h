@@ -54,8 +54,8 @@ public:
 
 	static int GetCountTurn();
 
-	static std::list<UnitCommand>& GetCommandList() { return CommandList; }
-	static void SetCommandList(std::list<UnitCommand> _Value) { CommandList = _Value; }
+	static std::vector<UnitCommand>& GetCommandList() { return CommandList;}
+	static void SetCommandList(std::vector<UnitCommand> _Value) { CommandList = _Value; }
 	static void ResetCommandList()
 	{
 		CommandList.clear();
@@ -64,10 +64,29 @@ public:
 	{
 		CommandList.pop_back();
 	}
+	CommandType GetTypeValue()
+	{
+		return TypeValue;
+	}
+	std::string GetRecord()
+	{
+		return Record;
+	}
+	bool IsPlayerTurn()
+	{
+		switch (TypeValue)
+		{
+		case CommandType::PlayerPhaseStart:
+			return true;
+		case CommandType::EnemyPhaseStart:
+			return false;
+		}
+		return BeforeSubjectUnit.GetIsPlayer();
+	}
 protected:
 
 private:
-	static std::list<UnitCommand> CommandList;
+	static std::vector<UnitCommand> CommandList;
 	CommandType TypeValue = CommandType::Wait;
 	Unit BeforeSubjectUnit = Unit();
 	Unit BeforeTargetUnit = Unit();

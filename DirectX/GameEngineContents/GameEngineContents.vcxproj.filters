@@ -184,7 +184,7 @@
       <Filter>Battle\UI\Information</Filter>
     </ClCompile>
     <ClCompile Include="TextRenderer.cpp">
-      <Filter>Battle\UI\Text</Filter>
+      <Filter>UI\Text</Filter>
     </ClCompile>
     <ClCompile Include="BattleLevelUI.cpp">
       <Filter>Battle\UI\Battle</Filter>
@@ -195,8 +195,14 @@
     <ClCompile Include="TimeStoneUI.cpp">
       <Filter>Battle\UI\Battle</Filter>
     </ClCompile>
+    <ClCompile Include="TimeCommand.cpp">
+      <Filter>Battle\UI\Battle</Filter>
+    </ClCompile>
     <ClCompile Include="DialogueBox.cpp">
-      <Filter>UI</Filter>
+      <Filter>UI\Text</Filter>
+    </ClCompile>
+    <ClCompile Include="BattleLevel_TimeStone.cpp">
+      <Filter>Battle\System\Level\State</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -360,7 +366,7 @@
       <Filter>Battle\UI\Information</Filter>
     </ClInclude>
     <ClInclude Include="TextRenderer.h">
-      <Filter>Battle\UI\Text</Filter>
+      <Filter>UI\Text</Filter>
     </ClInclude>
     <ClInclude Include="BattleLevelUI.h">
       <Filter>Battle\UI\Battle</Filter>
@@ -371,8 +377,11 @@
     <ClInclude Include="TimeStoneUI.h">
       <Filter>Battle\UI\Battle</Filter>
     </ClInclude>
+    <ClInclude Include="TimeCommand.h">
+      <Filter>Battle\UI\Battle</Filter>
+    </ClInclude>
     <ClInclude Include="DialogueBox.h">
-      <Filter>UI</Filter>
+      <Filter>UI\Text</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -448,11 +457,11 @@
     <Filter Include="Battle\UI\Information">
       <UniqueIdentifier>{1b59ffb3-246f-4ac4-b7d8-3c918286e089}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Battle\UI\Text">
-      <UniqueIdentifier>{f43c02ef-4cf2-45c3-987c-cca641ebd385}</UniqueIdentifier>
-    </Filter>
     <Filter Include="PostEffect">
       <UniqueIdentifier>{8742de81-9d42-4555-84f0-2bbb60f0f9e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\Text">
+      <UniqueIdentifier>{f43c02ef-4cf2-45c3-987c-cca641ebd385}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

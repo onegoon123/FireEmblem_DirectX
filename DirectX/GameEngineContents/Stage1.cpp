@@ -28,7 +28,7 @@ void Stage1::StageSetting()
 	ClearTargetText = "목표:적 전멸";
 
 	// 켄트, 세인
-	NewPlayerUnit(UnitIdentityCode::Kent, 1, { 0, 2 }, { ItemCode::IronSword, ItemCode::IronLance, ItemCode::Vulnerary })->GetUnitData().AddExp(99);
+	NewPlayerUnit(UnitIdentityCode::Kent, 1, { 0, 2 }, { ItemCode::IronSword, ItemCode::IronLance, ItemCode::Vulnerary });
 	NewPlayerUnit(UnitIdentityCode::Sain, 1, { 0, 4 }, { ItemCode::IronLance });
 
 	// 산적

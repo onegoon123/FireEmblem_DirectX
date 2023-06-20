@@ -27,7 +27,7 @@ public:
 	void UnitCommandHealSet(bool _IsCloseUnit, bool _IsItem);
 	void UnitCommandConquer();
 	void FieldCommandOn();
-	void TimeStoneOn();
+	void TimeStoneOn(bool _IsGameOver = false);
 	void AttackOn(std::shared_ptr<class BattleUnit> _SelectUnit, std::list<std::shared_ptr<BattleUnit>>& _TargetUnits);
 	void HealOn(std::shared_ptr<class BattleUnit> _SelectUnit, std::list<std::shared_ptr<BattleUnit>>& _TargetUnits);
 	void ItemOn(std::shared_ptr<BattleUnit> _SelectUnit);

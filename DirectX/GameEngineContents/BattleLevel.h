@@ -270,7 +270,7 @@ private:
 #pragma endregion
 
 #pragma region Select
-	
+
 	void CursorMove();
 	void CursorUnitSelect();
 	void CursorAndArrowMove();
@@ -278,11 +278,11 @@ private:
 	void CursorAndArrowMoveMouse();
 
 	// 커서에 따른 SeledctUI위치 조절
-	void CursorDirCheck(); 
+	void CursorDirCheck();
 
 	void UnitSelect();
 	// 선택된 유닛에 따른 SelectUI 내용 지정
-	void SetUI_UnitData(); 
+	void SetUI_UnitData();
 
 #pragma endregion
 
@@ -325,6 +325,21 @@ public:
 
 private:
 
+#pragma endregion
+
+#pragma region TimeStone
+public:
+	void TimeStone_Rewind();
+	void TimeStone_Play();
+	void TimeStone_Select();
+	void TimeStone_Cancel();
+private:
+
+	std::vector<UnitCommand> Command;
+	std::vector<UnitCommand>::reverse_iterator RIter;
+	std::vector<UnitCommand>::reverse_iterator RIterEnd;
+	int RewindNum = 0;
+	bool IsGameOver = false;
 #pragma endregion
 
 

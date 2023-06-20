@@ -1185,7 +1185,6 @@ void BattleLevel::GameOverEnd()
 
 float EffectTimer = 0;
 float MapEffectTimer = 0;
-int RewindNum = 0;
 enum TimeStoneState
 {
 	EffectIn,
@@ -1194,13 +1193,9 @@ enum TimeStoneState
 };
 TimeStoneState CurTimeStoneState = EffectIn;
 
-static std::list<UnitCommand> Command;
-static std::list<UnitCommand>::reverse_iterator RIter;
-static std::list<UnitCommand>::reverse_iterator RIterEnd;
-
 void BattleLevel::TimeStoneStart()
 {
-	BattleUI->TimeStoneOn();
+	BattleUI->TimeStoneOn(IsGameOver);
 	EffectTimer = 0;
 	MapEffectTimer = 0;
 	CurTimeStoneState = EffectIn;
@@ -1286,396 +1281,11 @@ void BattleLevel::TimeStoneUpdate(float _DeltaTime)
 	}
 	case Control:
 	{
-		if (GameEngineInput::IsDown("Up") || GameEngineInput::IsUp("MiddleClick"))
-		{
-			if (RIter == RIterEnd) {
-				return;
-			}
-			if (RewindNum + 1 == Command.size())
-			{
-				return;
-			}
-			RewindNum++;
-			FERandom::AddRandomCount(-(*RIter).RandomNum);
-
-			switch (RIter->TypeValue)
-			{
-			case CommandType::Attack:
-			{
-				for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
-				{
-					if ((*RIter).BeforeSubjectUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
-					{
-						_Unit->SetUnitData((*RIter).BeforeSubjectUnit);
-						_Unit->SetMapPos((*RIter).BeforeSubjectUnitPos);
-						_Unit->GetUnitData().LoadItemData((*RIter).BeforeSubjectItems);
-					}
-					else if ((*RIter).BeforeTargetUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
-					{
-						_Unit->SetUnitData((*RIter).BeforeTargetUnit);
-						_Unit->GetUnitData().LoadItemData((*RIter).BeforeTargetItems);
-					}
-				}
-				for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
-				{
-					if ((*RIter).BeforeSubjectUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
-					{
-						_Unit->SetUnitData((*RIter).BeforeSubjectUnit);
-						_Unit->SetMapPos((*RIter).BeforeSubjectUnitPos);
-						_Unit->GetUnitData().LoadItemData((*RIter).BeforeSubjectItems);
-					}
-					else if ((*RIter).BeforeTargetUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
-					{
-						_Unit->SetUnitData((*RIter).BeforeTargetUnit);
-						//_Unit->GetUnitData().LoadItemData((*RIter).BeforeTargetItems);
-					}
-				}
-				break;
-			}
-			case CommandType::Item:
-			{
-				for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
-				{
-					if ((*RIter).BeforeSubjectUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
-					{
-						_Unit->SetUnitData((*RIter).BeforeSubjectUnit);
-						_Unit->SetMapPos((*RIter).BeforeSubjectUnitPos);
-						_Unit->GetUnitData().LoadItemData((*RIter).BeforeSubjectItems);
-					}
-				}
-				for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
-				{
-					if ((*RIter).BeforeSubjectUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
-					{
-						_Unit->SetUnitData((*RIter).BeforeSubjectUnit);
-						_Unit->SetMapPos((*RIter).BeforeSubjectUnitPos);
-						_Unit->GetUnitData().LoadItemData((*RIter).BeforeSubjectItems);
-					}
-				}
-				break;
-			}
-			case CommandType::Wait:
-			{
-				for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
-				{
-					if ((*RIter).BeforeSubjectUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
-					{
-						_Unit->SetUnitData((*RIter).BeforeSubjectUnit);
-						_Unit->SetMapPos((*RIter).BeforeSubjectUnitPos);
-					}
-				}
-				for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
-				{
-					if ((*RIter).BeforeSubjectUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
-					{
-						_Unit->SetUnitData((*RIter).BeforeSubjectUnit);
-						_Unit->SetMapPos((*RIter).BeforeSubjectUnitPos);
-					}
-				}
-
-				break;
-			}
-			case CommandType::EnemyPhaseStart:
-			{
-				static std::list<UnitCommand>::reverse_iterator NewRIter;
-				NewRIter = RIter;
-				//NewRIter++;
-				while (NewRIter != RIterEnd)
-				{
-					if ((*NewRIter).TypeValue == CommandType::PlayerPhaseStart)
-					{
-						break;
-					}
-
-					for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
-					{
-						if ((*NewRIter).BeforeSubjectUnit.GetUnitCode() == _Unit->GetUnitCode())
-						{
-							_Unit->SetIsTurnEnd(true);
-							break;
-						}
-					}
-					NewRIter++;
-				}
-				break;
-			}
-			case CommandType::PlayerPhaseStart:
-			{
-				static std::list<UnitCommand>::reverse_iterator NewRIter;
-				NewRIter = RIter;
-
-				//NewRIter++;
-				while (NewRIter != RIterEnd)
-				{
-					if ((*NewRIter).TypeValue == CommandType::EnemyPhaseStart)
-					{
-
-						break;
-					}
-
-					for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
-					{
-						if ((*NewRIter).BeforeSubjectUnit.GetUnitCode() == _Unit->GetUnitCode())
-						{
-							_Unit->SetIsTurnEnd(true);
-							break;
-						}
-					}
-					NewRIter++;
-				}
-				break;
-			}
-
-			case CommandType::None:
-			{
-				MsgAssert("커맨드 타입 오류");
-				break;
-			}
-			default:
-			{
-				RIter;
-				MsgAssert("커맨드 타입 오류");
-				break;
-			}
-			}
-
-			RIter++;
-
-
-			return;
-		}
-		if (GameEngineInput::IsDown("Down"))
-		{
-			if (RIter == Command.rbegin()) {
-				return;
-			}
-			RIter--;
-			RewindNum--;
-			FERandom::AddRandomCount((*RIter).RandomNum);
-
-			switch (RIter->TypeValue)
-			{
-			case CommandType::Attack:
-			{
-				for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
-				{
-					if ((*RIter).AfterSubjectUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
-					{
-						_Unit->SetUnitData((*RIter).AfterSubjectUnit);
-						_Unit->SetMapPos((*RIter).AfterSubjectUnitPos);
-						_Unit->GetUnitData().LoadItemData((*RIter).AfterSubjectItems);
-					}
-					else if ((*RIter).AfterTargetUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
-					{
-						_Unit->SetUnitData((*RIter).AfterTargetUnit);
-						_Unit->GetUnitData().LoadItemData((*RIter).AfterTargetItems);
-					}
-				}
-				for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
-				{
-					if ((*RIter).AfterSubjectUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
-					{
-						_Unit->SetUnitData((*RIter).AfterSubjectUnit);
-						_Unit->SetMapPos((*RIter).AfterSubjectUnitPos);
-						_Unit->GetUnitData().LoadItemData((*RIter).AfterSubjectItems);
-					}
-					else if ((*RIter).AfterTargetUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
-					{
-						_Unit->SetUnitData((*RIter).AfterTargetUnit);
-						_Unit->GetUnitData().LoadItemData((*RIter).AfterTargetItems);
-					}
-				}
-				break;
-			}
-			case CommandType::Item:
-			{
-				for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
-				{
-					if ((*RIter).AfterSubjectUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
-					{
-						_Unit->SetUnitData((*RIter).AfterSubjectUnit);
-						_Unit->SetMapPos((*RIter).AfterSubjectUnitPos);
-						_Unit->GetUnitData().LoadItemData((*RIter).AfterSubjectItems);
-					}
-				}
-				for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
-				{
-					if ((*RIter).AfterSubjectUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
-					{
-						_Unit->SetUnitData((*RIter).AfterSubjectUnit);
-						_Unit->SetMapPos((*RIter).AfterSubjectUnitPos);
-						_Unit->GetUnitData().LoadItemData((*RIter).AfterSubjectItems);
-					}
-				}
-				break;
-			}
-			case CommandType::Wait:
-			{
-				for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
-				{
-					if ((*RIter).AfterSubjectUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
-					{
-						_Unit->SetUnitData((*RIter).AfterSubjectUnit);
-						_Unit->SetMapPos((*RIter).AfterSubjectUnitPos);
-					}
-				}
-				for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
-				{
-					if ((*RIter).AfterSubjectUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
-					{
-						_Unit->SetUnitData((*RIter).AfterSubjectUnit);
-						_Unit->SetMapPos((*RIter).AfterSubjectUnitPos);
-					}
-				}
-				break;
-			}
-			case CommandType::PlayerPhaseStart:
-			case CommandType::EnemyPhaseStart:
-			{
-				for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
-				{
-					_Unit->SetIsTurnEnd(false);
-				}
-				for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
-				{
-					_Unit->SetIsTurnEnd(false);
-				}
-				break;
-			}
-			case CommandType::None:
-			{
-				MsgAssert("커맨드 타입 오류");
-				break;
-			}
-			default:
-			{
-				MsgAssert("커맨드 타입 오류");
-				break;
-			}
-			}
-
-			return;
-		}
-		break;
+		
+		
 	}
 	default:
 		break;
-	}
-
-
-	if (GameEngineInput::IsDown("ButtonA") || GameEngineInput::IsUp("LeftClick"))
-	{
-		for (int i = 0; i < RewindNum; i++)
-		{
-			UnitCommand::PopCommandList();
-		}
-		ChangeState(BattleState::Select);
-		return;
-	}
-	if (GameEngineInput::IsDown("ButtonB") || GameEngineInput::IsUp("RightClick"))
-	{
-		while (RIter != Command.rbegin()) {
-			RIter--;
-			RewindNum--;
-			FERandom::AddRandomCount((*RIter).RandomNum);
-
-			switch (RIter->TypeValue)
-			{
-			case CommandType::Attack:
-			{
-				for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
-				{
-					if ((*RIter).AfterSubjectUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
-					{
-						_Unit->SetUnitData((*RIter).AfterSubjectUnit);
-						_Unit->SetMapPos((*RIter).AfterSubjectUnitPos);
-					}
-					else if ((*RIter).AfterTargetUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
-					{
-						_Unit->SetUnitData((*RIter).AfterTargetUnit);
-					}
-				}
-				for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
-				{
-					if ((*RIter).AfterSubjectUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
-					{
-						_Unit->SetUnitData((*RIter).AfterSubjectUnit);
-						_Unit->SetMapPos((*RIter).AfterSubjectUnitPos);
-					}
-					else if ((*RIter).AfterTargetUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
-					{
-						_Unit->SetUnitData((*RIter).AfterTargetUnit);
-					}
-				}
-				break;
-			}
-			case CommandType::Item:
-				break;
-			case CommandType::Wait:
-			{
-				for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
-				{
-					if ((*RIter).AfterSubjectUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
-					{
-						_Unit->SetUnitData((*RIter).AfterSubjectUnit);
-						_Unit->SetMapPos((*RIter).AfterSubjectUnitPos);
-					}
-				}
-				for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
-				{
-					if ((*RIter).AfterSubjectUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
-					{
-						_Unit->SetUnitData((*RIter).AfterSubjectUnit);
-						_Unit->SetMapPos((*RIter).AfterSubjectUnitPos);
-					}
-				}
-				break;
-			}
-			case CommandType::PlayerPhaseStart:
-			case CommandType::EnemyPhaseStart:
-			{
-				for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
-				{
-					_Unit->SetIsTurnEnd(false);
-				}
-				for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
-				{
-					_Unit->SetIsTurnEnd(false);
-				}
-				break;
-			}
-			case CommandType::None:
-			{
-				MsgAssert("커맨드 타입 오류");
-				break;
-			}
-			default:
-			{
-				MsgAssert("커맨드 타입 오류");
-				break;
-			}
-			}
-		}
-		ChangeState(BattleState::Select);
-		return;
-	}
-	std::shared_ptr<DebugWindow> Window = GameEngineGUI::FindGUIWindowConvert<DebugWindow>("DebugWindow");
-	{
-		if (nullptr == Window)
-		{
-			MsgAssert("윈도우 테스트 코드 미작동");
-		}
-		Window->Text = "";
-		size_t i = Command.size();
-		for (UnitCommand _Command : Command)
-		{
-			Window->Text += _Command.Record;
-			if (RewindNum == --i)
-			{
-				Window->Text += " <";
-			}
-			Window->Text += '\n';
-		}
 	}
 }
 
@@ -1703,18 +1313,23 @@ bool BattleLevel::GameOverCheck()
 	{
 		if (UnitIdentityCode::Lyn == _Unit->GetUnitData().GetIdentityCode() || UnitIdentityCode::BladeLordLyn == _Unit->GetUnitData().GetIdentityCode())
 		{
-			IsAliveUnit = true;
+			IsAliveUnit = !_Unit->GetIsDie();
 			break;
 		}
 	}
 	if (false == IsAliveUnit)
 	{
 		// 게임오버
+		IsGameOver = true;
 		ChangeState(BattleState::TimeStone);
 		return true;
 	}
 
-	if (ClearTarget != BattleClearTarget::AllKill) { return false; }
+	if (ClearTarget != BattleClearTarget::AllKill)
+	{ 
+		IsGameOver = false;
+		return false;
+	}
 	// 적 전멸이 클리어 목표일때
 	// 적 유닛이 모두 죽었는지 체크
 	IsAliveUnit = false;
@@ -1727,10 +1342,12 @@ bool BattleLevel::GameOverCheck()
 	}
 	if (false == IsAliveUnit)
 	{
+		IsGameOver = true;
 		ChangeState(BattleState::Clear);
 		return true;
 	}
 
+	IsGameOver = false;
 	return false;
 }
 

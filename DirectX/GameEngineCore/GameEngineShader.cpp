@@ -92,7 +92,7 @@ void GameEngineShader::ShaderResCheck()
 		}
 		case D3D_SIT_TEXTURE:
 		{
-			std::shared_ptr<GameEngineTexture> Res = GameEngineTexture::Find("EngineBaseTex.png");
+			std::shared_ptr<GameEngineTexture> Res = GameEngineTexture::Find("MissingTexture.png");
 
 			GameEngineTextureSetter Setter;
 			Setter.ParentShader = this;

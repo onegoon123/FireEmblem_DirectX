@@ -139,11 +139,11 @@ void BattleLevelUI::FieldCommandOn()
 	UI_FieldCommand->On();
 }
 
-void BattleLevelUI::TimeStoneOn()
+void BattleLevelUI::TimeStoneOn(bool _IsGameOver)
 {
 	AllOff();
 
-	UI_TimeStone->On();
+	UI_TimeStone->On(_IsGameOver);
 }
 
 void BattleLevelUI::AttackOn(std::shared_ptr<class BattleUnit> _SelectUnit, std::list<std::shared_ptr<BattleUnit>>& _TargetUnits)
@@ -279,6 +279,7 @@ void BattleLevelUI::Start()
 		UI_Item->Setting(CurLevel, UI_Cursor);
 		UI_Exchange->Setting(CurLevel, UI_Cursor);
 		UI_FieldCommand->Setting(CurLevel, UI_Cursor);
+		UI_TimeStone->Setting(CurLevel);
 
 		UI_Fade = CreateComponent<GameEngineUIRenderer>(RenderOrder::Fade);
 		UI_Fade->ColorOptionValue.MulColor.a = 0;

@@ -1,7 +1,7 @@
 #include "PrecompileHeader.h"
 #include "UnitCommand.h"
 #include "FERandom.h"
-std::list<UnitCommand> UnitCommand::CommandList = std::list<UnitCommand>();
+std::vector<UnitCommand> UnitCommand::CommandList = std::vector<UnitCommand>();
 
 UnitCommand::UnitCommand()
 {

@@ -1,33 +1,181 @@
 #include "PrecompileHeader.h"
 #include "TimeStoneUI.h"
-#include "DialogueBox.h"
+#include <GameEnginePlatform/GameEngineInput.h>
+#include <GameEngineCore/GameEngineUIRenderer.h>
+#include "TimeCommand.h"
 #include "TextRenderer.h"
 #include "ContentsEnum.h"
-TimeStoneUI::TimeStoneUI() 
+#include "BattleLevel.h"
+TimeStoneUI::TimeStoneUI()
 {
 }
 
-TimeStoneUI::~TimeStoneUI() 
+TimeStoneUI::~TimeStoneUI()
 {
 }
 
-void TimeStoneUI::On()
+void TimeStoneUI::Setting(BattleLevel* _Level)
+{
+	CurLevel = _Level;
+	Rewind = std::bind(&BattleLevel::TimeStone_Rewind, _Level);
+	Play = std::bind(&BattleLevel::TimeStone_Play, _Level);
+	Select = std::bind(&BattleLevel::TimeStone_Select, _Level);
+	Cancel = std::bind(&BattleLevel::TimeStone_Cancel, _Level);
+}
+
+void TimeStoneUI::On(bool _IsGameOver)
 {
 	GameEngineActor::On();
-	CommandList = &UnitCommand::GetCommandList();
+	CommandList = UnitCommand::GetCommandList();
+	CommandSetting();
+	IsGameOver = _IsGameOver;
 }
 
 void TimeStoneUI::Start()
 {
-	CommandBoxs.resize(5);
-	for (int i = 0; i < 5; i++)
+	CommandRenders.resize(20);
+	for (int i = 0; i < CommandRenders.size(); i++)
 	{
-		CommandBoxs[i] = CreateComponent<DialogueBox>(RenderOrder::UI);
-		CommandBoxs[i]->SetSize({ 17, 2 });
-		CommandBoxs[i]->GetTransform()->SetLocalPosition({ -432, i * -112.0f + 250.0f });
-		CommandBoxs[i]->GetTextRender()->Setting("Silhoua14", 45, float4::White, float4::Black, FontAligned::Left);
-		CommandBoxs[i]->GetTextRender()->SetText("테스트");
-		CommandBoxs[i]->SetOpacity(.2f);
+		CommandRenders[i] = CreateComponent<TimeCommand>(RenderOrder::UI);
+		CommandRenders[i]->GetTransform()->SetLocalPosition({ -480, i * -88.0f });
+		CommandRenders[i]->GetTextRender()->Setting("Silhoua14", 45, float4::White, float4::Null, FontAligned::Left);
+		CommandRenders[i]->GetTextRender()->SetText("테스트");
 	}
+
+}
+
+void TimeStoneUI::Update(float _DeltaTime)
+{
+	GetTransform()->SetLocalPosition(float4::LerpClamp(GetTransform()->GetLocalPosition(), MoveTarget, _DeltaTime * 5));
+	Timer += _DeltaTime;
+	if (Timer < WaitTime) { return; }
+
+	if (PreesTime < GameEngineInput::GetPressTime("Up") || PreesTime < GameEngineInput::GetPressTime("Down"))
+	{
+		PressOK = true;
+	}
+	else if (GameEngineInput::IsFree("Up") && GameEngineInput::IsFree("Down"))
+	{
+		PressOK = false;
+	}
+
+	if (GameEngineInput::IsDown("Up") || (GameEngineInput::IsPress("Up") && PressOK))
+	{
+		CommandMoveUp();
+		Rewind();
+		return;
+	}
+	if (GameEngineInput::IsDown("Down") || (GameEngineInput::IsPress("Down") && PressOK))
+	{
+		CommandMoveDown();
+		Play();
+		return;
+	}
+	if (GameEngineInput::IsDown("ButtonA") && CurFaction == Faction::Player)
+	{
+		if (true == IsGameOver && CurrentCursor == CommandList.size() - 1)
+		{
+			return;
+		}
+		Select();
+		return;
+	}
+	if (GameEngineInput::IsDown("ButtonB"))
+	{
+		Cancel();
+		return;
+	}
+}
+
+void TimeStoneUI::CommandMoveUp()
+{
+	if (CurrentCursor == 0)
+	{
+		return;
+	}
+	switch (CommandList[CurrentCursor].GetTypeValue())
+	{
+	case CommandType::PlayerPhaseStart:
+		CurFaction = Faction::Enemy;
+		break;
+	case CommandType::EnemyPhaseStart:
+		CurFaction = Faction::Player;
+		break;
+	default:
+		break;
+	}
+	CommandRenders[CurrentCursor]->Cancel();
+	CurrentCursor--;
+	CommandRenders[CurrentCursor]->Select(CurFaction);
+	MoveTarget = { 0, 88.0f * (CurrentCursor + 1) - 40.0f };
+	Timer = 0;
+}
+
+void TimeStoneUI::CommandMoveDown()
+{
+	if (CurrentCursor == CommandList.size() - 1)
+	{
+		return;
+	}
+	CommandRenders[CurrentCursor]->Cancel();
+	CurrentCursor++;
+	switch (CommandList[CurrentCursor].GetTypeValue())
+	{
+	case CommandType::PlayerPhaseStart:
+		CurFaction = Faction::Player;
+		break;
+	case CommandType::EnemyPhaseStart:
+		CurFaction = Faction::Enemy;
+		break;
+	default:
+		break;
+	}
+	CommandRenders[CurrentCursor]->Select(CurFaction);
+	MoveTarget = { 0, 88.0f * (CurrentCursor + 1) - 40.0f };
+	Timer = 0;
+}
+
+void TimeStoneUI::CommandSetting()
+{
+	size_t CurSize = CommandRenders.size();
+
+	if (CurSize < CommandList.size())
+	{
+		CommandRenders.resize(CommandList.size());
+		for (int i = 0; i < CurSize; i++)
+		{
+			CommandRenders[i]->On();
+			CommandRenders[i]->GetTextRender()->SetText(CommandList[i].GetRecord());
+		}
+		for (size_t i = CurSize; i < CommandRenders.size(); i++)
+		{
+			CommandRenders[i] = CreateComponent<TimeCommand>(RenderOrder::UI);
+			CommandRenders[i]->GetTransform()->SetLocalPosition({ -480, i * -88.0f });
+			CommandRenders[i]->GetTextRender()->Setting("Silhoua14", 45, float4::White, float4::Null, FontAligned::Left);
+			CommandRenders[i]->GetTextRender()->SetText(CommandList[i].GetRecord());
+		}
+	}
+	else
+	{
+		for (int i = 0; i < CommandList.size(); i++)
+		{
+			CommandRenders[i]->On();
+			CommandRenders[i]->GetTextRender()->SetText(CommandList.operator[](i).GetRecord());
+		}
+		for (size_t i = CommandList.size(); i < CurSize; i++)
+		{
+			CommandRenders[i]->Off();
+		}
+	}
+
+	CommandRenders[CurrentCursor]->Cancel();
+	CurrentCursor = static_cast<int>(CommandList.size() - 1);
+
+	CurFaction = CommandList[CurrentCursor].IsPlayerTurn() == true ? Faction::Player : Faction::Enemy;
+
+	CommandRenders[CurrentCursor]->Select(CurFaction);
+	GetTransform()->SetLocalPosition({ 0, 88.0f * (CurrentCursor + 1) - 40.0f });
+	MoveTarget = { 0, 88.0f * (CurrentCursor + 1) - 40.0f };
+	Timer = -0.5f;
 }
 
