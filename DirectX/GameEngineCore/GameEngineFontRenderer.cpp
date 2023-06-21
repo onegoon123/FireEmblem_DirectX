@@ -17,6 +17,11 @@ void GameEngineFontRenderer::SetFont(const std::string_view& _Font)
 
 void GameEngineFontRenderer::SetText(const std::string_view& _Text)
 {
+	Text = GameEngineString::AnsiToUniCode(_Text);
+}
+
+void GameEngineFontRenderer::SetText(const std::wstring_view& _Text)
+{
 	Text = _Text;
 }
 
@@ -27,7 +32,7 @@ void GameEngineFontRenderer::Render(float _Delta)
 		return;
 	}
 
-	if ("" == Text)
+	if (L"" == Text)
 	{
 		return;
 	}

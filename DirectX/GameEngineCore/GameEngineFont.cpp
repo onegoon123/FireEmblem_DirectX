@@ -108,3 +108,32 @@ void GameEngineFont::FontDraw(const std::string_view& _Text, const float4& _Pos,
 	}
 	Font->DrawString(GameEngineDevice::GetContext(), Text.c_str(), _FontScale, _Pos.x, _Pos.y, _Color.ColorToUint(), Aligned);
 }
+
+void GameEngineFont::FontDraw(const std::wstring_view& _Text, const float4& _Pos, float _FontScale, const float4& _Color, FontAligned _Aligned)
+{
+	std::wstring Text = std::wstring(_Text);
+
+	float4 Color = { 1.0f, 0.0f, 0.0f, 1.0f };
+	FW1_TEXT_FLAG Aligned;
+	switch (_Aligned)
+	{
+	case FontAligned::Left:
+		Aligned = FW1_LEFT;
+		break;
+	case FontAligned::Center:
+		Aligned = FW1_CENTER;
+		break;
+	case FontAligned::Right:
+		Aligned = FW1_RIGHT;
+		break;
+	case FontAligned::Top:
+		Aligned = FW1_TOP;
+		break;
+	case FontAligned::Bottom:
+		Aligned = FW1_BOTTOM;
+		break;
+	default:
+		break;
+	}
+	Font->DrawString(GameEngineDevice::GetContext(), Text.c_str(), _FontScale, _Pos.x, _Pos.y, _Color.ColorToUint(), Aligned);
+}

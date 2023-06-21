@@ -40,6 +40,7 @@ public:
 
 	void FontDraw(const std::string_view& _Text, const float4& _Pos, float _FontScale, const float4& _Color);
 	void FontDraw(const std::string_view& _Text, const float4& _Pos, float _FontScale, const float4& _Color, FontAligned _Aligned);
+	void FontDraw(const std::wstring_view& _Text, const float4& _Pos, float _FontScale, const float4& _Color, FontAligned _Aligned);
 
 protected:
 

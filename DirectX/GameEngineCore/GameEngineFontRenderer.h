@@ -19,6 +19,7 @@ public:
 
 	void SetFont(const std::string_view& _Font);
 	void SetText(const std::string_view& _Text);
+	void SetText(const std::wstring_view& _Text);
 
 	void SetScale(float _FontScale)
 	{
@@ -43,7 +44,7 @@ private:
 
 	float FontScale = 10.0f;
 	float4 FontColor = float4::Red;
-	std::string Text;
+	std::wstring Text;
 	FontAligned Aligned = FontAligned::Center;
 	std::shared_ptr<GameEngineFont> Font;
 

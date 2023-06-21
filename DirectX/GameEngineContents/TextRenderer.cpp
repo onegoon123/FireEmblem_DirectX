@@ -35,9 +35,9 @@ void TextRenderer::Update(float _DeltaTime)
 		IsTextAnim = false;
 		return;
 	}
-	Index += 2;
-	Timer = AnimTime;
 
+	Index ++;
+	Timer = AnimTime;
 	SetText(AnimText.substr(0, Index));
 }
 
@@ -64,6 +64,15 @@ void TextRenderer::SetFont(const std::string_view& _Font)
 }
 
 void TextRenderer::SetText(const std::string_view& _Text)
+{
+	FontRender->SetText(_Text);
+	for (int i = 0; i < OutlineRenders.size(); i++)
+	{
+		OutlineRenders[i]->SetText(_Text);
+	}
+}
+
+void TextRenderer::SetText(const std::wstring_view& _Text)
 {
 	FontRender->SetText(_Text);
 	for (int i = 0; i < OutlineRenders.size(); i++)
@@ -104,16 +113,12 @@ void TextRenderer::SetAligned(FontAligned _Aligned)
 	}
 }
 
-void TextRenderer::SetTextAnim(const std::string_view& _Text)
+void TextRenderer::SetTextAnim(const std::wstring_view& _Text)
 {
 	AnimText = _Text;
 	Index = 0;
 	IsTextAnim = true;
 	Timer = AnimTime;
 
-	FontRender->SetText(AnimText.substr(0, Index));
-	for (int i = 0; i < OutlineRenders.size(); i++)
-	{
-		OutlineRenders[i]->SetText(AnimText.substr(0, Index));
-	}
+	SetText(L"");
 }

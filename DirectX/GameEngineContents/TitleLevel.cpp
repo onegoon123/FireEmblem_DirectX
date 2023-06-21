@@ -37,7 +37,6 @@ void TitleLevel::Start()
 		GameEngineInput::CreateKey("Cheet2", VK_F2);
 		GameEngineInput::CreateKey("Cheet3", VK_F3);
 		GameEngineInput::CreateKey("Cheet4", VK_F4);
-		GameEngineInput::CreateKey("Cheet5", VK_F5);
 	}
 
 	// 카메라 세팅
