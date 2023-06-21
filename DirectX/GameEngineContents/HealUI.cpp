@@ -141,26 +141,27 @@ void HealUI::Off()
 void HealUI::Start()
 {
 	WindowRender = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
-	WindowRender->GetTransform()->SetWorldScale({ 420, 356 });
-	WindowRender->GetTransform()->SetLocalPosition({ -224, 64 });
+	WindowRender->GetTransform()->SetLocalScale({ 420, 356, 1 });
+	
 	WindowRender->SetSprite("ItemUI.png", 2);
 
 	SelectRender = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
-	SelectRender->GetTransform()->SetWorldScale({ 368, 20 });
+	SelectRender->GetTransform()->SetLocalScale({ 368, 20, 1 });
 	SelectRender->GetTransform()->SetLocalPosition(StartSelectPos);
 	SelectRender->SetTexture("ItemSelect.png");
 
 	InfoRender = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
-	InfoRender->GetTransform()->SetWorldScale({ 420, 356 });
+	InfoRender->GetTransform()->SetLocalScale({ 420, 356,1 });
 	InfoRender->GetTransform()->SetLocalPosition({ 224, -224 });
 	InfoRender->SetSprite("ItemUI.png", 2);
 
 	ItemInfoText = CreateComponent<TextRenderer>(RenderOrder::UIText);
-	ItemInfoText->GetTransform()->SetLocalPosition({ 40, -74 });
+	ItemInfoText->GetTransform()->SetLocalPosition({ 40, -74});
+	ItemInfoText->GetTransform()->SetParent(InfoRender->GetTransform());
 	ItemInfoText->Setting("Silhoua14", 45, float4::White, float4::Black, FontAligned::Left);
 
 	Portrait = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
-	Portrait->GetTransform()->SetWorldScale({ 384, 320 });
+	Portrait->GetTransform()->SetLocalScale({ 384, 320,1 });
 	Portrait->GetTransform()->SetLocalPosition({ 224, 114 });
 	Portrait->SetTexture("Portrait_Lyn.png");
 
@@ -170,7 +171,7 @@ void HealUI::Start()
 		StaveIcon[i] = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
 		StaveIcon[i]->SetSprite("Items.png", 0);
 
-		StaveIcon[i]->GetTransform()->SetWorldScale({ 64, 64 });
+		StaveIcon[i]->GetTransform()->SetLocalScale({ 64, 64 });
 		StaveIcon[i]->GetTransform()->SetLocalPosition({ -386.0f, 198.0f - (64.0f * i) });
 
 		StaveIcon[i]->Off();
@@ -182,15 +183,15 @@ void HealUI::Start()
 		for (int i = 0; i < 5; i++)
 		{
 			StaveUses[i] = GetLevel()->CreateActor<NumberActor>();
-			StaveUses[i]->GetTransform()->SetParent(WindowRender->GetTransform());
 			StaveUses[i]->GetTransform()->SetLocalPosition({ 172, 128.0f - i * 64 });
 			StaveUses[i]->GetTransform()->SetWorldRotation(float4::Zero);
-			StaveUses[i]->GetTransform()->SetWorldScale(float4::One);
+			StaveUses[i]->GetTransform()->SetLocalScale(float4::One);
+			StaveUses[i]->GetTransform()->SetParent(WindowRender->GetTransform());
 			StaveUses[i]->SetValue(0);
 			StaveUses[i]->Off();
 		}
 	}
-
+	WindowRender->GetTransform()->SetLocalPosition({ -224, 64 });
 	ButtonSystem = GetLevel()->CreateActor<UIButtonSystem>();
 	ButtonSystem->GetTransform()->SetParent(GetTransform());
 

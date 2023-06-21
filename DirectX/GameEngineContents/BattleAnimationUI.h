@@ -23,6 +23,7 @@ public:
 	void SetFadeOut(float _Timer);
 	
 	void SetData(std::shared_ptr<BattleUnit> _Unit1, std::shared_ptr<BattleUnit> _Unit2, bool _Unit1Attackable, bool _Unit2Attackable);
+	void SetDataHeal(std::shared_ptr<BattleUnit> _Unit1, std::shared_ptr<BattleUnit> _Unit2);
 	void SetDamage(Unit& _Unit);
 
 	void SetEXP(int _Before, int _Get, Unit& _UnitData);

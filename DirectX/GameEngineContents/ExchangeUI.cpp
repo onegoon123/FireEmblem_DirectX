@@ -50,25 +50,21 @@ void ExchangeUI::Start()
 {
 	LeftWindow = CreateComponent<GameEngineUIRenderer>(RenderOrder::UIBackground);
 	LeftWindow->SetSprite("ItemUI.png", 4);
-	LeftWindow->GetTransform()->SetLocalPosition({ -228, -128 });
-	LeftWindow->GetTransform()->SetLocalScale({ 420, 356 });
+	LeftWindow->GetTransform()->SetLocalScale({ 420, 356, 1 });
 
 	LeftPortrait = CreateComponent<GameEngineUIRenderer>(RenderOrder::Unit);
-	LeftPortrait->GetTransform()->SetParent(LeftWindow->GetTransform());
-	LeftPortrait->GetTransform()->SetWorldScale({ -384, 320 });
+	LeftPortrait->GetTransform()->SetLocalScale({ -384, 320, 1 });
 	LeftPortrait->GetTransform()->SetLocalPosition({ 0, 298 });
-	LeftPortrait->GetTransform()->SetWorldRotation(float4::Zero);
+	LeftPortrait->GetTransform()->SetParent(LeftWindow->GetTransform());
 
 	RightWindow = CreateComponent<GameEngineUIRenderer>(RenderOrder::UIBackground);
 	RightWindow->SetSprite("ItemUI.png", 4);
-	RightWindow->GetTransform()->SetLocalPosition({ 228, -128 });
-	RightWindow->GetTransform()->SetLocalScale({ 420, 356 });
+	RightWindow->GetTransform()->SetLocalScale({ 420, 356, 1  });
 
 	RightPortrait = CreateComponent<GameEngineUIRenderer>(RenderOrder::Unit);
-	RightPortrait->GetTransform()->SetParent(RightWindow->GetTransform());
-	RightPortrait->GetTransform()->SetWorldScale({ 384, 320 });
+	RightPortrait->GetTransform()->SetLocalScale({ 384, 320 });
 	RightPortrait->GetTransform()->SetLocalPosition({ 0, 298 });
-	RightPortrait->GetTransform()->SetWorldRotation(float4::Zero);
+	RightPortrait->GetTransform()->SetParent(RightWindow->GetTransform());
 
 	SelectRender = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
 	SelectRender->SetTexture("ItemSelect.png");
@@ -98,53 +94,47 @@ void ExchangeUI::Start()
 	for (int i = 0; i < 5; i++)
 	{
 		LeftIcons[i] = CreateComponent<GameEngineUIRenderer>(RenderOrder::UIText);
-		LeftIcons[i]->GetTransform()->SetParent(LeftWindow->GetTransform());
 		LeftIcons[i]->GetTransform()->SetLocalPosition({ -160, 128.0f - (i * 64.0f) });
-		LeftIcons[i]->GetTransform()->SetWorldScale({ 64, 64 });
-		LeftIcons[i]->GetTransform()->SetWorldRotation(float4::Zero);
+		LeftIcons[i]->GetTransform()->SetLocalScale({ 64, 64 });
+		LeftIcons[i]->GetTransform()->SetParent(LeftWindow->GetTransform());
 		LeftIcons[i]->SetSprite("items.png", 0);
 		LeftIcons[i]->Off();
 
 		LeftUses[i] = GetLevel()->CreateActor<NumberActor>();
 		LeftUses[i]->NumberCreate(RenderOrder::UIText);
-		LeftUses[i]->GetTransform()->SetParent(LeftWindow->GetTransform());
 		LeftUses[i]->GetTransform()->SetLocalPosition({ 160, 128.0f - (i * 64.0f) });
-		LeftUses[i]->GetTransform()->SetWorldRotation(float4::Zero);
-		LeftUses[i]->GetTransform()->SetWorldScale(float4::One);
+		LeftUses[i]->GetTransform()->SetParent(LeftWindow->GetTransform());
 		LeftUses[i]->Off();
 
 		RightIcons[i] = CreateComponent<GameEngineUIRenderer>(RenderOrder::UIText);
-		RightIcons[i]->GetTransform()->SetParent(RightWindow->GetTransform());
 		RightIcons[i]->GetTransform()->SetLocalPosition({ -160, 128.0f - (i * 64.0f) });
-		RightIcons[i]->GetTransform()->SetWorldScale({ 64, 64 });
-		RightIcons[i]->GetTransform()->SetWorldRotation(float4::Zero);
+		RightIcons[i]->GetTransform()->SetLocalScale({ 64, 64 });
+		RightIcons[i]->GetTransform()->SetParent(RightWindow->GetTransform());
 		RightIcons[i]->SetSprite("items.png", 0);
 		RightIcons[i]->Off();
 
 		RightUses[i] = GetLevel()->CreateActor<NumberActor>();
 		RightUses[i]->NumberCreate(RenderOrder::UIText);
-		RightUses[i]->GetTransform()->SetParent(RightWindow->GetTransform());
 		RightUses[i]->GetTransform()->SetLocalPosition({ 160, 128.0f - (i * 64.0f) });
-		RightUses[i]->GetTransform()->SetWorldRotation(float4::Zero);
-		RightUses[i]->GetTransform()->SetWorldScale(float4::One);
+		RightUses[i]->GetTransform()->SetParent(RightWindow->GetTransform());
 		RightUses[i]->Off();
 
 		LeftItemNameTexts[i] = CreateComponent<TextRenderer>(RenderOrder::UIText);
-		LeftItemNameTexts[i]->GetTransform()->SetParent(LeftWindow->GetTransform());
 		LeftItemNameTexts[i]->GetTransform()->SetLocalPosition({ -106, 150.0f - (64 * i) });
-		LeftItemNameTexts[i]->GetTransform()->SetWorldRotation(float4::Zero);
-		LeftItemNameTexts[i]->GetTransform()->SetWorldScale(float4::One);
+		LeftItemNameTexts[i]->GetTransform()->SetParent(LeftWindow->GetTransform());
 		LeftItemNameTexts[i]->Setting("Silhoua14", 55, float4::White, float4::Black, FontAligned::Left);
 		LeftItemNameTexts[i]->Off();
 
 		RightItemNameTexts[i] = CreateComponent<TextRenderer>(RenderOrder::UIText);
-		RightItemNameTexts[i]->GetTransform()->SetParent(RightWindow->GetTransform());
 		RightItemNameTexts[i]->GetTransform()->SetLocalPosition({ -106, 150.0f - (64 * i) });
-		RightItemNameTexts[i]->GetTransform()->SetWorldRotation(float4::Zero);
-		RightItemNameTexts[i]->GetTransform()->SetWorldScale(float4::One);
+		RightItemNameTexts[i]->GetTransform()->SetParent(RightWindow->GetTransform());
 		RightItemNameTexts[i]->Setting("Silhoua14", 55, float4::White, float4::Black, FontAligned::Left);
 		RightItemNameTexts[i]->Off();
 	}
+
+	LeftWindow->GetTransform()->SetLocalPosition({ -228, -128 });
+	RightWindow->GetTransform()->SetLocalPosition({ 228, -128 });
+
 }
 
 void ExchangeUI::Update(float _DeltaTime)

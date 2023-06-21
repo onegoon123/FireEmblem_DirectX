@@ -300,7 +300,7 @@ void Weapon::SetWeapon_Horseslayer()
 void Weapon::SetWeapon_HandAxe()
 {
 	WeaponTypeValue = WeaponType::Axe;
-	SetName("ÅõÃ´ µµ³¢");
+	SetName("ÇÚµå¿¢½º");
 	Damage = 7;
 	Hit = 60;
 	Critical = 0;

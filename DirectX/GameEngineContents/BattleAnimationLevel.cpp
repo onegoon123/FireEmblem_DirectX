@@ -254,7 +254,14 @@ void BattleAnimationLevel::LevelChangeStart()
 
 	SubjectAnimation->SetAnimation(SubjectUnit);
 	TargetAnimation->SetAnimation(TargetUnit);
-	UI->SetData(SubjectUnit, TargetUnit, SubjectUnit->IsAttackable(TargetUnit), TargetUnit->IsAttackable(SubjectUnit));
+	if (SubjectUnit->GetUnitData().GetIsPlayer() && TargetUnit->GetUnitData().GetIsPlayer())
+	{
+		UI->SetDataHeal(SubjectUnit, TargetUnit);
+	}
+	else
+	{
+		UI->SetData(SubjectUnit, TargetUnit, SubjectUnit->IsAttackable(TargetUnit), TargetUnit->IsAttackable(SubjectUnit));
+	}
 	FEffect->FadeIn(0.3f);
 	
 	TimeEvent.AddEvent(0.3f, std::bind(&BattleAnimationLevel::PlayAttack, this));

@@ -165,7 +165,7 @@ void UnitInformationUI::Start()
 
 	PersonalDataWindow = CreateComponent<GameEngineUIRenderer>(3);
 	PersonalDataWindow->SetTexture("PersonalDataWindow.png");
-	PersonalDataWindow->GetTransform()->SetLocalScale({ 548, 420 });
+	PersonalDataWindow->GetTransform()->SetLocalScale({ 548, 420, 1 });
 	PersonalDataWindow->GetTransform()->SetLocalPosition({ 164, 32 });
 
 	PortraitRenderer = CreateComponent<GameEngineUIRenderer>(2);
@@ -202,114 +202,78 @@ void UnitInformationUI::Start()
 
 	{
 		Number_Strength = CurLevel->CreateActor<NumberActor>();
+		Number_Strength->GetTransform()->SetLocalPosition({ -100 + 164, 128 +32});
 		Number_Strength->GetTransform()->SetParent(PersonalDataWindow->GetTransform());
-		Number_Strength->GetTransform()->SetLocalPosition({ -100, 128 });
-		Number_Strength->GetTransform()->SetWorldRotation(float4::Zero);
-		Number_Strength->GetTransform()->SetWorldScale(float4::One);
 
 		Number_Magic = CurLevel->CreateActor<NumberActor>();
+		Number_Magic->GetTransform()->SetLocalPosition({ -100 + 164, 40 + 32});
 		Number_Magic->GetTransform()->SetParent(PersonalDataWindow->GetTransform());
-		Number_Magic->GetTransform()->SetLocalPosition({ -100, 40 });
-		Number_Magic->GetTransform()->SetWorldRotation(float4::Zero);
-		Number_Magic->GetTransform()->SetWorldScale(float4::One);
 
 		Number_Dexterity = CurLevel->CreateActor<NumberActor>();
+		Number_Dexterity->GetTransform()->SetLocalPosition({ -100 + 164, -48 +32});
 		Number_Dexterity->GetTransform()->SetParent(PersonalDataWindow->GetTransform());
-		Number_Dexterity->GetTransform()->SetLocalPosition({ -100, -48 });
-		Number_Dexterity->GetTransform()->SetWorldRotation(float4::Zero);
-		Number_Dexterity->GetTransform()->SetWorldScale(float4::One);
 
 		Number_Speed = CurLevel->CreateActor<NumberActor>();
+		Number_Speed->GetTransform()->SetLocalPosition({ -100 + 164, -136 +32});
 		Number_Speed->GetTransform()->SetParent(PersonalDataWindow->GetTransform());
-		Number_Speed->GetTransform()->SetLocalPosition({ -100, -136 });
-		Number_Speed->GetTransform()->SetWorldRotation(float4::Zero);
-		Number_Speed->GetTransform()->SetWorldScale(float4::One);
 
 		Number_Defense = CurLevel->CreateActor<NumberActor>();
+		Number_Defense->GetTransform()->SetLocalPosition({ 152 + 164, 152 + 32});
 		Number_Defense->GetTransform()->SetParent(PersonalDataWindow->GetTransform());
-		Number_Defense->GetTransform()->SetLocalPosition({ 152, 152 });
-		Number_Defense->GetTransform()->SetWorldRotation(float4::Zero);
-		Number_Defense->GetTransform()->SetWorldScale(float4::One);
 
 		Number_Resistance = CurLevel->CreateActor<NumberActor>();
+		Number_Resistance->GetTransform()->SetLocalPosition({ 152 + 164, 76 + 32});
 		Number_Resistance->GetTransform()->SetParent(PersonalDataWindow->GetTransform());
-		Number_Resistance->GetTransform()->SetLocalPosition({ 152, 76 });
-		Number_Resistance->GetTransform()->SetWorldRotation(float4::Zero);
-		Number_Resistance->GetTransform()->SetWorldScale(float4::One);
 
 		Number_Luck = CurLevel->CreateActor<NumberActor>();
+		Number_Luck->GetTransform()->SetLocalPosition({ 152 + 164, 0 + 32});
 		Number_Luck->GetTransform()->SetParent(PersonalDataWindow->GetTransform());
-		Number_Luck->GetTransform()->SetLocalPosition({ 152, 0 });
-		Number_Luck->GetTransform()->SetWorldRotation(float4::Zero);
-		Number_Luck->GetTransform()->SetWorldScale(float4::One);
 
 		Number_Move = CurLevel->CreateActor<NumberActor>();
+		Number_Move->GetTransform()->SetLocalPosition({ 152 + 164, -76 + 32});
 		Number_Move->GetTransform()->SetParent(PersonalDataWindow->GetTransform());
-		Number_Move->GetTransform()->SetLocalPosition({ 152, -76 });
-		Number_Move->GetTransform()->SetWorldRotation(float4::Zero);
-		Number_Move->GetTransform()->SetWorldScale(float4::One);
 
 		Number_Constitution = CurLevel->CreateActor<NumberActor>();
+		Number_Constitution->GetTransform()->SetLocalPosition({ 152 + 164, -152 + 32});
 		Number_Constitution->GetTransform()->SetParent(PersonalDataWindow->GetTransform());
-		Number_Constitution->GetTransform()->SetLocalPosition({ 152, -152 });
-		Number_Constitution->GetTransform()->SetWorldRotation(float4::Zero);
-		Number_Constitution->GetTransform()->SetWorldScale(float4::One);
 	}
 
 	{
 		Bar_Strength = CurLevel->CreateActor<StatBar>();
+		Bar_Strength->GetTransform()->SetLocalPosition({ -164 + 164, 116 + 32});
 		Bar_Strength->GetTransform()->SetParent(PersonalDataWindow->GetTransform());
-		Bar_Strength->GetTransform()->SetLocalPosition({ -164, 116 });
-		Bar_Strength->GetTransform()->SetWorldRotation(float4::Zero);
-		Bar_Strength->GetTransform()->SetWorldScale(float4::One);
 
 		Bar_Magic = CurLevel->CreateActor<StatBar>();
+		Bar_Magic->GetTransform()->SetLocalPosition({ -164 + 164, 28 + 32});
 		Bar_Magic->GetTransform()->SetParent(PersonalDataWindow->GetTransform());
-		Bar_Magic->GetTransform()->SetLocalPosition({ -164, 28 });
-		Bar_Magic->GetTransform()->SetWorldRotation(float4::Zero);
-		Bar_Magic->GetTransform()->SetWorldScale(float4::One);
 
 		Bar_Dexterity = CurLevel->CreateActor<StatBar>();
+		Bar_Dexterity->GetTransform()->SetLocalPosition({ -164 + 164, -60 + 32});
 		Bar_Dexterity->GetTransform()->SetParent(PersonalDataWindow->GetTransform());
-		Bar_Dexterity->GetTransform()->SetLocalPosition({ -164, -60 });
-		Bar_Dexterity->GetTransform()->SetWorldRotation(float4::Zero);
-		Bar_Dexterity->GetTransform()->SetWorldScale(float4::One);
 
 		Bar_Speed = CurLevel->CreateActor<StatBar>();
+		Bar_Speed->GetTransform()->SetLocalPosition({ -164 + 164, -148 + 32});
 		Bar_Speed->GetTransform()->SetParent(PersonalDataWindow->GetTransform());
-		Bar_Speed->GetTransform()->SetLocalPosition({ -164, -148 });
-		Bar_Speed->GetTransform()->SetWorldRotation(float4::Zero);
-		Bar_Speed->GetTransform()->SetWorldScale(float4::One);
 
 		Bar_Defense = CurLevel->CreateActor<StatBar>();
+		Bar_Defense->GetTransform()->SetLocalPosition({ 88 + 164, 140 +32});
 		Bar_Defense->GetTransform()->SetParent(PersonalDataWindow->GetTransform());
-		Bar_Defense->GetTransform()->SetLocalPosition({ 88, 140 });
-		Bar_Defense->GetTransform()->SetWorldRotation(float4::Zero);
-		Bar_Defense->GetTransform()->SetWorldScale(float4::One);
 
 		Bar_Resistance = CurLevel->CreateActor<StatBar>();
+		Bar_Resistance->GetTransform()->SetLocalPosition({ 88 + 164, 64 + 32});
 		Bar_Resistance->GetTransform()->SetParent(PersonalDataWindow->GetTransform());
-		Bar_Resistance->GetTransform()->SetLocalPosition({ 88, 64 });
-		Bar_Resistance->GetTransform()->SetWorldRotation(float4::Zero);
-		Bar_Resistance->GetTransform()->SetWorldScale(float4::One);
 
 		Bar_Luck = CurLevel->CreateActor<StatBar>();
+		Bar_Luck->GetTransform()->SetLocalPosition({ 88 + 164, -12 + 32});
 		Bar_Luck->GetTransform()->SetParent(PersonalDataWindow->GetTransform());
-		Bar_Luck->GetTransform()->SetLocalPosition({ 88, -12 });
-		Bar_Luck->GetTransform()->SetWorldRotation(float4::Zero);
-		Bar_Luck->GetTransform()->SetWorldScale(float4::One);
 
 		Bar_Move = CurLevel->CreateActor<StatBar>();
+		Bar_Move->GetTransform()->SetLocalPosition({ 88 + 164, -88 + 32});
 		Bar_Move->GetTransform()->SetParent(PersonalDataWindow->GetTransform());
-		Bar_Move->GetTransform()->SetLocalPosition({ 88, -88 });
-		Bar_Move->GetTransform()->SetWorldRotation(float4::Zero);
-		Bar_Move->GetTransform()->SetWorldScale(float4::One);
 
 		Bar_Constitution = CurLevel->CreateActor<StatBar>();
+		Bar_Constitution->GetTransform()->SetLocalPosition({ 88 + 164, -164 + 32});
 		Bar_Constitution->GetTransform()->SetParent(PersonalDataWindow->GetTransform());
-		Bar_Constitution->GetTransform()->SetLocalPosition({ 88, -164 });
-		Bar_Constitution->GetTransform()->SetWorldRotation(float4::Zero);
-		Bar_Constitution->GetTransform()->SetWorldScale(float4::One);
 	}
 
 
@@ -317,39 +281,37 @@ void UnitInformationUI::Start()
 		// 아이템 데이터 창
 		ItemDataWindow = CreateComponent<GameEngineUIRenderer>(3);
 		ItemDataWindow->SetTexture("ItemDataWindow.png");
-		ItemDataWindow->GetTransform()->SetLocalScale({ 536, 536 });
-		ItemDataWindow->GetTransform()->SetLocalPosition({ 164, -26 });
-		ItemDataWindow->GetTransform()->AddLocalPosition(float4::Right * 1000);
+		ItemDataWindow->GetTransform()->SetLocalScale({ 536, 536, 1 });
 
 		Range = GetLevel()->CreateActor<NumberActor>();
-		Range->GetTransform()->SetParent(ItemDataWindow->GetTransform());
 		Range->GetTransform()->SetLocalPosition({ 182, -96 });
 		Range->GetTransform()->SetWorldRotation(float4::Zero);
 		Range->GetTransform()->SetWorldScale(float4::One);
+		Range->GetTransform()->SetParent(ItemDataWindow->GetTransform());
 
 		Attack = GetLevel()->CreateActor<NumberActor>();
-		Attack->GetTransform()->SetParent(ItemDataWindow->GetTransform());
 		Attack->GetTransform()->SetLocalPosition({ -42, -160 });
 		Attack->GetTransform()->SetWorldRotation(float4::Zero);
 		Attack->GetTransform()->SetWorldScale(float4::One);
+		Attack->GetTransform()->SetParent(ItemDataWindow->GetTransform());
 
 		Critical = GetLevel()->CreateActor<NumberActor>();
-		Critical->GetTransform()->SetParent(ItemDataWindow->GetTransform());
 		Critical->GetTransform()->SetLocalPosition({ 182, -160 });
 		Critical->GetTransform()->SetWorldRotation(float4::Zero);
 		Critical->GetTransform()->SetWorldScale(float4::One);
+		Critical->GetTransform()->SetParent(ItemDataWindow->GetTransform());
 
 		Hit = GetLevel()->CreateActor<NumberActor>();
-		Hit->GetTransform()->SetParent(ItemDataWindow->GetTransform());
 		Hit->GetTransform()->SetLocalPosition({ -42, -224 });
 		Hit->GetTransform()->SetWorldRotation(float4::Zero);
 		Hit->GetTransform()->SetWorldScale(float4::One);
+		Hit->GetTransform()->SetParent(ItemDataWindow->GetTransform());
 
 		Dodge = GetLevel()->CreateActor<NumberActor>();
-		Dodge->GetTransform()->SetParent(ItemDataWindow->GetTransform());
 		Dodge->GetTransform()->SetLocalPosition({ 182, -224 });
 		Dodge->GetTransform()->SetWorldRotation(float4::Zero);
 		Dodge->GetTransform()->SetWorldScale(float4::One);
+		Dodge->GetTransform()->SetParent(ItemDataWindow->GetTransform());
 
 		ItemIcons.resize(5);
 		ItemNames.resize(5);
@@ -358,18 +320,18 @@ void UnitInformationUI::Start()
 			ItemIcons[i] = CreateComponent<GameEngineUIRenderer>(4);
 			ItemIcons[i]->SetSprite("Items.png", 0);
 
-			ItemIcons[i]->GetTransform()->SetParent(ItemDataWindow->GetTransform());
 			ItemIcons[i]->GetTransform()->SetLocalPosition({ -212, i * -64.0f + 220.0f});
 			ItemIcons[i]->GetTransform()->SetWorldRotation(float4::Zero);
 			ItemIcons[i]->GetTransform()->SetWorldScale({ 64, 64 });
+			ItemIcons[i]->GetTransform()->SetParent(ItemDataWindow->GetTransform());
 
 			//ItemIcons[i]->Off();
 			ItemNames[i] = CreateComponent<TextRenderer>(RenderOrder::UIText);
-			ItemNames[i]->GetTransform()->SetParent(ItemDataWindow->GetTransform());
 			ItemNames[i]->Setting("Silhoua14", 55, float4::White, float4::Black, FontAligned::Left);
 			ItemNames[i]->GetTransform()->SetLocalPosition({ -164, i * -64.0f + 244.0f });
 			ItemNames[i]->GetTransform()->SetWorldRotation(float4::Zero);
 			ItemNames[i]->GetTransform()->SetWorldScale(float4::One);
+			ItemNames[i]->GetTransform()->SetParent(ItemDataWindow->GetTransform());
 		}
 
 		ItemUses.resize(5);
@@ -379,31 +341,33 @@ void UnitInformationUI::Start()
 		{
 			ItemMaxUses[i] = GetLevel()->CreateActor<NumberActor>();
 
-			ItemMaxUses[i]->GetTransform()->SetParent(ItemDataWindow->GetTransform());
 			ItemMaxUses[i]->GetTransform()->SetLocalPosition({ 208, i * -64.0f + 220.0f });
 			ItemMaxUses[i]->GetTransform()->SetWorldRotation(float4::Zero);
 			ItemMaxUses[i]->GetTransform()->SetWorldScale(float4::One);
+			ItemMaxUses[i]->GetTransform()->SetParent(ItemDataWindow->GetTransform());
 
 			ItemMaxUses[i]->SetValue(25);
 
 			ItemUses[i] = GetLevel()->CreateActor<NumberActor>();
 
-			ItemUses[i]->GetTransform()->SetParent(ItemDataWindow->GetTransform());
 			ItemUses[i]->GetTransform()->SetLocalPosition({ 116, i * -64.0f + 220.0f });
 			ItemUses[i]->GetTransform()->SetWorldRotation(float4::Zero);
 			ItemUses[i]->GetTransform()->SetWorldScale(float4::One);
+			ItemUses[i]->GetTransform()->SetParent(ItemDataWindow->GetTransform());
 
 			ItemUses[i]->SetValue(25);
 
 			ItemUsesText[i] = CreateComponent<GameEngineUIRenderer>(RenderOrder::UIText);
 			ItemUsesText[i]->SetTexture("ItemUseText.png");
-			ItemUsesText[i]->GetTransform()->SetParent(ItemDataWindow->GetTransform());
 			ItemUsesText[i]->GetTransform()->SetLocalPosition({ 144, i * -64.0f + 220.0f });
 			ItemUsesText[i]->GetTransform()->SetWorldRotation(float4::Zero);
 			ItemUsesText[i]->GetTransform()->SetWorldScale({24, 40});
+			ItemUsesText[i]->GetTransform()->SetParent(ItemDataWindow->GetTransform());
 		}
 
 
+		ItemDataWindow->GetTransform()->SetLocalPosition({ 164, -26 });
+		ItemDataWindow->GetTransform()->AddLocalPosition(float4::Right * 1000);
 
 	}
 	Off();

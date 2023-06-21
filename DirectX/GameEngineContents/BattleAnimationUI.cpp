@@ -199,6 +199,49 @@ void BattleAnimationUI::SetData(std::shared_ptr<BattleUnit> _Unit1, std::shared_
 	LevelUI->Off();
 }
 
+void BattleAnimationUI::SetDataHeal(std::shared_ptr<BattleUnit> _Unit1, std::shared_ptr<BattleUnit> _Unit2)
+{
+	Unit& Player = _Unit1->GetUnitData();
+	Unit& Enemy = _Unit2->GetUnitData();
+	UnitName = _Unit1->GetName();
+	PlayerData = Player;
+	PlayerHPBar->Setting(Player.GetHP(), Player.GetMaxHP());
+
+	Text_PlayerName->SetText(_Unit1->GetName());
+	Text_EnemyName->SetText(_Unit2->GetName());
+	Text_PlayerWeaponName->SetText("라이브");
+	Text_EnemyWeaponName->SetText("");
+
+	Number_PlayerHP->Setting(Player.GetHP());
+
+
+	Number_PlayerDamage->SetValue(Player.GetMainStat().Magic + 10);
+	Number_PlayerHit->SetValue(100);
+	Number_PlayerCritical->SetValue(0);
+
+	EnemyHPBar->Setting(Enemy.GetHP(), Enemy.GetMaxHP());
+
+	Number_EnemyHP->Setting(Enemy.GetHP());
+
+	Number_EnemyDamage->SetValue(0);
+	Number_EnemyHit->SetValue(0);
+	Number_EnemyCritical->SetValue(0);
+
+
+	PlayerWeaponIcon->On();
+	PlayerWeaponIcon->SetFrame(21);
+	EnemyWeaponIcon->Off();
+
+	PlayerTriangle->Off();
+	EnemyTriangle->Off();
+
+
+	EXPUI->Off();
+	EXPUI->SetEXP(Player.GetExp());
+
+	LevelUI->Off();
+}
+
 void BattleAnimationUI::SetDamage(Unit& _Unit)
 {
 	if (PlayerData.GetIdentityCode() == _Unit.GetIdentityCode())
@@ -337,7 +380,7 @@ void BattleAnimationUI::Start()
 
 	EnemyWeaponIcon = CreateComponent<GameEngineUIRenderer>(RenderOrder::UICursor);
 	EnemyWeaponIcon->GetTransform()->SetLocalPosition({ 48, -200 });
-	EnemyWeaponIcon->GetTransform()->SetLocalScale({ 64, 64 ,1});
+	EnemyWeaponIcon->GetTransform()->SetLocalScale({ 64, 64 ,1 });
 	EnemyWeaponIcon->SetSprite("Items.png", 0);
 
 	// 무기 상성 이미지
