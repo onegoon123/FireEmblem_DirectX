@@ -16,7 +16,7 @@ StoreUI::~StoreUI()
 void StoreUI::On(std::shared_ptr<BattleUnit> _Unit)
 {
 	GameEngineActor::On();
-	Dialogue->SetTextAnim("여기는 무기점이다");
+	Dialogue->SetTextAnim("　여기는　무기점이다");
 }
 
 void StoreUI::Start()

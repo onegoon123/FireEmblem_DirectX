@@ -5,7 +5,7 @@
 class GameEngineUIRenderer;
 class BattleUnit;
 class TextRenderer;
-class SelectUIObject
+class SelectUIObject : public GameEngineActor
 {
 public:
 	SelectUIObject() {}
@@ -21,9 +21,10 @@ public:
 	float4 BenchmarkShowPos = float4::Zero;
 	float4 BenchmarkHidePos = float4::Zero;
 
-	void Update(float _DeltaTime);
 	void ChangeDir(UIDir _Dir);
 
+protected:
+	void Update(float _DeltaTime) override;
 private:
 
 };
@@ -60,9 +61,9 @@ protected:
 	void Update(float _DeltaTiime) override;
 
 private:
-	SelectUIObject Goal;	// 목표 표시UI
-	SelectUIObject TerrainUI;	// 지형 표시UI
-	SelectUIObject UnitData;	// 유닛 표시UI
+	std::shared_ptr<SelectUIObject> Goal = nullptr;	// 목표 표시UI
+	std::shared_ptr<SelectUIObject> TerrainUI = nullptr;	// 지형 표시UI
+	std::shared_ptr<SelectUIObject> UnitData = nullptr;	// 유닛 표시UI
 
 	std::shared_ptr<GameEngineUIRenderer> HPBarRender = nullptr;
 	std::shared_ptr<GameEngineUIRenderer> PortraitRender = nullptr;

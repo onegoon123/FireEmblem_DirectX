@@ -28,29 +28,29 @@ void SelectUI::SetCursorDir(UIDir _Dir)
 	switch (CursorDir)
 	{
 	case UIDir::None:
-		Goal.ChangeDir(UIDir::None);
-		TerrainUI.ChangeDir(UIDir::None);
-		UnitData.ChangeDir(UIDir::None);
+		Goal->ChangeDir(UIDir::None);
+		TerrainUI->ChangeDir(UIDir::None);
+		UnitData->ChangeDir(UIDir::None);
 		break;
 	case UIDir::LeftUp:
-		Goal.ChangeDir(UIDir::RightUp);
-		TerrainUI.ChangeDir(UIDir::RightDown);
-		//UnitData.ChangeDir(UIDir::LeftDown);
+		Goal->ChangeDir(UIDir::RightUp);
+		TerrainUI->ChangeDir(UIDir::RightDown);
+		//UnitData->ChangeDir(UIDir::LeftDown);
 		break;
 	case UIDir::LeftDown:
-		Goal.ChangeDir(UIDir::RightUp);
-		TerrainUI.ChangeDir(UIDir::RightDown);
-		//UnitData.ChangeDir(UIDir::LeftUp);
+		Goal->ChangeDir(UIDir::RightUp);
+		TerrainUI->ChangeDir(UIDir::RightDown);
+		//UnitData->ChangeDir(UIDir::LeftUp);
 		break;
 	case UIDir::RightUp:
-		Goal.ChangeDir(UIDir::RightDown);
-		TerrainUI.ChangeDir(UIDir::LeftDown);
-		//UnitData.ChangeDir(UIDir::LeftUp);
+		Goal->ChangeDir(UIDir::RightDown);
+		TerrainUI->ChangeDir(UIDir::LeftDown);
+		//UnitData->ChangeDir(UIDir::LeftUp);
 		break;
 	case UIDir::RightDown:
-		Goal.ChangeDir(UIDir::RightUp);
-		TerrainUI.ChangeDir(UIDir::LeftDown);
-		//UnitData.ChangeDir(UIDir::LeftUp);
+		Goal->ChangeDir(UIDir::RightUp);
+		TerrainUI->ChangeDir(UIDir::LeftDown);
+		//UnitData->ChangeDir(UIDir::LeftUp);
 		break;
 	default:
 		break;
@@ -141,20 +141,18 @@ void SelectUI::SetTerrainData(Terrain _Data)
 void SelectUI::On()
 {
 	GameEngineActor::On();
-	Goal.Render->On();
-	Goal.Timer = 0;
-	TerrainUI.Render->On();
-	TerrainUI.Timer = 0;
-	UnitData.Render->On();
-	UnitData.Timer = 0;
-	HPBarRender->On();
-	PortraitRender->On();
+	Goal->On();
+	Goal->Timer = 0;
+	TerrainUI->On();
+	TerrainUI->Timer = 0;
+	UnitData->On();
+	UnitData->Timer = 0;
 
-	Goal.CurDir = UIDir::None;
-	Goal.NextDir = UIDir::None;
-	TerrainUI.CurDir = UIDir::None;
-	TerrainUI.NextDir = UIDir::None;
-	UnitData.ChangeDir(UIDir::None);
+	Goal->CurDir = UIDir::None;
+	Goal->NextDir = UIDir::None;
+	TerrainUI->CurDir = UIDir::None;
+	TerrainUI->NextDir = UIDir::None;
+	UnitData->ChangeDir(UIDir::None);
 	CursorDir = UIDir::None;
 }
 
@@ -162,14 +160,12 @@ void SelectUI::Off()
 {
 	GameEngineActor::Off();
 	CursorDir = UIDir::None;
-	Goal.Render->Off();
-	Goal.Render->GetTransform()->SetLocalPosition(Goal.BenchmarkHidePos);
-	TerrainUI.Render->Off();
-	TerrainUI.Render->GetTransform()->SetLocalPosition(TerrainUI.BenchmarkHidePos);
-	UnitData.Render->Off();
-	UnitData.Render->GetTransform()->SetLocalPosition(UnitData.BenchmarkHidePos);
-	HPBarRender->Off();
-	PortraitRender->Off();
+	Goal->Off();
+	Goal->GetTransform()->SetLocalPosition(Goal->BenchmarkHidePos);
+	TerrainUI->Off();
+	TerrainUI->GetTransform()->SetLocalPosition(TerrainUI->BenchmarkHidePos);
+	UnitData->Off();
+	UnitData->GetTransform()->SetLocalPosition(UnitData->BenchmarkHidePos);
 }
 
 void SelectUI::SetHPBar(float _Value)
@@ -194,16 +190,16 @@ void SelectUI::SetUnitData(std::shared_ptr<BattleUnit> _Unit)
 	case UIDir::None:
 		break;
 	case UIDir::LeftUp:
-		UnitData.ChangeDir(UIDir::LeftDown);
+		UnitData->ChangeDir(UIDir::LeftDown);
 		break;
 	case UIDir::LeftDown:
-		UnitData.ChangeDir(UIDir::LeftUp);
+		UnitData->ChangeDir(UIDir::LeftUp);
 		break;
 	case UIDir::RightUp:
-		UnitData.ChangeDir(UIDir::LeftUp);
+		UnitData->ChangeDir(UIDir::LeftUp);
 		break;
 	case UIDir::RightDown:
-		UnitData.ChangeDir(UIDir::LeftUp);
+		UnitData->ChangeDir(UIDir::LeftUp);
 		break;
 	default:
 		break;
@@ -211,11 +207,11 @@ void SelectUI::SetUnitData(std::shared_ptr<BattleUnit> _Unit)
 
 	if (true == _Unit->GetIsPlayer())
 	{
-		UnitData.Render->SetTexture("ActorUI.png");
+		UnitData->Render->SetTexture("ActorUI.png");
 	}
 	else
 	{
-		UnitData.Render->SetTexture("EnemyActorUI.png");
+		UnitData->Render->SetTexture("EnemyActorUI.png");
 	}
 
 	std::string TextureName = "BattleIcon_";
@@ -232,102 +228,107 @@ void SelectUI::SetUnitData(std::shared_ptr<BattleUnit> _Unit)
 void SelectUI::UnitUIOff()
 {
 	UnitDataOn = true;
-	UnitData.ChangeDir(UIDir::None);
+	UnitData->ChangeDir(UIDir::None);
 }
 
 void SelectUI::PotionUIOn()
 {
-	Goal.Render->Off();
-	TerrainUI.Render->Off();
+	Goal->Off();
+	TerrainUI->Off();
 }
 
 void SelectUI::PotionUIOff()
 {
-	Goal.Render->On();
-	TerrainUI.Render->On();
+	Goal->On();
+	TerrainUI->On();
 }
 
 void SelectUI::Start()
 {
-	Goal.Render = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
-	Goal.Render->SetTexture("ClearGoal.png"); 
-	Goal.Render->GetTransform()->SetWorldScale({ 344, 100 });
-	Goal.BenchmarkHidePos = { -300, 370 };
-	Goal.BenchmarkShowPos = { -300, 254 };
-	Goal.CurDir = UIDir::None;
-	Goal.NextDir = UIDir::None;
+	Goal = GetLevel()->CreateActor<SelectUIObject>();
+	Goal->GetTransform()->SetParent(GetTransform());
 
-	ClearTargetText = CreateComponent<TextRenderer>(RenderOrder::UIText);
-	ClearTargetText->GetTransform()->SetParent(Goal.Render->GetTransform());
+	Goal->Render = Goal->CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
+	Goal->Render->SetTexture("ClearGoal.png"); 
+	Goal->Render->GetTransform()->SetLocalScale({ 344, 100, 100 });
+	Goal->BenchmarkHidePos = { -300, 370 };
+	Goal->BenchmarkShowPos = { -300, 254 };
+	Goal->CurDir = UIDir::None;
+	Goal->NextDir = UIDir::None;
+
+	ClearTargetText = Goal->CreateComponent<TextRenderer>(RenderOrder::UIText);
 	ClearTargetText->GetTransform()->SetLocalPosition({ 0, 28 });
-	ClearTargetText->GetTransform()->SetWorldScale(float4::One);
-	ClearTargetText->GetTransform()->SetWorldRotation(float4::Zero);
 	ClearTargetText->Setting("Silhoua14", 55, float4::White, float4::Black, FontAligned::Center);
 	ClearTargetText->SetText("¸ñÇ¥:Àû Àü¸ê");
+	
+	TerrainUI = GetLevel()->CreateActor<SelectUIObject>();
+	TerrainUI->GetTransform()->SetParent(GetTransform());
 
-	TerrainUI.Render = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
-	TerrainUI.Render->SetTexture("TerrainUI.png");
-	TerrainUI.Render->GetTransform()->SetWorldScale({ 192, 212 });
-	TerrainUI.BenchmarkHidePos = { -576, 214 };
-	TerrainUI.BenchmarkShowPos = { -384, 214 };
-	TerrainUI.CurDir = UIDir::None;
-	TerrainUI.NextDir = UIDir::None;
-
-	UnitData.Render = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
-	UnitData.Render->SetTexture("ActorUI.png");
-	UnitData.Render->GetTransform()->SetWorldScale({ 344, 152, 100 });
-	UnitData.BenchmarkHidePos = { -652, 228 };
-	UnitData.BenchmarkShowPos = { -292, 228 };
-	UnitData.CurDir = UIDir::None;
-	UnitData.NextDir = UIDir::None;
-
-	UnitNameText = CreateComponent<TextRenderer>(RenderOrder::UIText);
-	UnitNameText->GetTransform()->SetParent(UnitData.Render->GetTransform());
-	UnitNameText->GetTransform()->SetLocalPosition({ 64, 58 });
-	UnitNameText->GetTransform()->SetWorldScale(float4::One);
-	UnitNameText->Setting("Silhoua14", 50, float4::Black, float4::Null, FontAligned::Center);
-
-	std::shared_ptr<GameEngineActor> _Actor = GetLevel()->CreateActor<GameEngineActor>(RenderOrder::UI);
-	_Actor->GetTransform()->SetParent(UnitData.Render->GetTransform());
-	_Actor->GetTransform()->SetLocalPosition(float4::Zero);
-	HPBarRender = _Actor->CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
-	HPBarRender->SetTexture("HPBar.png");
-	HPBarRender->GetTransform()->SetWorldScale({ 168, 8 });
-	HPBarRender->GetTransform()->SetLocalPosition({ 64, -48 });
-
-	PortraitRender = _Actor->CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
-	PortraitRender->SetTexture("BattleIcon_Lyn.png");
-	PortraitRender->GetTransform()->SetWorldScale({ 128, 128 });
-	PortraitRender->GetTransform()->SetLocalPosition({ -96, 0 });
-	CursorDir = UIDir::None;
+	TerrainUI->Render = TerrainUI->CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
+	TerrainUI->Render->SetTexture("TerrainUI.png");
+	TerrainUI->Render->GetTransform()->SetLocalScale({ 192, 212 });
+	TerrainUI->BenchmarkHidePos = { -576, 214 };
+	TerrainUI->BenchmarkShowPos = { -384, 214 };
+	TerrainUI->CurDir = UIDir::None;
+	TerrainUI->NextDir = UIDir::None;
 
 	TerrainDef = GetLevel()->CreateActor<NumberActor>();
 	TerrainDef->SetBlackFont();
 	TerrainDef->SetValue(0);
-	TerrainDef->GetTransform()->SetParent(TerrainUI.Render->GetTransform());
-	TerrainDef->GetTransform()->SetLocalPosition({48, -32});
+	TerrainDef->GetTransform()->SetParent(TerrainUI->GetTransform());
+	TerrainDef->GetTransform()->SetLocalPosition({ 48, -32 });
 	TerrainDef->GetTransform()->SetWorldRotation(float4::Zero);
 	TerrainDef->GetTransform()->SetWorldScale({ 1, 0.8f });
 
 	TerrainDodge = GetLevel()->CreateActor<NumberActor>();
 	TerrainDodge->SetBlackFont();
 	TerrainDodge->SetValue(0);
-	TerrainDodge->GetTransform()->SetParent(TerrainUI.Render->GetTransform());
-	TerrainDodge->GetTransform()->SetLocalPosition({48, -64});
+	TerrainDodge->GetTransform()->SetParent(TerrainUI->GetTransform());
+	TerrainDodge->GetTransform()->SetLocalPosition({ 48, -64 });
 	TerrainDodge->GetTransform()->SetWorldRotation(float4::Zero);
-	TerrainDodge->GetTransform()->SetWorldScale({1, 0.8f});
+	TerrainDodge->GetTransform()->SetWorldScale({ 1, 0.8f });
 
 	TerrainText = CreateComponent<TextRenderer>(RenderOrder::UIText);
-	TerrainText->GetTransform()->SetParent(TerrainUI.Render->GetTransform());
-	TerrainText->GetTransform()->SetLocalPosition({0, 44});
+	TerrainText->GetTransform()->SetParent(TerrainUI->GetTransform());
+	TerrainText->GetTransform()->SetLocalPosition({ 0, 44 });
 	TerrainText->GetTransform()->SetWorldScale(float4::One);
 	TerrainText->GetTransform()->SetWorldRotation(float4::Zero);
-	TerrainText->Setting("Silhoua14", 55, float4::White, float4::Black , FontAligned::Center);
+	TerrainText->Setting("Silhoua14", 55, float4::White, float4::Black, FontAligned::Center);
+
+	UnitData = GetLevel()->CreateActor<SelectUIObject>();
+	UnitData->GetTransform()->SetParent(GetTransform());
+
+	UnitData->Render = UnitData->CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
+	UnitData->Render->SetTexture("ActorUI.png");
+	UnitData->Render->GetTransform()->SetWorldScale({ 344, 152, 100 });
+	UnitData->BenchmarkHidePos = { -652, 228 };
+	UnitData->BenchmarkShowPos = { -292, 228 };
+	UnitData->CurDir = UIDir::None;
+	UnitData->NextDir = UIDir::None;
+
+	UnitNameText = UnitData->CreateComponent<TextRenderer>(RenderOrder::UIText);
+	UnitNameText->GetTransform()->SetParent(UnitData->GetTransform());
+	UnitNameText->GetTransform()->SetLocalPosition({ 64, 58 });
+	UnitNameText->GetTransform()->SetWorldScale(float4::One);
+	UnitNameText->Setting("Silhoua14", 50, float4::Black, float4::Null, FontAligned::Center);
+
+	HPBarRender = UnitData->CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
+	HPBarRender->SetTexture("HPBar.png");
+	HPBarRender->GetTransform()->SetWorldScale({ 168, 8 });
+	HPBarRender->GetTransform()->SetLocalPosition({ 64, -48 });
+
+	PortraitRender = UnitData->CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
+	PortraitRender->SetTexture("BattleIcon_Lyn.png");
+	PortraitRender->GetTransform()->SetWorldScale({ 128, 128 });
+	PortraitRender->GetTransform()->SetLocalPosition({ -96, 0 });
+	CursorDir = UIDir::None;
+
+	
 
 	UnitHP = GetLevel()->CreateActor<NumberActor>();
 	UnitHP->SetBlackFont();
 	UnitHP->SetValue(20);
-	UnitHP->GetTransform()->SetParent(UnitData.Render->GetTransform());
+	UnitHP->GetTransform()->SetParent(UnitData->GetTransform());
 	UnitHP->GetTransform()->SetLocalPosition({ 76, -16 });
 	UnitHP->GetTransform()->SetWorldRotation(float4::Zero);
 	UnitHP->GetTransform()->SetWorldScale({ .8f,.8f });
@@ -335,7 +336,7 @@ void SelectUI::Start()
 	UnitMaxHP = GetLevel()->CreateActor<NumberActor>();
 	UnitMaxHP->SetBlackFont();
 	UnitMaxHP->SetValue(20);
-	UnitMaxHP->GetTransform()->SetParent(UnitData.Render->GetTransform());
+	UnitMaxHP->GetTransform()->SetParent(UnitData->GetTransform());
 	UnitMaxHP->GetTransform()->SetLocalPosition({ 146, -16 });
 	UnitMaxHP->GetTransform()->SetWorldRotation(float4::Zero);
 	UnitMaxHP->GetTransform()->SetWorldScale({ .8f,.8f });
@@ -345,9 +346,6 @@ void SelectUI::Start()
 static float Timer = 0;
 void SelectUI::Update(float _DeltaTiime)
 {
-	Goal.Update(_DeltaTiime);
-	TerrainUI.Update(_DeltaTiime);
-	UnitData.Update(_DeltaTiime);
 
 	if (true == IsLerp)
 	{
@@ -376,7 +374,7 @@ void SelectUIObject::Update(float _DeltaTime)
 		return;
 	}
 	Timer += _DeltaTime * AnimSpeed;
-	Render->GetTransform()->SetLocalPosition(float4::LerpClamp(StartPos, TargetPos, Timer));
+	GetTransform()->SetLocalPosition(float4::LerpClamp(StartPos, TargetPos, Timer));
 }
 
 void SelectUIObject::ChangeDir(UIDir _Dir)

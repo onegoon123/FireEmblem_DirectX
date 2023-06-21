@@ -74,7 +74,7 @@ void LevelUpUI::Start()
 	UIRender = CreateComponent<GameEngineUIRenderer>(15);
 	UIRender->SetTexture("LevelUPUI.png");
 	UIRender->GetTransform()->SetLocalPosition({ -178, -64 });
-	UIRender->GetTransform()->SetLocalScale({ 540, 412 });
+	UIRender->GetTransform()->SetLocalScale({ 540, 412, 1 });
 	UIRender->Off();
 
 	UITextRender = CreateComponent<GameEngineUIRenderer>(17);
@@ -86,17 +86,17 @@ void LevelUpUI::Start()
 	UIPortraitRender->GetTransform()->SetLocalPosition({ 272, -160 });
 	UIPortraitRender->Off();
 
-	UnitName = CreateComponent<TextRenderer>(RenderOrder::UIText);
+	UnitName = CreateComponent<TextRenderer>(16);
 	UnitName->GetTransform()->SetParent(UIRender->GetTransform(), false);
-	UnitName->GetTransform()->SetLocalPosition({-184, 186});
+	UnitName->GetTransform()->SetLocalPosition({ -0.34f, 0.45f });
 	UnitName->GetTransform()->SetWorldScale(float4::One);
 	UnitName->Setting("Silhoua14", 55, float4::White, float4::Black, FontAligned::Left);
 
 	Number_Level = CurLevel->CreateActor<NumberActor>();
 	Number_Level->NumberCreate(17);
-	Number_Level->GetTransform()->SetParent(UIRender->GetTransform(), false);
-	Number_Level->GetTransform()->SetLocalPosition({ 184, 156 });
+	Number_Level->GetTransform()->SetLocalPosition({ 184 -178, 156 -64 });
 	Number_Level->GetTransform()->SetWorldScale(float4::One);
+	Number_Level->GetTransform()->SetParent(UIRender->GetTransform());
 
 	Number_Stats.resize(8);
 	UpStatBacks.resize(8);
@@ -105,46 +105,46 @@ void LevelUpUI::Start()
 	{
 		Number_Stats[i] = CurLevel->CreateActor<NumberActor>();
 		Number_Stats[i]->NumberCreate(17);
-		Number_Stats[i]->GetTransform()->SetParent(UIRender->GetTransform(), false);
-		Number_Stats[i]->GetTransform()->SetLocalPosition({ -82, 32.0f - (64.0f * i)});
+		Number_Stats[i]->GetTransform()->SetLocalPosition({ -82 - 178, 32.0f - 64.0f - (64.0f * i)});
 		Number_Stats[i]->GetTransform()->SetWorldScale(float4::One);
+		Number_Stats[i]->GetTransform()->SetParent(UIRender->GetTransform());
 
 		UpStatBacks[i] = CreateComponent<GameEngineUIRenderer>(16);
 		UpStatBacks[i]->SetTexture("StatUP.png");
-		UpStatBacks[i]->GetTransform()->SetParent(UIRender->GetTransform(), false);
-		UpStatBacks[i]->GetTransform()->SetLocalPosition({ -132, 20.0f - (64.0f * i) });
-		UpStatBacks[i]->GetTransform()->SetWorldScale({ 184, 16 });
+		UpStatBacks[i]->GetTransform()->SetLocalPosition({ -132 - 178, 20.0f - 64.0f - (64.0f * i) });
+		UpStatBacks[i]->GetTransform()->SetLocalScale({ 184, 16 });
+		UpStatBacks[i]->GetTransform()->SetParent(UIRender->GetTransform());
 		UpStatBacks[i]->Off();
 
 		UpStatArrows[i] = CreateComponent<GameEngineUIRenderer>(18);
-		UpStatArrows[i]->GetTransform()->SetParent(UIRender->GetTransform(), false);
-		UpStatArrows[i]->GetTransform()->SetLocalPosition({ -48, 32.0f - (64.0f * i) });
-		UpStatArrows[i]->GetTransform()->SetWorldScale({ 28, 40 });
+		UpStatArrows[i]->GetTransform()->SetLocalPosition({ -48 - 178, 32.0f - 64.0f - (64.0f * i) });
+		UpStatArrows[i]->GetTransform()->SetLocalScale({ 28, 40 });
 		UpStatArrows[i]->CreateAnimation({ .AnimationName = "Default", .SpriteName = "Triangle.png", .Start = 0, .End = 2, .FrameInter = 0.15f });
 		UpStatArrows[i]->ChangeAnimation("Default");
+		UpStatArrows[i]->GetTransform()->SetParent(UIRender->GetTransform());
 		UpStatArrows[i]->Off();
 	}
 	for (int i = 4; i < 8; i++)
 	{
 		Number_Stats[i] = CurLevel->CreateActor<NumberActor>();
 		Number_Stats[i]->NumberCreate(17);
-		Number_Stats[i]->GetTransform()->SetParent(UIRender->GetTransform(), false);
-		Number_Stats[i]->GetTransform()->SetLocalPosition({ 174, 32.0f - (64.0f * (i - 4)) });
+		Number_Stats[i]->GetTransform()->SetLocalPosition({ 174 - 178, 32.0f - 64.0f - (64.0f * (i - 4)) });
 		Number_Stats[i]->GetTransform()->SetWorldScale(float4::One);
+		Number_Stats[i]->GetTransform()->SetParent(UIRender->GetTransform());
 
 		UpStatBacks[i] = CreateComponent<GameEngineUIRenderer>(16);
 		UpStatBacks[i]->SetTexture("StatUP.png");
-		UpStatBacks[i]->GetTransform()->SetParent(UIRender->GetTransform(), false);
-		UpStatBacks[i]->GetTransform()->SetLocalPosition({ 124, 20.0f - (64.0f * (i - 4)) });
+		UpStatBacks[i]->GetTransform()->SetLocalPosition({ 124 - 178, 20.0f - 64.0f- (64.0f * (i - 4)) });
 		UpStatBacks[i]->GetTransform()->SetWorldScale({ 184, 16 });
+		UpStatBacks[i]->GetTransform()->SetParent(UIRender->GetTransform());
 		UpStatBacks[i]->Off();
 
 		UpStatArrows[i] = CreateComponent<GameEngineUIRenderer>(18);
-		UpStatArrows[i]->GetTransform()->SetParent(UIRender->GetTransform(), false);
-		UpStatArrows[i]->GetTransform()->SetLocalPosition({ 208, 32.0f - (64.0f * (i - 4)) });
-		UpStatArrows[i]->GetTransform()->SetWorldScale({ 28, 40 });
+		UpStatArrows[i]->GetTransform()->SetLocalPosition({ 208 - 178, 32.0f - 64.0f - (64.0f * (i - 4)) });
+		UpStatArrows[i]->GetTransform()->SetLocalScale({ 28, 40 });
 		UpStatArrows[i]->CreateAnimation({ .AnimationName = "Default", .SpriteName = "Triangle.png", .Start = 0, .End = 2, .FrameInter = 0.15f });
 		UpStatArrows[i]->ChangeAnimation("Default");
+		UpStatArrows[i]->GetTransform()->SetParent(UIRender->GetTransform());
 		UpStatArrows[i]->Off();
 	}
 

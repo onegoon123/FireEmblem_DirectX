@@ -190,16 +190,16 @@ void BattleAnimationLevel::LevelChangeStart()
 		std::shared_ptr<GameEngineActor> NewActor = CreateActor<GameEngineActor>();
 		BackgroundRender = NewActor->CreateComponent<SpriteRenderer>(RenderOrder::Map);
 		BackgroundRender->SetTexture("BattleBackground_Plains.png");
-		BackgroundRender->SetLocalScale({ 960, 640 });
+		BackgroundRender->SetLocalScale({ 960, 640, 1 });
 
 		TerrainLeft = NewActor->CreateComponent<SpriteRenderer>(RenderOrder::Tile);
 		TerrainLeft->SetTexture("Plain_Close.png");
-		TerrainLeft->SetLocalScale({ 480, 160 });
+		TerrainLeft->SetLocalScale({ 480, 160, 1 });
 		TerrainLeft->GetTransform()->SetLocalPosition({ -240, -112 });
 
 		TerrainRight = NewActor->CreateComponent<SpriteRenderer>(RenderOrder::Tile);
 		TerrainRight->SetTexture("Plain_Close.png");
-		TerrainRight->SetLocalScale({ -480, 160 });
+		TerrainRight->SetLocalScale({ -480, 160, 1 });
 		TerrainRight->GetTransform()->SetLocalPosition({ 240, -112 });
 
 		RightUnit = CreateActor<BattleAnimationUnit>(RenderOrder::Unit);

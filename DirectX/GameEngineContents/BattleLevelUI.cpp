@@ -20,28 +20,6 @@ BattleLevelUI::BattleLevelUI()
 
 BattleLevelUI::~BattleLevelUI()
 {
-	UI_Select->Death();
-	UI_Select = nullptr;
-	UI_UnitCommand->Death();
-	UI_UnitCommand = nullptr;
-	UI_FieldCommand->Death();
-	UI_FieldCommand = nullptr;
-	UI_Attack->Death();
-	UI_Attack = nullptr;
-	UI_Heal->Death();
-	UI_Heal = nullptr;
-	UI_Item->Death();
-	UI_Item = nullptr;
-	UI_Phase->Death();
-	UI_Phase = nullptr;
-	UI_Cursor->Death();
-	UI_Cursor = nullptr;
-	UI_Fade->Death();
-	UI_Fade = nullptr;
-	UI_TimeStone->Death();
-	UI_TimeStone = nullptr;
-	UI_Store->Death();
-	UI_Store = nullptr;
 }
 
 void BattleLevelUI::AllOff()

@@ -131,7 +131,7 @@ void AttackUI::SetRight()
 void AttackUI::Start()
 {
 	WindowRender = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
-	WindowRender->GetTransform()->SetWorldScale({ 420, 356 });
+	WindowRender->GetTransform()->SetWorldScale({ 420, 356, 1 });
 	WindowRender->GetTransform()->SetLocalPosition({ -224, 64 });
 	WindowRender->SetSprite("ItemUI.png", 2);
 
@@ -151,7 +151,7 @@ void AttackUI::Start()
 	Portrait->SetTexture("Portrait_Lyn.png");
 
 	BattleEx = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
-	BattleEx->GetTransform()->SetWorldScale({ 292, 484 });
+	BattleEx->GetTransform()->SetLocalScale({ 292, 484, 1 });
 	BattleEx->GetTransform()->SetLocalPosition({ -318, 62 });
 	BattleEx->SetTexture("BattleExUI.png");
 
@@ -171,38 +171,38 @@ void AttackUI::Start()
 		// 무기 아이콘
 		SubjectWeapon = CreateComponent<GameEngineUIRenderer>(RenderOrder::UICursor);
 		SubjectWeapon->SetSprite("Items.png", 0);
+		SubjectWeapon->GetTransform()->SetLocalPosition({ -224, 264 });
+		SubjectWeapon->GetTransform()->SetLocalRotation(float4::Zero);
+		SubjectWeapon->GetTransform()->SetLocalScale({ 64, 64, 1 });
 		SubjectWeapon->GetTransform()->SetParent(BattleEx->GetTransform());
-		SubjectWeapon->GetTransform()->SetLocalPosition({ 94, 202 });
-		SubjectWeapon->GetTransform()->SetWorldRotation(float4::Zero);
-		SubjectWeapon->GetTransform()->SetWorldScale({ 64, 64 });
 		SubjectWeapon->Off();
 		TargetWeapon = CreateComponent<GameEngineUIRenderer>(RenderOrder::UICursor);
 		TargetWeapon->SetSprite("Items.png", 0);
+		TargetWeapon->GetTransform()->SetLocalPosition({ -412, -68 });
+		TargetWeapon->GetTransform()->SetLocalRotation(float4::Zero);
+		TargetWeapon->GetTransform()->SetLocalScale({ 64, 64, 1 });
 		TargetWeapon->GetTransform()->SetParent(BattleEx->GetTransform());
-		TargetWeapon->GetTransform()->SetLocalPosition({ -94, -130 });
-		TargetWeapon->GetTransform()->SetWorldRotation(float4::Zero);
-		TargetWeapon->GetTransform()->SetWorldScale({ 64, 64 });
 		TargetWeapon->Off();
 
 		SubjectName = CreateComponent<TextRenderer>(RenderOrder::UIText);
-		SubjectName->GetTransform()->SetParent(BattleEx->GetTransform());
-		SubjectName->GetTransform()->SetLocalPosition({ -32, 222 });
+		SubjectName->GetTransform()->SetLocalPosition({ -350, 284 });
 		SubjectName->GetTransform()->SetWorldRotation(float4::Zero);
 		SubjectName->GetTransform()->SetWorldScale(float4::One);
+		SubjectName->GetTransform()->SetParent(BattleEx->GetTransform());
 		SubjectName->Setting("Silhoua14", 55, float4::White, float4::Black, FontAligned::Center);
 
 		TargetName = CreateComponent<TextRenderer>(RenderOrder::UIText);
-		TargetName->GetTransform()->SetParent(BattleEx->GetTransform());
-		TargetName->GetTransform()->SetLocalPosition({ 32, -100});
+		TargetName->GetTransform()->SetLocalPosition({ -286, -38});
 		TargetName->GetTransform()->SetWorldRotation(float4::Zero);
 		TargetName->GetTransform()->SetWorldScale(float4::One);
+		TargetName->GetTransform()->SetParent(BattleEx->GetTransform());
 		TargetName->Setting("Silhoua14", 55, float4::White, float4::Black, FontAligned::Center);
 
 		TargetWeaponName = CreateComponent<TextRenderer>(RenderOrder::UIText);
-		TargetWeaponName->GetTransform()->SetParent(BattleEx->GetTransform());
-		TargetWeaponName->GetTransform()->SetLocalPosition({ 32, -164 });
+		TargetWeaponName->GetTransform()->SetLocalPosition({ -286, -102 });
 		TargetWeaponName->GetTransform()->SetWorldRotation(float4::Zero);
 		TargetWeaponName->GetTransform()->SetWorldScale(float4::One);
+		TargetWeaponName->GetTransform()->SetParent(BattleEx->GetTransform());
 		TargetWeaponName->Setting("Silhoua14", 55, float4::White, float4::Black, FontAligned::Center);
 
 		// 무기 상성 이미지
@@ -210,19 +210,19 @@ void AttackUI::Start()
 		SubjectTriangle->CreateAnimation({ .AnimationName = "Advantage", .SpriteName = "Triangle.png", .Start = 0, .End = 2, .FrameInter = 0.15f });
 		SubjectTriangle->CreateAnimation({ .AnimationName = "Disadvantage", .SpriteName = "Triangle.png", .Start = 3, .End = 5, .FrameInter = 0.15f });
 		SubjectTriangle->ChangeAnimation("Advantage");
-		SubjectTriangle->GetTransform()->SetParent(BattleEx->GetTransform());
-		SubjectTriangle->GetTransform()->SetLocalPosition({116, 188});
+		SubjectTriangle->GetTransform()->SetLocalPosition({-202, 250});
 		SubjectTriangle->GetTransform()->SetWorldRotation(float4::Zero);
 		SubjectTriangle->GetTransform()->SetWorldScale({28, 40});
+		SubjectTriangle->GetTransform()->SetParent(BattleEx->GetTransform());
 
 		TargetTriangle = CreateComponent<GameEngineUIRenderer>(RenderOrder::UICursor);
 		TargetTriangle->CreateAnimation({ .AnimationName = "Advantage", .SpriteName = "Triangle.png", .Start = 0, .End = 2, .FrameInter = 0.15f });
 		TargetTriangle->CreateAnimation({ .AnimationName = "Disadvantage", .SpriteName = "Triangle.png", .Start = 3, .End = 5, .FrameInter = 0.15f });
 		TargetTriangle->ChangeAnimation("Advantage");
-		TargetTriangle->GetTransform()->SetParent(BattleEx->GetTransform());
-		TargetTriangle->GetTransform()->SetLocalPosition({ -68, -148 });
+		TargetTriangle->GetTransform()->SetLocalPosition({ -386, -86 });
 		TargetTriangle->GetTransform()->SetWorldRotation(float4::Zero);
 		TargetTriangle->GetTransform()->SetWorldScale({ 28, 40 });
+		TargetTriangle->GetTransform()->SetParent(BattleEx->GetTransform());
 
 	}
 
@@ -232,10 +232,8 @@ void AttackUI::Start()
 		for (int i = 0; i < 5; i++)
 		{
 			WeaponUses[i] = GetLevel()->CreateActor<NumberActor>();
+			WeaponUses[i]->GetTransform()->SetLocalPosition({ -52, 192.0f - i * 64});
 			WeaponUses[i]->GetTransform()->SetParent(WindowRender->GetTransform());
-			WeaponUses[i]->GetTransform()->SetLocalPosition({ 172, 128.0f - i * 64});
-			WeaponUses[i]->GetTransform()->SetWorldRotation(float4::Zero);
-			WeaponUses[i]->GetTransform()->SetWorldScale(float4::One);
 			WeaponUses[i]->SetValue(0);
 			WeaponUses[i]->Off();
 		}
@@ -257,64 +255,64 @@ void AttackUI::Start()
 	{
 		// 예상 결과 숫자
 		SubjectHP = GetLevel()->CreateActor<NumberActor>();
-		SubjectHP->GetTransform()->SetParent(BattleEx->GetTransform());
-		SubjectHP->GetTransform()->SetLocalPosition({ -68, 128, 0 });
+		SubjectHP->GetTransform()->SetLocalPosition({ -68 - 318, 128 + 62, 0 });
 		SubjectHP->GetTransform()->SetWorldRotation(float4::Zero);
 		SubjectHP->GetTransform()->SetWorldScale({ 1, 1, 1 });
+		SubjectHP->GetTransform()->SetParent(BattleEx->GetTransform());
 
 		SubjectDamage = GetLevel()->CreateActor<NumberActor>();
-		SubjectDamage->GetTransform()->SetParent(BattleEx->GetTransform());
-		SubjectDamage->GetTransform()->SetLocalPosition({ -68, 64, 0 });
+		SubjectDamage->GetTransform()->SetLocalPosition({ -68 - 318, 64 + 62, 0 });
 		SubjectDamage->GetTransform()->SetWorldRotation(float4::Zero);
 		SubjectDamage->GetTransform()->SetWorldScale({ 1, 1, 1 });
+		SubjectDamage->GetTransform()->SetParent(BattleEx->GetTransform());
 
 		SubjectDoubleAttack = GetLevel()->CreateActor<DoubleIconActor>();
-		SubjectDoubleAttack->GetTransform()->SetParent(BattleEx->GetTransform());
-		SubjectDoubleAttack->GetTransform()->SetLocalPosition({ -48, 48, 0 });
+		SubjectDoubleAttack->GetTransform()->SetLocalPosition({ -48 - 318, 48 + 62, 0 });
 		SubjectDoubleAttack->GetTransform()->SetWorldRotation(float4::Zero);
 		SubjectDoubleAttack->GetTransform()->SetWorldScale({ 1, 1, 1 });
+		SubjectDoubleAttack->GetTransform()->SetParent(BattleEx->GetTransform());
 
 		SubjectHit = GetLevel()->CreateActor<NumberActor>();
-		SubjectHit->GetTransform()->SetParent(BattleEx->GetTransform());
-		SubjectHit->GetTransform()->SetLocalPosition({ -68, 0, 0 });
+		SubjectHit->GetTransform()->SetLocalPosition({ -68 - 318, 62, 0 });
 		SubjectHit->GetTransform()->SetWorldRotation(float4::Zero);
 		SubjectHit->GetTransform()->SetWorldScale({ 1, 1, 1 });
+		SubjectHit->GetTransform()->SetParent(BattleEx->GetTransform());
 
 		SubjectCritical = GetLevel()->CreateActor<NumberActor>();
-		SubjectCritical->GetTransform()->SetParent(BattleEx->GetTransform());
-		SubjectCritical->GetTransform()->SetLocalPosition({ -68, -64, 0 });
+		SubjectCritical->GetTransform()->SetLocalPosition({ -68 - 318, -64 + 62, 0 });
 		SubjectCritical->GetTransform()->SetWorldRotation(float4::Zero);
 		SubjectCritical->GetTransform()->SetWorldScale({ 1, 1, 1 });
+		SubjectCritical->GetTransform()->SetParent(BattleEx->GetTransform());
 
 		TargetHP = GetLevel()->CreateActor<NumberActor>();
-		TargetHP->GetTransform()->SetParent(BattleEx->GetTransform());
-		TargetHP->GetTransform()->SetLocalPosition({ 118, 128, 0 });
+		TargetHP->GetTransform()->SetLocalPosition({ 118 - 318, 128 + 62, 0 });
 		TargetHP->GetTransform()->SetWorldRotation(float4::Zero);
 		TargetHP->GetTransform()->SetWorldScale({ 1, 1, 1 });
+		TargetHP->GetTransform()->SetParent(BattleEx->GetTransform());
 
 		TargetDamage = GetLevel()->CreateActor<NumberActor>();
-		TargetDamage->GetTransform()->SetParent(BattleEx->GetTransform());
-		TargetDamage->GetTransform()->SetLocalPosition({ 118, 64, 0 });
+		TargetDamage->GetTransform()->SetLocalPosition({ 118 - 318, 64 + 62, 0 });
 		TargetDamage->GetTransform()->SetWorldRotation(float4::Zero);
 		TargetDamage->GetTransform()->SetWorldScale({ 1, 1, 1 });
+		TargetDamage->GetTransform()->SetParent(BattleEx->GetTransform());
 
 		TargetDoubleAttack = GetLevel()->CreateActor<DoubleIconActor>();
-		TargetDoubleAttack->GetTransform()->SetParent(BattleEx->GetTransform());
-		TargetDoubleAttack->GetTransform()->SetLocalPosition({ 138, 48, 0 });
+		TargetDoubleAttack->GetTransform()->SetLocalPosition({ 138 - 318, 48 + 62, 0 });
 		TargetDoubleAttack->GetTransform()->SetWorldRotation(float4::Zero);
 		TargetDoubleAttack->GetTransform()->SetWorldScale({ 1, 1, 1 });
+		TargetDoubleAttack->GetTransform()->SetParent(BattleEx->GetTransform());
 
 		TargetHit = GetLevel()->CreateActor<NumberActor>();
-		TargetHit->GetTransform()->SetParent(BattleEx->GetTransform());
-		TargetHit->GetTransform()->SetLocalPosition({ 118, 0, 0 });
+		TargetHit->GetTransform()->SetLocalPosition({ 118 - 318, 62, 0 });
 		TargetHit->GetTransform()->SetWorldRotation(float4::Zero);
 		TargetHit->GetTransform()->SetWorldScale({ 1, 1, 1 });
+		TargetHit->GetTransform()->SetParent(BattleEx->GetTransform());
 
 		TargetCritical = GetLevel()->CreateActor<NumberActor>();;
-		TargetCritical->GetTransform()->SetParent(BattleEx->GetTransform());
-		TargetCritical->GetTransform()->SetLocalPosition({ 118, -64, 0 });
+		TargetCritical->GetTransform()->SetLocalPosition({ 118 - 318, -64 + 62, 0 });
 		TargetCritical->GetTransform()->SetWorldRotation(float4::Zero);
 		TargetCritical->GetTransform()->SetWorldScale({ 1, 1, 1 });
+		TargetCritical->GetTransform()->SetParent(BattleEx->GetTransform());
 
 	}
 

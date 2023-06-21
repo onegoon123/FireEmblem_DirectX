@@ -20,9 +20,14 @@ public:
 		Name = _Name;
 	}
 
-	std::string_view GetName() const 
+	std::string_view GetName() const
 	{
 		return Name.c_str();
+	}
+
+	std::string GetNameToString() const
+	{
+		return Name;
 	}
 
 

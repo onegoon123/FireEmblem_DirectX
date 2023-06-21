@@ -108,17 +108,17 @@ void ItemUI::Off()
 void ItemUI::Start()
 {
 	WindowRender = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
-	WindowRender->GetTransform()->SetWorldScale({ 420, 356 });
+	WindowRender->GetTransform()->SetLocalScale({ 420, 356, 1 });
 	WindowRender->GetTransform()->SetLocalPosition({ -224, 64 });
 	WindowRender->SetSprite("ItemUI.png", 0);
 
 	SelectRender = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
-	SelectRender->GetTransform()->SetWorldScale({ 368, 20 });
+	SelectRender->GetTransform()->SetLocalScale({ 368, 20 });
 	SelectRender->GetTransform()->SetLocalPosition(StartSelectPos);
 	SelectRender->SetTexture("ItemSelect.png");
 
 	InfoRender = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
-	InfoRender->GetTransform()->SetWorldScale({ 420, 356 });
+	InfoRender->GetTransform()->SetLocalScale({ 420, 356 });
 	InfoRender->GetTransform()->SetLocalPosition({ 224, -224 });
 	InfoRender->SetSprite("ItemUI.png", 2);
 
@@ -127,30 +127,26 @@ void ItemUI::Start()
 	ItemInfoText->Setting("Silhoua14", 45, float4::White, float4::Black, FontAligned::Left);
 
 	Portrait = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
-	Portrait->GetTransform()->SetWorldScale({ 384, 320 });
+	Portrait->GetTransform()->SetLocalScale({ 384, 320 });
 	Portrait->GetTransform()->SetLocalPosition({ 224, 114 });
 	Portrait->SetTexture("Portrait_Lyn.png");
 
 	ItemUseWindow = CreateComponent<GameEngineUIRenderer>(static_cast<int>(RenderOrder::UIText) + 1);
-	ItemUseWindow->GetTransform()->SetWorldScale({ 160, 192 });
+	ItemUseWindow->GetTransform()->SetLocalScale({ 160, 192, 1 });
 	ItemUseWindow->SetTexture("ItemUse.png");
 
 	ItemUseText1 = CreateComponent<TextRenderer>(RenderOrder::UI3);
 	ItemUseText1->GetTransform()->SetParent(ItemUseWindow->GetTransform());
-	ItemUseText1->GetTransform()->SetLocalPosition({ 0, 64 });
-	ItemUseText1->GetTransform()->SetWorldRotation(float4::Zero);
-	ItemUseText1->GetTransform()->SetWorldScale(float4::One);
+	ItemUseText1->GetTransform()->SetLocalPosition({ 0, 0.33f });
 	ItemUseText1->Setting("Silhoua14", 55, float4::White, float4::Black, FontAligned::Center);
 
 	ItemUseText2 = CreateComponent<TextRenderer>(RenderOrder::UI3);
 	ItemUseText2->GetTransform()->SetParent(ItemUseWindow->GetTransform());
-	ItemUseText2->GetTransform()->SetLocalPosition({ 0, -12 });
-	ItemUseText2->GetTransform()->SetWorldRotation(float4::Zero);
-	ItemUseText2->GetTransform()->SetWorldScale(float4::One);
+	ItemUseText2->GetTransform()->SetLocalPosition({ 0, -0.06f });
 	ItemUseText2->Setting("Silhoua14", 55, float4::White, float4::Black, FontAligned::Center);
 
 	ItemUseSelect = CreateComponent<GameEngineUIRenderer>(static_cast<int>(RenderOrder::UIText) + 2);
-	ItemUseSelect->GetTransform()->SetWorldScale({ 76, 20 });
+	ItemUseSelect->GetTransform()->SetLocalScale({ 76, 20 });
 	ItemUseSelect->SetTexture("ItemUseSelect.png");
 
 	if (nullptr == GameEngineSprite::Find("items.png"))
@@ -186,10 +182,8 @@ void ItemUI::Start()
 		for (int i = 0; i < 5; i++)
 		{
 			ItemUses[i] = GetLevel()->CreateActor<NumberActor>();
+			ItemUses[i]->GetTransform()->SetLocalPosition({ 172-224, 128.0f+64.0f - i * 64 });
 			ItemUses[i]->GetTransform()->SetParent(WindowRender->GetTransform());
-			ItemUses[i]->GetTransform()->SetLocalPosition({ 172, 128.0f - i * 64 });
-			ItemUses[i]->GetTransform()->SetWorldRotation(float4::Zero);
-			ItemUses[i]->GetTransform()->SetWorldScale(float4::One);
 			ItemUses[i]->SetValue(0);
 			ItemUses[i]->Off();
 		}

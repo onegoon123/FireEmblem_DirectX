@@ -64,7 +64,7 @@ void BattleAnimationUnit::SetAnimation(UnitIdentityCode _IdentityValue)
 	CurAnimation->SetBrightness(0);
 	CurAnimation->ChangeAnimation("Idle");
 	EffectAnimation->ChangeAnimation("Idle");
-	EffectAnimation->GetTransform()->SetLocalScale({ -960,640 });
+	EffectAnimation->GetTransform()->SetLocalScale({ -960,640, 1 });
 }
 
 void BattleAnimationUnit::Attack()
@@ -127,7 +127,7 @@ void BattleAnimationUnit::Start()
 	};
 
 	EffectAnimation = CreateComponent<SpriteRenderer>(RenderOrder::Effect);
-	EffectAnimation->GetTransform()->SetLocalScale({ -960,640 });
+	EffectAnimation->GetTransform()->SetLocalScale({ -960,640, 1 });
 	EffectAnimation->GetTransform()->SetWorldPosition({ 0,0, -2});
 	EffectAnimation->CreateAnimation({ "Idle", "Effect_Hit.png", 8, 8 });
 
@@ -142,10 +142,10 @@ void BattleAnimationUnit::Start()
 	EffectAnimation->CreateAnimation({ .AnimationName = "Dodge", .SpriteName = "Effect_Miss.png", .Start = 0, .End = 18, .Loop = false,
 		.FrameTime = { .03f, .03f, .03f, .03f, .03f, .03f, .03f, .03f, .03f, .03f, .03f, .03f, .03f, .03f, .03f, .03f, .03f, .5f, .03f, } });
 	EffectAnimation->SetAnimationStartEvent("Dodge", 1, [this] {
-		EffectAnimation->GetTransform()->SetWorldScale({960, 640});
+		EffectAnimation->GetTransform()->SetWorldScale({960, 640, 1});
 		});
 	EffectAnimation->SetAnimationStartEvent("Dodge", 18, [this] {
-		EffectAnimation->GetTransform()->SetLocalScale({ -960,640 });
+		EffectAnimation->GetTransform()->SetLocalScale({ -960,640, 1 });
 		});
 	EffectAnimation->CreateAnimation({ .AnimationName = "FireHit", .SpriteName = "Effect_Fire.png", .Start = 0, .End = 19, .FrameInter = 0.05f, .Loop = false, });
 	EffectAnimation->SetAnimationStartEvent("FireHit", 16, SetBright1);

@@ -286,66 +286,58 @@ void BattleAnimationUI::Start()
 	Number_PlayerHP->SetDamageFont();
 	Number_PlayerHP->GetTransform()->SetParent(GetTransform());
 	Number_PlayerHP->GetTransform()->SetLocalPosition({ -360, -272 });
-	Number_PlayerHP->GetTransform()->SetWorldRotation(float4::Zero);
-	Number_PlayerHP->GetTransform()->SetWorldScale({ 1, 0.8f });
+	Number_PlayerHP->GetTransform()->SetLocalScale({ 1, 0.8f, 1 });
 
 	Number_EnemyHP = CurLevel->CreateActor<NumberActor>();
 	Number_EnemyHP->SetDamageFont();
 	Number_EnemyHP->GetTransform()->SetParent(GetTransform());
 	Number_EnemyHP->GetTransform()->SetLocalPosition({ 128, -272 });
-	Number_EnemyHP->GetTransform()->SetWorldRotation(float4::Zero);
-	Number_EnemyHP->GetTransform()->SetWorldScale({ 1, 0.8f });
+	Number_EnemyHP->GetTransform()->SetLocalScale({ 1, 0.8f, 1 });
 
 	Number_PlayerDamage = CurLevel->CreateActor<NumberActor>();
 	Number_PlayerDamage->SetDamageFont();
 	Number_PlayerDamage->GetTransform()->SetParent(GetTransform());
 	Number_PlayerDamage->GetTransform()->SetLocalPosition({ -341, -144 });
-	Number_PlayerDamage->GetTransform()->SetWorldRotation(float4::Zero);
-	Number_PlayerDamage->GetTransform()->SetWorldScale({ 1, 0.8f });
+	Number_PlayerDamage->GetTransform()->SetLocalScale({ 1, 0.8f, 1 });
 
 	Number_PlayerHit = CurLevel->CreateActor<NumberActor>();
 	Number_PlayerHit->SetDamageFont();
 	Number_PlayerHit->GetTransform()->SetParent(GetTransform());
 	Number_PlayerHit->GetTransform()->SetLocalPosition({ -341, -176 });
-	Number_PlayerHit->GetTransform()->SetWorldRotation(float4::Zero);
-	Number_PlayerHit->GetTransform()->SetWorldScale({ 1, 0.8f });
+	Number_PlayerHit->GetTransform()->SetLocalScale({ 1, 0.8f, 1 });
 
 	Number_PlayerCritical = CurLevel->CreateActor<NumberActor>();
 	Number_PlayerCritical->SetDamageFont();
 	Number_PlayerCritical->GetTransform()->SetParent(GetTransform());
 	Number_PlayerCritical->GetTransform()->SetLocalPosition({ -341, -208 });
-	Number_PlayerCritical->GetTransform()->SetWorldRotation(float4::Zero);
-	Number_PlayerCritical->GetTransform()->SetWorldScale({ 1, 0.8f });
+	Number_PlayerCritical->GetTransform()->SetLocalScale({ 1, 0.8f, 1 });
 
 	Number_EnemyDamage = CurLevel->CreateActor<NumberActor>();
 	Number_EnemyDamage->SetDamageFont();
 	Number_EnemyDamage->GetTransform()->SetParent(GetTransform());
 	Number_EnemyDamage->GetTransform()->SetLocalPosition({ 456, -144 });
-	Number_EnemyDamage->GetTransform()->SetWorldRotation(float4::Zero);
-	Number_EnemyDamage->GetTransform()->SetWorldScale({ 1, 0.8f });
+	Number_EnemyDamage->GetTransform()->SetLocalScale({ 1, 0.8f, 1 });
 
 	Number_EnemyHit = CurLevel->CreateActor<NumberActor>();
 	Number_EnemyHit->SetDamageFont();
 	Number_EnemyHit->GetTransform()->SetParent(GetTransform());
 	Number_EnemyHit->GetTransform()->SetLocalPosition({ 456, -176 });
-	Number_EnemyHit->GetTransform()->SetWorldRotation(float4::Zero);
-	Number_EnemyHit->GetTransform()->SetWorldScale({ 1, 0.8f });
+	Number_EnemyHit->GetTransform()->SetLocalScale({ 1, 0.8f, 1 });
 
 	Number_EnemyCritical = CurLevel->CreateActor<NumberActor>();
 	Number_EnemyCritical->SetDamageFont();
 	Number_EnemyCritical->GetTransform()->SetParent(GetTransform());
 	Number_EnemyCritical->GetTransform()->SetLocalPosition({ 456, -208 });
-	Number_EnemyCritical->GetTransform()->SetWorldRotation(float4::Zero);
-	Number_EnemyCritical->GetTransform()->SetWorldScale({ 1, 0.8f });
+	Number_EnemyCritical->GetTransform()->SetLocalScale({ 1, 0.8f, 1 });
 
 	PlayerWeaponIcon = CreateComponent<GameEngineUIRenderer>(RenderOrder::UICursor);
 	PlayerWeaponIcon->GetTransform()->SetLocalPosition({ -272, -200 });
-	PlayerWeaponIcon->GetTransform()->SetLocalScale({ 64, 64 });
+	PlayerWeaponIcon->GetTransform()->SetLocalScale({ 64, 64, 1 });
 	PlayerWeaponIcon->SetSprite("Items.png", 0);
 
 	EnemyWeaponIcon = CreateComponent<GameEngineUIRenderer>(RenderOrder::UICursor);
 	EnemyWeaponIcon->GetTransform()->SetLocalPosition({ 48, -200 });
-	EnemyWeaponIcon->GetTransform()->SetLocalScale({ 64, 64 });
+	EnemyWeaponIcon->GetTransform()->SetLocalScale({ 64, 64 ,1});
 	EnemyWeaponIcon->SetSprite("Items.png", 0);
 
 	// 무기 상성 이미지
@@ -354,14 +346,14 @@ void BattleAnimationUI::Start()
 	PlayerTriangle->CreateAnimation({ .AnimationName = "Disadvantage", .SpriteName = "Triangle.png", .Start = 3, .End = 5, .FrameInter = 0.15f });
 	PlayerTriangle->ChangeAnimation("Advantage");
 	PlayerTriangle->GetTransform()->SetLocalPosition({ -248, -214 });
-	PlayerTriangle->GetTransform()->SetWorldScale({ 28, 40 });
+	PlayerTriangle->GetTransform()->SetLocalScale({ 28, 40,1 });
 
 	EnemyTriangle = CreateComponent<GameEngineUIRenderer>(RenderOrder::UICursor);
 	EnemyTriangle->CreateAnimation({ .AnimationName = "Advantage", .SpriteName = "Triangle.png", .Start = 0, .End = 2, .FrameInter = 0.15f });
 	EnemyTriangle->CreateAnimation({ .AnimationName = "Disadvantage", .SpriteName = "Triangle.png", .Start = 3, .End = 5, .FrameInter = 0.15f });
 	EnemyTriangle->ChangeAnimation("Advantage");
 	EnemyTriangle->GetTransform()->SetLocalPosition({ 72, -214 });
-	EnemyTriangle->GetTransform()->SetWorldScale({ 28, 40 });
+	EnemyTriangle->GetTransform()->SetLocalScale({ 28, 40,1 });
 
 	EXPUI = CurLevel->CreateActor<EXPBar>();
 	EXPUI->GetTransform()->SetParent(GetTransform());

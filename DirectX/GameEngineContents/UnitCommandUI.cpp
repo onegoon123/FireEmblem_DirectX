@@ -177,12 +177,12 @@ void UnitCommandUI::On()
 void UnitCommandUI::Start()
 {
 	WindowRender = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
-	WindowRender->GetTransform()->SetWorldScale({ 196, 356 });
+	WindowRender->GetTransform()->SetLocalScale({ 196, 356 });
 	WindowRender->GetTransform()->SetLocalPosition({ 334, 36 });
 	WindowRender->SetSprite("CommandUI.png", 0);
 
 	SelectRender = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
-	SelectRender->GetTransform()->SetWorldScale({ 144, 20 });
+	SelectRender->GetTransform()->SetLocalScale({ 144, 20 });
 	SelectRender->GetTransform()->SetLocalPosition(StartSelectPos);
 	SelectRender->SetTexture("CommandSelect.png");
 

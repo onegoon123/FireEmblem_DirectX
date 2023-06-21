@@ -35,7 +35,7 @@ void TextRenderer::Update(float _DeltaTime)
 		IsTextAnim = false;
 		return;
 	}
-	Index++;
+	Index += 2;
 	Timer = AnimTime;
 
 	SetText(AnimText.substr(0, Index));
