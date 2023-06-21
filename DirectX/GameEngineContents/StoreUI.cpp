@@ -18,8 +18,9 @@ StoreUI::~StoreUI()
 void StoreUI::On(std::shared_ptr<BattleUnit> _Unit)
 {
 	GameEngineActor::On();
+	SelectUnit = _Unit;
 	FSM.ChangeState("Start1");
-
+	MoneyText->SetValue(Money, true);
 }
 
 void StoreUI::Start()
@@ -38,6 +39,10 @@ void StoreUI::Start()
 	Dialogue2 = CreateComponent<TextRenderer>(RenderOrder::UIText);
 	Dialogue2->GetTransform()->SetLocalPosition({ -200, 184 });
 	Dialogue2->Setting("Silhoua14", 60, float4::White, float4::Null, FontAligned::Left);
+
+	MoneyText = GetLevel()->CreateActor<NumberActor>();
+	MoneyText->GetTransform()->SetParent(GetTransform());
+	MoneyText->GetTransform()->SetLocalPosition({378, 98 });
 
 	Cursor = GetLevel()->CreateActor<UICursor>(RenderOrder::UIText);
 	Cursor->GetTransform()->SetParent(GetTransform());
@@ -167,6 +172,14 @@ void StoreUI::Start()
 			CurrentCursor = 0;
 			Dialogue->SetTextAnim(L"무엇을 사겠나?");
 			Dialogue2->SetText(" ");
+
+			for (int i = 0; i < 5; i++)
+			{
+				Icons[i]->SetSprite("Items.png", StoreItems[i]->GetItemCodeToInt() - 1);
+				ItemNameTexts[i]->SetText(StoreItems[i]->GetName());
+				ItemUses[i]->SetValue(StoreItems[i]->GetMaxUses());
+				ItemPrices[i]->SetValue(Price[i], true);
+			}
 		},
 		.Update = [this](float _DeltaTime)
 		{
@@ -200,9 +213,112 @@ void StoreUI::Start()
 				return;
 			}
 
+			if (GameEngineInput::IsDown("ButtonA"))
+			{
+				if (Money < Price[CurrentCursor])
+				{
+					Money += 300;	//임시용
+					MoneyText->SetValue(Money, true);
+					Dialogue->SetTextAnim(L"돈이 부족하네");
+					return;
+				}
+				if (5 == SelectUnit->GetUnitData().GetItems().size())
+				{
+					Dialogue->SetTextAnim(L"가방이 가득찼다네");
+					return;
+				}
+				SelectUnit->GetUnitData().NewItem(ItemList[CurrentCursor]);
+				Money -= Price[CurrentCursor];
+				MoneyText->SetValue(Money, true);
+				Dialogue->SetTextAnim(L"다른 것도 살 건가?");
+				return;
+			}
 			if (GameEngineInput::IsDown("ButtonB"))
 			{
 				FSM.ChangeState("BuyOrSell");
+				return;
+			}
+		},
+		.End = [this]
+		{
+		},
+		});
+
+	FSM.CreateState({ .Name = "Sell",
+		.Start = [this]
+		{
+			Cursor->GetTransform()->SetLocalPosition({ -284, 0 });
+			CursorPos = StartCursorPos;
+			CurrentCursor = 0;
+			Dialogue->SetTextAnim(L"무엇을 팔겠나?");
+			Dialogue2->SetText(" ");
+			PlayerItems = SelectUnit->GetUnitData().GetItems();
+			int i = 0;
+			for (std::shared_ptr<Item> _Item : PlayerItems)
+			{
+				Icons[i]->SetSprite("Items.png", _Item->GetItemCodeToInt() - 1);
+				ItemNameTexts[i]->SetText(_Item->GetName());
+				ItemUses[i]->SetValue(_Item->GetMaxUses());
+				ItemPrices[i]->SetValue(Item::GetItemPrice(_Item->GetItemCode()), true);
+				i++;
+			}
+		},
+		.Update = [this](float _DeltaTime)
+		{
+			Cursor->GetTransform()->SetLocalPosition(float4::LerpClamp(Cursor->GetTransform()->GetLocalPosition(), CursorPos, _DeltaTime * 20));
+
+			if (GameEngineInput::IsDown("Up"))
+			{
+				if (CurrentCursor == 0)
+				{
+					if (false == GameEngineInput::IsDown("Up")) { return; }
+					CurrentCursor = ItemSize - 1;
+					CursorPos = StartCursorPos + float4::Down * (64.0f * CurrentCursor);
+					return;
+				}
+				CurrentCursor--;
+				CursorPos = StartCursorPos + float4::Down * (64.0f * CurrentCursor);
+				return;
+			}
+
+			if (GameEngineInput::IsDown("Down"))
+			{
+				if (CurrentCursor == ItemSize - 1)
+				{
+					if (false == GameEngineInput::IsDown("Down") && false == GameEngineInput::IsUp("MiddleClick")) { return; }
+					CurrentCursor = 0;
+					CursorPos = StartCursorPos;
+					return;
+				}
+				CurrentCursor++;
+				CursorPos = StartCursorPos + float4::Down * (64.0f * CurrentCursor);
+				return;
+			}
+
+			if (GameEngineInput::IsDown("ButtonA"))
+			{
+				if (Money < Price[CurrentCursor])
+				{
+					Money += 300;	//임시용
+					MoneyText->SetValue(Money, true);
+					Dialogue->SetTextAnim(L"돈이 부족하네");
+					return;
+				}
+				if (5 == SelectUnit->GetUnitData().GetItems().size())
+				{
+					Dialogue->SetTextAnim(L"가방이 가득찼다네");
+					return;
+				}
+				SelectUnit->GetUnitData().NewItem(ItemList[CurrentCursor]);
+				Money -= Price[CurrentCursor];
+				MoneyText->SetValue(Money, true);
+				Dialogue->SetTextAnim(L"다른 것도 살 건가?");
+				return;
+			}
+			if (GameEngineInput::IsDown("ButtonB"))
+			{
+				FSM.ChangeState("BuyOrSell");
+				return;
 			}
 		},
 		.End = [this]

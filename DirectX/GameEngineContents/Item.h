@@ -71,6 +71,7 @@ public:
 	}
 
 	static Item GetItemData(ItemCode _Code);
+	static int GetItemPrice(ItemCode _Code);
 
 protected:
 	int IdentityCode = 0;

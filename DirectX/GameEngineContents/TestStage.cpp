@@ -29,7 +29,7 @@ void TestStage::StageSetting()
 	ClearTarget = BattleClearTarget::AllKill;
 	ClearTargetText = "¸ñÇ¥:Àû Àü¸ê";
 
-	NewPlayerUnit(UnitIdentityCode::Lyn, 99, { 3, 3 }, { ItemCode::IronSword, ItemCode::ManiKatti, ItemCode::Vulnerary, ItemCode::MasterSeal })->GetUnitData().AddExp(80);
+	NewPlayerUnit(UnitIdentityCode::Lyn, 99, { 3, 3 }, { ItemCode::IronSword, ItemCode::ManiKatti, ItemCode::Vulnerary, ItemCode::MasterSeal})->GetUnitData().AddExp(80);
 	NewPlayerUnit(UnitIdentityCode::Kent, 1, { 2, 4 }, { ItemCode::IronSword, ItemCode::IronLance, ItemCode::Vulnerary })->GetUnitData().AddExp(80);
 	NewPlayerUnit(UnitIdentityCode::Sain, 1, { 3, 5 }, { ItemCode::IronLance });
 	NewPlayerUnit(UnitIdentityCode::Florina, 1, { 2, 2 }, { ItemCode::SlimLance, ItemCode::Vulnerary });

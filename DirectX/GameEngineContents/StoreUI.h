@@ -26,6 +26,7 @@ private:
 	std::function<void()> EndFunction = nullptr;
 	GameEngineFSM FSM;
 
+	std::shared_ptr<BattleUnit> SelectUnit = nullptr;
 	std::shared_ptr<class GameEngineUIRenderer> Background;
 	std::vector<std::shared_ptr<GameEngineUIRenderer>> Icons;
 	std::shared_ptr<class UICursor> Cursor;
@@ -34,6 +35,7 @@ private:
 	std::vector<std::shared_ptr<class TextRenderer>> ItemNameTexts;
 	std::vector<std::shared_ptr<class NumberActor>> ItemUses;
 	std::vector<std::shared_ptr<class NumberActor>> ItemPrices;
+	std::shared_ptr<class NumberActor> MoneyText;
 
 	const float4 StartCursorPos = { -284, 0 };
 	float4 CursorPos;
@@ -42,7 +44,9 @@ private:
 	const std::vector<ItemCode> ItemList = { ItemCode::SteelSword, ItemCode::KillingSword, ItemCode::SilverLance, ItemCode::Elixir, ItemCode::MasterSeal };
 	const std::vector<int> Price = {50, 125, 100, 30, 100};
 	std::vector<std::shared_ptr<class Item>> StoreItems;
+	std::list<std::shared_ptr<class Item>> PlayerItems;
 	int ItemSize = 5;
+	int Money = 0;
 
 	bool IsSell = false;
 };

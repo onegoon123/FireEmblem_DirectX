@@ -242,3 +242,84 @@ Item Item::GetItemData(ItemCode _Code)
 	return ReturnItem;
 }
 
+int Item::GetItemPrice(ItemCode _Code)
+{
+	switch (_Code)
+	{
+	case ItemCode::None:
+		return 0;
+	case ItemCode::SlimSword:
+		return 45;
+	case ItemCode::IronSword:
+		return 50;
+	case ItemCode::SteelSword:
+		return 75;
+	case ItemCode::Lancereaver:
+		return 80;
+	case ItemCode::Armourslayer:
+		return 80;
+	case ItemCode::KillingSword:
+		return 100;
+	case ItemCode::ManiKatti:
+		return 200;
+	case ItemCode::SlimLance:
+		return 45;
+	case ItemCode::IronLance:
+		return 50;
+	case ItemCode::SteelLance:
+		return 75;
+	case ItemCode::SilverLance:
+		return 80;
+	case ItemCode::KillerLance:
+		return 80;
+	case ItemCode::Axereaver:
+		return 80;
+	case ItemCode::Horseslayer:
+		return 80;
+	case ItemCode::HandAxe:
+		return 40;
+	case ItemCode::IronAxe:
+		return 50;
+	case ItemCode::Swordreaver:
+		return 80;
+	case ItemCode::Hammer:
+		return 80;
+	case ItemCode::ShortBow:
+		return 40;
+	case ItemCode::IronBow:
+		return 50;
+	case ItemCode::Ballista:
+		return 100;
+	case ItemCode::Heal:
+		return 35;
+	case ItemCode::Rescue:
+		return 35;
+	case ItemCode::Fire:
+		return 50;
+	case ItemCode::Flux:
+		return 50;
+	case ItemCode::Lightning:
+		return 50;
+	case ItemCode::DoorKey:
+		return 0;
+	case ItemCode::ChestKey:
+		return 0;
+	case ItemCode::Vulnerary:
+		return 10;
+	case ItemCode::Elixir:
+		return 30;
+	case ItemCode::Ring1:
+		return 0;
+	case ItemCode::Ring2:
+		return 0;
+	case ItemCode::Torch:
+		return 0;
+	case ItemCode::GoldCard:
+		return 0;
+	case ItemCode::MasterSeal:
+		return 100;
+	default:
+		return 0;
+	}
+}
+
