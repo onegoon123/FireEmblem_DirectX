@@ -117,8 +117,6 @@ void BattleAnimationUI::SetData(std::shared_ptr<BattleUnit> _Unit1, std::shared_
 
 	Text_PlayerName->SetText(PlayerBattleUnit->GetName());
 	Text_EnemyName->SetText(EnemyBattleUnit->GetName());
-	Text_PlayerWeaponName->SetText(Player.GetCurWeapon()->GetName());
-	Text_EnemyWeaponName->SetText(Enemy.GetCurWeapon()->GetName());
 
 	Number_PlayerHP->Setting(Player.GetHP());
 
@@ -153,19 +151,23 @@ void BattleAnimationUI::SetData(std::shared_ptr<BattleUnit> _Unit1, std::shared_
 	if (nullptr == Player.GetCurWeapon())
 	{
 		PlayerWeaponIcon->Off();
+		Text_PlayerWeaponName->SetText("");
 	}
 	else
 	{
+		Text_PlayerWeaponName->SetText(Player.GetCurWeapon()->GetName());
 		PlayerWeaponIcon->On();
 		PlayerWeaponIcon->SetFrame(Player.GetCurWeapon()->GetItemCodeToInt() - 1);
 	}
 	if (nullptr == Enemy.GetCurWeapon())
 	{
 		EnemyWeaponIcon->Off();
+		Text_EnemyWeaponName->SetText("");
 	}
 	else
 	{
 		EnemyWeaponIcon->On();
+		Text_EnemyWeaponName->SetText(Enemy.GetCurWeapon()->GetName());
 		EnemyWeaponIcon->SetFrame(Enemy.GetCurWeapon()->GetItemCodeToInt() - 1);
 	}
 

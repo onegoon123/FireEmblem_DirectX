@@ -294,9 +294,9 @@ void BattleUnit::LoadUnitData(Unit _Value)
 
 bool BattleUnit::IsAttackable(int _Distance)
 {
-	if (UnitData.GetClassValue() == BattleClass::Cleric)
+	if (nullptr == UnitData.CurWeapon)
 	{
-		return true;
+		return false;
 	}
 	if (UnitData.GetWeaponTypeValue() == WeaponType::Bow)
 	{
