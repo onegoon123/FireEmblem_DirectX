@@ -123,3 +123,8 @@ void BattleLevel::UnitCommand_Store()
 {
 	ChangeState(BattleState::Store);
 }
+
+void BattleLevel::UnitCommand_StoreEnd()
+{
+	ChangeState(BattleState::Select);
+}

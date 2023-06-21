@@ -25,6 +25,7 @@ public:
 	void SetAligned(FontAligned _Aligned);
 
 	void SetTextAnim(const std::wstring_view& _Text);
+	bool IsAnimEnd();
 
 protected:
 	void Start() override;
@@ -37,7 +38,7 @@ private:
 	std::wstring AnimText = L"";
 	int Index = 0;
 	bool IsTextAnim = false;
-	const float AnimTime = 0.12f;
+	const float AnimTime = 0.07f;
 	float Timer;
 };
 

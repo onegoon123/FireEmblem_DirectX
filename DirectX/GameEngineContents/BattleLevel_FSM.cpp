@@ -1484,10 +1484,6 @@ void BattleLevel::StoreStart()
 
 void BattleLevel::StoreUpdate(float _DeltaTime)
 {
-	if (GameEngineInput::IsDown("ButtonB"))
-	{
-		ChangeState(BattleState::Select);
-	}
 }
 
 void BattleLevel::StoreEnd()

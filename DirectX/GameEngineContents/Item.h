@@ -69,6 +69,9 @@ public:
 	{
 		return 0 == --Uses;
 	}
+
+	static Item GetItemData(ItemCode _Code);
+
 protected:
 	int IdentityCode = 0;
 	ItemCode Code = ItemCode::None;

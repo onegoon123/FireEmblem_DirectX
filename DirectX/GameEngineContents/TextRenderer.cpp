@@ -122,3 +122,8 @@ void TextRenderer::SetTextAnim(const std::wstring_view& _Text)
 
 	SetText(L"");
 }
+
+bool TextRenderer::IsAnimEnd()
+{
+	return false == IsTextAnim;
+}
