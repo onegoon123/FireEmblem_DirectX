@@ -6,7 +6,6 @@
 #include <GameEngineCore/GameEngineUIRenderer.h>
 #include <GameEngineCore/GameEngineCamera.h>
 #include <GameEngineCore/GameEngineCore.h>
-#include "DebugWindow.h"
 TitleLevel::TitleLevel()
 {
 }
@@ -66,20 +65,6 @@ void TitleLevel::Start()
 		TitleRenderer = TitleActor->CreateComponent<GameEngineUIRenderer>();
 		TitleRenderer->SetTexture("TitleImage.png");
 		TitleRenderer->GetTransform()->SetWorldScale({ 960, 640 });
-	}
-
-	std::shared_ptr<DebugWindow> Window = GameEngineGUI::FindGUIWindowConvert<DebugWindow>("DebugWindow");
-	{
-		if (nullptr == Window)
-		{
-			MsgAssert("윈도우 테스트 코드 미작동");
-		}
-
-		std::function<void()> Function;
-		Function = []() {
-			MsgTextBox("버튼누름");
-		};
-
 	}
 
 	StateInit();

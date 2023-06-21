@@ -425,14 +425,22 @@ void BattleLevel::TargetSearchForEnemy()
 	}
 
 	int Size = (int)ResultMove.size() < SelectUnit->GetMoveStat() ? (int)ResultMove.size() : SelectUnit->GetMoveStat();
+	int MoveStat = SelectUnit->GetMoveStat();
 	ArrowPos.resize(Size);
-	for (int i = 0; i < Size; i++)
-	{
-		ArrowPos[i] = ResultMove[i];
-	}
 	if (0 == ArrowPos.size())
 	{
 		return;
+	}
+	ArrowPos[0] = ResultMove[0];
+	for (int i = 1; i < Size; i++)
+	{
+		MoveStat -= GetTerrainCostFoot(ResultMove[i]);
+		if (MoveStat <= 0)
+		{
+			ArrowPos.resize(i);
+			break;
+		}
+		ArrowPos[i] = ResultMove[i];
 	}
 	for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
 	{

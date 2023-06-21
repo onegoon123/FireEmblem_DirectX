@@ -109,6 +109,8 @@ void BattleAnimationUI::SetData(std::shared_ptr<BattleUnit> _Unit1, std::shared_
 {
 	std::shared_ptr<BattleUnit> PlayerBattleUnit = _Unit1->GetUnitData().GetIsPlayer() == true ? _Unit1 : _Unit2;
 	std::shared_ptr<BattleUnit> EnemyBattleUnit = _Unit1->GetUnitData().GetIsPlayer() == false ? _Unit1 : _Unit2;
+	bool PlayerAttackable = _Unit1->GetUnitData().GetIsPlayer() == true ? _Unit1Attackable : _Unit2Attackable;
+	bool EnemyAttackable = _Unit1->GetUnitData().GetIsPlayer() == false ? _Unit1Attackable : _Unit2Attackable;
 	Unit& Player = PlayerBattleUnit->GetUnitData();
 	Unit& Enemy = EnemyBattleUnit->GetUnitData();
 	UnitName = PlayerBattleUnit->GetName();
@@ -120,7 +122,7 @@ void BattleAnimationUI::SetData(std::shared_ptr<BattleUnit> _Unit1, std::shared_
 
 	Number_PlayerHP->Setting(Player.GetHP());
 
-	if (true == _Unit1Attackable)
+	if (true == PlayerAttackable)
 	{
 		Number_PlayerDamage->SetValue(Player.GetAttackPoint(Enemy));
 		Number_PlayerHit->SetValue(Player.GetHitPoint(Enemy));
@@ -135,7 +137,7 @@ void BattleAnimationUI::SetData(std::shared_ptr<BattleUnit> _Unit1, std::shared_
 	EnemyHPBar->Setting(Enemy.GetHP(), Enemy.GetMaxHP());
 
 	Number_EnemyHP->Setting(Enemy.GetHP());
-	if (true == _Unit2Attackable)
+	if (true == EnemyAttackable)
 	{
 		Number_EnemyDamage->SetValue(Enemy.GetAttackPoint(Player));
 		Number_EnemyHit->SetValue(Enemy.GetHitPoint(Player));

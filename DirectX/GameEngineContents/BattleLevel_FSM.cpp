@@ -14,7 +14,6 @@
 #include "UnitCommand.h"
 #include "BattleLevelUI.h"
 #include "UnitInformationUI.h"
-#include "DebugWindow.h" // 임시
 #include "FadeEffect.h"
 void BattleLevel::ChangeState(BattleState _State)
 {
@@ -559,19 +558,6 @@ void BattleLevel::UnitCommandStart()
 	BattleUI->UnitCommandOn();
 	BattleUI->UnitCommandSet(IsAttackable, IsCloseUnit, IsItem);
 
-	std::shared_ptr<DebugWindow> Window = GameEngineGUI::FindGUIWindowConvert<DebugWindow>("DebugWindow");
-	Window->Text = "";
-	if (true == IsAttackable)
-	{
-		Window->Text += "공격\n";
-	}
-	Window->Text += "소지품\n";
-
-	if (true == IsCloseUnit)
-	{
-		Window->Text += "교환\n";
-	}
-	Window->Text += "대기\n";
 }
 
 void BattleLevel::UnitCommandUpdate(float _DeltaTime)
@@ -593,8 +579,6 @@ void BattleLevel::FieldCommandStart()
 	MainCursor->Off();
 
 	// 커맨드 UI 켜기
-	std::shared_ptr<DebugWindow> Window = GameEngineGUI::FindGUIWindowConvert<DebugWindow>("DebugWindow");
-	Window->Text = "시간석\n부대\n설정\n중단\n종료";
 }
 
 void BattleLevel::FieldCommandUpdate(float _DeltaTime)

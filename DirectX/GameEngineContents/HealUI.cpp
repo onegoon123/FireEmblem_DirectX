@@ -7,7 +7,6 @@
 #include "BattleLevel.h"
 #include "BattleUnit.h"
 #include "MapCursor.h"
-#include "DebugWindow.h"
 #include "NumberActor.h"
 #include "DoubleIconActor.h"
 #include "UIButtonSystem.h"
@@ -104,15 +103,6 @@ void HealUI::On(std::shared_ptr<BattleUnit> _SelectUnit, std::list<std::shared_p
 	}
 
 
-	std::shared_ptr<DebugWindow> Window = GameEngineGUI::FindGUIWindowConvert<DebugWindow>("DebugWindow");
-	Window->Text = "";
-	for (std::shared_ptr<Item> _Stave : Staves)
-	{
-		Window->Text += _Stave->GetName();
-		Window->Text += " ";
-		Window->Text += std::to_string(_Stave->GetUses());
-		Window->Text += " / " + std::to_string(_Stave->GetMaxUses()) + '\n';
-	}
 
 	for (int i = 0; i < Staves.size(); i++)
 	{

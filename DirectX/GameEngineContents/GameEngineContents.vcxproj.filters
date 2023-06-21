@@ -207,6 +207,9 @@
     <ClCompile Include="StoreUI.cpp">
       <Filter>Battle\UI\Store</Filter>
     </ClCompile>
+    <ClCompile Include="TestStage.cpp">
+      <Filter>Levels\Stage</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FECore.h" />
@@ -388,6 +391,9 @@
     </ClInclude>
     <ClInclude Include="StoreUI.h">
       <Filter>Battle\UI\Store</Filter>
+    </ClInclude>
+    <ClInclude Include="TestStage.h">
+      <Filter>Levels\Stage</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

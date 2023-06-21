@@ -101,7 +101,7 @@ void SelectUI::SetTerrainData(Terrain _Data)
 		TerrainStr = "민가";
 		break;
 	case Terrain::Shop:
-		TerrainStr = "가게";
+		TerrainStr = "상점";
 		break;
 	case Terrain::Sea:
 		TerrainStr = "바다";

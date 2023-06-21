@@ -59,7 +59,7 @@ void TimeStoneUI::Update(float _DeltaTime)
 		PressOK = false;
 	}
 
-	if (GameEngineInput::IsDown("Up") || (GameEngineInput::IsPress("Up") && PressOK))
+	if (GameEngineInput::IsDown("Up") || (GameEngineInput::IsPress("Up") && PressOK) || GameEngineInput::IsDown("MiddleClick"))
 	{
 		CommandMoveUp();
 		Rewind();
@@ -71,7 +71,7 @@ void TimeStoneUI::Update(float _DeltaTime)
 		Play();
 		return;
 	}
-	if (GameEngineInput::IsDown("ButtonA") && CurFaction == Faction::Player)
+	if ((GameEngineInput::IsDown("ButtonA") || GameEngineInput::IsUp("LeftClick")) && CurFaction == Faction::Player)
 	{
 		if (true == IsGameOver && CurrentCursor == CommandList.size() - 1)
 		{
@@ -80,7 +80,7 @@ void TimeStoneUI::Update(float _DeltaTime)
 		Select();
 		return;
 	}
-	if (GameEngineInput::IsDown("ButtonB") && false == IsGameOver)
+	if ((GameEngineInput::IsDown("ButtonB") || GameEngineInput::IsUp("RightClick")) && false == IsGameOver)
 	{
 		Cancel();
 		return;

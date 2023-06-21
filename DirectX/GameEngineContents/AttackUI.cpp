@@ -7,7 +7,6 @@
 #include "BattleLevel.h"
 #include "BattleUnit.h"
 #include "MapCursor.h"
-#include "DebugWindow.h"
 #include "NumberActor.h"
 #include "DoubleIconActor.h"
 #include "UIButtonSystem.h"
@@ -92,15 +91,6 @@ void AttackUI::On(std::shared_ptr<BattleUnit> _SelectUnit, std::list<std::shared
 		ItemNameTexts[i]->Off();
 	}
 
-	std::shared_ptr<DebugWindow> Window = GameEngineGUI::FindGUIWindowConvert<DebugWindow>("DebugWindow");
-	Window->Text = "";
-	for (std::shared_ptr<Weapon> _Weapon : Weapons)
-	{
-		Window->Text += _Weapon->GetName();
-		Window->Text += " ";
-		Window->Text += std::to_string(_Weapon->GetUses());
-		Window->Text += " / " + std::to_string(_Weapon->GetMaxUses()) + '\n';
-	}
 }
 
 

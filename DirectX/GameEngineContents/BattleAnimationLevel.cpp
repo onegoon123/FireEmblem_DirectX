@@ -1,4 +1,5 @@
 #include "PrecompileHeader.h"	
+#include <GameEngineBase/GameEngineRandom.h>
 #include <GameEngineBase/GameEngineTime.h>
 #include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEngineCore/GameEngineCore.h>
@@ -10,7 +11,6 @@
 #include "BattleAnimationUnit.h"
 #include "BattleAnimationUI.h"
 #include "ContentsEnum.h"
-
 std::shared_ptr<BattleUnit> BattleAnimationLevel::SubjectUnit = nullptr;
 std::shared_ptr<BattleUnit> BattleAnimationLevel::TargetUnit = nullptr;
 bool BattleAnimationLevel::IsClassChange = false;
@@ -118,7 +118,14 @@ void BattleAnimationLevel::HitEvent()
 		EffectName = "Dodge";
 	}
 
-
+	if ((*BattleIter).IsCritical)
+	{
+		CameraShake(0.4f);
+	}
+	else if ((*BattleIter).IsHit)
+	{
+		CameraShake(0.2f);
+	}
 	DamageUnit->HitEffect(EffectName);
 }
 
@@ -140,7 +147,8 @@ void BattleAnimationLevel::Start()
 
 	CreateNewCamera(101)->SetProjectionType(CameraType::Orthogonal);
 	GetMainCamera()->SetProjectionType(CameraType::Orthogonal);
-	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -554.0f });
+	CameraTransform = GetMainCamera()->GetTransform();
+	CameraTransform->SetLocalPosition({ 0, 0, -554.0f });
 	GetMainCamera()->SetSortType(RenderOrder::Unit, SortType::ZSort);
 	//GetMainCamera()->SetSortType(RenderOrder::Effect, SortType::None);
 	
@@ -150,6 +158,10 @@ void BattleAnimationLevel::Update(float _DeltaTime)
 {
 	TimeEvent.Update(_DeltaTime);
 
+	if (true == IsShake)
+	{
+		ShakeUpdate(_DeltaTime);
+	}
 	if (true == IsFadeOut)
 	{
 		return;
@@ -187,7 +199,12 @@ void BattleAnimationLevel::LevelChangeStart()
 	// ¿¢ÅÍ ¹× ·»´õ·¯ »ý¼º
 	if (nullptr == BackgroundRender)
 	{
+
 		std::shared_ptr<GameEngineActor> NewActor = CreateActor<GameEngineActor>();
+		std::shared_ptr<SpriteRenderer> Black = NewActor->CreateComponent<SpriteRenderer>(0);
+		Black->SetTexture("Black.png");
+		Black->SetLocalScale({ 1152, 768 });
+
 		BackgroundRender = NewActor->CreateComponent<SpriteRenderer>(RenderOrder::Map);
 		BackgroundRender->SetTexture("BattleBackground_Plains.png");
 		BackgroundRender->SetLocalScale({ 960, 640, 1 });
@@ -442,6 +459,31 @@ void BattleAnimationLevel::FadeOut(float _Time)
 	FEffect->FadeOut(_Time);
 
 	GameEngineTime::GlobalTime.SetGlobalTimeScale(1.0f);
+}
+
+void BattleAnimationLevel::CameraShake(float _Time)
+{
+	IsShake = true;
+	ShakeTimer = _Time;
+	ShakeDelayTimer = 0;
+}
+GameEngineRandom Random;
+
+void BattleAnimationLevel::ShakeUpdate(float _DeltaTime)
+{
+	ShakeTimer -= _DeltaTime;
+	ShakeDelayTimer -= _DeltaTime;
+	if (ShakeTimer < 0)
+	{
+		IsShake = false;
+		CameraTransform->SetLocalPosition({ 0, 0, -554.0f });
+		return;
+	}
+	if (0 < ShakeDelayTimer) { return; }
+	float Random1 = Random.RandomFloat(-1, 1);
+	float Random2 = Random.RandomFloat(-1, 1);
+	CameraTransform->SetLocalPosition(float4(0, 0, -554.0f) + float4(ShakeAmount.x * Random1, ShakeAmount.y * Random2));
+	ShakeDelayTimer = ShakeDelay;
 }
 
 void BattleAnimationLevel::BattleEnd()

@@ -50,6 +50,8 @@ private:
 
 	std::shared_ptr<class FadeEffect> FEffect;
 
+	GameEngineTransform* CameraTransform = nullptr;
+
 	bool IsTurnEnd = false;
 	bool IsFadeOut = false;
 	static bool IsClassChange;
@@ -59,6 +61,15 @@ private:
 	void End();
 	void FadeOut(float _Time);
 	void ClassChangeEvent();
+
+	void CameraShake(float _Time);
+	void ShakeUpdate(float _DeltaTime);
+	const float4 ShakeAmount = {16, 16};
+	bool IsShake = false;
+	float ShakeTimer = 0;
+	const float ShakeDelay = 0.03f;
+	float ShakeDelayTimer = 0;
+
 	std::string_view GetTerrainTexture(Terrain _Value);
 	std::string_view GetBackgroundTexture(Terrain _Value);
 };

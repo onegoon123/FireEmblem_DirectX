@@ -6,7 +6,6 @@
 #include "UICursor.h"
 #include "BattleLevel.h"
 #include "BattleUnit.h"
-#include "DebugWindow.h"
 #include "NumberActor.h"
 #include "UIButtonSystem.h"
 #include "TextRenderer.h"
@@ -75,15 +74,6 @@ void ItemUI::On(std::shared_ptr<BattleUnit> _SelectUnit)
 	}
 
 
-	std::shared_ptr<DebugWindow> Window = GameEngineGUI::FindGUIWindowConvert<DebugWindow>("DebugWindow");
-	Window->Text = "";
-	for (std::shared_ptr<Item> _Item : SelectUnit->GetUnitData().GetItems())
-	{
-		Window->Text += _Item->GetName();
-		Window->Text += " ";
-		Window->Text += std::to_string(_Item->GetUses());
-		Window->Text += " / " + std::to_string(_Item->GetMaxUses()) + '\n';
-	}
 
 	for (int i = 0; i < ItemSize; i++)
 	{
@@ -360,8 +350,6 @@ void ItemUI::ItemSelect()
 	CurrentUseCursor = 0;
 	UseFunctions.clear();
 
-	std::shared_ptr<DebugWindow> Window = GameEngineGUI::FindGUIWindowConvert<DebugWindow>("DebugWindow");
-	Window->Text = "";
 
 	switch ((*ItemIter)->GetItemType())
 	{
@@ -374,7 +362,6 @@ void ItemUI::ItemSelect()
 		{
 			UseFunctions.push_back(std::bind(&ItemUI::Equipment, this));
 			UseFunctions.push_back(std::bind(&ItemUI::Drop, this));
-			Window->Text += "장비\n버리기";
 			ItemUseText1->SetText("장비");
 			ItemUseText2->SetText("버리기");
 		}
@@ -382,7 +369,6 @@ void ItemUI::ItemSelect()
 		{
 			UseFunctions.push_back(std::bind(&ItemUI::ItemUseCancel, this));
 			UseFunctions.push_back(std::bind(&ItemUI::Drop, this));
-			Window->Text += "취소\n버리기";
 			ItemUseText1->SetText("취소");
 			ItemUseText2->SetText("버리기");
 		}
@@ -391,21 +377,18 @@ void ItemUI::ItemSelect()
 	case ItemType::Stave:
 		UseFunctions.push_back(std::bind(&ItemUI::ItemUseCancel, this));
 		UseFunctions.push_back(std::bind(&ItemUI::Drop, this));
-		Window->Text += "취소\n버리기";
 		ItemUseText1->SetText("취소");
 		ItemUseText2->SetText("버리기");
 		break;
 	case ItemType::Potion:
 		UseFunctions.push_back(std::bind(&ItemUI::Use, this));
 		UseFunctions.push_back(std::bind(&ItemUI::Drop, this));
-		Window->Text += "사용\n버리기";
 		ItemUseText1->SetText("사용");
 		ItemUseText2->SetText("버리기");
 		break;
 	case ItemType::Key:
 		UseFunctions.push_back(std::bind(&ItemUI::ItemUseCancel, this));
 		UseFunctions.push_back(std::bind(&ItemUI::Drop, this));
-		Window->Text += "취소\n버리기";
 		ItemUseText1->SetText("취소");
 		ItemUseText2->SetText("버리기");
 		break;

@@ -22,6 +22,7 @@
 #include "Stage8.h"
 #include "Stage9.h"
 #include "Stage10.h"
+#include "TestStage.h"
 
 FECore::FECore()
 {
@@ -46,8 +47,8 @@ void FECore::GameStart()
 			MsgAssert("윈도우 생성 실패");
 		}
 
-		Window->Funcions = [](int i) {
-			GameEngineCore::ChangeLevel("Stage" + std::to_string(i));
+		Window->Funcions = [](const std::string_view& _Name) {
+			GameEngineCore::ChangeLevel(_Name);
 		};
 
 	}
@@ -67,6 +68,7 @@ void FECore::GameStart()
 	GameEngineCore::CreateLevel<Stage8>();
 	GameEngineCore::CreateLevel<Stage9>();
 	GameEngineCore::CreateLevel<Stage10>();
+	GameEngineCore::CreateLevel<TestStage>();
 	GameEngineCore::ChangeLevel("TitleLevel");
 }
 

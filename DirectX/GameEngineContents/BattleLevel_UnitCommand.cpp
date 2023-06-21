@@ -6,8 +6,10 @@
 #include "BattleLevelUI.h"
 #include "MapCursor.h"
 #include "BattleAnimationLevel.h"
+#include "TileRender.h"
 void BattleLevel::UnitCommand_Item()
 {
+	Tiles->Clear();
 	BattleUI->ItemOn(SelectUnit);
 }
 
@@ -30,6 +32,7 @@ void BattleLevel::UnitCommand_Heal()
 
 void BattleLevel::UnitCommand_Exchange()
 {
+	Tiles->Clear();
 	BattleUI->ExchangeOn(SelectUnit, CloseUnits);
 }
 void BattleLevel::UnitCommand_ExchangeEnd(std::shared_ptr<BattleUnit> _Target)
@@ -48,6 +51,7 @@ void BattleLevel::UnitCommand_Cancel()
 
 void BattleLevel::UnitCommand_CommandCancel()
 {
+	Tiles->SetTileAttack(IsAttack);
 	BattleUI->UnitCommandOn();
 }
 
