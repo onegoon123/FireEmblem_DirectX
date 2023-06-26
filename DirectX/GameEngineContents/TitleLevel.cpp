@@ -54,7 +54,7 @@ void TitleLevel::Start()
 		{
 			GameEngineTexture::Load(File[i].GetFullPath());
 		}
-
+		GameEngineSound::Load(Dir.GetPlusFileName("Title.mp3").GetFullPath());
 	}
 
 	// 타이틀 이미지 생성
@@ -66,12 +66,20 @@ void TitleLevel::Start()
 		TitleRenderer->GetTransform()->SetWorldScale({ 960, 640 });
 	}
 
+	BgmPlayer = GameEngineSound::Play("Title.mp3");
+	BgmPlayer.SetLoop();
+
 	StateInit();
 }
 
 void TitleLevel::Update(float _DeltaTime)
 {
 	FSM.Update(_DeltaTime);
+}
+
+void TitleLevel::LevelChangeEnd()
+{
+	BgmPlayer.Stop();
 }
 
 void TitleLevel::StateInit()
@@ -122,6 +130,7 @@ void TitleLevel::StateInit()
 	.Start = [this]
 	{
 		Timer = 0;
+		BgmPlayer.SoundFadeOut(0.5f);
 	},
 	.Update = [this](float _DeltaTime)
 	{

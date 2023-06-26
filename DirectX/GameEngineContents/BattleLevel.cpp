@@ -73,6 +73,7 @@ void BattleLevel::LevelChangeStart()
 
 	if (CurState == BattleState::BattleReturn || CurState == BattleState::EnemyBattleReturn)
 	{
+		BgmPlayer.SoundFadeIn(0.5f);
 		return;
 	}
 
@@ -91,7 +92,15 @@ void BattleLevel::LevelChangeStart()
 		Dir.MoveParentToDirectory("ContentResources");
 		Dir.Move("ContentResources");
 		Dir.Move("Battle");
-		std::vector<GameEngineFile> File = Dir.GetAllFile({ ".png", });
+		Dir.Move("Sound");
+		std::vector<GameEngineFile> File = Dir.GetAllFile({ ".mp3", });
+		for (size_t i = 0; i < File.size(); i++)
+		{
+			GameEngineSound::Load(File[i].GetFullPath());
+		}
+
+		Dir.MoveParent();
+		File = Dir.GetAllFile({ ".png", });
 		for (size_t i = 0; i < File.size(); i++)
 		{
 			GameEngineTexture::Load(File[i].GetFullPath());
@@ -129,6 +138,7 @@ void BattleLevel::LevelChangeStart()
 			GameEngineTexture::Load(File[i].GetFullPath());
 		}
 	}
+	
 
 	OpeningEvent = CreateActor<EventSystem>();
 	ClearEvent = CreateActor<EventSystem>();

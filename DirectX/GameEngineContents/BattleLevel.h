@@ -1,4 +1,5 @@
 #pragma once
+#include <GameEnginePlatform/GameEngineSound.h>
 #include <GameEngineCore/GameEngineLevel.h>
 #include "ContentsEnum.h"
 #include "Int2.h"
@@ -17,6 +18,8 @@ public:
 	BattleLevel(BattleLevel&& _Other) = delete;
 	BattleLevel& operator=(const BattleLevel& _Other) = delete;
 	BattleLevel& operator=(BattleLevel&& _Other) = delete;
+
+	GameEngineSoundPlayer BgmPlayer;
 
 	std::shared_ptr <class MapCursor> GetMapCursor()
 	{

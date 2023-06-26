@@ -50,13 +50,12 @@ public:
 		}
 
 		Name = GameEngineString::ToUpper(Name);
-
 		if (LevelMap.end() != LevelMap.find(Name))
 		{
 			MsgAssert("같은 이름의 레벨을 2개 만들수는 없습니다.");
 		}
 
-		LevelInit(NewLevel);
+		LevelInit(NewLevel, Name);
 
 		LevelMap.insert(std::make_pair(Name, NewLevel));
 
@@ -79,7 +78,7 @@ private:
 	static void CoreResourcesInit();
 	static void CoreResourcesEnd();
 
-	static void LevelInit(std::shared_ptr<GameEngineLevel> _Level);
+	static void LevelInit(std::shared_ptr<GameEngineLevel> _Level, std::string_view _Name);
 
 	static void EngineStart(std::function<void()> __ContentsStart);
 	static void EngineUpdate();

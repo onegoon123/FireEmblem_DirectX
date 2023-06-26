@@ -16,6 +16,7 @@ public:
 	StoreUI& operator=(const StoreUI& _Other) = delete;
 	StoreUI& operator=(StoreUI&& _Other) noexcept = delete;
 
+	static std::vector<ItemCode> ItemList;
 	void On(std::shared_ptr<class BattleUnit> _Unit);
 
 protected:
@@ -41,7 +42,6 @@ private:
 	float4 CursorPos;
 	size_t CurrentCursor = 0;
 
-	const std::vector<ItemCode> ItemList = { ItemCode::SteelSword, ItemCode::KillingSword, ItemCode::SilverLance, ItemCode::Elixir, ItemCode::MasterSeal };
 	std::vector<int> Price;
 	std::vector<std::shared_ptr<class Item>> StoreItems;
 	std::list<std::shared_ptr<class Item>> PlayerItems;

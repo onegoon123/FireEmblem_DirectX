@@ -173,11 +173,12 @@ void GameEngineCore::ChangeLevel(const std::string_view& _Name)
 	NextLevel = LevelMap[UpperName];
 }
 
-void GameEngineCore::LevelInit(std::shared_ptr<GameEngineLevel> _Level)
+void GameEngineCore::LevelInit(std::shared_ptr<GameEngineLevel> _Level, std::string_view _Name)
 {
 	CurLoadLevel = _Level.get();
 	_Level->Level = _Level.get();
 	_Level->Start();
+	_Level->SetName(_Name);
 	CurLoadLevel = nullptr;
 }
 

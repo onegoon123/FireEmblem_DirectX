@@ -8,6 +8,9 @@
 #include "UICursor.h"
 #include "BattleLevel.h"
 #include "FEData.h"
+
+std::vector<ItemCode> StoreUI::ItemList = { ItemCode::SteelSword, ItemCode::KillingSword, ItemCode::SilverLance, ItemCode::Elixir, ItemCode::MasterSeal };
+
 StoreUI::StoreUI()
 {
 }
@@ -25,7 +28,7 @@ void StoreUI::On(std::shared_ptr<BattleUnit> _Unit)
 	Money = FEData::GetMoney();
 	BeforeMoney = Money;
 	MoneyText->SetValue(Money, true);
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < ItemList.size(); i++)
 	{
 		Icons[i]->SetSprite("Items.png", StoreItems[i]->GetItemCodeToInt() - 1);
 		ItemNameTexts[i]->SetText(StoreItems[i]->GetName());
@@ -37,6 +40,13 @@ void StoreUI::On(std::shared_ptr<BattleUnit> _Unit)
 		ItemNameTexts[i]->On();
 		ItemUses[i]->On();
 		ItemPrices[i]->On();
+	}
+	for (size_t i = ItemList.size(); i < 5; i++)
+	{
+		Icons[i]->Off();
+		ItemNameTexts[i]->Off();
+		ItemUses[i]->Off();
+		ItemPrices[i]->Off();
 	}
 }
 
@@ -73,11 +83,7 @@ void StoreUI::Start()
 	Price.resize(5);
 	for (int i = 0; i < 5; i++)
 	{
-		StoreItems[i] = Item::CreateItem(ItemList[i]);
-		Price[i] = Item::GetItemPrice(ItemList[i]);
 		Icons[i] = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
-		Icons[i]->SetSprite("Items.png", StoreItems[i]->GetItemCodeToInt() - 1);
-
 		Icons[i]->GetTransform()->SetWorldScale({ 64, 64 });
 		Icons[i]->GetTransform()->SetLocalPosition({ -232, 8.0f - (64.0f * i) });
 
@@ -86,18 +92,23 @@ void StoreUI::Start()
 		ItemNameTexts[i] = CreateComponent<TextRenderer>(RenderOrder::UIText);
 		ItemNameTexts[i]->GetTransform()->SetLocalPosition({ -182, 32.0f - (64 * i) });
 		ItemNameTexts[i]->Setting("Silhoua14", 55, float4::White, float4::Black, FontAligned::Left);
-		ItemNameTexts[i]->SetText(StoreItems[i]->GetName());
 		//ItemNameTexts[i]->Off();
 
 		ItemUses[i] = GetLevel()->CreateActor<NumberActor>();
 		ItemUses[i]->GetTransform()->SetParent(GetTransform());
 		ItemUses[i]->GetTransform()->SetLocalPosition({ 84, 8.0f - (64 * i) });
-		ItemUses[i]->SetValue(StoreItems[i]->GetMaxUses());
-
 		ItemPrices[i] = GetLevel()->CreateActor<NumberActor>();
 		ItemPrices[i]->GetTransform()->SetParent(GetTransform());
 		ItemPrices[i]->GetTransform()->SetLocalPosition({ 284, 8.0f - (64 * i) });
-		ItemPrices[i]->SetValue(Price[i], true);
+		if (i < ItemList.size())
+		{
+			StoreItems[i] = Item::CreateItem(ItemList[i]);
+			Price[i] = Item::GetItemPrice(ItemList[i]);
+			Icons[i]->SetSprite("Items.png", StoreItems[i]->GetItemCodeToInt() - 1);
+			ItemNameTexts[i]->SetText(StoreItems[i]->GetName());
+			ItemUses[i]->SetValue(StoreItems[i]->GetMaxUses());
+			ItemPrices[i]->SetValue(Price[i], true);
+		}
 	}
 
 
@@ -107,6 +118,7 @@ void StoreUI::Start()
 			Dialogue->SetTextAnim(L"여기는 무기점이다");
 			Dialogue2->SetText(" ");
 			Cursor->Off();
+			IsSell = false;
 		},
 		.Update = [this](float _DeltaTime)
 		{
@@ -143,9 +155,16 @@ void StoreUI::Start()
 			Dialogue->SetText(L"천천히 둘러보게");
 			Dialogue2->SetText("  구입    판매");
 			Cursor->On();
-			Cursor->GetTransform()->SetLocalPosition({ -172, 150 });
-			CursorPos = { -172, 150 };
-			IsSell = false;
+			if (true == IsSell)
+			{
+				Cursor->GetTransform()->SetLocalPosition({ 4, 150 });
+				CursorPos = { 4, 150 };
+			}
+			else
+			{
+				Cursor->GetTransform()->SetLocalPosition({ -172, 150 });
+				CursorPos = { -172, 150 };
+			}
 		},
 		.Update = [this](float _DeltaTime)
 		{
@@ -192,7 +211,7 @@ void StoreUI::Start()
 			Dialogue->SetTextAnim(L"무엇을 사겠나?");
 			Dialogue2->SetText(" ");
 			ItemSize = static_cast<int>(StoreItems.size());
-			for (int i = 0; i < 5; i++)
+			for (int i = 0; i < ItemList.size(); i++)
 			{
 				Icons[i]->SetSprite("Items.png", StoreItems[i]->GetItemCodeToInt() - 1);
 				ItemNameTexts[i]->SetText(StoreItems[i]->GetName());
@@ -204,6 +223,13 @@ void StoreUI::Start()
 				ItemNameTexts[i]->On();
 				ItemUses[i]->On();
 				ItemPrices[i]->On();
+			}
+			for (size_t i = ItemList.size(); i < 5; i++)
+			{
+				Icons[i]->Off();
+				ItemNameTexts[i]->Off();
+				ItemUses[i]->Off();
+				ItemPrices[i]->Off();
 			}
 		},
 		.Update = [this](float _DeltaTime)

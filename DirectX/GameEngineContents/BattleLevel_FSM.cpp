@@ -1,6 +1,7 @@
 #include "PrecompileHeader.h"
 #include "BattleLevel.h"
 #include <GameEnginePlatform/GameEngineInput.h>
+#include <GameEnginePlatform/GameEngineSound.h>
 #include <GameEngineCore/GameEngineCore.h>
 #include <GameEngineCore/GameEngineCamera.h>
 #include "FERandom.h"
@@ -152,6 +153,10 @@ void BattleLevel::ChangeState(BattleState _State)
 
 void BattleLevel::PlayerPhaseStart()
 {
+	if (true == BgmPlayer.IsValid())
+	{
+		BgmPlayer.SoundFadeOut(0.1f);
+	}
 	UnitCommand::PhaseStart(Faction::Player);
 	// 모든 적 유닛 턴 복구
 	for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
@@ -199,6 +204,9 @@ void BattleLevel::PlayerPhaseUpdate(float _DeltaTime)
 
 void BattleLevel::PlayerPhaseEnd()
 {
+	BgmPlayer.Stop();
+	BgmPlayer = GameEngineSound::Play("PlayerMap.mp3");
+	BgmPlayer.SetLoop();
 	// 플레이어 리스트 중 가장 앞에있는 유닛을 선택
 	for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
 	{
@@ -594,6 +602,7 @@ void BattleLevel::FieldCommandEnd()
 
 void BattleLevel::BattleStart()
 {
+	BgmPlayer.SoundFadeOut(0.5f);
 	AttackRecord = UnitCommand::Attack(SelectUnit, TargetUnit);
 	BattleAnimationLevel::SetBattleData(SelectUnit, TargetUnit, AttackRecord, GetName());
 
@@ -782,7 +791,7 @@ void BattleLevel::HealEnd()
 
 void BattleLevel::EnemyPhaseStart()
 {
-
+	BgmPlayer.SoundFadeOut(0.5f);
 	UnitCommand::PhaseStart(Faction::Enemy);
 
 	IsSkip = false;
@@ -848,6 +857,8 @@ void BattleLevel::EnemyPhaseUpdate(float _DeltaTime)
 
 void BattleLevel::EnemyPhaseEnd()
 {
+	BgmPlayer = GameEngineSound::Play("EnemyMap.mp3");
+	BgmPlayer.SetLoop();
 }
 
 void BattleLevel::EnemySelectStart()
@@ -1017,6 +1028,7 @@ void BattleLevel::EnemyBattleStart()
 {
 	if (nullptr != TargetUnit)
 	{
+		BgmPlayer.SoundFadeOut(0.5f);
 		AttackRecord = UnitCommand::Attack(SelectUnit, TargetUnit);
 		BattleAnimationLevel::SetBattleData(SelectUnit, TargetUnit, AttackRecord, GetName());
 	}

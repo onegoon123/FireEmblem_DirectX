@@ -1,6 +1,6 @@
 #include "PrecompileHeader.h"
 #include "Stage3.h"
-
+#include "StoreUI.h"
 Stage3::Stage3()
 {
 	StartPos.push_back({ 1, 1 });
@@ -44,6 +44,8 @@ void Stage3::StageSetting()
 	NewEnemyUnit(UnitIdentityCode::Migal, 1, { 13, 9 }, { ItemCode::IronAxe });
 	OpeningEventInit();
 	ClearEventInit();
+
+	StoreUI::ItemList = { ItemCode::IronSword, ItemCode::IronLance, ItemCode::IronAxe, ItemCode::Vulnerary };
 }
 
 void Stage3::OpeningEventInit()

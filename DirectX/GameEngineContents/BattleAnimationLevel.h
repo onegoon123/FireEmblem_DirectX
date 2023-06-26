@@ -1,5 +1,6 @@
 #pragma once
 #include <GameEngineBase/GameEngineTimeEvent.h>
+#include <GameEnginePlatform/GameEngineSound.h>
 #include <GameEngineCore/GameEngineLevel.h>
 #include "UnitCommand.h"
 // Ό³Έν :
@@ -26,6 +27,8 @@ public:
 	void BattleEnd();
 
 	GameEngineTimeEvent TimeEvent;
+	static GameEngineSoundPlayer BgmPlayer;
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;

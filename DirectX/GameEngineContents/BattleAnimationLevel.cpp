@@ -18,6 +18,7 @@ std::list<AttackCommand> BattleAnimationLevel::BattleData = std::list<AttackComm
 std::list<AttackCommand>::iterator BattleAnimationLevel::BattleIter = std::list<AttackCommand>::iterator();
 std::string_view BattleAnimationLevel::ReturnLevelStr = "";
 BattleClass BattleAnimationLevel::ChangeClass = BattleClass::BladeLord;
+GameEngineSoundPlayer BattleAnimationLevel::BgmPlayer;
 
 BattleAnimationLevel::BattleAnimationLevel()
 {
@@ -35,6 +36,16 @@ void BattleAnimationLevel::SetBattleData(std::shared_ptr<BattleUnit> _SubjectUni
 	BattleData = _Data;
 	BattleIter = BattleData.begin();
 	ReturnLevelStr = _Level;
+
+	if (SubjectUnit->GetIsPlayer())
+	{
+		BgmPlayer = GameEngineSound::Play("PlayerAttack.mp3");
+	}
+	else
+	{
+		BgmPlayer = GameEngineSound::Play("EnemyAttack.mp3");
+	}
+	BgmPlayer.SoundFadeIn(1.0f);
 }
 
 void BattleAnimationLevel::SetClassChange(std::shared_ptr<BattleUnit> _BattleUnit, BattleClass _ClassValue, const std::string_view& _Level)
@@ -151,7 +162,7 @@ void BattleAnimationLevel::Start()
 	CameraTransform->SetLocalPosition({ 0, 0, -554.0f });
 	GetMainCamera()->SetSortType(RenderOrder::Unit, SortType::ZSort);
 	//GetMainCamera()->SetSortType(RenderOrder::Effect, SortType::None);
-	
+
 }
 
 void BattleAnimationLevel::Update(float _DeltaTime)
@@ -256,7 +267,7 @@ void BattleAnimationLevel::LevelChangeStart()
 		// 지형 지정
 		TerrainLeft->SetTexture(GetTerrainTexture(SubjectUnit->GetUnitData().GetTerrainData()));
 		TerrainRight->SetTexture(GetTerrainTexture(TargetUnit->GetUnitData().GetTerrainData()));
-		
+
 	}
 	else
 	{
@@ -280,13 +291,14 @@ void BattleAnimationLevel::LevelChangeStart()
 		UI->SetData(SubjectUnit, TargetUnit, SubjectUnit->IsAttackable(TargetUnit), TargetUnit->IsAttackable(SubjectUnit));
 	}
 	FEffect->FadeIn(0.3f);
-	
+
 	TimeEvent.AddEvent(0.3f, std::bind(&BattleAnimationLevel::PlayAttack, this));
 }
 
 void BattleAnimationLevel::LevelChangeEnd()
 {
 	GameEngineTime::GlobalTime.SetGlobalTimeScale(1.0f);
+	BgmPlayer.Stop();
 }
 
 void BattleAnimationLevel::PlayAttack()
@@ -457,6 +469,7 @@ void BattleAnimationLevel::FadeOut(float _Time)
 {
 	IsFadeOut = true;
 	FEffect->FadeOut(_Time);
+	BgmPlayer.SoundFadeOut(_Time);
 
 	GameEngineTime::GlobalTime.SetGlobalTimeScale(1.0f);
 }
@@ -490,6 +503,7 @@ void BattleAnimationLevel::BattleEnd()
 {
 	IsFadeOut = true;
 	FEffect->FadeOut(0.15f);
+	BgmPlayer.SoundFadeOut(0.3f);
 	TimeEvent.AddEvent(0.3f, std::bind(&BattleAnimationLevel::End, this));
 	GameEngineTime::GlobalTime.SetGlobalTimeScale(1.0f);
 }
