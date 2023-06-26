@@ -105,10 +105,13 @@ void BattleAnimationLevel::HitEvent()
 		if ((*BattleIter).IsCritical)
 		{
 			EffectName += "Critical";
+			TimeEvent.AddEvent(0.8f, std::bind(&BattleAnimationLevel::CameraShake, this, 0.4f));
 		}
 		else if ((*BattleIter).IsHit)
 		{
 			EffectName += "Hit";
+			TimeEvent.AddEvent(0.8f, std::bind(&BattleAnimationLevel::CameraShake, this, 0.2f));
+			TimeEvent.AddEvent(0.8f, std::bind(&GameEngineSound::Play, "Slash1.wav"));
 		}
 		else
 		{
@@ -118,10 +121,13 @@ void BattleAnimationLevel::HitEvent()
 	else if ((*BattleIter).IsCritical)
 	{
 		EffectName += "Critical";
+		CameraShake(0.4f);
 	}
 	else if ((*BattleIter).IsHit)
 	{
 		EffectName += "Hit";
+		GameEngineSound::Play("Slash1.wav");
+		CameraShake(0.2f);
 	}
 	else
 	{
@@ -129,15 +135,6 @@ void BattleAnimationLevel::HitEvent()
 		EffectName = "Dodge";
 	}
 
-	if ((*BattleIter).IsCritical)
-	{
-		CameraShake(0.4f);
-	}
-	else if ((*BattleIter).IsHit)
-	{
-		GameEngineSound::Play("Slash1.wav");
-		CameraShake(0.2f);
-	}
 	DamageUnit->HitEffect(EffectName);
 }
 

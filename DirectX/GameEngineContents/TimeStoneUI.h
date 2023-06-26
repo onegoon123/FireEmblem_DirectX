@@ -34,7 +34,7 @@ private:
 
 	float4 MoveTarget;
 	int CurrentCursor = 0;
-	Faction CurFaction;
+	Faction CurFaction = Faction::None;
 
 	const float WaitTime = 0.1f;
 	float Timer = 0.0f;

@@ -308,7 +308,7 @@ void StoreUI::Start()
 			{
 				Icons[i]->SetSprite("Items.png", _Item->GetItemCodeToInt() - 1);
 				ItemNameTexts[i]->SetText(_Item->GetName());
-				ItemUses[i]->SetValue(_Item->GetMaxUses());
+				ItemUses[i]->SetValue(_Item->GetUses());
 				Price[i] = static_cast<int>(Item::GetItemPrice(_Item->GetItemCode()) * (static_cast<float>(_Item->GetUses()) / _Item->GetMaxUses()));
 				ItemPrices[i]->SetValue(Price[i], true);
 

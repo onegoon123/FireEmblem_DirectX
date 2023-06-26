@@ -1,5 +1,6 @@
 #include "PrecompileHeader.h"
 #include "TimeStoneUI.h"
+#include <GameEnginePlatform/GameEngineSound.h>
 #include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEngineCore/GameEngineUIRenderer.h>
 #include "TimeCommand.h"
@@ -77,11 +78,13 @@ void TimeStoneUI::Update(float _DeltaTime)
 		{
 			return;
 		}
+		GameEngineSound::Play("CommandSelect.wav");
 		Select();
 		return;
 	}
 	if ((GameEngineInput::IsDown("ButtonB") || GameEngineInput::IsUp("RightClick")) && false == IsGameOver)
 	{
+		GameEngineSound::Play("Cancel.wav");
 		Cancel();
 		return;
 	}
@@ -93,6 +96,7 @@ void TimeStoneUI::CommandMoveUp()
 	{
 		return;
 	}
+	GameEngineSound::Play("CommandMove.wav");
 	switch (CommandList[CurrentCursor].GetTypeValue())
 	{
 	case CommandType::PlayerPhaseStart:
@@ -117,6 +121,7 @@ void TimeStoneUI::CommandMoveDown()
 	{
 		return;
 	}
+	GameEngineSound::Play("CommandMove.wav");
 	CommandRenders[CurrentCursor]->Cancel();
 	CurrentCursor++;
 	switch (CommandList[CurrentCursor].GetTypeValue())

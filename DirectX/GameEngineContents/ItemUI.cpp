@@ -1,6 +1,7 @@
 #include "PrecompileHeader.h"
 #include "ItemUI.h"
 #include <GameEnginePlatform/GameEngineInput.h>
+#include <GameEnginePlatform/GameEngineSound.h>
 #include <GameEngineCore/GameEngineUIRenderer.h>
 #include <GameEngineCore/GameEngineCollision.h>
 #include "UICursor.h"
@@ -191,10 +192,14 @@ void ItemUI::Start()
 		ItemButtons[i]->SetColType(ColType::AABBBOX2D);
 		ButtonSystem->NewButton(ItemButtons[i],
 			[=] {
-				CurrentCursor = i;
-				SelectRender->GetTransform()->SetLocalPosition(StartSelectPos + float4::Down * (64.0f * CurrentCursor));
-				CursorPos = StartCursorPos + float4::Down * (64.0f * CurrentCursor);
-				SetItemInfo();
+				if (CurrentCursor != i)
+				{
+					CurrentCursor = i;
+					SelectRender->GetTransform()->SetLocalPosition(StartSelectPos + float4::Down * (64.0f * CurrentCursor));
+					CursorPos = StartCursorPos + float4::Down * (64.0f * CurrentCursor);
+					SetItemInfo();
+					GameEngineSound::Play("CommandMove.wav");
+				}
 			},
 			[this]
 			{
@@ -212,13 +217,18 @@ void ItemUI::Start()
 		UseButtons[i]->SetColType(ColType::AABBBOX2D);
 		ButtonSystem->NewButton(UseButtons[i],
 			[=] {
-				CurrentUseCursor = i;
-				ItemUseSelect->GetTransform()->SetLocalPosition(StartUseSelectPos + float4::Down * (64.0f * CurrentUseCursor));
-				UseCursorPos = StartUseCursorPos + float4::Down * (64.0f * CurrentUseCursor);
+				if (CurrentUseCursor != i)
+				{
+					CurrentUseCursor = i;
+					ItemUseSelect->GetTransform()->SetLocalPosition(StartUseSelectPos + float4::Down * (64.0f * CurrentUseCursor));
+					UseCursorPos = StartUseCursorPos + float4::Down * (64.0f * CurrentUseCursor);
+					GameEngineSound::Play("CommandMove.wav");
+				}
 			},
 			[this]
 			{
 				UseFunctions[CurrentUseCursor]();
+				GameEngineSound::Play("CommandSelect.wav");
 			}
 			);
 	}
@@ -269,6 +279,7 @@ void ItemUI::ItemSelectUpdate(float _DeltaTime)
 	}
 	if (GameEngineInput::IsDown("ButtonB") || GameEngineInput::IsUp("RightClick"))
 	{
+		GameEngineSound::Play("Cancel.wav");
 		CancelFunction();
 		return;
 	}
@@ -291,6 +302,7 @@ void ItemUI::ItemSelectUpdate(float _DeltaTime)
 
 	if (GameEngineInput::IsDown("Up") || (GameEngineInput::IsPress("Up") && PressOK))
 	{
+		GameEngineSound::Play("CommandMove.wav");
 		CursorTimer = 0;
 		if (CurrentCursor == 0)
 		{
@@ -310,6 +322,7 @@ void ItemUI::ItemSelectUpdate(float _DeltaTime)
 
 	if (GameEngineInput::IsDown("Down") || (GameEngineInput::IsPress("Down") && PressOK) || GameEngineInput::IsUp("MiddleClick"))
 	{
+		GameEngineSound::Play("CommandMove.wav");
 		CursorTimer = 0;
 		if (CurrentCursor == ItemSize - 1)
 		{
@@ -331,6 +344,7 @@ void ItemUI::ItemSelectUpdate(float _DeltaTime)
 
 void ItemUI::ItemSelect()
 {
+	GameEngineSound::Play("CommandSelect.wav");
 	Cursor->GetTransform()->SetLocalPosition(CursorPos);
 	IsItemSelect = true;
 
@@ -419,11 +433,13 @@ void ItemUI::ItemUseUpdate(float _DeltaTime)
 
 	if (GameEngineInput::IsDown("ButtonA"))
 	{
+		GameEngineSound::Play("CommandSelect.wav");
 		UseFunctions[CurrentUseCursor]();
 		return;
 	}
 	if (GameEngineInput::IsDown("ButtonB") || GameEngineInput::IsUp("RightClick"))
 	{
+		GameEngineSound::Play("Cancel.wav");
 		ItemUseCancel();
 		return;
 	}
@@ -446,6 +462,7 @@ void ItemUI::ItemUseUpdate(float _DeltaTime)
 
 	if (GameEngineInput::IsDown("Up") || (GameEngineInput::IsPress("Up") && PressOK))
 	{
+		GameEngineSound::Play("CommandMove.wav");
 		CursorTimer = 0;
 		if (CurrentUseCursor == 0)
 		{
@@ -464,6 +481,7 @@ void ItemUI::ItemUseUpdate(float _DeltaTime)
 
 	if (GameEngineInput::IsDown("Down") || (GameEngineInput::IsPress("Down") && PressOK) || GameEngineInput::IsUp("MiddleClick"))
 	{
+		GameEngineSound::Play("CommandMove.wav");
 		CursorTimer = 0;
 		if (CurrentUseCursor == UseFunctions.size() - 1)
 		{

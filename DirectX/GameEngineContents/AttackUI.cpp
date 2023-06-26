@@ -1,6 +1,7 @@
 #include "PrecompileHeader.h"
 #include "AttackUI.h"
 #include <GameEnginePlatform/GameEngineInput.h>
+#include <GameEnginePlatform/GameEngineSound.h>
 #include <GameEngineCore/GameEngineUIRenderer.h>
 #include <GameEngineCore/GameEngineCollision.h>
 #include "UICursor.h"

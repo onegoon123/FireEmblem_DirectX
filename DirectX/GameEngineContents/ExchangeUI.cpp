@@ -1,4 +1,5 @@
 #include "PrecompileHeader.h"
+#include <GameEnginePlatform/GameEngineSound.h>
 #include <GameEngineCore/GameEngineUIRenderer.h>
 #include "ExchangeUI.h"
 #include "MapCursor.h"
@@ -173,12 +174,14 @@ void ExchangeUI::TargetSelectUpdate(float _DeltaTime)
 	}
 	if (GameEngineInput::IsDown("ButtonA") || GameEngineInput::IsUp("LeftClick"))
 	{
+		GameEngineSound::Play("CommandSelect.wav");
 		ExchangeStart();
 		return;
 	}
 
 	if (GameEngineInput::IsDown("ButtonB") || GameEngineInput::IsUp("RightClick"))
 	{
+		GameEngineSound::Play("Cancel.wav");
 		CancelFunction();
 		Cursor_Map->SetCursorPos(LeftUnit->GetMapPos());
 		Cursor_Map->Off();
@@ -189,6 +192,7 @@ void ExchangeUI::TargetSelectUpdate(float _DeltaTime)
 
 	if (GameEngineInput::IsDown("Up") || GameEngineInput::IsDown("Left"))
 	{
+		GameEngineSound::Play("CommandMove.wav");
 		if (TargetIter == TargetUnits.begin())
 		{
 			TargetIter = TargetUnits.end();
@@ -199,6 +203,7 @@ void ExchangeUI::TargetSelectUpdate(float _DeltaTime)
 	}
 	if (GameEngineInput::IsDown("Down") || GameEngineInput::IsDown("Right") || GameEngineInput::IsUp("MiddleClick"))
 	{
+		GameEngineSound::Play("CommandMove.wav");
 		TargetIter++;
 		if (TargetIter == TargetUnits.end())
 		{
@@ -311,12 +316,14 @@ void ExchangeUI::ExchangeUpdate(float _DeltaTime)
 
 	if (GameEngineInput::IsDown("ButtonA") || GameEngineInput::IsUp("LeftClick"))
 	{
+		GameEngineSound::Play("CommandSelect.wav");
 		ItemSelectStart();
 		return;
 	}
 
 	if (GameEngineInput::IsDown("ButtonB") || GameEngineInput::IsUp("RightClick"))
 	{
+		GameEngineSound::Play("Cancel.wav");
 		if (true == IsChange)
 		{
 			ExchangeFunction(RightUnit);
@@ -337,6 +344,7 @@ void ExchangeUI::ExchangeUpdate(float _DeltaTime)
 
 	if (GameEngineInput::IsDown("Left") || GameEngineInput::IsDown("Right"))
 	{
+		GameEngineSound::Play("CommandMove.wav");
 		if (CurrentCursor.x == 0)
 		{
 			if (0 == RightItems.size()) { return; }
@@ -358,6 +366,7 @@ void ExchangeUI::ExchangeUpdate(float _DeltaTime)
 
 	if (GameEngineInput::IsDown("Up") || (GameEngineInput::IsPress("Up") && PressOK))
 	{
+		GameEngineSound::Play("CommandMove.wav");
 		if (CurrentCursor.y == 0)
 		{
 			if (false == GameEngineInput::IsDown("Up")) { return; }
@@ -381,6 +390,7 @@ void ExchangeUI::ExchangeUpdate(float _DeltaTime)
 	}
 	if (GameEngineInput::IsDown("Down") || (GameEngineInput::IsPress("Down") && PressOK))
 	{
+		GameEngineSound::Play("CommandMove.wav");
 		if (CurrentCursor.x == 0 && CurrentCursor.y + 1 >= LeftItems.size() || (CurrentCursor.x == 1 && CurrentCursor.y + 1 >= RightItems.size()))
 		{
 			if (false == GameEngineInput::IsDown("Down")) { return; }
