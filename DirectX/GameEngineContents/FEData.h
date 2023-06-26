@@ -23,10 +23,14 @@ public:
 		return PlayerUnits;
 	}
 
+	static int GetMoney() { return Money; }
+	static void SetMoney(int _Money) { Money = _Money; }
+	static void AddMoney(int _Money) { Money += _Money; }
+
 protected:
 
 private:
 	static std::list<Unit> PlayerUnits;
-
+	static int Money;
 };
 

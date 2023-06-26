@@ -82,6 +82,10 @@ public:
 	}
 	// 유닛의 사거리를 반환
 	int GetRangeStat() {
+		if (nullptr == UnitData.CurWeapon)
+		{
+			return 0;
+		}
 		return UnitData.GetRangeStat();
 	}
 	// 이 유닛이 다른 유닛을 현재 공격가능한지를 반환. 두 유닛의 거리값 필요

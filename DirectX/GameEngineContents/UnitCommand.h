@@ -9,6 +9,7 @@
 		Wait,
 		PlayerPhaseStart,
 		EnemyPhaseStart,
+		Store,
 	};
 
 struct AttackCommand
@@ -51,6 +52,7 @@ public:
 	static void ClassChange(std::shared_ptr<BattleUnit> _SubjectUnit, BattleClass _ClassValue, std::list<std::shared_ptr<Item>>::iterator& _ItemIter);
 	static std::list<AttackCommand> Heal(std::shared_ptr<BattleUnit> _SubjectUnit, std::shared_ptr<BattleUnit> _TargetUnit, std::list<std::shared_ptr<Item>>::iterator& _ItemIter);
 	static void PhaseStart(Faction _Faction);
+	static void StoreUse(std::shared_ptr<BattleUnit> _SubjectUnit, std::list<std::shared_ptr<class Item>> _BeforeItems, int _BeforeMoney);
 
 	static int GetCountTurn();
 
@@ -99,6 +101,7 @@ private:
 	int2 BeforeSubjectUnitPos = int2(-1, -1);
 	int2 AfterSubjectUnitPos = int2(-1, -1);
 	int RandomNum = 0;
+	int UseMoney = 0;
 	std::string Record = "";
 
 	static std::list<AttackCommand>& AttackEnd(std::list<AttackCommand>& _AttackList, UnitCommand& _CommandRecord, Unit& _SubjectUnit, Unit& _TargetUnit);

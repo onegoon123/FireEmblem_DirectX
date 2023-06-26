@@ -14,6 +14,62 @@
 #pragma comment(lib, "..\\GameEnginePlatform\\ThirdParty\\FMOD\\lib\\x64\\fmod_vc.lib")
 #endif
 
+//////////////////////////// GameEngineSoundPlayer ////////////////////////////
+
+void GameEngineSoundPlayer::SoundFadeIn(double _Time, float _Volume)
+{
+	if (false == IsValid())
+	{
+		MsgAssert("유효하지 않은 사운드를 페이드-인 하려 했습니다.");
+		return;
+	}
+
+	int Rate = 0;
+	unsigned long long ParentClock = 0u;
+
+	FMOD::System* SoundSys = nullptr;
+	Channel->getSystemObject(&SoundSys);
+	SoundSys->getSoftwareFormat(&Rate, 0, 0);
+	Channel->getDSPClock(nullptr, &ParentClock);
+
+	unsigned long long EndClock = static_cast<unsigned long long>(ParentClock + (Rate * _Time));
+
+	Channel->removeFadePoints(0, INT64_MAX);
+	Channel->addFadePoint(ParentClock, 0.0f);
+	Channel->addFadePoint(EndClock, _Volume);
+	Channel->setDelay(0, 0, false);
+	Channel->setPaused(false);
+}
+
+void GameEngineSoundPlayer::SoundFadeOut(double _Time, float _Volume, bool _IsStop /*= false*/)
+{
+	if (false == IsValid())
+	{
+		MsgAssert("유효하지 않은 사운드를 페이드-아웃 하려 했습니다.");
+		return;
+	}
+
+	int Rate = 0;
+	unsigned long long ParentClock = 0u;
+	float CurVolume = 0.0f;
+
+	Channel->setLoopCount(1);
+	FMOD::System* SoundSys = nullptr;
+	Channel->getSystemObject(&SoundSys);
+	SoundSys->getSoftwareFormat(&Rate, 0, 0);
+	Channel->getDSPClock(nullptr, &ParentClock);
+	Channel->getVolume(&CurVolume);
+
+	unsigned long long EndClock = static_cast<unsigned long long>(ParentClock + (Rate * _Time));
+
+	Channel->removeFadePoints(0, INT64_MAX);
+	Channel->addFadePoint(ParentClock, CurVolume);
+	Channel->addFadePoint(EndClock, _Volume);
+	Channel->setDelay(ParentClock, EndClock, _IsStop);
+}
+
+//////////////////////////// GameEngineSound ////////////////////////////
+
 // FMOD는 자신들의 기능을 이용할수 있게 해주는 클래스의 포인터를 주고
 FMOD::System* SoundSystem = nullptr;
 

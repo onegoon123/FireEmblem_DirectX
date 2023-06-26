@@ -32,6 +32,12 @@
       <Filter>Time</Filter>
     </ClCompile>
     <ClCompile Include="PrecompileHeader.cpp" />
+    <ClCompile Include="GameEngineThread.cpp">
+      <Filter>Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineThreadJobQueue.cpp">
+      <Filter>Thread</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngineDebug.h">
@@ -65,6 +71,12 @@
       <Filter>Time</Filter>
     </ClInclude>
     <ClInclude Include="PrecompileHeader.h" />
+    <ClInclude Include="GameEngineThread.h">
+      <Filter>Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineThreadJobQueue.h">
+      <Filter>Thread</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Debug">
@@ -84,6 +96,9 @@
     </Filter>
     <Filter Include="Time\EffectActor">
       <UniqueIdentifier>{c604244e-ff93-4e57-a217-e0205c7529af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Thread">
+      <UniqueIdentifier>{0fc120e1-4eb4-48aa-926d-c980d6c937ec}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

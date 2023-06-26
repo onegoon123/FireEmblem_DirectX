@@ -17,8 +17,8 @@ public:
 
 	void Setting(const std::string_view& _Font, float _FontScale, float4 _FontColor, float4 _OutLineColor, FontAligned _Aligned);
 	void SetFont(const std::string_view& _Font);
-	void SetText(const std::string_view& _Text);
-	void SetText(const std::wstring_view& _Text);
+	void SetText(const std::string_view& _Text, bool _Clear = true);
+	void SetText(const std::wstring_view& _Text, bool _Clear = true);
 	void SetScale(float _FontScale);
 	void SetColor(float4 _FontColor);
 	void SetOutLine(float4 _FontColor);
@@ -38,7 +38,7 @@ private:
 	std::wstring AnimText = L"";
 	int Index = 0;
 	bool IsTextAnim = false;
-	const float AnimTime = 0.07f;
-	float Timer;
+	const float AnimTime = 0.03f;
+	float Timer = 0.0f;
 };
 

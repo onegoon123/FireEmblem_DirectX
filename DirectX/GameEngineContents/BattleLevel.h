@@ -307,7 +307,7 @@ public:
 	void UnitCommand_ItemUse(std::list<std::shared_ptr<class Item>>::iterator& _ItemIter);
 	void UnitCommand_Conquer();
 	void UnitCommand_Store();
-	void UnitCommand_StoreEnd();
+	void UnitCommand_StoreEnd(std::list<std::shared_ptr<class Item>> _BeforeItems, int _BeforeMoney);
 private:
 
 #pragma endregion

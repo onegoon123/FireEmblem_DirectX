@@ -171,6 +171,14 @@
     <ClCompile Include="GameEngineRandom.cpp" />
     <ClCompile Include="GameEngineSerializer.cpp" />
     <ClCompile Include="GameEngineString.cpp" />
+    <ClCompile Include="GameEngineThread.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="GameEngineThreadJobQueue.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="GameEngineTime.cpp" />
     <ClCompile Include="GameEngineTimeEvent.cpp">
       <SubType>
@@ -192,6 +200,14 @@
     <ClInclude Include="GameEngineRandom.h" />
     <ClInclude Include="GameEngineSerializer.h" />
     <ClInclude Include="GameEngineString.h" />
+    <ClInclude Include="GameEngineThread.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="GameEngineThreadJobQueue.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="GameEngineTime.h" />
     <ClInclude Include="GameEngineTimeEvent.h">
       <SubType>

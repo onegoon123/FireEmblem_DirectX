@@ -2,6 +2,7 @@
 #include "BattleLevel.h"
 #include "FERandom.h"
 #include "MapCursor.h"
+#include "FEData.h"
 void BattleLevel::TimeStone_Rewind()
 {
 	if (RIter == RIterEnd) {
@@ -147,7 +148,22 @@ void BattleLevel::TimeStone_Rewind()
 		}
 		break;
 	}
-
+	case CommandType::Store:
+	{
+		for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
+		{
+			if ((*RIter).BeforeSubjectUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
+			{
+				_Unit->SetUnitData((*RIter).BeforeSubjectUnit);
+				_Unit->SetMapPos((*RIter).BeforeSubjectUnitPos);
+				_Unit->GetUnitData().LoadItemData((*RIter).BeforeSubjectItems);
+				MainCursor->SetCursorPos(_Unit->GetMapPos());
+				FEData::SetMoney(FEData::GetMoney() + (*RIter).UseMoney);
+				break;
+			}
+		}
+		break;
+	}
 	case CommandType::None:
 	{
 		MsgAssert("커맨드 타입 오류");
@@ -269,6 +285,22 @@ void BattleLevel::TimeStone_Play()
 		for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
 		{
 			_Unit->SetIsTurnEnd(false);
+		}
+		break;
+	}
+	case CommandType::Store:
+	{
+		for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
+		{
+			if ((*RIter).AfterSubjectUnit.GetUnitCode() == _Unit->GetUnitData().GetUnitCode())
+			{
+				_Unit->SetUnitData((*RIter).AfterSubjectUnit);
+				_Unit->SetMapPos((*RIter).AfterSubjectUnitPos);
+				_Unit->GetUnitData().LoadItemData((*RIter).AfterSubjectItems);
+				MainCursor->SetCursorPos(_Unit->GetMapPos());
+				FEData::SetMoney(FEData::GetMoney() - (*RIter).UseMoney);
+				break;
+			}
 		}
 		break;
 	}

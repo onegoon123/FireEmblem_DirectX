@@ -51,12 +51,32 @@ void GameEngineButton::Update(float _Delta)
 
 	if (true == GameEngineTransform::AABB2DToSpehre2D(Render->GetTransform()->GetCollisionData(), MouseData))
 	{
+		if (HoverImage != "")
+		{
+			Render->SetTexture(HoverImage);
+		}
+
+		if (true == GameEngineInput::IsPress("EngineMouseLeft"))
+		{
+			if (PressImage != "")
+			{
+				Render->SetTexture(PressImage);
+			}
+		}
+
 		if (true == GameEngineInput::IsUp("EngineMouseLeft"))
 		{
 			if (nullptr != Click)
 			{
 				Click();
 			}
+		}
+	}
+	else
+	{
+		if (ReleaseImage != "")
+		{
+			Render->SetTexture(ReleaseImage);
 		}
 	}
 

@@ -23,7 +23,7 @@ protected:
 	void Update(float _DeltaTime) override;
 
 private:
-	std::function<void()> EndFunction = nullptr;
+	std::function<void(std::list<std::shared_ptr<class Item>>,int)> EndFunction = nullptr;
 	GameEngineFSM FSM;
 
 	std::shared_ptr<BattleUnit> SelectUnit = nullptr;
@@ -45,8 +45,10 @@ private:
 	std::vector<int> Price;
 	std::vector<std::shared_ptr<class Item>> StoreItems;
 	std::list<std::shared_ptr<class Item>> PlayerItems;
+	std::list<std::shared_ptr<class Item>> BeforeItems;
 	int ItemSize = 5;
 	int Money = 0;
+	int BeforeMoney = 0;
 
 	bool IsSell = false;
 };

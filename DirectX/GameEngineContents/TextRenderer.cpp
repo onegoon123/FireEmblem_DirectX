@@ -36,9 +36,9 @@ void TextRenderer::Update(float _DeltaTime)
 		return;
 	}
 
-	Index ++;
+	Index++;
 	Timer = AnimTime;
-	SetText(AnimText.substr(0, Index));
+	SetText(AnimText.substr(0, Index), false);
 }
 
 //Setting("Silhoua14", 55, float4::White, float4::Black, FontAligned::Center);
@@ -63,8 +63,12 @@ void TextRenderer::SetFont(const std::string_view& _Font)
 	}
 }
 
-void TextRenderer::SetText(const std::string_view& _Text)
+void TextRenderer::SetText(const std::string_view& _Text, bool _Clear)
 {
+	if (_Clear == true)
+	{
+		IsTextAnim = false;
+	}
 	FontRender->SetText(_Text);
 	for (int i = 0; i < OutlineRenders.size(); i++)
 	{
@@ -72,8 +76,12 @@ void TextRenderer::SetText(const std::string_view& _Text)
 	}
 }
 
-void TextRenderer::SetText(const std::wstring_view& _Text)
+void TextRenderer::SetText(const std::wstring_view& _Text, bool _Clear)
 {
+	if (_Clear == true)
+	{
+		IsTextAnim = false;
+	}
 	FontRender->SetText(_Text);
 	for (int i = 0; i < OutlineRenders.size(); i++)
 	{
@@ -120,7 +128,7 @@ void TextRenderer::SetTextAnim(const std::wstring_view& _Text)
 	IsTextAnim = true;
 	Timer = AnimTime;
 
-	SetText(L"");
+	SetText(L"", false);
 }
 
 bool TextRenderer::IsAnimEnd()

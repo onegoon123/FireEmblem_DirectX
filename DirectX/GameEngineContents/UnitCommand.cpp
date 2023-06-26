@@ -1,6 +1,7 @@
 #include "PrecompileHeader.h"
 #include "UnitCommand.h"
 #include "FERandom.h"
+#include "FEData.h"
 std::vector<UnitCommand> UnitCommand::CommandList = std::vector<UnitCommand>();
 
 UnitCommand::UnitCommand()
@@ -315,6 +316,25 @@ void UnitCommand::PhaseStart(Faction _Faction)
 	default:
 		break;
 	}
+	CommandList.push_back(CommandRecord);
+}
+
+void UnitCommand::StoreUse(std::shared_ptr<BattleUnit> _SubjectUnit, std::list<std::shared_ptr<class Item>> _BeforeItems, int _BeforeMoney)
+{
+	UnitCommand CommandRecord;
+	CommandRecord.TypeValue = CommandType::Store;
+	CommandRecord.BeforeSubjectUnit = Unit(_SubjectUnit->GetUnitData());
+	CommandRecord.BeforeSubjectUnitPos = _SubjectUnit->GetBeforeMapPos();
+	CommandRecord.BeforeSubjectItems = Item::SaveItemDataList(_BeforeItems);
+
+	CommandRecord.Record = std::string(_SubjectUnit->GetName()) + "이(가) 상점을 이용했다.";
+
+	CommandRecord.UseMoney = _BeforeMoney - FEData::GetMoney();
+
+	CommandRecord.AfterSubjectItems = Item::SaveItemDataList(_SubjectUnit->GetUnitData().GetItems());
+	CommandRecord.AfterSubjectUnit = CommandRecord.BeforeSubjectUnit;
+	CommandRecord.AfterSubjectUnitPos = _SubjectUnit->GetMapPos();
+	CommandRecord.AfterSubjectUnit.SetIsTurnEnd(true);
 	CommandList.push_back(CommandRecord);
 }
 

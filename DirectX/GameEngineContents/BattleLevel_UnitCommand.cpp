@@ -124,7 +124,8 @@ void BattleLevel::UnitCommand_Store()
 	ChangeState(BattleState::Store);
 }
 
-void BattleLevel::UnitCommand_StoreEnd()
+void BattleLevel::UnitCommand_StoreEnd(std::list<std::shared_ptr<class Item>> _BeforeItems, int _Money)
 {
+	UnitCommand::StoreUse(SelectUnit, _BeforeItems, _Money);
 	ChangeState(BattleState::Select);
 }

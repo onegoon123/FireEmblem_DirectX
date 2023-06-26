@@ -7,6 +7,7 @@
 #include "NumberActor.h"
 #include "UICursor.h"
 #include "BattleLevel.h"
+#include "FEData.h"
 StoreUI::StoreUI()
 {
 }
@@ -19,14 +20,30 @@ void StoreUI::On(std::shared_ptr<BattleUnit> _Unit)
 {
 	GameEngineActor::On();
 	SelectUnit = _Unit;
+	BeforeItems = SelectUnit->GetUnitData().GetItems();
 	FSM.ChangeState("Start1");
+	Money = FEData::GetMoney();
+	BeforeMoney = Money;
 	MoneyText->SetValue(Money, true);
+	for (int i = 0; i < 5; i++)
+	{
+		Icons[i]->SetSprite("Items.png", StoreItems[i]->GetItemCodeToInt() - 1);
+		ItemNameTexts[i]->SetText(StoreItems[i]->GetName());
+		ItemUses[i]->SetValue(StoreItems[i]->GetMaxUses());
+		Price[i] = Item::GetItemPrice(ItemList[i]);
+		ItemPrices[i]->SetValue(Price[i], true);
+
+		Icons[i]->On();
+		ItemNameTexts[i]->On();
+		ItemUses[i]->On();
+		ItemPrices[i]->On();
+	}
 }
 
 void StoreUI::Start()
 {
 	BattleLevel* Level = dynamic_cast<BattleLevel*>(GetLevel());
-	EndFunction = std::bind(&BattleLevel::UnitCommand_StoreEnd, Level);
+	EndFunction = std::bind(&BattleLevel::UnitCommand_StoreEnd, Level, std::placeholders::_1, std::placeholders::_2);
 
 	Background = CreateComponent<GameEngineUIRenderer>(RenderOrder::UIBackground);
 	Background->SetTexture("StoreUI.png");
@@ -158,7 +175,7 @@ void StoreUI::Start()
 			}
 			if (GameEngineInput::IsDown("ButtonB"))
 			{
-				EndFunction();
+				EndFunction(BeforeItems, BeforeMoney);
 			}
 		},
 		.End = [this]
@@ -225,8 +242,6 @@ void StoreUI::Start()
 			{
 				if (Money < Price[CurrentCursor])
 				{
-					Money += 300;	//임시용
-					MoneyText->SetValue(Money, true);
 					Dialogue->SetTextAnim(L"돈이 부족하네");
 					return;
 				}
@@ -268,7 +283,7 @@ void StoreUI::Start()
 				Icons[i]->SetSprite("Items.png", _Item->GetItemCodeToInt() - 1);
 				ItemNameTexts[i]->SetText(_Item->GetName());
 				ItemUses[i]->SetValue(_Item->GetMaxUses());
-				Price[i] = Item::GetItemPrice(_Item->GetItemCode()) * (static_cast<float>(_Item->GetUses()) / _Item->GetMaxUses());
+				Price[i] = static_cast<int>(Item::GetItemPrice(_Item->GetItemCode()) * (static_cast<float>(_Item->GetUses()) / _Item->GetMaxUses()));
 				ItemPrices[i]->SetValue(Price[i], true);
 
 				Icons[i]->On();
