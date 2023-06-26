@@ -362,7 +362,7 @@ std::list<AttackCommand>& UnitCommand::AttackEnd(std::list<AttackCommand>& _Atta
 		{
 			SumDamage += 10;
 		}
-		_AttackList.back().Exp = SumDamage + Enemy.GetLevel() - Player.GetLevel() + 20;
+		_AttackList.back().Exp = std::max<int>(1, SumDamage + Enemy.GetLevel() - Player.GetLevel() + 20);
 	}
 	_AttackList.back().IsLevelUp = Player.AddExp(_AttackList.back().Exp);
 

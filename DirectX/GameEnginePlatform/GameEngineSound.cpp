@@ -94,8 +94,9 @@ GameEngineSoundPlayer GameEngineSound::Play(const std::string_view& _Name)
 		MsgAssert("존재하지 않는 사운드를 플레이하려고 했습니다.");
 		return nullptr;
 	}
-
-	return Finditer->second->SoundPlay();
+	FMOD::Channel* Channel = Finditer->second->SoundPlay();
+	Channel->setLoopCount(0);
+	return Channel;
 }
 
 void GameEngineSound::SoundLoad(const std::string_view& _Path)

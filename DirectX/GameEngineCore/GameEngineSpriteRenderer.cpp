@@ -111,6 +111,11 @@ void GameEngineSpriteRenderer::Start()
 void GameEngineSpriteRenderer::SetTexture(const std::string_view& _Name)
 {
 	GetShaderResHelper().SetTexture("DiffuseTex", _Name);
+
+	//Animation이 동작하는 SpriteRenderer에 다시 텍스처를 세팅할 때 사용됩니다.
+	CurAnimation = nullptr;
+	AtlasData = float4{ 0.0f, 0.0f, 1.0f, 1.0f };
+
 	std::shared_ptr<GameEngineTexture> FindTex = GameEngineTexture::Find(_Name);
 	if (nullptr == FindTex)
 	{

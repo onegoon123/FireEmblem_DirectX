@@ -7,11 +7,11 @@
 #include "NumberActor.h"
 #include "UICursor.h"
 #include "BattleLevel.h"
-StoreUI::StoreUI() 
+StoreUI::StoreUI()
 {
 }
 
-StoreUI::~StoreUI() 
+StoreUI::~StoreUI()
 {
 }
 
@@ -42,7 +42,7 @@ void StoreUI::Start()
 
 	MoneyText = GetLevel()->CreateActor<NumberActor>();
 	MoneyText->GetTransform()->SetParent(GetTransform());
-	MoneyText->GetTransform()->SetLocalPosition({378, 98 });
+	MoneyText->GetTransform()->SetLocalPosition({ 378, 98 });
 
 	Cursor = GetLevel()->CreateActor<UICursor>(RenderOrder::UIText);
 	Cursor->GetTransform()->SetParent(GetTransform());
@@ -53,9 +53,11 @@ void StoreUI::Start()
 	ItemUses.resize(5);
 	ItemPrices.resize(5);
 	StoreItems.resize(5);
+	Price.resize(5);
 	for (int i = 0; i < 5; i++)
 	{
 		StoreItems[i] = Item::CreateItem(ItemList[i]);
+		Price[i] = Item::GetItemPrice(ItemList[i]);
 		Icons[i] = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
 		Icons[i]->SetSprite("Items.png", StoreItems[i]->GetItemCodeToInt() - 1);
 
@@ -99,7 +101,7 @@ void StoreUI::Start()
 		.End = [this]
 		{
 		},
-	});
+		});
 
 	FSM.CreateState({ .Name = "Start2",
 		.Start = [this]
@@ -172,13 +174,19 @@ void StoreUI::Start()
 			CurrentCursor = 0;
 			Dialogue->SetTextAnim(L"무엇을 사겠나?");
 			Dialogue2->SetText(" ");
-
+			ItemSize = static_cast<int>(StoreItems.size());
 			for (int i = 0; i < 5; i++)
 			{
 				Icons[i]->SetSprite("Items.png", StoreItems[i]->GetItemCodeToInt() - 1);
 				ItemNameTexts[i]->SetText(StoreItems[i]->GetName());
 				ItemUses[i]->SetValue(StoreItems[i]->GetMaxUses());
+				Price[i] = Item::GetItemPrice(ItemList[i]);
 				ItemPrices[i]->SetValue(Price[i], true);
+
+				Icons[i]->On();
+				ItemNameTexts[i]->On();
+				ItemUses[i]->On();
+				ItemPrices[i]->On();
 			}
 		},
 		.Update = [this](float _DeltaTime)
@@ -253,15 +261,30 @@ void StoreUI::Start()
 			Dialogue->SetTextAnim(L"무엇을 팔겠나?");
 			Dialogue2->SetText(" ");
 			PlayerItems = SelectUnit->GetUnitData().GetItems();
+			ItemSize = static_cast<int>(PlayerItems.size());
 			int i = 0;
 			for (std::shared_ptr<Item> _Item : PlayerItems)
 			{
 				Icons[i]->SetSprite("Items.png", _Item->GetItemCodeToInt() - 1);
 				ItemNameTexts[i]->SetText(_Item->GetName());
 				ItemUses[i]->SetValue(_Item->GetMaxUses());
-				ItemPrices[i]->SetValue(Item::GetItemPrice(_Item->GetItemCode()), true);
+				Price[i] = Item::GetItemPrice(_Item->GetItemCode()) * (static_cast<float>(_Item->GetUses()) / _Item->GetMaxUses());
+				ItemPrices[i]->SetValue(Price[i], true);
+
+				Icons[i]->On();
+				ItemNameTexts[i]->On();
+				ItemUses[i]->On();
+				ItemPrices[i]->On();
 				i++;
 			}
+			for (; i < 5; i++)
+			{
+				Icons[i]->Off();
+				ItemNameTexts[i]->Off();
+				ItemUses[i]->Off();
+				ItemPrices[i]->Off();
+			}
+
 		},
 		.Update = [this](float _DeltaTime)
 		{
@@ -297,22 +320,43 @@ void StoreUI::Start()
 
 			if (GameEngineInput::IsDown("ButtonA"))
 			{
-				if (Money < Price[CurrentCursor])
+				if (999 < Money + Price[CurrentCursor])
 				{
-					Money += 300;	//임시용
-					MoneyText->SetValue(Money, true);
-					Dialogue->SetTextAnim(L"돈이 부족하네");
+					Dialogue->SetTextAnim(L"지갑이 가득찼네");
 					return;
 				}
-				if (5 == SelectUnit->GetUnitData().GetItems().size())
-				{
-					Dialogue->SetTextAnim(L"가방이 가득찼다네");
-					return;
-				}
-				SelectUnit->GetUnitData().NewItem(ItemList[CurrentCursor]);
-				Money -= Price[CurrentCursor];
+				Money += Price[CurrentCursor];
+				std::list<std::shared_ptr<Item>>::iterator ItemIter = SelectUnit->GetUnitData().GetItems().begin();
+				std::advance(ItemIter, CurrentCursor);
+				SelectUnit->GetUnitData().DropItem(ItemIter);
+
 				MoneyText->SetValue(Money, true);
-				Dialogue->SetTextAnim(L"다른 것도 살 건가?");
+				Dialogue->SetTextAnim(L"다른 것도 팔 건가?");
+
+				PlayerItems = SelectUnit->GetUnitData().GetItems();
+				int i = 0;
+				for (std::shared_ptr<Item> _Item : PlayerItems)
+				{
+					Icons[i]->SetSprite("Items.png", _Item->GetItemCodeToInt() - 1);
+					ItemNameTexts[i]->SetText(_Item->GetName());
+					ItemUses[i]->SetValue(_Item->GetMaxUses());
+					Price[i] = Item::GetItemPrice(_Item->GetItemCode());
+					ItemPrices[i]->SetValue(Price[i], true);
+
+					Icons[i]->On();
+					ItemNameTexts[i]->On();
+					ItemUses[i]->On();
+					ItemPrices[i]->On();
+					i++;
+				}
+				for (; i < 5; i++)
+				{
+					Icons[i]->Off();
+					ItemNameTexts[i]->Off();
+					ItemUses[i]->Off();
+					ItemPrices[i]->Off();
+				}
+
 				return;
 			}
 			if (GameEngineInput::IsDown("ButtonB"))

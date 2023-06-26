@@ -42,7 +42,7 @@ private:
 	size_t CurrentCursor = 0;
 
 	const std::vector<ItemCode> ItemList = { ItemCode::SteelSword, ItemCode::KillingSword, ItemCode::SilverLance, ItemCode::Elixir, ItemCode::MasterSeal };
-	const std::vector<int> Price = {50, 125, 100, 30, 100};
+	std::vector<int> Price;
 	std::vector<std::shared_ptr<class Item>> StoreItems;
 	std::list<std::shared_ptr<class Item>> PlayerItems;
 	int ItemSize = 5;

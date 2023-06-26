@@ -101,9 +101,9 @@ public:
 		return GetAngleVectorToVectorRad(_Left, _Right) * GameEngineMath::RadToDeg;
 	}
 
-	static float GetAngleVectorToVectorDeg360(const float4& _Left, const float4& _Right)
+	static float GetAngleVectorToVectorDeg360(const float4& _Pivot, const float4& _Other)
 	{
-		return GetAngleVectorToVectorRad360(_Left, _Right) * GameEngineMath::RadToDeg;
+		return GetAngleVectorToVectorRad360(_Pivot, _Other) * GameEngineMath::RadToDeg;
 	}
 
 	// 외적의 결과는 두개의 백터가 겹칠때 주의해서 처리해줘야 한다.
@@ -122,19 +122,19 @@ public:
 		return Angle;
 	}
 
-	static float GetAngleVectorToVectorRad360(const float4& _Left, const float4& _Right)
+	static float GetAngleVectorToVectorRad360(const float4& _Pivot, const float4& _Other)
 	{
-		float4 Left = _Left;
-		float4 Right = _Right;
+		float4 Pivot = _Pivot;
+		float4 Other = _Other;
 
-		Left.Normalize();
-		Right.Normalize();
+		Pivot.Normalize();
+		Other.Normalize();
 
-		float CosSeta = DotProduct3D(Left, Right);
+		float CosSeta = DotProduct3D(Pivot, Other);
 
 
 		float Angle = 0.f;
-		(Left.y * Right.x + Left.x * Right.y > 0.0f) ? Angle = acosf(CosSeta) : Angle = -acosf(CosSeta);
+		(Pivot.x * Other.y) - (Pivot.y * Other.x) > 0.0f ? Angle = acosf(CosSeta) : Angle = -acosf(CosSeta);
 
 
 		return Angle;

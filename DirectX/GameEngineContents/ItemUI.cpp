@@ -523,7 +523,7 @@ void ItemUI::SetItemInfo()
 	{
 		std::shared_ptr<Weapon> _Weapon = std::dynamic_pointer_cast<Weapon>(*ItemIter);
 		InfoRender->SetFrame(5);
-		ItemInfoText->SetText("");
+		ItemInfoText->SetText(" ");
 		WeaponDamage->On();
 		WeaponHit->On();
 		WeaponCritical->On();
