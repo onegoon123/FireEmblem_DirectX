@@ -135,6 +135,7 @@ void BattleAnimationLevel::HitEvent()
 	}
 	else if ((*BattleIter).IsHit)
 	{
+		GameEngineSound::Play("Slash1.wav");
 		CameraShake(0.2f);
 	}
 	DamageUnit->HitEffect(EffectName);
