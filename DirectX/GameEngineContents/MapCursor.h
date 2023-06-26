@@ -1,5 +1,5 @@
 #pragma once
-
+#include <GameEnginePlatform/GameEngineSound.h>
 #include "MapUnit.h"
 
 // 설명 : 커서 엑터
@@ -31,6 +31,11 @@ public:
 	void SetCursorPos(int2 _Value);
 	void MoveCursorPosLerp(int2 _Value);
 	
+	void SetSoundPlay(bool _SoundPlay)
+	{
+		SoundPlay = _SoundPlay;
+	}
+
 	int2 WorldPos = int2::Zero;
 
 protected:
@@ -39,6 +44,6 @@ protected:
 private:
 	std::shared_ptr<GameEngineUIRenderer> AnimationRender = nullptr;
 	std::shared_ptr<MapUnit> CameraUnit = nullptr;
-
+	bool SoundPlay = true;
 };
 

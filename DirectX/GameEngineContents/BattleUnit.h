@@ -1,4 +1,5 @@
 #pragma once
+#include <GameEnginePlatform/GameEngineSound.h>
 #include "MapUnit.h"
 #include "Stat.h"
 #include "Unit.h"
@@ -139,11 +140,16 @@ protected:
 	void Update(float _DeltaTime) override;
 
 	void SetMoveDir(int2 _Dir) override;
+	void MoveStart() override;
 	void MoveEnd() override;
 
 	std::shared_ptr<class SpriteRenderer> Renderer = nullptr;
 	std::shared_ptr<class SpriteRenderer> FrontRenderer = nullptr;
+
+	GameEngineSoundPlayer WalkSound;
+
 	std::string_view MapSpriteName = "";
+	std::string_view WalkSoundName = "";
 private:
 	Unit UnitData;
 

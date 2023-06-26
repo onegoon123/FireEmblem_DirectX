@@ -25,6 +25,7 @@ void MapUnit::MoveMapPos(int2 _Value)
 
 void MapUnit::SetMapPosLerp(int2 _Value)
 {
+	MoveStart();
 	IsMove = true;
 	int2 StartIntPos = MapPos;
 	StartPos = GetTransform()->GetLocalPosition();

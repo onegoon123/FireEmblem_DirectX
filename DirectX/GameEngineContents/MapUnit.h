@@ -47,6 +47,7 @@ protected:
 	float MoveSpeed = 15.0f;
 
 	virtual void SetMoveDir(int2 _Dir) {}
+	virtual void MoveStart() {}
 	virtual void MoveEnd() {}
 
 private:

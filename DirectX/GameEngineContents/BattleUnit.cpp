@@ -85,6 +85,7 @@ void BattleUnit::LoadUnitData(Unit _Value)
 {
 	UnitData = _Value;
 	bool IsShortWalk = false;
+	WalkSoundName = "Walk_Foot.wav";
 	switch (UnitData.GetIdentityCode())
 	{
 	case UnitIdentityCode::Lyn:
@@ -104,18 +105,21 @@ void BattleUnit::LoadUnitData(Unit _Value)
 		UnitData.SetName("Sain");
 		MapSpriteName = "Map_Cavalier.png";
 		UnitData.IsPlayer = true;
+		WalkSoundName = "Walk_Horse.wav";
 		break;
 	case UnitIdentityCode::Kent:
 		SetName("ÄËÆ®");
 		UnitData.SetName("Kent");
 		MapSpriteName = "Map_Cavalier.png";
 		UnitData.IsPlayer = true;
+		WalkSoundName = "Walk_Horse.wav";
 		break;
 	case UnitIdentityCode::Florina:
 		SetName("ÇÃ·Î¸®³ª");
 		UnitData.SetName("Florina");
 		MapSpriteName = "Map_Florina.png";
 		UnitData.IsPlayer = true;
+		WalkSoundName = "Walk_Pegasus.wav";
 		break;
 	case UnitIdentityCode::Wil:
 		SetName("Àª");
@@ -345,7 +349,7 @@ void BattleUnit::SetMoveDir(int2 _Dir)
 
 	if (_Dir == int2::Right)
 	{
-		FrontRenderer->ChangeAnimation("Left");
+		FrontRenderer->ChangeAnimation("Left", false);
 		GetTransform()->SetLocalNegativeScaleX();
 		return;
 	}
@@ -354,23 +358,38 @@ void BattleUnit::SetMoveDir(int2 _Dir)
 
 	if (_Dir == int2::Left)
 	{
-		FrontRenderer->ChangeAnimation("Left");
+		FrontRenderer->ChangeAnimation("Left", false);
 		return;
 	}
 	if (_Dir == int2::Down)
 	{
-		FrontRenderer->ChangeAnimation("Down");
+		FrontRenderer->ChangeAnimation("Down", false);
 		return;
 	}
 	if (_Dir == int2::Up)
 	{
-		FrontRenderer->ChangeAnimation("Up");
+		FrontRenderer->ChangeAnimation("Up", false);
 		return;
 	}
 }
 
+void BattleUnit::MoveStart()
+{
+	if (WalkSoundName != "")
+	{
+		if (GetName() == "ÇÃ·Î¸®³ª")
+		{
+			WalkSound = GameEngineSound::Play(WalkSoundName);
+			return;
+		}
+		WalkSound = GameEngineSound::Play(WalkSoundName);
+		WalkSound.SetLoop();
+	} 
+}
+
 void BattleUnit::MoveEnd()
 {
+	WalkSound.Stop();
 	if (true == IsEventMove)
 	{
 		SetIdle();
@@ -380,6 +399,7 @@ void BattleUnit::MoveEnd()
 void BattleUnit::SetUnitAnimation(UnitIdentityCode _Value)
 {
 	bool IsShortWalk = false;
+	WalkSoundName = "Walk_Foot.wav";
 	switch (_Value)
 	{
 	case UnitIdentityCode::Lyn:
@@ -399,18 +419,21 @@ void BattleUnit::SetUnitAnimation(UnitIdentityCode _Value)
 		UnitData.SetName("Sain");
 		MapSpriteName = "Map_Cavalier.png";
 		UnitData.IsPlayer = true;
+		WalkSoundName = "Walk_Horse.wav";
 		break;
 	case UnitIdentityCode::Kent:
 		SetName("ÄËÆ®");
 		UnitData.SetName("Kent");
 		MapSpriteName = "Map_Cavalier.png";
 		UnitData.IsPlayer = true;
+		WalkSoundName = "Walk_Horse.wav";
 		break;
 	case UnitIdentityCode::Florina:
 		SetName("ÇÃ·Î¸®³ª");
 		UnitData.SetName("Florina");
 		MapSpriteName = "Map_Florina.png";
 		UnitData.IsPlayer = true;
+		WalkSoundName = "Walk_Pegasus.wav";
 		break;
 	case UnitIdentityCode::Wil:
 		SetName("Àª");

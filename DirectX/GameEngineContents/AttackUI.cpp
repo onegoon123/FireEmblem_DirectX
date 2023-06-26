@@ -319,10 +319,14 @@ void AttackUI::Start()
 		ButtonCols[i]->SetColType(ColType::AABBBOX2D);
 		ButtonSystem->NewButton(ButtonCols[i],
 			[=] {
-				CurrentCursor = i;
-				SelectRender->GetTransform()->SetLocalPosition(StartSelectPos + float4::Down * (64.0f * CurrentCursor));
-				CursorPos = StartCursorPos + float4::Down * (64.0f * CurrentCursor);
-				SetWeapon();
+				if (CurrentCursor != i)
+				{
+					CurrentCursor = i;
+					SelectRender->GetTransform()->SetLocalPosition(StartSelectPos + float4::Down * (64.0f * CurrentCursor));
+					CursorPos = StartCursorPos + float4::Down * (64.0f * CurrentCursor);
+					SetWeapon();
+					GameEngineSound::Play("CommandMove.wav");
+				}
 			},
 			[this]
 			{
@@ -399,6 +403,7 @@ void AttackUI::WeaponSelectUpdate(float _DeltaTime)
 
 	if (GameEngineInput::IsDown("ButtonA") || true == IsClick)
 	{
+		GameEngineSound::Play("CommandSelect.wav");
 		IsClick = false;
 		WeaponSelectEnd();
 		TargetSelectStart();
@@ -406,6 +411,7 @@ void AttackUI::WeaponSelectUpdate(float _DeltaTime)
 	}
 	if (GameEngineInput::IsDown("ButtonB") || GameEngineInput::IsUp("RightClick"))
 	{
+		GameEngineSound::Play("Cancel.wav");
 		CancelFunction();
 		return;
 	}
@@ -428,6 +434,7 @@ void AttackUI::WeaponSelectUpdate(float _DeltaTime)
 
 	if (GameEngineInput::IsDown("Up") || (GameEngineInput::IsPress("Up") && PressOK))
 	{
+		GameEngineSound::Play("CommandMove.wav");
 		CursorTimer = 0;
 		if (CurrentCursor == 0)
 		{
@@ -447,6 +454,7 @@ void AttackUI::WeaponSelectUpdate(float _DeltaTime)
 
 	if (GameEngineInput::IsDown("Down") || (GameEngineInput::IsPress("Down") && PressOK) || GameEngineInput::IsUp("MiddleClick"))
 	{
+		GameEngineSound::Play("CommandMove.wav");
 		CursorTimer = 0;
 		if (CurrentCursor == Weapons.size() - 1)
 		{
@@ -525,6 +533,7 @@ void AttackUI::TargetSelectUpdate(float _DeltaTime)
 {
 	if (GameEngineInput::IsDown("ButtonA") || GameEngineInput::IsUp("LeftClick"))
 	{
+		GameEngineSound::Play("CommandSelect.wav");
 		AttackFunction(TargetUnit);
 		Cursor_Map->Off();
 		Off();
@@ -533,6 +542,7 @@ void AttackUI::TargetSelectUpdate(float _DeltaTime)
 
 	if (GameEngineInput::IsDown("ButtonB") || GameEngineInput::IsUp("RightClick"))
 	{
+		GameEngineSound::Play("Cancel.wav");
 		WeaponSelectStart();
 		Cursor_Map->SetCursorPos(SelectUnit->GetMapPos());
 		Cursor_Map->Off();
@@ -543,6 +553,7 @@ void AttackUI::TargetSelectUpdate(float _DeltaTime)
 
 	if (GameEngineInput::IsDown("Up") || GameEngineInput::IsDown("Left"))
 	{
+		GameEngineSound::Play("CommandMove.wav");
 		if (TargetIter == TargetUnits.begin())
 		{
 			TargetIter = TargetUnits.end();
@@ -553,6 +564,7 @@ void AttackUI::TargetSelectUpdate(float _DeltaTime)
 	}
 	if (GameEngineInput::IsDown("Down") || GameEngineInput::IsDown("Right") || GameEngineInput::IsUp("MiddleClick"))
 	{
+		GameEngineSound::Play("CommandMove.wav");
 		TargetIter++;
 		if (TargetIter == TargetUnits.end())
 		{

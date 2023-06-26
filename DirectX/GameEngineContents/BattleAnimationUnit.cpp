@@ -82,6 +82,7 @@ void BattleAnimationUnit::Critical()
 void BattleAnimationUnit::Dodge()
 {
 	CurAnimation->ChangeAnimation("Dodge");
+	GameEngineSound::Play("Dodge.wav");
 }
 
 void BattleAnimationUnit::HitEffect(const std::string_view& _Name)
@@ -224,7 +225,24 @@ std::shared_ptr<SpriteRenderer> BattleAnimationUnit::CreateAnimation(UnitIdentit
 		}
 		NewAnim->CreateAnimation({ "Idle", "Battle_Lyn.png", 0, 0 });
 		NewAnim->CreateAnimation({ .AnimationName = "Attack", .SpriteName = "Battle_Lyn.png", .Start = 0, .End = 24, .Loop = false, .FrameTime = {.2f, .08f, .08f, .2f, .04f, .04f, .08f, .08f, .08f, .6f, .04f, .08f, .06f , .06f, .06f, .08f, .08f ,.08f, .08f ,.08f, .08f ,.08f, .08f ,.08f, .08f} });
-		NewAnim->SetAnimationStartEvent("Attack", 6, std::bind(&BattleAnimationLevel::HitEvent, Level));
+		NewAnim->SetAnimationStartEvent("Attack", 2, []
+			{
+				GameEngineSound::Play("DrawWeapon.wav");
+			});
+		NewAnim->SetAnimationStartEvent("Attack", 6, [this]
+			{
+				GameEngineSound::Play("Slash1.wav");
+				Level->HitEvent();
+			});
+		NewAnim->SetAnimationStartEvent("Attack", 10, []
+			{
+				GameEngineSound::Play("WindNoise.wav");
+			});
+		NewAnim->SetAnimationStartEvent("Attack", 19, []
+			{
+				GameEngineSound::Play("Sheath.wav");
+			});
+		//NewAnim->SetAnimationStartEvent("Attack", 6, std::bind(&BattleAnimationLevel::HitEvent, Level));
 		NewAnim->SetAnimationStartEvent("Attack", 24, std::bind(&BattleAnimationUnit::AttackEnd, this));
 		NewAnim->CreateAnimation({ .AnimationName = "Critical", .SpriteName = "Battle_Lyn.png", .Loop = false,
 			.FrameIndex = {0, 1, 2, 3, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 43, 45, 43, 46, 43, 47, 48, 49, 50, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24  }

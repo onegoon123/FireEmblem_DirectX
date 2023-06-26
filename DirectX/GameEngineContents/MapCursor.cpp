@@ -37,6 +37,10 @@ void MapCursor::Off()
 
 void MapCursor::Select()
 {
+	if (false == SoundPlay)
+	{
+		GameEngineSound::Play("CursorMove.wav");
+	}
 	AnimationRender->ChangeAnimation("OnUnit", false);
 }
 
@@ -59,6 +63,10 @@ void MapCursor::SetCursorPos(int2 _Value)
 
 void MapCursor::MoveCursorPosLerp(int2 _Value)
 {
+	if (true == SoundPlay)
+	{
+		GameEngineSound::Play("CursorMove.wav");
+	}
 	WorldPos += _Value;
 	SetMapPosLerp(WorldPos - CameraUnit->GetMapPos());
 }

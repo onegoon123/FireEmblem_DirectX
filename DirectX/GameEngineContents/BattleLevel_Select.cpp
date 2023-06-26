@@ -23,6 +23,7 @@ void BattleLevel::CursorMove()
 	if (GameEngineInput::IsUp("LeftClick") || GameEngineInput::IsUp("RightClick"))
 	{
 		IsMouseOn = true;
+		MainCursor->SetSoundPlay(false);
 		return;
 	}
 
@@ -139,6 +140,7 @@ void BattleLevel::CursorAndArrowMove()
 	if (GameEngineInput::IsUp("LeftClick") || GameEngineInput::IsUp("RightClick"))
 	{
 		IsMouseOn = true;
+		MainCursor->SetSoundPlay(false);
 		return;
 	}
 
@@ -218,6 +220,7 @@ void BattleLevel::CursorMoveMouse()
 		)
 	{
 		IsMouseOn = false;
+		MainCursor->SetSoundPlay(true);
 		return;
 	}
 
@@ -256,6 +259,7 @@ void BattleLevel::CursorAndArrowMoveMouse()
 		)
 	{
 		IsMouseOn = false;
+		MainCursor->SetSoundPlay(true);
 		return;
 	}
 
@@ -337,6 +341,7 @@ void BattleLevel::UnitSelect()
 			// 턴이 종료되지 않았다면
 			if (false == SelectUnit->GetIsTurnEnd())
 			{
+				GameEngineSound::Play("UnitSelect.wav");
 				ChangeState(BattleState::Move);
 				return;
 			}
@@ -369,7 +374,7 @@ void BattleLevel::UnitSelect()
 	if (GameEngineInput::IsDown("ButtonL"))
 	{
 		if (true == MainCursor->GetIsMove()) { return; }
-
+		GameEngineSound::Play("Cancel.wav");
 		if (nullptr == SelectUnit)
 		{
 			for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)

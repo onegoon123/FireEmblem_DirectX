@@ -155,8 +155,10 @@ void BattleLevel::PlayerPhaseStart()
 {
 	if (true == BgmPlayer.IsValid())
 	{
-		BgmPlayer.SoundFadeOut(0.1f);
+		BgmPlayer.Stop();
 	}
+	GameEngineSound::Play("PhaseStart.wav");
+
 	UnitCommand::PhaseStart(Faction::Player);
 	// 모든 적 유닛 턴 복구
 	for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
@@ -583,6 +585,7 @@ void BattleLevel::UnitCommandEnd()
 void BattleLevel::FieldCommandStart()
 {
 	//UI_UnitCommand->SetCommand(false, false);
+	GameEngineSound::Play("Select.wav");
 	BattleUI->FieldCommandOn();
 	MainCursor->Off();
 
@@ -792,6 +795,8 @@ void BattleLevel::HealEnd()
 void BattleLevel::EnemyPhaseStart()
 {
 	BgmPlayer.SoundFadeOut(0.5f);
+	GameEngineSound::Play("PhaseStart.wav");
+
 	UnitCommand::PhaseStart(Faction::Enemy);
 
 	IsSkip = false;
@@ -1070,6 +1075,10 @@ void BattleLevel::EnemyBattleUpdate(float _DeltaTime)
 		if (false == IsSkip)
 		{
 			GameEngineCore::ChangeLevel("BattleAnimationLevel");
+		}
+		else
+		{
+			BattleAnimationLevel::BgmPlayer.Stop();
 		}
 		ChangeState(BattleState::EnemyBattleReturn);
 		return;

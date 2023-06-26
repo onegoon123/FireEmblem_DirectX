@@ -93,7 +93,7 @@ void BattleLevel::LevelChangeStart()
 		Dir.Move("ContentResources");
 		Dir.Move("Battle");
 		Dir.Move("Sound");
-		std::vector<GameEngineFile> File = Dir.GetAllFile({ ".mp3", });
+		std::vector<GameEngineFile> File = Dir.GetAllFile({ ".mp3", ".wav"});
 		for (size_t i = 0; i < File.size(); i++)
 		{
 			GameEngineSound::Load(File[i].GetFullPath());

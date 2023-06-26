@@ -1,5 +1,6 @@
 #include "PrecompileHeader.h"
 #include "UnitCommandUI.h"
+#include <GameEnginePlatform/GameEngineSound.h>
 #include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEngineCore/GameEngineUIRenderer.h>
 #include <GameEngineCore/GameEngineCollision.h>
@@ -201,11 +202,16 @@ void UnitCommandUI::Start()
 		ButtonCols[i]->SetColType(ColType::AABBBOX2D);
 		ButtonSystem->NewButton(ButtonCols[i],
 			[=] {
-				CurrentCursor = i;
-				SelectRender->GetTransform()->SetLocalPosition(StartSelectPos + float4::Down * (64.0f * CurrentCursor));
-				CursorPos = { StartCursorPos + float4::Down * (64.0f * CurrentCursor) };
+				if (i != CurrentCursor)
+				{
+					CurrentCursor = i;
+					SelectRender->GetTransform()->SetLocalPosition(StartSelectPos + float4::Down * (64.0f * CurrentCursor));
+					CursorPos = { StartCursorPos + float4::Down * (64.0f * CurrentCursor) };
+					GameEngineSound::Play("CommandMove.wav");
+				}
 			},
 			[this] {
+				GameEngineSound::Play("CommandSelect.wav");
 				CommandFunctions[CurrentCursor]();
 			}
 		);
@@ -229,12 +235,14 @@ void UnitCommandUI::Update(float _DeltaTime)
 	if (GameEngineInput::IsDown("ButtonA"))
 	{
 		CommandFunctions[CurrentCursor]();
+		GameEngineSound::Play("CommandSelect.wav");
 		return;
 	}
 
 	if (GameEngineInput::IsDown("ButtonB") || GameEngineInput::IsUp("RightClick"))
 	{
 		CancelFunction();
+		GameEngineSound::Play("Cancel.wav");
 		return;
 	}
 
@@ -256,6 +264,7 @@ void UnitCommandUI::Update(float _DeltaTime)
 
 	if (GameEngineInput::IsDown("Up") || (GameEngineInput::IsPress("Up") && PressOK))
 	{
+		GameEngineSound::Play("CommandMove.wav");
 		CursorTimer = 0;
 		if (CurrentCursor == 0)
 		{
@@ -274,6 +283,7 @@ void UnitCommandUI::Update(float _DeltaTime)
 
 	if (GameEngineInput::IsDown("Down") || (GameEngineInput::IsPress("Down") && PressOK))
 	{
+		GameEngineSound::Play("CommandMove.wav");
 		CursorTimer = 0;
 		if (CurrentCursor == CommandFunctions.size() - 1)
 		{
