@@ -29,16 +29,17 @@ void TestStage::StageSetting()
 	ClearTarget = BattleClearTarget::AllKill;
 	ClearTargetText = "목표:적 전멸";
 
-	NewPlayerUnit(UnitIdentityCode::Lyn, 99, { 3, 3 }, { ItemCode::IronSword, ItemCode::ManiKatti, ItemCode::Vulnerary, ItemCode::MasterSeal})->GetUnitData().AddExp(80);
-	NewPlayerUnit(UnitIdentityCode::Kent, 1, { 2, 4 }, { ItemCode::IronSword, ItemCode::IronLance, ItemCode::Vulnerary })->GetUnitData().AddExp(80);
-	NewPlayerUnit(UnitIdentityCode::Sain, 1, { 3, 5 }, { ItemCode::IronLance });
-	NewPlayerUnit(UnitIdentityCode::Florina, 1, { 2, 2 }, { ItemCode::SlimLance, ItemCode::Vulnerary });
+	NewPlayerUnit(UnitIdentityCode::Lyn, 1, { 2, 4 }, { ItemCode::KillingSword, ItemCode::IronSword, ItemCode::MasterSeal})->GetUnitData().AddExp(80);
+	NewEnemyUnit(UnitIdentityCode::Soldier, 1, { 4, 3 }, { ItemCode::IronLance });
+	NewPlayerUnit(UnitIdentityCode::Kent, 10, { 3, 4 }, { ItemCode::IronSword, ItemCode::KillerLance, ItemCode::Vulnerary })->GetUnitData().AddExp(80);
+	NewPlayerUnit(UnitIdentityCode::Sain, 80, { 3, 5 }, { ItemCode::KillingSword, ItemCode::KillerLance });
+	NewPlayerUnit(UnitIdentityCode::Florina, 1, { 2, 2 }, { ItemCode::KillerLance, ItemCode::SlimLance, ItemCode::Vulnerary });
 	NewPlayerUnit(UnitIdentityCode::Wil, 2, { 1, 3 }, { ItemCode::IronBow });
-	NewPlayerUnit(UnitIdentityCode::Dorcas, 3, { 3, 1 }, { ItemCode::HandAxe, ItemCode::MasterSeal });
+	NewPlayerUnit(UnitIdentityCode::WarriorDorcas, 10, { 3, 1 }, { ItemCode::IronAxe, ItemCode::MasterSeal });
 
 	// 세라, 에르크 (중립)
-	NewPlayerUnit(UnitIdentityCode::Serra, 1, { 4, 3 }, { ItemCode::Heal,ItemCode::Heal, ItemCode::Vulnerary });
-	NewPlayerUnit(UnitIdentityCode::Erk, 1, { 4, 2 }, { ItemCode::Fire });
+	NewPlayerUnit(UnitIdentityCode::Serra, 1, { 4, 2 }, { ItemCode::Heal,ItemCode::Heal, ItemCode::Vulnerary });
+	NewPlayerUnit(UnitIdentityCode::Erk, 1, { 5, 2 }, { ItemCode::Fire });
 
 	NewEnemyUnit(UnitIdentityCode::Brigand, 2, { 3, 9 }, { ItemCode::IronAxe });
 	NewEnemyUnit(UnitIdentityCode::Archer, 1, { 7, 5 }, { ItemCode::IronBow });
@@ -47,7 +48,7 @@ void TestStage::StageSetting()
 
 	NewEnemyUnit(UnitIdentityCode::Brigand, 1, { 10, 9 }, { ItemCode::IronAxe, ItemCode::IronSword });
 	NewEnemyUnit(UnitIdentityCode::Archer, 1, { 14, 7 }, { ItemCode::IronBow });
-	NewEnemyUnit(UnitIdentityCode::Mercenary, 2, { 12, 2 }, { ItemCode::IronSword });
+	NewEnemyUnit(UnitIdentityCode::Mercenary, 3, { 12, 2 }, { ItemCode::IronSword });
 
 	NewEnemyUnit(UnitIdentityCode::Carjiga, 1, { 14, 0 }, { ItemCode::IronAxe });
 	OpeningEventInit();

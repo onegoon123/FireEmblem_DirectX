@@ -1,5 +1,6 @@
 #include "PrecompileHeader.h"
 #include "UnitInformationUI.h"
+#include <GameEnginePlatform/GameEngineSound.h>
 #include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEngineCore/GameEngineUIRenderer.h>
 #include "ContentsEnum.h"
@@ -411,11 +412,13 @@ void UnitInformationUI::Update(float _DeltaTime)
 
 	if (GameEngineInput::IsDown("ButtonB") || GameEngineInput::IsDown("RightClick"))
 	{
+		GameEngineSound::Play("Cancel.wav");
 		CurLevel->UnitInformation_Cancel();
 	}
 
 	if (GameEngineInput::IsDown("Left") || GameEngineInput::IsDown("Right") || GameEngineInput::IsDown("LeftClick"))
 	{
+		GameEngineSound::Play("CommandMove.wav");
 		Timer = 0;
 		IsMove = true;
 		IsItemWindow = !IsItemWindow;

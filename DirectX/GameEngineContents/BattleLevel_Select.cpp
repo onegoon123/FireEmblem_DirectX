@@ -465,6 +465,7 @@ void BattleLevel::UnitSelect()
 	if (GameEngineInput::IsDown("ButtonR") || GameEngineInput::IsDown("MiddleClick"))
 	{
 		if (nullptr == SelectUnit) { return; }
+		GameEngineSound::Play("UnitSelect.wav");
 		ChangeState(BattleState::Information);
 		return;
 	}

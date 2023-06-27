@@ -349,7 +349,7 @@ void SelectUI::Update(float _DeltaTiime)
 
 	if (true == IsLerp)
 	{
-		Timer += _DeltaTiime;
+		Timer += _DeltaTiime * 2;
 		if (1 < Timer)
 		{
 			SetHPBar(TargetValue);

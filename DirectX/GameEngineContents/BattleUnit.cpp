@@ -375,21 +375,28 @@ void BattleUnit::SetMoveDir(int2 _Dir)
 
 void BattleUnit::MoveStart()
 {
+	if (false == IsEventMove)
+	{
+		if (SoundDealy == true)
+		{
+			SoundDealy = false;
+			return;
+		}
+		SoundDealy = true;
+	}
 	if (WalkSoundName != "")
 	{
 		if (GetName() == "플로리나")
 		{
-			WalkSound = GameEngineSound::Play(WalkSoundName);
+			GameEngineSound::Play(WalkSoundName);
 			return;
 		}
-		WalkSound = GameEngineSound::Play(WalkSoundName);
-		WalkSound.SetLoop();
+		GameEngineSound::Play(WalkSoundName);
 	} 
 }
 
 void BattleUnit::MoveEnd()
 {
-	WalkSound.Stop();
 	if (true == IsEventMove)
 	{
 		SetIdle();

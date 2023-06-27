@@ -121,6 +121,7 @@ void Stage0::OpeningEventInit()
 
 	OpeningEvent->SkipFunction = [this] {
 		Unit_Lyn->SetMapPos({ 13, 2 });
+		Unit_Lyn->IsEventMove = false;
 		Unit_Lyn->SetMoveSpeed(15.0f);
 	};
 }

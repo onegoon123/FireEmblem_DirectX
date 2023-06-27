@@ -28,8 +28,11 @@ void Stat::SetIdentity(UnitIdentityCode _IdentityCode)
 	switch (_IdentityCode)
 	{
 	case UnitIdentityCode::Lyn:
+		SetStat_Lyn();
+		break;
 	case UnitIdentityCode::BladeLordLyn:
 		SetStat_Lyn();
+		ClassChange_BladeLord();
 		break;
 	case UnitIdentityCode::Sain:
 		SetStat_Sain();

@@ -159,7 +159,7 @@ private:
 
 	int DetectionRange = 0;		// 적이 플레이어를 발견하는 범위 (0은 거리제한 X)
 	bool IsCheckTile = false;
-
+	bool SoundDealy = false;
 	void SetUnitAnimation(UnitIdentityCode _Value);
 };
 

@@ -50,6 +50,17 @@ void EXPBar::AddEXP(int _EXP, std::function<void()> _EndEvent)
 	IsLerp = true;
 	Timer = 0;
 
+	if (true == SoundPlayer.IsValid()) {
+		bool IsPlaying = false;
+		SoundPlayer.isPlaying(&IsPlaying);
+		if (IsPlaying == true)
+		{
+			return;
+		}
+	}
+
+	SoundPlayer = GameEngineSound::Play("Exp.wav");
+	SoundPlayer.SetLoop();
 }
 
 void EXPBar::Start()
@@ -109,6 +120,7 @@ void EXPBar::Update(float _DeltaTime)
 				{
 					SetEXPBar(0);
 					Number->Setting(0);
+					SoundPlayer.Stop();
 					EndEvent();
 					return;
 				}
@@ -116,11 +128,20 @@ void EXPBar::Update(float _DeltaTime)
 			}
 			else if (nullptr != EndEvent)
 			{
+				SoundPlayer.Stop();
 				EndEvent();
 			}
 		}
 		SetEXPBar(BeforeEXP);
 		Timer = 0;
+	}
+}
+
+void EXPBar::LevelChangeEnd()
+{
+	GameEngineActor::LevelChangeEnd();
+	if (true == SoundPlayer.IsValid()) {
+		SoundPlayer.Stop();
 	}
 }
 

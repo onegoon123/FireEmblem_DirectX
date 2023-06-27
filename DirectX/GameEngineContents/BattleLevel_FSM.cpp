@@ -155,7 +155,7 @@ void BattleLevel::PlayerPhaseStart()
 {
 	if (true == BgmPlayer.IsValid())
 	{
-		BgmPlayer.Stop();
+		BgmPlayer.SoundFadeOut(0.5f);
 	}
 	GameEngineSound::Play("PhaseStart.wav");
 
@@ -735,6 +735,7 @@ void BattleLevel::BattleReturnEnd()
 
 void BattleLevel::HealStart()
 {
+	BgmPlayer.SoundFadeOut(0.5f);
 	AttackRecord = UnitCommand::Heal(SelectUnit, TargetUnit, UseItem);
 	BattleAnimationLevel::SetBattleData(SelectUnit, TargetUnit, AttackRecord, GetName());
 
@@ -1403,6 +1404,7 @@ void BattleLevel::PotionStart()
 	UnitCommand::ItemUse(SelectUnit, UseItem);
 	BattleUI->SetHPLerp(SelectUnit->GetUnitData().GetHP());
 	SelectUnit->SetIsTurnEnd(true);
+	GameEngineSound::Play("Heal.wav");
 }
 
 void BattleLevel::PotionUpdate(float _DeltaTime)
@@ -1410,7 +1412,7 @@ void BattleLevel::PotionUpdate(float _DeltaTime)
 	static float PotionTimer = 0;
 	PotionTimer += _DeltaTime;
 
-	if (2 < PotionTimer)
+	if (1 < PotionTimer)
 	{
 		PotionTimer = 0;
 		ChangeState(BattleState::Select);

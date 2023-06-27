@@ -1,5 +1,6 @@
 #include "PrecompileHeader.h"
 #include "StoreUI.h"
+#include <GameEnginePlatform/GameEngineSound.h>
 #include <GameEngineCore/GameEngineUIRenderer.h>
 #include "BattleUnit.h"
 #include "TextRenderer.h"
@@ -171,6 +172,7 @@ void StoreUI::Start()
 			Cursor->GetTransform()->SetLocalPosition(float4::Lerp(Cursor->GetTransform()->GetLocalPosition(), CursorPos, _DeltaTime * 20));
 			if (GameEngineInput::IsDown("Left") || GameEngineInput::IsDown("Right"))
 			{
+				GameEngineSound::Play("CommandMove.wav");
 				IsSell = !IsSell;
 				if (true == IsSell)
 				{
@@ -183,6 +185,7 @@ void StoreUI::Start()
 			}
 			if (GameEngineInput::IsDown("ButtonA"))
 			{
+				GameEngineSound::Play("CommandSelect.wav");
 				if (true == IsSell)
 				{
 					FSM.ChangeState("Sell");
@@ -194,6 +197,7 @@ void StoreUI::Start()
 			}
 			if (GameEngineInput::IsDown("ButtonB"))
 			{
+				GameEngineSound::Play("Cancel.wav");
 				EndFunction(BeforeItems, BeforeMoney);
 			}
 		},
@@ -238,6 +242,7 @@ void StoreUI::Start()
 
 			if (GameEngineInput::IsDown("Up"))
 			{
+				GameEngineSound::Play("CommandMove.wav");
 				if (CurrentCursor == 0)
 				{
 					if (false == GameEngineInput::IsDown("Up")) { return; }
@@ -252,6 +257,7 @@ void StoreUI::Start()
 
 			if (GameEngineInput::IsDown("Down"))
 			{
+				GameEngineSound::Play("CommandMove.wav");
 				if (CurrentCursor == ItemSize - 1)
 				{
 					if (false == GameEngineInput::IsDown("Down") && false == GameEngineInput::IsUp("MiddleClick")) { return; }
@@ -266,6 +272,7 @@ void StoreUI::Start()
 
 			if (GameEngineInput::IsDown("ButtonA"))
 			{
+				GameEngineSound::Play("CommandSelect.wav");
 				if (Money < Price[CurrentCursor])
 				{
 					Dialogue->SetTextAnim(L"µ·ÀÌ ºÎÁ·ÇÏ³×");
@@ -284,6 +291,7 @@ void StoreUI::Start()
 			}
 			if (GameEngineInput::IsDown("ButtonB"))
 			{
+				GameEngineSound::Play("Cancel.wav");
 				FSM.ChangeState("BuyOrSell");
 				return;
 			}
@@ -333,6 +341,7 @@ void StoreUI::Start()
 
 			if (GameEngineInput::IsDown("Up"))
 			{
+				GameEngineSound::Play("CommandMove.wav");
 				if (CurrentCursor == 0)
 				{
 					if (false == GameEngineInput::IsDown("Up")) { return; }
@@ -347,6 +356,7 @@ void StoreUI::Start()
 
 			if (GameEngineInput::IsDown("Down"))
 			{
+				GameEngineSound::Play("CommandMove.wav");
 				if (CurrentCursor == ItemSize - 1)
 				{
 					if (false == GameEngineInput::IsDown("Down") && false == GameEngineInput::IsUp("MiddleClick")) { return; }
@@ -361,6 +371,7 @@ void StoreUI::Start()
 
 			if (GameEngineInput::IsDown("ButtonA"))
 			{
+				GameEngineSound::Play("CommandSelect.wav");
 				if (999 < Money + Price[CurrentCursor])
 				{
 					Dialogue->SetTextAnim(L"Áö°©ÀÌ °¡µæÃ¡³×");
@@ -402,6 +413,7 @@ void StoreUI::Start()
 			}
 			if (GameEngineInput::IsDown("ButtonB"))
 			{
+				GameEngineSound::Play("Cancel.wav");
 				FSM.ChangeState("BuyOrSell");
 				return;
 			}

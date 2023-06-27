@@ -218,7 +218,10 @@ void BattleLevel::LevelChangeEnd()
 	}
 	FEData::SetPlayerUnits(Units);
 
-
+	if (true == BgmPlayer.IsValid())
+	{
+		BgmPlayer.Stop();
+	}
 	// ¸±¸®Áî
 
 	Tiles->Death();

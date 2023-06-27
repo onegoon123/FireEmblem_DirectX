@@ -1,6 +1,7 @@
 #include "PrecompileHeader.h"
 #include "LevelUpUI.h"
 #include <GameEnginePlatform/GameEngineInput.h>
+#include<GameEnginePlatform/GameEngineSound.h>
 #include <GameEngineCore/GameEngineUIRenderer.h>
 #include "ContentsEnum.h"
 #include "NumberActor.h"
@@ -162,6 +163,7 @@ void LevelUpUI::Start()
 			Count = -1;
 			TimeEvent.Clear();
 			TimeEvent.AddEvent(1.2f, std::bind(&GameEngineFSM::ChangeState, &FSM, "LevelUpText2"));
+			GameEngineSound::Play("LevelUp.wav");
 		},
 			.Update = [this](float _DeltaTime)
 		{
@@ -263,6 +265,8 @@ void LevelUpUI::Start()
 			else if (0 < UpStat.Array[Count])
 			{
 				Number_Stats[Count]->SetValue(Number_Stats[Count]->GetValue() + UpStat.Array[Count]);
+				GameEngineSound::Play("StatUp.wav");
+
 				UpStatBacks[Count]->On();
 				UpStatArrows[Count]->On();
 				TimeEvent.AddEvent(0.5f, std::bind(&GameEngineFSM::ChangeState, &FSM, "StatCheck"));

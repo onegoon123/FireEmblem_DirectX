@@ -1,4 +1,5 @@
 #pragma once
+#include <GameEnginePlatform/GameEngineSound.h>
 #include <GameEngineCore/GameEngineActor.h>
 // Ό³Έν :
 class EXPBar : public GameEngineActor
@@ -20,7 +21,7 @@ public:
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
-
+	void LevelChangeEnd() override;
 private:
 	std::shared_ptr<class GameEngineUIRenderer> Background = nullptr;
 	std::shared_ptr<GameEngineUIRenderer> BarLeft = nullptr;
@@ -28,6 +29,7 @@ private:
 	std::shared_ptr<GameEngineUIRenderer> BarRight = nullptr;
 	std::shared_ptr<class NumberActor> Number = nullptr;
 	std::function<void()> EndEvent = nullptr;
+	GameEngineSoundPlayer SoundPlayer;
 
 	int CurEXP = 0;
 	int PlusEXP = 0; 

@@ -37,7 +37,11 @@ void BattleAnimationLevel::SetBattleData(std::shared_ptr<BattleUnit> _SubjectUni
 	BattleIter = BattleData.begin();
 	ReturnLevelStr = _Level;
 
-	if (SubjectUnit->GetIsPlayer())
+	if (SubjectUnit->GetUnitData().GetIsPlayer() && TargetUnit->GetUnitData().GetIsPlayer())
+	{
+		BgmPlayer = GameEngineSound::Play("HealCommand.mp3");
+	}
+	else if (SubjectUnit->GetIsPlayer())
 	{
 		BgmPlayer = GameEngineSound::Play("PlayerAttack.mp3");
 	}
@@ -54,6 +58,8 @@ void BattleAnimationLevel::SetClassChange(std::shared_ptr<BattleUnit> _BattleUni
 	IsClassChange = true;
 	ChangeClass = _ClassValue;
 	ReturnLevelStr = _Level;
+	BgmPlayer = GameEngineSound::Play("ClassChange.mp3");
+	BgmPlayer.SoundFadeIn(1.0f);
 }
 
 void BattleAnimationLevel::HitEvent()
