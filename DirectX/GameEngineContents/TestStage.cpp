@@ -30,7 +30,7 @@ void TestStage::StageSetting()
 	ClearTargetText = "¸ñÇ¥:Àû Àü¸ê";
 
 	NewPlayerUnit(UnitIdentityCode::Lyn, 1, { 2, 4 }, { ItemCode::KillingSword, ItemCode::IronSword, ItemCode::MasterSeal})->GetUnitData().AddExp(80);
-	NewEnemyUnit(UnitIdentityCode::Soldier, 1, { 4, 3 }, { ItemCode::IronLance });
+	NewEnemyUnit(UnitIdentityCode::Mage, 99, { 4, 3 }, { ItemCode::Fire });
 	NewPlayerUnit(UnitIdentityCode::Kent, 10, { 3, 4 }, { ItemCode::IronSword, ItemCode::KillerLance, ItemCode::Vulnerary })->GetUnitData().AddExp(80);
 	NewPlayerUnit(UnitIdentityCode::Sain, 80, { 3, 5 }, { ItemCode::KillingSword, ItemCode::KillerLance });
 	NewPlayerUnit(UnitIdentityCode::Florina, 1, { 2, 2 }, { ItemCode::KillerLance, ItemCode::SlimLance, ItemCode::Vulnerary });

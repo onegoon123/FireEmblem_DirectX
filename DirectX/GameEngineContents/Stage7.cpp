@@ -3,16 +3,18 @@
 
 Stage7::Stage7()
 {
-	// 임시
-	StartPos.push_back({ 3, 3 });
-	StartPos.push_back({ 2, 4 });
-	StartPos.push_back({ 3, 5 });
-	StartPos.push_back({ 2, 2 });
-	StartPos.push_back({ 1, 3 });
-	StartPos.push_back({ 3, 1 });
-	StartPos.push_back({ 4, 1 });
-	StartPos.push_back({ 5, 1 });
-	StartPos.push_back({ 7, 1 });
+	StartPos.push_back({ 3, 9 });
+	StartPos.push_back({ 2, 11 });
+	StartPos.push_back({ 1, 12 });
+	StartPos.push_back({ 4, 11 });
+	StartPos.push_back({ 1, 10 });
+	StartPos.push_back({ 3, 10 });
+	StartPos.push_back({ 2, 9 });
+	StartPos.push_back({ 5, 10 });
+	StartPos.push_back({ 2, 8 });
+	StartPos.push_back({ 1, 9 });
+	StartPos.push_back({ 3, 12 });
+	StartPos.push_back({ 2, 12 });
 }
 
 Stage7::~Stage7()
@@ -22,8 +24,20 @@ Stage7::~Stage7()
 void Stage7::StageSetting()
 {
 	SetStage(7);
+	ClearTarget = BattleClearTarget::AllKill;
+	ClearTargetText = "목표:적 전멸";
 	OpeningEventInit();
 	ClearEventInit();
+
+	NewPlayerUnit(UnitIdentityCode::Rath, 1, { 2, 8 }, { ItemCode::ShortBow, ItemCode::Vulnerary });
+	NewPlayerUnit(UnitIdentityCode::Matthew, 1, { 1, 9 }, { ItemCode::IronSword });
+	NewPlayerUnit(UnitIdentityCode::Lucius, 1, { 3, 12 }, { ItemCode::Lightning });
+	NewPlayerUnit(UnitIdentityCode::Ninian, 1, { 2, 12 }, { ItemCode::Vulnerary });
+
+
+	NewEnemyUnit(UnitIdentityCode::DarkMage, 1, { 5, 8 }, { ItemCode::Flux });
+
+
 }
 
 void Stage7::OpeningEventInit()

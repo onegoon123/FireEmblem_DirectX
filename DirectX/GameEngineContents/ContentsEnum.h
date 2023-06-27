@@ -74,6 +74,7 @@ enum class UnitIdentityCode
 	Archer,
 	Knight,
 	Mage,
+	DarkMage,
 
 	Batta,	// 0보스
 	Zugu,	// 1보스
@@ -145,6 +146,7 @@ enum class BattleClass
 	Warrior,	// 워리어 *
 	Cleric,		// 시스터
 	Mage,		// 마도사
+	DarkMage,	// 다크메이지
 	Nomad,		// 유목민
 	Thief,		// 도적
 	Assassin,	// 어쌔신 *

@@ -1220,6 +1220,7 @@ TimeStoneState CurTimeStoneState = EffectIn;
 
 void BattleLevel::TimeStoneStart()
 {
+	GameEngineSound::Play("PhaseStart.wav");
 	BattleUI->TimeStoneOn(IsGameOver);
 	EffectTimer = 0;
 	MapEffectTimer = 0;
@@ -1254,6 +1255,7 @@ void BattleLevel::TimeStoneUpdate(float _DeltaTime)
 	if (MapEffectTimer < 0.7f) {
 		MainMap->GetRenderer()->SetLerp({ 0.3f, 0.0f, 0.6f }, MapEffectTimer);
 		MainMap->GetRenderer()->SetBlurLevel(MapEffectTimer * 2.0f);
+		BgmPlayer.SetVolume(1 - MapEffectTimer * 1.25F);
 	}
 
 	switch (CurTimeStoneState)
@@ -1318,6 +1320,7 @@ void BattleLevel::TimeStoneUpdate(float _DeltaTime)
 
 void BattleLevel::TimeStoneEnd()
 {
+	BgmPlayer.SetVolume(1);
 	for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
 	{
 		_Unit->GetRenderer()->SetIsBlur(false);

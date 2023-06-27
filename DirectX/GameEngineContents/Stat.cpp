@@ -97,6 +97,9 @@ void Stat::SetIdentity(UnitIdentityCode _IdentityCode)
 	case UnitIdentityCode::Mage:
 		SetStat_Mage();
 		break;
+	case UnitIdentityCode::DarkMage:
+		SetStat_Mage();
+		break;
 	case UnitIdentityCode::Batta:
 		SetStat_Batta();
 		break;

@@ -533,11 +533,45 @@ int Weapon::GetWeaponeTriangle(std::shared_ptr<Weapon> _SubjectWeapon, std::shar
 			return 0;
 		}
 	}
-	case WeaponType::None:
-	case WeaponType::Bow:
 	case WeaponType::AnimaTome:
+	{
+		switch (_TargetWeapon->WeaponTypeValue)
+		{
+		case WeaponType::DarkTome:
+			return -1;
+		case WeaponType::LightTome:
+			return 1;
+		default:
+			return 0;
+		}
+		break;
+	}
 	case WeaponType::DarkTome:
+	{
+		switch (_TargetWeapon->WeaponTypeValue)
+		{
+		case WeaponType::LightTome:
+			return -1;
+		case WeaponType::AnimaTome:
+			return 1;
+		default:
+			return 0;
+		}
+		break;
+	}
 	case WeaponType::LightTome:
+	{
+		switch (_TargetWeapon->WeaponTypeValue)
+		{
+		case WeaponType::AnimaTome:
+			return -1;
+		case WeaponType::DarkTome:
+			return 1;
+		default:
+			return 0;
+		}
+		break;
+	}
 	default:
 		return 0;
 	}
@@ -599,6 +633,7 @@ bool Weapon::IsUseWeapon(BattleClass _Class)
 	case BattleClass::Mage:
 	{
 		if (WeaponTypeValue == WeaponType::AnimaTome) { return true; }
+		if (WeaponTypeValue == WeaponType::DarkTome) { return true; }
 		return false;
 	}
 	case BattleClass::Nomad:

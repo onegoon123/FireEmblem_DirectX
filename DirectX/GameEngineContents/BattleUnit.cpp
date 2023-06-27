@@ -240,6 +240,13 @@ void BattleUnit::LoadUnitData(Unit _Value)
 		MapSpriteName = "Map_EnemyMage.png";
 		UnitData.IsPlayer = false;
 		break;
+	case UnitIdentityCode::DarkMage:
+		UnitData.UnitCode = EnemyNum++;
+		SetName("다크메이지");
+		UnitData.SetName("Enemy");
+		MapSpriteName = "Map_EnemyMage.png";
+		UnitData.IsPlayer = false;
+		break;
 	default:
 		break;
 	}
@@ -557,6 +564,13 @@ void BattleUnit::SetUnitAnimation(UnitIdentityCode _Value)
 	case UnitIdentityCode::Mage:
 		UnitData.UnitCode = EnemyNum++;
 		SetName("메이지");
+		UnitData.SetName("Enemy");
+		MapSpriteName = "Map_EnemyMage.png";
+		UnitData.IsPlayer = false;
+		break;
+	case UnitIdentityCode::DarkMage:
+		UnitData.UnitCode = EnemyNum++;
+		SetName("다크메이지");
 		UnitData.SetName("Enemy");
 		MapSpriteName = "Map_EnemyMage.png";
 		UnitData.IsPlayer = false;

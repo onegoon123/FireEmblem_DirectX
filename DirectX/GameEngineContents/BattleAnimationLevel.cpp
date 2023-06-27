@@ -105,7 +105,15 @@ void BattleAnimationLevel::HitEvent()
 
 	if (AttackUnit->GetUnitData().GetClassValue() == BattleClass::Mage)
 	{
-		EffectName = "Fire";
+		WeaponType Type = AttackUnit->GetUnitData().GetCurWeapon()->GetWeaponTypeValue();
+		if (Type == WeaponType::AnimaTome)
+		{
+			EffectName = "Fire";
+		}
+		else if (Type == WeaponType::DarkTome)
+		{
+			EffectName = "Flux";
+		}
 		// 마법사 경우 다른 이펙트
 
 		if ((*BattleIter).IsCritical)
