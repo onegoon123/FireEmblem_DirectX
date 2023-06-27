@@ -32,6 +32,10 @@ int Unit::GetRangeStat()
 			return 1;
 		}
 	}
+	if (nullptr == CurWeapon)
+	{
+		return 0;
+	}
 	return CurWeapon->GetRange();
 	//Return;
 }

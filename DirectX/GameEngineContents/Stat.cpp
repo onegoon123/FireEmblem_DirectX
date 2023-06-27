@@ -115,6 +115,18 @@ void Stat::SetIdentity(UnitIdentityCode _IdentityCode)
 	case UnitIdentityCode::Carjiga:
 		SetStat_Carjiga();
 		break;
+	case UnitIdentityCode::Bool:
+		SetStat_Bool();
+		break;
+	case UnitIdentityCode::Yogi:
+		SetStat_Yogi();
+		break;
+	case UnitIdentityCode::Eagler:
+		SetStat_Eagler();
+		break;
+	case UnitIdentityCode::Lundgren:
+		SetStat_Lundgren();
+		break;
 	}
 
 }
@@ -825,6 +837,102 @@ void Stat::SetStat_Carjiga()
 	MainStatValue.Resistance = 0;
 	MainStatValue.Constitution = 15;
 	ClassValue = BattleClass::Brigand;
+	Movement = 5;
+	GrowthRates_HP = 82;
+	GrowthRates_Strength = 50;
+	GrowthRates_Magic = 40;
+	GrowthRates_Dexterity = 30;
+	GrowthRates_Speed = 20;
+	GrowthRates_Luck = 15;
+	GrowthRates_Defense = 10;
+	GrowthRates_Resistance = 13;
+}
+
+void Stat::SetStat_Bool()
+{
+	Level = 5;
+	MainStatValue.HP = 26;
+	MainStatValue.Strength = 8;
+	MainStatValue.Magic = 2;
+	MainStatValue.Dexterity = 4;
+	MainStatValue.Speed = 2;
+	MainStatValue.Luck = 1;
+	MainStatValue.Defense = 10;
+	MainStatValue.Resistance = 0;
+	MainStatValue.Constitution = 13;
+	ClassValue = BattleClass::Knight;
+	Movement = 5;
+	GrowthRates_HP = 82;
+	GrowthRates_Strength = 50;
+	GrowthRates_Magic = 40;
+	GrowthRates_Dexterity = 30;
+	GrowthRates_Speed = 20;
+	GrowthRates_Luck = 15;
+	GrowthRates_Defense = 10;
+	GrowthRates_Resistance = 13;
+}
+
+void Stat::SetStat_Yogi()
+{
+	Level = 6;
+	MainStatValue.HP = 25;
+	MainStatValue.Strength = 9;
+	MainStatValue.Magic = 2;
+	MainStatValue.Dexterity = 7;
+	MainStatValue.Speed = 3;
+	MainStatValue.Luck = 2;
+	MainStatValue.Defense = 11;
+	MainStatValue.Resistance = 1;
+	MainStatValue.Constitution = 12;
+	ClassValue = BattleClass::Knight;
+	Movement = 5;
+	GrowthRates_HP = 82;
+	GrowthRates_Strength = 50;
+	GrowthRates_Magic = 40;
+	GrowthRates_Dexterity = 30;
+	GrowthRates_Speed = 20;
+	GrowthRates_Luck = 15;
+	GrowthRates_Defense = 10;
+	GrowthRates_Resistance = 13;
+}
+
+void Stat::SetStat_Eagler()
+{
+	Level = 1;
+	MainStatValue.HP = 30;
+	MainStatValue.Strength = 10;
+	MainStatValue.Magic = 2;
+	MainStatValue.Dexterity = 6;
+	MainStatValue.Speed = 7;
+	MainStatValue.Luck = 2;
+	MainStatValue.Defense = 10;
+	MainStatValue.Resistance = 5;
+	MainStatValue.Constitution = 12;
+	ClassValue = BattleClass::General;
+	Movement = 5;
+	GrowthRates_HP = 82;
+	GrowthRates_Strength = 50;
+	GrowthRates_Magic = 40;
+	GrowthRates_Dexterity = 30;
+	GrowthRates_Speed = 20;
+	GrowthRates_Luck = 15;
+	GrowthRates_Defense = 10;
+	GrowthRates_Resistance = 13;
+}
+
+void Stat::SetStat_Lundgren()
+{
+	Level = 1;
+	MainStatValue.HP = 35;
+	MainStatValue.Strength = 12;
+	MainStatValue.Magic = 2;
+	MainStatValue.Dexterity = 8;
+	MainStatValue.Speed = 5;
+	MainStatValue.Luck = 6;
+	MainStatValue.Defense = 14;
+	MainStatValue.Resistance = 7;
+	MainStatValue.Constitution = 15;
+	ClassValue = BattleClass::General;
 	Movement = 5;
 	GrowthRates_HP = 82;
 	GrowthRates_Strength = 50;

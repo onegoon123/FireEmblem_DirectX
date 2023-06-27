@@ -352,6 +352,7 @@ private:
 	bool IsGameOver = false;
 #pragma endregion
 
+protected:
 
 	// 커서에 따른 카메라 조절
 	void CameraSetting(int2 _Value);

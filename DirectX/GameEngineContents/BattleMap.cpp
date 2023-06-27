@@ -93,7 +93,7 @@ int BattleMap::GetTerrainCostFoot(Terrain _Value)
 	case Terrain::Forest:
 		return 2;
 	case Terrain::Mountain:
-		return 4;
+		return 3;
 	case Terrain::River:
 		return 5;
 	case Terrain::None:
@@ -332,7 +332,7 @@ void BattleMap::SetTerrainData_Stage8()
 	TerrainData[9] = { Terrain::Plain, Terrain::Forest, Terrain::Plain, Terrain::Plain, Terrain::Forest, Terrain::Cliff, Terrain::Plain, Terrain::Peak, Terrain::Peak, Terrain::Plain, Terrain::Plain, Terrain::Mountain, Terrain::Peak, Terrain::Mountain, Terrain::Mountain };
 	TerrainData[10] = { Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Forest, Terrain::Cliff, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Peak, Terrain::Peak, Terrain::Peak, Terrain::Peak, Terrain::Peak, Terrain::Peak, Terrain::Peak };
 	TerrainData[11] = { Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Cliff, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Peak, Terrain::Peak, Terrain::Peak, Terrain::Peak, Terrain::Plain, Terrain::Plain };
-	TerrainData[12] = { Terrain::Cliff, Terrain::Floor, Terrain::Plain, Terrain::Forest, Terrain::Plain, Terrain::Cliff, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain };
+	TerrainData[12] = { Terrain::Cliff, Terrain::Cliff, Terrain::Plain, Terrain::Forest, Terrain::Plain, Terrain::Cliff, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain };
 	TerrainData[13] = { Terrain::Plain, Terrain::Plain, Terrain::Cliff, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain };
 	TerrainData[14] = { Terrain::Plain, Terrain::Shop, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Forest, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::None, Terrain::House, Terrain::None };
 	TerrainData[15] = { Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Forest, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::None, Terrain::None, Terrain::None };

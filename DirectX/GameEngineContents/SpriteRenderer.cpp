@@ -22,4 +22,5 @@ void SpriteRenderer::Start()
 
 	GetShaderResHelper().SetConstantBufferLink("AtlasData", AtlasData);
 	GetShaderResHelper().SetConstantBufferLink("EffectData", EffectDataValue);
+	GetShaderResHelper().SetConstantBufferLink("FlipData", Flip);
 }

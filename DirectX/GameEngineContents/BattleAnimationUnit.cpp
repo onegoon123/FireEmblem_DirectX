@@ -170,12 +170,15 @@ void BattleAnimationUnit::Start()
 
 	EffectAnimation->CreateAnimation({ .AnimationName = "FireDodge", .SpriteName = "Effect_Fire.png", .Start = 0, .End = 19, .FrameInter = 0.05f, .Loop = false, });
 	EffectAnimation->SetAnimationStartEvent("FireDodge", 14, std::bind(&BattleAnimationUnit::Dodge, this));
-
+	EffectAnimation->SetAnimationStartEvent("FireDodge", 1, std::bind(&GameEngineSound::Play, "Fire1.wav"));
+	EffectAnimation->SetAnimationStartEvent("FireDodge", 13, std::bind(&GameEngineSound::Play, "Fire2.wav"));
 	EffectAnimation->CreateAnimation({ .AnimationName = "Heal", .SpriteName = "Effect_Heal.png", .Start = 0, .End = 40, .FrameInter = 0.05f });
 	EffectAnimation->SetAnimationStartEvent("Heal", 10, SetBright1);
 	EffectAnimation->SetAnimationStartEvent("Heal", 20, SetBright0);
 
-	EffectAnimation->CreateAnimation({ .AnimationName = "FluxHit", .SpriteName = "Effect_Flux.png", .Start = 0, .End = 9, .FrameInter = 0.08f, .Loop = false, });
+	EffectAnimation->CreateAnimation({ .AnimationName = "FluxHit", .SpriteName = "Effect_Flux.png", .Start = 0, .End = 9, .Loop = false, 
+		.FrameTime = { .08f, .2f, .08f, .08f, .08f, .1f, .1f, .1f, .3f, .1f}
+		});
 	EffectAnimation->SetAnimationStartEvent("FluxHit", 0, [this]
 		{
 			EffectAnimation->GetTransform()->SetLocalScale({ 960,640, 1 });
@@ -186,12 +189,15 @@ void BattleAnimationUnit::Start()
 			SetBright0();
 		});
 	EffectAnimation->SetAnimationStartEvent("FluxHit", 1, std::bind(&GameEngineSound::Play, "Fire2.wav"));
-	EffectAnimation->SetAnimationStartEvent("FluxHit", 5, [=] {
+	EffectAnimation->SetAnimationStartEvent("FluxHit", 7, [=] {
 		GameEngineSound::Play("Fire1.wav");
+		GameEngineSound::Play("Boom1.wav");
 		SetBright1();
 		});
 
-	EffectAnimation->CreateAnimation({ .AnimationName = "FluxCritical", .SpriteName = "Effect_Flux.png", .Start = 0, .End = 9, .FrameInter = 0.08f, .Loop = false, });
+	EffectAnimation->CreateAnimation({ .AnimationName = "FluxCritical", .SpriteName = "Effect_Flux.png", .Start = 0, .End = 9, .Loop = false, 
+		.FrameTime = { .08f, .2f, .08f, .08f, .08f, .1f, .1f, .1f, .3f, .1f}
+		});
 	EffectAnimation->SetAnimationStartEvent("FluxCritical", 0, [this]
 		{
 			EffectAnimation->GetTransform()->SetLocalScale({ 960,640, 1 });
@@ -202,12 +208,29 @@ void BattleAnimationUnit::Start()
 			SetBright0();
 		});
 	EffectAnimation->SetAnimationStartEvent("FluxCritical", 1, std::bind(&GameEngineSound::Play, "Fire2.wav"));
-	EffectAnimation->SetAnimationStartEvent("FluxCritical", 5, [=] {
+	EffectAnimation->SetAnimationStartEvent("FluxCritical", 7, [=] {
 		GameEngineSound::Play("Fire1.wav");
 		GameEngineSound::Play("Boom1.wav");
 		SetBright1();
 		});
 
+	EffectAnimation->CreateAnimation({ .AnimationName = "FluxDodge", .SpriteName = "Effect_Flux.png", .Start = 0, .End = 9, .Loop = false, 
+		.FrameTime = { .08f, .2f, .08f, .08f, .08f, .1f, .1f, .1f, .3f, .1f} });
+	EffectAnimation->SetAnimationStartEvent("FluxDodge", 0, [this]
+		{
+			EffectAnimation->GetTransform()->SetLocalScale({ 960,640, 1 });
+		});
+	EffectAnimation->SetAnimationStartEvent("FluxDodge", 8, [=]
+		{
+			EffectAnimation->GetTransform()->SetLocalScale({ -960,640, 1 });
+			SetBright0();
+		});
+	EffectAnimation->SetAnimationStartEvent("FluxDodge", 1, std::bind(&GameEngineSound::Play, "Fire2.wav"));
+	EffectAnimation->SetAnimationStartEvent("FluxDodge", 7, [=] {
+		GameEngineSound::Play("Boom1.wav");
+		SetBright1();
+		Dodge();
+		});
 	EffectAnimation->ChangeAnimation("Idle");
 }
 

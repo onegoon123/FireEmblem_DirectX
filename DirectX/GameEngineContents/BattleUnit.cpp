@@ -637,7 +637,7 @@ void BattleUnit::SetUnitAnimation(UnitIdentityCode _Value)
 		break;
 	case UnitIdentityCode::Lundgren:
 		UnitData.UnitCode = EnemyNum++;
-		SetName("·çµå±×·»");
+		SetName("¶û±×·»");
 		UnitData.SetName("Lundgren");
 		MapSpriteName = "Map_EnemyGeneral.png";
 		UnitData.IsPlayer = false;

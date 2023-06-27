@@ -154,5 +154,9 @@ private:
 	void SetStat_Glass();
 	void SetStat_Migal();
 	void SetStat_Carjiga();
+	void SetStat_Bool();
+	void SetStat_Yogi();
+	void SetStat_Eagler();
+	void SetStat_Lundgren();
 
 };

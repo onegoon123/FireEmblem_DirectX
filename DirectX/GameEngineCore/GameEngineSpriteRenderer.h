@@ -168,12 +168,13 @@ public:
 
 
 protected:
-	void SpriteRenderInit();
 	void Start() override;
 	void Update(float _Delta) override;
 	void Render(float _Delta) override;
+	void SpriteRenderInit();
 	float4 AtlasData;
 	float4 Clip = float4::One;
+	float4 Flip = float4::Zero;
 
 private:
 

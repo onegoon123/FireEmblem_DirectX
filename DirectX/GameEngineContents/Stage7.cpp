@@ -28,6 +28,7 @@ void Stage7::StageSetting()
 	ClearTargetText = "¸ñÇ¥:Àû Àü¸ê";
 	OpeningEventInit();
 	ClearEventInit();
+	CameraSetting({ 0, 13 });
 
 	NewPlayerUnit(UnitIdentityCode::Rath, 1, { 2, 8 }, { ItemCode::ShortBow, ItemCode::Vulnerary });
 	NewPlayerUnit(UnitIdentityCode::Matthew, 1, { 1, 9 }, { ItemCode::IronSword });
@@ -35,9 +36,19 @@ void Stage7::StageSetting()
 	NewPlayerUnit(UnitIdentityCode::Ninian, 1, { 2, 12 }, { ItemCode::Vulnerary });
 
 
-	NewEnemyUnit(UnitIdentityCode::DarkMage, 1, { 5, 8 }, { ItemCode::Flux });
+	NewEnemyUnit(UnitIdentityCode::DarkMage, 5, { 5, 8 }, { ItemCode::Flux });
+	NewEnemyUnit(UnitIdentityCode::Archer, 1, { 10, 12 }, { ItemCode::IronBow });
+	NewEnemyUnit(UnitIdentityCode::Brigand, 2, { 12, 9 }, { ItemCode::IronAxe, ItemCode::IronLance });
+	NewEnemyUnit(UnitIdentityCode::Mercenary, 1, { 13, 6 }, { ItemCode::IronSword });
+	NewEnemyUnit(UnitIdentityCode::Mercenary, 1, { 18, 7 }, { ItemCode::IronSword });
+	NewEnemyUnit(UnitIdentityCode::Mage, 1, { 14, 5 }, { ItemCode::Fire });
+	NewEnemyUnit(UnitIdentityCode::Brigand, 1, { 17, 3 }, { ItemCode::IronAxe });
+	NewEnemyUnit(UnitIdentityCode::DarkMage, 1, { 12, 1 }, { ItemCode::Flux })->SetDetectionRange(2);
+	NewEnemyUnit(UnitIdentityCode::Brigand, 1, { 13, 3 }, { ItemCode::IronAxe })->SetDetectionRange(5);
+	NewEnemyUnit(UnitIdentityCode::DarkMage, 5, { 5, 2 }, { ItemCode::Flux })->SetDetectionRange(7);
+	NewEnemyUnit(UnitIdentityCode::Bool, 1, { 7, 3 }, { ItemCode::SilverLance })->SetDetectionRange(1);
 
-
+	
 }
 
 void Stage7::OpeningEventInit()

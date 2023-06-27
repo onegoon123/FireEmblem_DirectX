@@ -1,4 +1,3 @@
-
 cbuffer TransformData : register(b0)
 {
     float4 Scale;
@@ -56,6 +55,12 @@ cbuffer ClipData : register(b2)
     // float4 AtlasUV;
 }
 
+cbuffer FlipData : register(b3)
+{
+    float4 Flip;
+    // float4 AtlasUV;
+}
+
 // 월드뷰프로젝션
 
 OutPut Texture_VS(Input _Value)
@@ -75,8 +80,22 @@ OutPut Texture_VS(Input _Value)
     //
     //
     // 0,1    1,1
-    OutPutValue.UV.x = (_Value.UV.x * FrameScale.x) + FramePos.x;
-    OutPutValue.UV.y = (_Value.UV.y * FrameScale.y) + FramePos.y;
+    
+    float4 VtxUV = _Value.UV;
+    
+    // -1 0
+    if (Flip.x != 0)
+    {
+        VtxUV.x = 1.0f - VtxUV.x;
+    }
+    
+    if (Flip.y != 0)
+    {
+        VtxUV.y = 1.0f - VtxUV.y;
+    }
+    
+    OutPutValue.UV.x = (VtxUV.x * FrameScale.x) + FramePos.x;
+    OutPutValue.UV.y = (VtxUV.y * FrameScale.y) + FramePos.y;
     
     OutPutValue.ClipUV = _Value.UV;
     
@@ -90,7 +109,7 @@ cbuffer ColorOption : register(b0)
 }
 
 Texture2D DiffuseTex : register(t0);
-SamplerState CLAMPSAMPLER : register(s0);
+SamplerState SAMPLER : register(s0);
 
 struct OutColor
 {
@@ -102,7 +121,7 @@ struct OutColor
 
 float4 Texture_PS(OutPut _Value) : SV_Target0
 {
-    float4 Color = DiffuseTex.Sample(CLAMPSAMPLER, _Value.UV.xy);
+    float4 Color = DiffuseTex.Sample(SAMPLER, _Value.UV.xy);
     
     if (Clip.z == 0)
     {
