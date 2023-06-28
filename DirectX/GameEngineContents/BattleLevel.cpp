@@ -16,6 +16,7 @@
 #include "FEData.h"
 #include "UnitCommand.h"
 #include "FadeEffect.h"
+#include "FERandom.h"
 BattleLevel::BattleLevel()
 {
 	StateUpdate = std::bind(&BattleLevel::PlayerPhaseUpdate, this, std::placeholders::_1);
@@ -46,6 +47,7 @@ void BattleLevel::DebugCheet()
 	if (GameEngineInput::IsDown("Cheet1"))
 	{
 		PlayerUnits.front()->SetMapPos(MainCursor->WorldPos);
+		CursorUnitSelect();
 	}
 	if (GameEngineInput::IsDown("Cheet2"))
 	{
@@ -53,6 +55,7 @@ void BattleLevel::DebugCheet()
 		SelectUnit->SetIsDie(true);
 		SelectUnit->Off();
 		GameOverCheck();
+		CursorUnitSelect();
 	}
 	if (GameEngineInput::IsDown("Cheet3"))
 	{
@@ -61,10 +64,18 @@ void BattleLevel::DebugCheet()
 		NewActor->SetMapPos(MainCursor->WorldPos);
 		NewActor->NewItem(ItemCode::IronSword);
 		PlayerUnits.push_back(NewActor);
+		CursorUnitSelect();
 	}
 	if (GameEngineInput::IsDown("Cheet4"))
 	{
 		ChangeState(BattleState::Clear);
+	}
+	if (GameEngineInput::IsDown("Cheet5"))
+	{
+		if (nullptr == SelectUnit) { return; }
+		SelectUnit->GetUnitData().LevelUp();
+		SelectUnit->GetUnitData().RecoverPersent(1.0f);
+		CursorUnitSelect();
 	}
 }
 void BattleLevel::LevelChangeStart()
@@ -196,7 +207,7 @@ void BattleLevel::LevelChangeStart()
 	ChangeState(BattleState::Opening);
 
 	UnitCommand::ResetCommandList();
-
+	FERandom::SetRandomCount(0);
 }
 
 void BattleLevel::LevelChangeEnd()

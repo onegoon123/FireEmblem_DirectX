@@ -1143,26 +1143,43 @@ std::shared_ptr<SpriteRenderer> BattleAnimationUnit::CreateAnimation(UnitIdentit
 	}
 	case UnitIdentityCode::Glass:
 	{
-		if (nullptr == GameEngineSprite::Find("Battle_EnemyMercenary.png"))
+		if (nullptr == GameEngineSprite::Find("Battle_Glass.png"))
 		{
-			GameEngineSprite::LoadSheet(Dir.GetPlusFileName("Battle_EnemyMercenary.png").GetFullPath(), 7, 12);
+			GameEngineSprite::LoadSheet(Dir.GetPlusFileName("Battle_Glass.png").GetFullPath(), 7, 12);
 		}
-		NewAnim->CreateAnimation({ "Idle", "Battle_EnemyMercenary.png", 0, 0 });
-		NewAnim->CreateAnimation({ .AnimationName = "Attack", .SpriteName = "Battle_EnemyMercenary.png", .Start = 0, .End = 34, .Loop = false,
+		NewAnim->CreateAnimation({ "Idle", "Battle_Glass.png", 0, 0 });
+		NewAnim->CreateAnimation({ .AnimationName = "Attack", .SpriteName = "Battle_Glass.png", .Start = 0, .End = 34, .Loop = false,
 			.FrameTime = { .1f, .1f, .15f, .05f, .05f, .05f, .05f, .05f, .05f, .05f, .05f, .05f, .05f, .05f, .05f, .05f, .05f, .05f, .05f, .6f, .05f, .05f, .05f, .05f, .05f, .05f, .05f, .05f, .05f, .05f, .05f, .05f, .05f, .05f, .05f, } });
 		NewAnim->SetAnimationStartEvent("Attack", 19, std::bind(&BattleAnimationLevel::HitEvent, Level));
 		NewAnim->SetAnimationStartEvent("Attack", 34, std::bind(&BattleAnimationUnit::AttackEnd, this));
-		NewAnim->CreateAnimation({ .AnimationName = "Critical", .SpriteName = "Battle_EnemyMercenary.png", .Loop = false,
+		NewAnim->SetAnimationStartEvent("Attack", 3, std::bind(&GameEngineSound::Play, "Jump.wav"));
+		NewAnim->SetAnimationStartEvent("Attack", 6, std::bind(&GameEngineSound::Play, "WindNoise3.wav"));
+		NewAnim->SetAnimationStartEvent("Attack", 9, std::bind(&GameEngineSound::Play, "WindNoise3.wav"));
+		NewAnim->SetAnimationStartEvent("Attack", 12, std::bind(&GameEngineSound::Play, "WindNoise3.wav"));
+		NewAnim->SetAnimationStartEvent("Attack", 20, std::bind(&GameEngineSound::Play, "WindNoise1.wav"));
+		NewAnim->SetAnimationStartEvent("Attack", 23, std::bind(&GameEngineSound::Play, "Jump.wav"));
+		NewAnim->SetAnimationStartEvent("Attack", 31, std::bind(&GameEngineSound::Play, "Landing.wav"));
+		NewAnim->CreateAnimation({ .AnimationName = "Critical", .SpriteName = "Battle_Glass.png", .Loop = false,
 			.FrameIndex = {35, 36, 35, 37, 35, 36, 35,			38, 39, 40, 41, 42, 43, 44, 45, 46, 47,  48, 49, 50, 51, 52, 53, 54, 55, 56, 57,   58, 59, 60, 61, 62, 63, 64, 65, 66, 67,   68, 69, 70, 71, 72, 73, 74, 75, 76, 77,  78, 79,  20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33},
 			.FrameTime = { .1f, .1f, .1f, .1f, .1f, .1f, .1f,	.04f, .04f, .04f, .04f, .04f, .04f, .04f, .04f, .04f, .04f,   .04f, .04f, .04f, .04f, .04f, .04f, .04f, .04f, .04f, .04f,   .02f, .02f, .02f, .02f, .02f, .02f, .02f, .02f, .02f, .02f,  .02f, .02f, .02f, .02f, .02f, .02f, .04f, .04f, .04f, .04f,   .04f, .6f, .04f, .04f, .04f, .04f, .04f, .04f, .04f, .04f, .04f, .04f, .04f, .04f, .04f, .04f, } });
-		NewAnim->SetAnimationStartEvent("Critical", 10, [this]
+		NewAnim->SetAnimationStartEvent("Critical", 79, [this]
 			{
 				Level->HitEvent();
 				GameEngineSound::Play("Boom1.wav");
 				GameEngineSound::Play("Slash4.wav");
 			});
 		NewAnim->SetAnimationStartEvent("Critical", 33, std::bind(&BattleAnimationUnit::AttackEnd, this));
-		NewAnim->CreateAnimation({ .AnimationName = "Dodge", .SpriteName = "Battle_EnemyMercenary.png", .Loop = false, .FrameIndex = {81, 82, 81, 0}, .FrameTime = {.1f, .6f, .04f, 1.0f} });
+		NewAnim->SetAnimationStartEvent("Critical", 44, std::bind(&GameEngineSound::Play, "WindNoise3.wav"));
+		NewAnim->SetAnimationStartEvent("Critical", 47, std::bind(&GameEngineSound::Play, "WindNoise3.wav"));
+		NewAnim->SetAnimationStartEvent("Critical", 50, std::bind(&GameEngineSound::Play, "WindNoise3.wav"));
+		NewAnim->SetAnimationStartEvent("Critical", 55, std::bind(&GameEngineSound::Play, "Jump.wav"));
+		NewAnim->SetAnimationStartEvent("Critical", 58, std::bind(&GameEngineSound::Play, "WindNoise3.wav"));
+		NewAnim->SetAnimationStartEvent("Critical", 61, std::bind(&GameEngineSound::Play, "WindNoise3.wav"));
+		NewAnim->SetAnimationStartEvent("Critical", 64, std::bind(&GameEngineSound::Play, "WindNoise3.wav"));
+		NewAnim->SetAnimationStartEvent("Critical", 20, std::bind(&GameEngineSound::Play, "WindNoise1.wav"));
+		NewAnim->SetAnimationStartEvent("Critical", 23, std::bind(&GameEngineSound::Play, "Jump.wav"));
+		NewAnim->SetAnimationStartEvent("Critical", 31, std::bind(&GameEngineSound::Play, "Landing.wav"));
+		NewAnim->CreateAnimation({ .AnimationName = "Dodge", .SpriteName = "Battle_Glass.png", .Loop = false, .FrameIndex = {81, 82, 81, 0}, .FrameTime = {.1f, .6f, .04f, 1.0f} });
 		break;
 	}
 	case UnitIdentityCode::Migal:

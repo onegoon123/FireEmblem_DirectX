@@ -1225,11 +1225,10 @@ void BattleLevel::EnemyBattleReturnEnd()
 
 void BattleLevel::InformationStart()
 {
-	Tiles->Clear();
 	FEffect->FadeIn(0.1f);
 	MainCursor->Off();
-	InfoUI->On();
 	InfoUI->SetUnit(SelectUnit);
+	InfoUI->On();
 }
 
 void BattleLevel::InformationUpdate(float _DeltaTime)
@@ -1241,6 +1240,12 @@ void BattleLevel::InformationEnd()
 	FEffect->FadeIn(0.1f);
 	MainCursor->On();
 	InfoUI->Off();
+
+	BattleUI->SelectOn();
+	CursorDirCheck();
+	SetUI_UnitData();	// 유닛 정보 UI로 띄우기
+	MainCursor->Select();
+	BattleUI->SetTerrain(GetTerrain(MainCursor->WorldPos));
 }
 
 static float GameOverTimer = 0;
@@ -1375,6 +1380,12 @@ void BattleLevel::TimeStoneUpdate(float _DeltaTime)
 
 void BattleLevel::TimeStoneEnd()
 {
+	if (true == IsGameOver)
+	{
+		BgmPlayer.Stop();
+		BgmPlayer = GameEngineSound::Play("PlayerMap.mp3");
+		BgmPlayer.SetLoop();
+	}
 	BgmPlayer.SetVolume(1);
 	for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
 	{
@@ -1388,6 +1399,11 @@ void BattleLevel::TimeStoneEnd()
 	}
 	MainMap->GetRenderer()->OffLerp();
 	MainMap->GetRenderer()->SetIsBlur(false);
+
+	GameOverCheck();
+	CursorDirCheck();	// 커서의 방향(정중앙 기준) 체크
+	CursorUnitSelect();
+	BattleUI->SetTerrain(GetTerrain(MainCursor->WorldPos));
 }
 
 bool BattleLevel::GameOverCheck()
@@ -1470,7 +1486,7 @@ void BattleLevel::PotionUpdate(float _DeltaTime)
 	static float PotionTimer = 0;
 	PotionTimer += _DeltaTime;
 
-	if (1 < PotionTimer)
+	if (1.75f < PotionTimer)
 	{
 		PotionTimer = 0;
 		ChangeState(BattleState::Select);

@@ -58,6 +58,11 @@ void GameEngineTextureSetter::Setting()
 
 	ShaderType Type = ParentShader->GetType();
 
+	if (Res == nullptr)
+	{
+		int a = 0;
+	}
+
 	switch (Type)
 	{
 	case ShaderType::None:

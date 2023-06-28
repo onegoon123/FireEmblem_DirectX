@@ -358,7 +358,6 @@ std::list<AttackCommand>& UnitCommand::AttackEnd(std::list<AttackCommand>& _Atta
 	_CommandRecord.AfterTargetUnit = _TargetUnit;
 	_CommandRecord.AfterSubjectItems = Item::SaveItemDataList(_SubjectUnit.GetItems());
 	_CommandRecord.AfterTargetItems = Item::SaveItemDataList(_TargetUnit.GetItems());
-	CommandList.push_back(_CommandRecord);
 
 	// 경험치 계산
 	int SumDamage = 0;
@@ -385,7 +384,10 @@ std::list<AttackCommand>& UnitCommand::AttackEnd(std::list<AttackCommand>& _Atta
 		_AttackList.back().Exp = std::max<int>(1, SumDamage + Enemy.GetLevel() - Player.GetLevel() + 20);
 	}
 	_AttackList.back().IsLevelUp = Player.AddExp(_AttackList.back().Exp);
-
+	if (true == _AttackList.back().IsLevelUp)
+	{
+		_CommandRecord.RandomNum += 8;
+	}
 	if (true == Enemy.GetIsDie())
 	{
 		std::list<std::shared_ptr<Item>> Items = Enemy.GetItems();
@@ -401,6 +403,7 @@ std::list<AttackCommand>& UnitCommand::AttackEnd(std::list<AttackCommand>& _Atta
 		}
 	}
 
+	CommandList.push_back(_CommandRecord);
 	return _AttackList;
 
 }

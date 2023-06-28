@@ -14,6 +14,8 @@ public:
 	SpriteRenderer& operator=(const SpriteRenderer& _Other) = delete;
 	SpriteRenderer& operator=(SpriteRenderer&& _Other) noexcept = delete;
 
+	void SetTexture(const std::string_view& _Name);
+
 	void SetIsBlur(bool _Value)
 	{
 		EffectDataValue.IsBlur = _Value;

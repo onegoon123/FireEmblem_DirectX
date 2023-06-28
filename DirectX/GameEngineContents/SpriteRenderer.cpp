@@ -8,6 +8,12 @@ SpriteRenderer::~SpriteRenderer()
 {
 }
 
+void SpriteRenderer::SetTexture(const std::string_view& _Name)
+{
+	GameEngineSpriteRenderer::SetTexture(_Name);
+	SetName(_Name);
+}
+
 void SpriteRenderer::Start()
 {
 	GameEngineRenderer::Start();

@@ -45,6 +45,7 @@ void UnitInformationUI::SetUnit(std::shared_ptr<BattleUnit> _Unit)
 			ImageName += "Soldier.png";
 			break;
 		default:
+			ImageName += "Enemy.png";
 			break;
 		}
 
@@ -412,6 +413,7 @@ void UnitInformationUI::Update(float _DeltaTime)
 
 	if (GameEngineInput::IsDown("ButtonB") || GameEngineInput::IsDown("RightClick"))
 	{
+		Off();
 		GameEngineSound::Play("Cancel.wav");
 		CurLevel->UnitInformation_Cancel();
 	}

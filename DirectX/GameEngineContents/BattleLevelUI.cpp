@@ -290,6 +290,18 @@ void BattleLevelUI::Start()
 		UI_Fade->GetTransform()->SetLocalScale({ 960, 640 });
 		UI_Fade->SetOrder(100);
 
+		UI_Select->GetTransform()->SetParent(GetTransform(), false);
+		UI_UnitCommand->GetTransform()->SetParent(GetTransform(), false);
+		UI_Attack->GetTransform()->SetParent(GetTransform(), false);
+		UI_Heal->GetTransform()->SetParent(GetTransform(), false);
+		UI_Item->GetTransform()->SetParent(GetTransform(), false);
+		UI_Exchange->GetTransform()->SetParent(GetTransform(), false);
+		UI_FieldCommand->GetTransform()->SetParent(GetTransform(), false);
+		UI_Phase->GetTransform()->SetParent(GetTransform(), false);
+		UI_TimeStone->GetTransform()->SetParent(GetTransform(), false);
+		UI_Store->GetTransform()->SetParent(GetTransform(), false);
+		UI_Cursor->GetTransform()->SetParent(GetTransform(), false);
+		UI_Fade->GetTransform()->SetParent(GetTransform(), false);
 	}
 }
 
