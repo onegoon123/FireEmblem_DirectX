@@ -25,6 +25,7 @@ public:
 	void UnitCommandOn();
 	void UnitCommandSet(bool _IsAttackable, bool _IsCloseUnit, bool _IsItem);
 	void UnitCommandHealSet(bool _IsCloseUnit, bool _IsItem);
+	void UnitCommandDanceSet(bool _IsCloseUnit, bool _IsItem);
 	void UnitCommandConquer();
 	void UnitCommandStore();
 	void FieldCommandOn();

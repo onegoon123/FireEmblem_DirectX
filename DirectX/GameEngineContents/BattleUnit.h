@@ -85,7 +85,7 @@ public:
 	int GetRangeStat() {
 		if (nullptr == UnitData.CurWeapon)
 		{
-			if (UnitData.GetClassValue() == BattleClass::Cleric)
+			if (UnitData.GetClassValue() == BattleClass::Cleric || UnitData.GetClassValue() == BattleClass::Dancer)
 			{
 				return 1;
 			}

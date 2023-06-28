@@ -486,6 +486,61 @@ void BattleLevel::UnitCommandStart()
 		BattleUI->UnitCommandHealSet(IsCloseUnit, IsItem);
 		return;
 	}
+	// 댄서 클래스일 경우
+	if (SelectUnit->GetUnitData().GetClassValue() == BattleClass::Dancer)
+	{
+		AttackSearch();
+		Tiles->SetTileHeal(IsAttack);
+		bool IsCloseUnit = false;
+		bool IsItem = false;
+
+		// 근처에 아군 유닛이 있는지 판단
+		CloseUnits.clear();
+		for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
+		{
+			if (true == _Unit->GetIsDie()) { continue; }
+			if (SelectUnit->GetUnitCode() == _Unit->GetUnitCode()) { continue; }
+
+			int2 UnitPos = SelectUnit->GetMapPos();
+			int2 _UnitPos = _Unit->GetMapPos();
+
+			if (_UnitPos == UnitPos + int2::Up)
+			{
+				CloseUnits.push_back(_Unit);
+				continue;
+			}
+			if (_UnitPos == UnitPos + int2::Down)
+			{
+				CloseUnits.push_back(_Unit);
+				continue;
+			}
+			if (_UnitPos == UnitPos + int2::Left)
+			{
+				CloseUnits.push_back(_Unit);
+				continue;
+			}
+			if (_UnitPos == UnitPos + int2::Right)
+			{
+				CloseUnits.push_back(_Unit);
+				continue;
+			}
+		}
+
+		// 근처에 아군 유닛이 있을때
+		if (1 <= CloseUnits.size())
+		{
+			IsCloseUnit = true;
+		}
+
+		if (0 != SelectUnit->GetUnitData().GetItems().size())
+		{
+			IsItem = true;
+		}
+		// 커맨드 UI 켜기
+		BattleUI->UnitCommandOn();
+		BattleUI->UnitCommandDanceSet(IsCloseUnit, IsItem);
+		return;
+	}
 	// 활은 별도의 범위계산이 필요
 	if (SelectUnit->GetUnitData().GetWeaponTypeValue() == WeaponType::Bow)
 	{

@@ -532,7 +532,7 @@ void BattleLevel::SetTile()
 {
 	Tiles->Clear();
 	if (SelectUnit == nullptr) { return; }
-	if (SelectUnit->GetUnitData().GetClassValue() == BattleClass::Cleric)
+	if (SelectUnit->GetUnitData().GetClassValue() == BattleClass::Cleric || SelectUnit->GetUnitData().GetClassValue() == BattleClass::Dancer)
 	{
 		Tiles->SetTileMove(IsMove);	// 이동 및 공격 범위를 타일로 표시
 		Tiles->SetTileHeal(IsAttack);	// 이동 및 공격 범위를 타일로 표시

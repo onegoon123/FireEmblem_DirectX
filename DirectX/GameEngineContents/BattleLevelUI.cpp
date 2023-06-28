@@ -105,6 +105,14 @@ void BattleLevelUI::UnitCommandHealSet(bool _IsCloseUnit, bool _IsItem)
 	UI_UnitCommand->SetCommandHeal(_IsCloseUnit, _IsItem);
 }
 
+void BattleLevelUI::UnitCommandDanceSet(bool _IsCloseUnit, bool _IsItem)
+{
+	AllOff();
+
+	UI_UnitCommand->On();
+	UI_UnitCommand->SetCommandDance(_IsCloseUnit, _IsItem);
+}
+
 void BattleLevelUI::UnitCommandConquer()
 {
 	AllOff();
