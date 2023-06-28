@@ -8,7 +8,7 @@ Stage10::Stage10()
 	StartPos.push_back({ 6, 15 });
 	StartPos.push_back({ 5, 16 });
 	StartPos.push_back({ 3, 15 });
-	StartPos.push_back({ 3, 16 });
+	StartPos.push_back({ 2, 16 });
 	StartPos.push_back({ 4, 14 });
 	StartPos.push_back({ 2, 15 });
 	StartPos.push_back({ 4, 16 });
@@ -27,6 +27,7 @@ void Stage10::StageSetting()
 
 	OpeningEventInit();
 	ClearEventInit();
+	NewPlayerUnit(UnitIdentityCode::Wallace, 5, { 6, 14 }, { ItemCode::SilverLance });
 
 	NewEnemyUnit(UnitIdentityCode::Soldier, 1, { 14, 14 }, { ItemCode::IronLance });
 	NewEnemyUnit(UnitIdentityCode::Mage, 1, { 15, 15 }, { ItemCode::Fire });
@@ -37,8 +38,8 @@ void Stage10::StageSetting()
 	NewEnemyUnit(UnitIdentityCode::Mercenary, 1, { 8, 8 }, { ItemCode::IronSword });
 	NewEnemyUnit(UnitIdentityCode::Archer, 1, { 7, 4 }, { ItemCode::IronBow });
 	NewEnemyUnit(UnitIdentityCode::Brigand, 1, { 4, 7 }, { ItemCode::IronAxe });
-	NewEnemyUnit(UnitIdentityCode::Knight, 1, { 2, 0 }, { ItemCode::IronLance });
-	NewEnemyUnit(UnitIdentityCode::Lundgren, 1, { 2, 1 }, { ItemCode::SilverLance });
+	NewEnemyUnit(UnitIdentityCode::Knight, 1, { 2, 0 }, { ItemCode::IronLance })->SetDetectionRange(3);
+	NewEnemyUnit(UnitIdentityCode::Lundgren, 1, { 2, 1 }, { ItemCode::SilverLance })->SetDetectionRange(1);
 }
 
 void Stage10::OpeningEventInit()

@@ -148,7 +148,7 @@ void TitleLevel::StateInit()
 		{
 			GameEngineWindow::AppOff();
 		}
-		GameEngineCore::ChangeLevel("Stage0");
+		GameEngineCore::ChangeLevel("TestStage");
 	}
 	});
 

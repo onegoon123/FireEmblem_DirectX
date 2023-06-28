@@ -335,7 +335,12 @@ void BattleAnimationLevel::LevelChangeStart()
 		TerrainRight->SetTexture(GetTerrainTexture(SubjectUnit->GetUnitData().GetTerrainData()));
 	}
 	BackgroundRender->SetTexture(GetBackgroundTexture(SubjectUnit->GetUnitData().GetTerrainData()));
-
+	if (SubjectUnit->GetUnitData().GetIdentityCode() == UnitIdentityCode::Lundgren || TargetUnit->GetUnitData().GetIdentityCode() == UnitIdentityCode::Lundgren || SubjectUnit->GetUnitData().GetIdentityCode() == UnitIdentityCode::Bool || TargetUnit->GetUnitData().GetIdentityCode() == UnitIdentityCode::Bool)
+	{
+		TerrainLeft->SetTexture(GetTerrainTexture(Terrain::Fort));
+		TerrainRight->SetTexture(GetTerrainTexture(Terrain::Fort));
+		BackgroundRender->SetTexture(GetBackgroundTexture(Terrain::Fort));
+	}
 	SubjectAnimation->SetAnimation(SubjectUnit);
 	TargetAnimation->SetAnimation(TargetUnit);
 	if (SubjectUnit->GetUnitData().GetIsPlayer() && TargetUnit->GetUnitData().GetIsPlayer())

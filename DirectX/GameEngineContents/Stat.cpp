@@ -898,7 +898,7 @@ void Stat::SetStat_Yogi()
 
 void Stat::SetStat_Eagler()
 {
-	Level = 1;
+	Level = 5;
 	MainStatValue.HP = 30;
 	MainStatValue.Strength = 10;
 	MainStatValue.Magic = 2;
@@ -922,7 +922,7 @@ void Stat::SetStat_Eagler()
 
 void Stat::SetStat_Lundgren()
 {
-	Level = 1;
+	Level = 5;
 	MainStatValue.HP = 35;
 	MainStatValue.Strength = 12;
 	MainStatValue.Magic = 2;
