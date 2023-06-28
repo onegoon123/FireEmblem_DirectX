@@ -10,7 +10,6 @@
 #include "FERandom.h"
 #include "DebugWindow.h"
 #include "StageSelectWindow.h"
-
 #include "Stage0.h"
 #include "Stage1.h"
 #include "Stage2.h"
@@ -26,6 +25,7 @@
 
 FECore::FECore()
 {
+	
 }
 
 FECore::~FECore()
@@ -119,5 +119,14 @@ void FECore::ResourcesCreate()
 		Pipe->SetDepthState("EngineDepth");
 	}
 
+
+
+	NewDir.MoveParent();
+	NewDir.Move("Font");
+	if (0 == AddFontResourceA(NewDir.GetPlusFileName("Silhoua14.ttf").GetFullPath().data()))
+	{
+		MsgTextBox("폰트설치에 실패했습니다.");
+	}
 	GameEngineFont::Load("Silhoua14");
+	return;
 }
