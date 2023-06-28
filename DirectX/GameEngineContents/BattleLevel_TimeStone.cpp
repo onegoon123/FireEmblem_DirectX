@@ -325,6 +325,7 @@ void BattleLevel::TimeStone_Select()
 	{
 		UnitCommand::PopCommandList();
 	}
+
 	ChangeState(BattleState::Select);
 	return;
 }

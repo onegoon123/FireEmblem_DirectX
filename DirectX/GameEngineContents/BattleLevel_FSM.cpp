@@ -1406,9 +1406,6 @@ void BattleLevel::TimeStoneEnd()
 	MainMap->GetRenderer()->SetIsBlur(false);
 
 	IsGameOver = false;
-	CursorDirCheck();	// 커서의 방향(정중앙 기준) 체크
-	CursorUnitSelect();
-	BattleUI->SetTerrain(GetTerrain(MainCursor->WorldPos));
 }
 
 bool BattleLevel::GameOverCheck()
