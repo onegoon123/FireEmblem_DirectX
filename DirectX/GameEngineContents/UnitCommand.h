@@ -53,6 +53,7 @@ public:
 	static std::list<AttackCommand> Heal(std::shared_ptr<BattleUnit> _SubjectUnit, std::shared_ptr<BattleUnit> _TargetUnit, std::list<std::shared_ptr<Item>>::iterator& _ItemIter);
 	static void PhaseStart(Faction _Faction);
 	static void StoreUse(std::shared_ptr<BattleUnit> _SubjectUnit, std::list<std::shared_ptr<class Item>> _BeforeItems, int _BeforeMoney);
+	static void Dance(std::shared_ptr<BattleUnit> _SubjectUnit, std::shared_ptr<BattleUnit> _TargetUnit);
 
 	static int GetCountTurn();
 

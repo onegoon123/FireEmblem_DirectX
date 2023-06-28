@@ -61,6 +61,7 @@ void GameEngineTextureSetter::Setting()
 	if (Res == nullptr)
 	{
 		int a = 0;
+		return;
 	}
 
 	switch (Type)

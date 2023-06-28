@@ -14,6 +14,7 @@
 #include "ExchangeUI.h"
 #include "TimeStoneUI.h"
 #include "StoreUI.h"
+#include "DanceUI.h"
 BattleLevelUI::BattleLevelUI()
 {
 }
@@ -34,6 +35,7 @@ void BattleLevelUI::AllOff()
 	UI_Phase->Off();
 	UI_TimeStone->Off();
 	UI_Store->Off();
+	UI_Dance->Off();
 }
 
 void BattleLevelUI::SelectOn()
@@ -157,6 +159,13 @@ void BattleLevelUI::HealOn(std::shared_ptr<class BattleUnit> _SelectUnit, std::l
 	UI_Heal->On(_SelectUnit, _TargetUnits);
 }
 
+void BattleLevelUI::DanceOn(std::list<std::shared_ptr<BattleUnit>>& _TargetUnits)
+{
+	AllOff();
+
+	UI_Dance->On(_TargetUnits);
+}
+
 void BattleLevelUI::ItemOn(std::shared_ptr<BattleUnit> _SelectUnit)
 {
 	AllOff();
@@ -275,6 +284,7 @@ void BattleLevelUI::Start()
 		UI_TimeStone = CurLevel->CreateActor<TimeStoneUI>();
 		UI_Store = CurLevel->CreateActor<StoreUI>();
 		UI_Cursor = CurLevel->CreateActor<UICursor>();
+		UI_Dance = CurLevel->CreateActor<DanceUI>();
 
 		UI_UnitCommand->Setting(CurLevel, UI_Cursor);
 		UI_Attack->Setting(CurLevel, UI_Cursor);
@@ -283,6 +293,7 @@ void BattleLevelUI::Start()
 		UI_Exchange->Setting(CurLevel, UI_Cursor);
 		UI_FieldCommand->Setting(CurLevel, UI_Cursor);
 		UI_TimeStone->Setting(CurLevel);
+		UI_Dance->Setting(CurLevel, UI_Cursor);
 
 		UI_Fade = CreateComponent<GameEngineUIRenderer>(RenderOrder::Fade);
 		UI_Fade->ColorOptionValue.MulColor.a = 0;
@@ -302,6 +313,7 @@ void BattleLevelUI::Start()
 		UI_Store->GetTransform()->SetParent(GetTransform(), false);
 		UI_Cursor->GetTransform()->SetParent(GetTransform(), false);
 		UI_Fade->GetTransform()->SetParent(GetTransform(), false);
+		UI_Dance->GetTransform()->SetParent(GetTransform(), false);
 	}
 }
 

@@ -30,6 +30,11 @@ void BattleLevel::UnitCommand_Heal()
 	BattleUI->HealOn(SelectUnit, CloseUnits);
 }
 
+void BattleLevel::UnitCommand_Dance()
+{
+	BattleUI->DanceOn(CloseUnits);
+}
+
 void BattleLevel::UnitCommand_Exchange()
 {
 	Tiles->Clear();
@@ -51,7 +56,14 @@ void BattleLevel::UnitCommand_Cancel()
 
 void BattleLevel::UnitCommand_CommandCancel()
 {
-	Tiles->SetTileAttack(IsAttack);
+	if (SelectUnit->GetUnitData().GetClassValue() == BattleClass::Cleric || SelectUnit->GetUnitData().GetClassValue() == BattleClass::Dancer)
+	{
+		Tiles->SetTileHeal(IsAttack);
+	}
+	else
+	{
+		Tiles->SetTileAttack(IsAttack);
+	}
 	BattleUI->UnitCommandOn();
 }
 
@@ -67,6 +79,14 @@ void BattleLevel::UnitCommand_TargetHeal(std::shared_ptr<BattleUnit> _Target, st
 	UseItem = _ItemIter;
 	ChangeState(BattleState::Heal);
 	return;
+}
+void BattleLevel::UnitCommand_TargetDance(std::shared_ptr<BattleUnit> _Target)
+{
+	UnitCommand::Dance(SelectUnit, _Target);
+	SelectUnit->SetIsTurnEnd(true);
+	_Target->SetIsTurnEnd(false);
+
+	ChangeState(BattleState::Select);
 }
 void BattleLevel::UnitCommand_ItemUse(std::list<std::shared_ptr<Item>>::iterator& _ItemIter)
 {

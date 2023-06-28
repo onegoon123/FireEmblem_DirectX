@@ -301,12 +301,14 @@ public:
 	void UnitCommand_Wait();
 	void UnitCommand_Attack();
 	void UnitCommand_Heal();
+	void UnitCommand_Dance();
 	void UnitCommand_Exchange();
 	void UnitCommand_ExchangeEnd(std::shared_ptr<BattleUnit> _Target);
 	void UnitCommand_Cancel();
 	void UnitCommand_CommandCancel();
 	void UnitCommand_TargetAttack(std::shared_ptr<BattleUnit> _Target);
 	void UnitCommand_TargetHeal(std::shared_ptr<BattleUnit> _Target, std::list<std::shared_ptr<Item>>::iterator& _ItemIter);
+	void UnitCommand_TargetDance(std::shared_ptr<BattleUnit> _Target);
 	void UnitCommand_ItemUse(std::list<std::shared_ptr<class Item>>::iterator& _ItemIter);
 	void UnitCommand_Conquer();
 	void UnitCommand_Store();

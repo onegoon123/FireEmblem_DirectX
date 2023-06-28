@@ -338,6 +338,33 @@ void UnitCommand::StoreUse(std::shared_ptr<BattleUnit> _SubjectUnit, std::list<s
 	CommandList.push_back(CommandRecord);
 }
 
+void UnitCommand::Dance(std::shared_ptr<BattleUnit> _SubjectUnit, std::shared_ptr<BattleUnit> _TargetUnit)
+{
+	UnitCommand CommandRecord;
+	Unit SubjectUnit = Unit(_SubjectUnit->GetUnitData());
+	Unit TargetUnit = Unit(_TargetUnit->GetUnitData());
+
+	CommandRecord.TypeValue = CommandType::Attack;
+	CommandRecord.BeforeSubjectUnit = Unit(SubjectUnit);
+	CommandRecord.BeforeTargetUnit = Unit(TargetUnit);
+	CommandRecord.BeforeSubjectUnitPos = _SubjectUnit->GetBeforeMapPos();
+	CommandRecord.AfterSubjectUnitPos = _SubjectUnit->GetMapPos();
+	CommandRecord.Record = std::string(_TargetUnit->GetName()) + "이(가) 응원을 받았다";
+
+	CommandRecord.BeforeSubjectItems = Item::SaveItemDataList(SubjectUnit.GetItems());
+	CommandRecord.BeforeTargetItems = Item::SaveItemDataList(TargetUnit.GetItems());
+	CommandRecord.AfterSubjectItems = CommandRecord.BeforeSubjectItems;
+	CommandRecord.AfterTargetItems = CommandRecord.BeforeTargetItems;
+
+	TargetUnit.SetIsTurnEnd(false);
+	SubjectUnit.SetIsTurnEnd(true);
+
+	CommandRecord.AfterSubjectUnit = SubjectUnit;
+	CommandRecord.AfterTargetUnit = TargetUnit;
+
+	CommandList.push_back(CommandRecord);
+}
+
 int UnitCommand::GetCountTurn()
 {
 	int Count = 0;

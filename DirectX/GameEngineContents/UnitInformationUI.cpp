@@ -173,6 +173,7 @@ void UnitInformationUI::Start()
 	PortraitRenderer = CreateComponent<GameEngineUIRenderer>(2);
 	PortraitRenderer->GetTransform()->SetLocalScale({ 384, 320 });
 	PortraitRenderer->GetTransform()->SetLocalPosition({ -264, 128 });
+	PortraitRenderer->ImageClippingX(0.95f, ClipXDir::Right);
 
 	UnitRenderer = CreateComponent<GameEngineUIRenderer>(6);
 	UnitRenderer->GetTransform()->SetLocalScale({ 192, 192 });

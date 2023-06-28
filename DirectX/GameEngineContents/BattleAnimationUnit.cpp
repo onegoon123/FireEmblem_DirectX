@@ -119,6 +119,7 @@ void BattleAnimationUnit::Start()
 		GameEngineSprite::LoadSheet(Dir.GetPlusFileName("Effect_Fire.png").GetFullPath(), 5, 7);
 		GameEngineSprite::LoadSheet(Dir.GetPlusFileName("Effect_Heal.png").GetFullPath(), 5, 9);
 		GameEngineSprite::LoadSheet(Dir.GetPlusFileName("Effect_Flux.png").GetFullPath(), 5, 2);
+		GameEngineSprite::LoadSheet(Dir.GetPlusFileName("Effect_Lightning.png").GetFullPath(), 5, 7);
 
 	}
 
@@ -231,6 +232,38 @@ void BattleAnimationUnit::Start()
 		SetBright1();
 		Dodge();
 		});
+
+	EffectAnimation->CreateAnimation({ .AnimationName = "LightningHit", .SpriteName = "Effect_Lightning.png", .Loop = false,
+		.FrameIndex = {0, 1, 2, 3, 4, 5, 6, 7, 33,  16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32},
+		.FrameTime = { .05f, .05f, .05f, .05f, .05f, .05f, .05f, .05f, .05f,  .15f, .02f, .02f, .02f, .02f, .02f, .02f, .02f, .02f, .02f, .02f, .02f, .02f, .02f, .02f, .02f, .02f}
+		});
+	EffectAnimation->SetAnimationStartEvent("LightningHit", 0, std::bind(&GameEngineSound::Play, "Charge.wav"));
+	EffectAnimation->SetAnimationStartEvent("LightningHit", 33, std::bind(&GameEngineSound::Play, "Boom2.wav"));
+	EffectAnimation->SetAnimationStartEvent("LightningHit", 16, SetBright1);
+	EffectAnimation->SetAnimationStartEvent("LightningHit", 19, SetBright0);
+
+	EffectAnimation->CreateAnimation({ .AnimationName = "LightningCritical", .SpriteName = "Effect_Lightning.png", .Loop = false,
+		.FrameIndex = {0, 1, 2, 3, 4, 5, 6, 7, 33,  16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32},
+		.FrameTime = { .05f, .05f, .05f, .05f, .05f, .05f, .05f, .05f, .05f,  .15f, .02f, .02f, .02f, .02f, .02f, .02f, .02f, .02f, .02f, .02f, .02f, .02f, .02f, .02f, .02f, .02f}
+		});
+	EffectAnimation->SetAnimationStartEvent("LightningCritical", 0, std::bind(&GameEngineSound::Play, "Charge.wav"));
+	EffectAnimation->SetAnimationStartEvent("LightningCritical", 33, std::bind(&GameEngineSound::Play, "Boom2.wav"));
+	EffectAnimation->SetAnimationStartEvent("LightningCritical", 16, [=] {
+		GameEngineSound::Play("Boom1.wav");
+		SetBright1();
+		});
+	EffectAnimation->SetAnimationStartEvent("LightningCritical", 19, SetBright0);
+
+	EffectAnimation->CreateAnimation({ .AnimationName = "LightningDodge", .SpriteName = "Effect_Lightning.png", .Loop = false,
+		.FrameIndex = {0, 1, 2, 3, 4, 5, 6, 7, 33,  16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32},
+		.FrameTime = { .05f, .05f, .05f, .05f, .05f, .05f, .05f, .05f, .05f,  .15f, .02f, .02f, .02f, .02f, .02f, .02f, .02f, .02f, .02f, .02f, .02f, .02f, .02f, .02f, .02f, .02f}
+		});
+	EffectAnimation->SetAnimationStartEvent("LightningDodge", 0, std::bind(&GameEngineSound::Play, "Charge.wav"));
+	EffectAnimation->SetAnimationStartEvent("LightningDodge", 33, std::bind(&GameEngineSound::Play, "Boom2.wav"));
+	EffectAnimation->SetAnimationStartEvent("LightningDodge", 16, [=] {
+		Dodge();
+		});
+
 	EffectAnimation->ChangeAnimation("Idle");
 }
 
@@ -799,7 +832,7 @@ std::shared_ptr<SpriteRenderer> BattleAnimationUnit::CreateAnimation(UnitIdentit
 		NewAnim->CreateAnimation({ "Idle", "Battle_Lucius.png", 0, 0 });
 		NewAnim->CreateAnimation({ .AnimationName = "Attack", .SpriteName = "Battle_Lucius.png", .Start = 0, .End = 16, .Loop = false, 
 			.FrameTime = {.08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .05f, .6f, .08f, .08f, .08f, .08f, } });
-		NewAnim->SetAnimationStartEvent("Attack", 12, std::bind(&BattleAnimationLevel::HitEvent, Level));
+		NewAnim->SetAnimationStartEvent("Attack", 11, std::bind(&BattleAnimationLevel::HitEvent, Level));
 		NewAnim->SetAnimationStartEvent("Attack", 16, std::bind(&BattleAnimationUnit::AttackEnd, this));
 		NewAnim->CreateAnimation({ .AnimationName = "Critical", .SpriteName = "Battle_Lucius.png", .Start = 0, .End = 16, .Loop = false,
 			.FrameTime = {.08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .08f, .05f, .6f, .08f, .08f, .08f, .08f, } });

@@ -76,6 +76,10 @@ void BattleAnimationLevel::HitEvent()
 		{
 			TimeEvent.AddEvent(1.0f, std::bind(&BattleAnimationUI::SetDamage, UI, (*BattleIter).TargetUnit));
 		}
+		else if (AttackUnit->GetUnitData().GetClassValue() == BattleClass::Monk)
+		{
+			TimeEvent.AddEvent(0.5f, std::bind(&BattleAnimationUI::SetDamage, UI, (*BattleIter).TargetUnit));
+		}
 		else
 		{
 			UI->SetDamage((*BattleIter).TargetUnit);
@@ -126,6 +130,25 @@ void BattleAnimationLevel::HitEvent()
 			EffectName += "Hit";
 			TimeEvent.AddEvent(0.8f, std::bind(&BattleAnimationLevel::CameraShake, this, 0.2f));
 			TimeEvent.AddEvent(0.8f, std::bind(&GameEngineSound::Play, "Slash1.wav"));
+		}
+		else
+		{
+			EffectName += "Dodge";
+		}
+	}
+	else if (AttackUnit->GetUnitData().GetClassValue() == BattleClass::Monk)
+	{
+		EffectName = "Lightning";
+		if ((*BattleIter).IsCritical)
+		{
+			EffectName += "Critical";
+			TimeEvent.AddEvent(0.4f, std::bind(&BattleAnimationLevel::CameraShake, this, 0.4f));
+		}
+		else if ((*BattleIter).IsHit)
+		{
+			EffectName += "Hit";
+			TimeEvent.AddEvent(0.4f, std::bind(&BattleAnimationLevel::CameraShake, this, 0.2f));
+			TimeEvent.AddEvent(0.4f, std::bind(&GameEngineSound::Play, "Slash1.wav"));
 		}
 		else
 		{

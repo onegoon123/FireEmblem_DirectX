@@ -210,6 +210,9 @@
     <ClCompile Include="TestStage.cpp">
       <Filter>Levels\Stage</Filter>
     </ClCompile>
+    <ClCompile Include="DanceUI.cpp">
+      <Filter>Battle\UI\Battle</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FECore.h" />
@@ -394,6 +397,9 @@
     </ClInclude>
     <ClInclude Include="TestStage.h">
       <Filter>Levels\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="DanceUI.h">
+      <Filter>Battle\UI\Battle</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

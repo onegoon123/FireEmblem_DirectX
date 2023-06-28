@@ -128,8 +128,8 @@ void UnitCommandUI::SetCommandDance(bool _IsCloseUnit, bool _IsItem)
 
 	if (true == _IsCloseUnit)
 	{
-		CommandFunctions.push_back(std::bind(&BattleLevel::UnitCommand_Heal, LevelPtr)); // 지팡이 커맨드
-		Texts.push_back("응원");
+		CommandFunctions.push_back(std::bind(&BattleLevel::UnitCommand_Dance, LevelPtr)); // 지팡이 커맨드
+		Texts.push_back("춤");
 	}
 	if (true == _IsItem)
 	{

@@ -505,7 +505,7 @@ void ExchangeUI::ItemSelectUpdate(float _DeltaTime)
 void ExchangeUI::SetTarget()
 {
 	RightUnit = *TargetIter;
-	Cursor_Map->SetMapPos(RightUnit->GetMapPos());
+	Cursor_Map->SetCursorPos(RightUnit->GetMapPos());
 }
 
 void ExchangeUI::ItemChange()

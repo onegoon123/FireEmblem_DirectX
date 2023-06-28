@@ -220,6 +220,7 @@ void BattleLevel::PlayerPhaseEnd()
 	}
 }
 
+static bool IsSelectStartFrame = false;
 void BattleLevel::SelectStart()
 {
 	// Select 상태가 시작될때 마다 모든 유닛의 행동이 끝났는지 체크
@@ -250,21 +251,20 @@ void BattleLevel::SelectStart()
 	BattleUI->SelectOn();
 	CursorDirCheck();
 	// 적 타일 체크
-	EnemyTileCheck();
-	// 선택된 유닛이 있다면 유닛 데이터 지정
-	if (nullptr != SelectUnit)
-	{
-		SetUI_UnitData();	// 유닛 정보 UI로 띄우기
-		MoveSearch();	// 이동범위 탐색, 자동으로 공격범위도 탐색
-		SetTile();
-		MainCursor->Select();
-	}
+	
 
 	BattleUI->SetTerrain(GetTerrain(MainCursor->WorldPos));
+	IsSelectStartFrame = true;
 }
 
 void BattleLevel::SelectUpdate(float _DeltaTime)
 {
+	if (true == IsSelectStartFrame)
+	{
+		IsSelectStartFrame = false;
+		EnemyTileCheck();
+		CursorUnitSelect();
+	}
 	if (true == IsMouseOn)
 	{
 		CursorMoveMouse();
@@ -370,7 +370,7 @@ void BattleLevel::MoveEnd()
 {
 	// Move State 종료시 화살표와 이동타일을 제거
 	Arrows->Off();
-	Tiles->Clear();
+	//Tiles->Clear();
 	//SelectUnit->SetIdle();
 	BattleUI->AllOff();
 }
@@ -378,6 +378,7 @@ void BattleLevel::MoveEnd()
 void BattleLevel::MoveWaitStart()
 {
 	// MoveWait State가 시작시 값을 초기화
+	Tiles->Clear();
 	MainCursor->Off();
 	MoveIndex = 0;
 	SelectUnit->SetBeforeMapPos();
@@ -1396,11 +1397,15 @@ void BattleLevel::TimeStoneEnd()
 	{
 		_Unit->GetRenderer()->SetIsBlur(false);
 		_Unit->GetRenderer()->OffLerp();
+		if (true == _Unit->GetIsCheckTile())
+		{
+			_Unit->GetRenderer()->SetLerp({ 1.0f, 0.0f, 0.5f }, 0.3f);
+		}
 	}
 	MainMap->GetRenderer()->OffLerp();
 	MainMap->GetRenderer()->SetIsBlur(false);
 
-	GameOverCheck();
+	IsGameOver = false;
 	CursorDirCheck();	// 커서의 방향(정중앙 기준) 체크
 	CursorUnitSelect();
 	BattleUI->SetTerrain(GetTerrain(MainCursor->WorldPos));

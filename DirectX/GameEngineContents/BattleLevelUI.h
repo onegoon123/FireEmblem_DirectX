@@ -32,6 +32,7 @@ public:
 	void TimeStoneOn(bool _IsGameOver = false);
 	void AttackOn(std::shared_ptr<class BattleUnit> _SelectUnit, std::list<std::shared_ptr<BattleUnit>>& _TargetUnits);
 	void HealOn(std::shared_ptr<class BattleUnit> _SelectUnit, std::list<std::shared_ptr<BattleUnit>>& _TargetUnits);
+	void DanceOn(std::list<std::shared_ptr<BattleUnit>>& _TargetUnits);
 	void ItemOn(std::shared_ptr<BattleUnit> _SelectUnit);
 	void ExchangeOn(std::shared_ptr<BattleUnit> _SelectUnit, std::list<std::shared_ptr<BattleUnit>>& _TargetUnits);
 	void PhaseOn(Faction _Faction);
@@ -63,6 +64,7 @@ private:
 	std::shared_ptr <class GameEngineUIRenderer> UI_Fade = nullptr;
 	std::shared_ptr <class TimeStoneUI> UI_TimeStone = nullptr;
 	std::shared_ptr <class StoreUI> UI_Store = nullptr;
+	std::shared_ptr <class DanceUI> UI_Dance = nullptr;
 
 	float FadeSpeed = 0.0f;
 	float FadeTimer = 0.0f;

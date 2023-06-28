@@ -13,6 +13,10 @@ Stage6::Stage6()
 	StartPos.push_back({ 4, 1 });
 	StartPos.push_back({ 5, 1 });
 	StartPos.push_back({ 7, 1 });
+	StartPos.push_back({ 7, 1 });
+	StartPos.push_back({ 7, 1 });
+	StartPos.push_back({ 7, 1 });
+	StartPos.push_back({ 7, 1 });
 }
 
 Stage6::~Stage6()
