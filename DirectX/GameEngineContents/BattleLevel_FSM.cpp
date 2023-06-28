@@ -1532,6 +1532,7 @@ void BattleLevel::ClearEnd()
 
 void BattleLevel::ClassChangeStart()
 {
+	BgmPlayer.SoundFadeOut(0.5f);
 	for (std::shared_ptr<BattleUnit> _Unit : PlayerUnits)
 	{
 		_Unit->GetRenderer()->SetIsBlur(true);

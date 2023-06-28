@@ -819,7 +819,9 @@ std::shared_ptr<SpriteRenderer> BattleAnimationUnit::CreateAnimation(UnitIdentit
 			GameEngineSprite::LoadSheet(Dir.GetPlusFileName("Battle_Ninian.png").GetFullPath(), 6, 8);
 		}
 		NewAnim->CreateAnimation({ "Idle", "Battle_Ninian.png", 0, 0 });
-		NewAnim->CreateAnimation({ .AnimationName = "Heal", .SpriteName = "Battle_Ninian.png", .Start = 0, .End = 45, .FrameInter = 0.06f, .Loop = false, });
+		NewAnim->CreateAnimation({ .AnimationName = "Attack", .SpriteName = "Battle_Ninian.png", .Start = 0, .End = 45, .FrameInter = 0.06f, .Loop = false, });
+		NewAnim->SetAnimationStartEvent("Attack", 37, std::bind(&GameEngineSound::Play, "Heal.wav"));
+		NewAnim->SetAnimationStartEvent("Attack", 45, std::bind(&BattleAnimationUnit::AttackEnd, this));
 		NewAnim->CreateAnimation({ .AnimationName = "Dodge", .SpriteName = "Battle_Ninian.png", .Loop = false, .FrameIndex = {46, 47, 46, 0}, .FrameTime = {.1f, .6f, .04f, 1.0f} });
 		break;
 	}
@@ -1389,6 +1391,9 @@ void BattleAnimationUnit::AttackLoopEnd()
 void BattleAnimationUnit::AttackEnd()
 {
 	GetTransform()->SetLocalPosition({ 0, 0, 0 });
-	CurAnimation->ChangeAnimation("Idle");
+	if (IdentityValue != UnitIdentityCode::Ninian)
+	{
+		CurAnimation->ChangeAnimation("Idle");
+	}
 	Level->TurnEnd();
 }

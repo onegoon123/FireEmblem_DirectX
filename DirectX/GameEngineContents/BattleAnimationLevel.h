@@ -18,6 +18,7 @@ public:
 	BattleAnimationLevel& operator=(BattleAnimationLevel&& _Other) noexcept = delete;
 
 	static void SetBattleData(std::shared_ptr<BattleUnit> _SubjectUnit, std::shared_ptr<BattleUnit> _TargetUnit, const std::list<AttackCommand>& _Data, const std::string_view& _Level);
+	static void SetDance(std::shared_ptr<BattleUnit> _SubjectUnit, std::shared_ptr<BattleUnit> _TargetUnit, const std::string_view& _Level);
 	static void SetClassChange(std::shared_ptr<BattleUnit> _BattleUnit, BattleClass _ClassValue, const std::string_view& _Level);
 
 	void HitEvent();

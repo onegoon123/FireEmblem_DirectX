@@ -213,15 +213,29 @@ void BattleAnimationUI::SetDataHeal(std::shared_ptr<BattleUnit> _Unit1, std::sha
 
 	Text_PlayerName->SetText(_Unit1->GetName());
 	Text_EnemyName->SetText(_Unit2->GetName());
-	Text_PlayerWeaponName->SetText("라이브");
+	if (Player.GetClassValue() == BattleClass::Cleric)
+	{
+		Text_PlayerWeaponName->SetText("라이브");
+		PlayerWeaponIcon->On();
+		PlayerWeaponIcon->SetFrame(21);
+		Number_PlayerDamage->SetValue(Player.GetMainStat().Magic + 10);
+		Number_PlayerHit->SetValue(100);
+		Number_PlayerCritical->SetValue(0);
+	}
+	else
+	{
+		Text_PlayerWeaponName->SetText(" ");
+		PlayerWeaponIcon->Off();
+		Number_PlayerDamage->SetValue(0);
+		Number_PlayerHit->SetValue(0);
+		Number_PlayerCritical->SetValue(0);
+	}
 	Text_EnemyWeaponName->SetText(" ");
 
 	Number_PlayerHP->Setting(Player.GetHP());
 
 
-	Number_PlayerDamage->SetValue(Player.GetMainStat().Magic + 10);
-	Number_PlayerHit->SetValue(100);
-	Number_PlayerCritical->SetValue(0);
+	
 
 	EnemyHPBar->Setting(Enemy.GetHP(), Enemy.GetMaxHP());
 
@@ -232,8 +246,7 @@ void BattleAnimationUI::SetDataHeal(std::shared_ptr<BattleUnit> _Unit1, std::sha
 	Number_EnemyCritical->SetValue(0);
 
 
-	PlayerWeaponIcon->On();
-	PlayerWeaponIcon->SetFrame(21);
+	
 	EnemyWeaponIcon->Off();
 
 	PlayerTriangle->Off();

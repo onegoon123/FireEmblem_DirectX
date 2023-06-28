@@ -286,6 +286,7 @@ std::list<AttackCommand> UnitCommand::Heal(std::shared_ptr<BattleUnit> _SubjectU
 
 	CommandRecord.AfterSubjectItems = Item::SaveItemDataList(_SubjectUnit->GetUnitData().GetItems());
 	CommandRecord.AfterSubjectUnit = CommandRecord.BeforeSubjectUnit;
+	CommandRecord.AfterSubjectUnit.AddExp(20);
 	CommandRecord.AfterSubjectUnit.SetIsTurnEnd(true);
 
 	CommandRecord.AfterTargetItems = Item::SaveItemDataList(TargetUnit.GetItems());
@@ -358,6 +359,7 @@ void UnitCommand::Dance(std::shared_ptr<BattleUnit> _SubjectUnit, std::shared_pt
 
 	TargetUnit.SetIsTurnEnd(false);
 	SubjectUnit.SetIsTurnEnd(true);
+	SubjectUnit.AddExp(20);
 
 	CommandRecord.AfterSubjectUnit = SubjectUnit;
 	CommandRecord.AfterTargetUnit = TargetUnit;

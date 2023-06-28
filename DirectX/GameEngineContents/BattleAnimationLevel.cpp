@@ -52,6 +52,27 @@ void BattleAnimationLevel::SetBattleData(std::shared_ptr<BattleUnit> _SubjectUni
 	BgmPlayer.SoundFadeIn(1.0f);
 }
 
+void BattleAnimationLevel::SetDance(std::shared_ptr<BattleUnit> _SubjectUnit, std::shared_ptr<BattleUnit> _TargetUnit, const std::string_view& _Level)
+{
+	BattleData.clear();
+	AttackCommand NewAttack;
+	SubjectUnit = _SubjectUnit;
+	TargetUnit = _TargetUnit;
+	NewAttack.SubjectUnit = _SubjectUnit->GetUnitData();
+	NewAttack.TargetUnit = _TargetUnit->GetUnitData();
+	NewAttack.IsHit = true;
+	NewAttack.SubjectAttack = true;
+	NewAttack.Exp = 20;
+	NewAttack.IsLevelUp = 80 <= NewAttack.SubjectUnit.GetExp();
+	BattleData.push_back(NewAttack);
+	BattleIter = BattleData.begin();
+	ReturnLevelStr = _Level;
+	IsClassChange = false;
+
+	BgmPlayer = GameEngineSound::Play("Dance.mp3");
+	BgmPlayer.SoundFadeIn(1.0f);
+}
+
 void BattleAnimationLevel::SetClassChange(std::shared_ptr<BattleUnit> _BattleUnit, BattleClass _ClassValue, const std::string_view& _Level)
 {
 	SubjectUnit = _BattleUnit;
@@ -332,6 +353,10 @@ void BattleAnimationLevel::LevelChangeStart()
 
 void BattleAnimationLevel::LevelChangeEnd()
 {
+	if (SubjectUnit->GetUnitData().GetClassValue() == BattleClass::Dancer)
+	{
+		SubjectUnit->GetUnitData().AddExp(20);
+	}
 	GameEngineTime::GlobalTime.SetGlobalTimeScale(1.0f);
 	BgmPlayer.Stop();
 }
@@ -340,6 +365,7 @@ void BattleAnimationLevel::PlayAttack()
 {
 	if (BattleIter == BattleData.end())
 	{
+		
 		if (false == LeftUnit->GetIsDie())
 		{
 			if (SubjectUnit->GetIsPlayer())
@@ -350,6 +376,8 @@ void BattleAnimationLevel::PlayAttack()
 			{
 				UI->SetEXP(TargetUnit->GetUnitData().GetExp(), BattleData.back().Exp, BattleData.back().TargetUnit);
 			}
+
+			
 
 			if (true == BattleData.back().IsLevelUp)
 			{

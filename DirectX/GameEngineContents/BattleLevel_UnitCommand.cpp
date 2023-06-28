@@ -82,11 +82,12 @@ void BattleLevel::UnitCommand_TargetHeal(std::shared_ptr<BattleUnit> _Target, st
 }
 void BattleLevel::UnitCommand_TargetDance(std::shared_ptr<BattleUnit> _Target)
 {
+	BattleAnimationLevel::SetDance(SelectUnit, _Target, GetName());
 	UnitCommand::Dance(SelectUnit, _Target);
 	SelectUnit->SetIsTurnEnd(true);
 	_Target->SetIsTurnEnd(false);
-
-	ChangeState(BattleState::Select);
+	MainCursor->Off();
+	ChangeState(BattleState::ClassChange);
 }
 void BattleLevel::UnitCommand_ItemUse(std::list<std::shared_ptr<Item>>::iterator& _ItemIter)
 {
