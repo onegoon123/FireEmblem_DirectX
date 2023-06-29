@@ -39,6 +39,13 @@ void BattleUnit::SetIdle()
 	FrontRenderer->Off();
 }
 
+void BattleUnit::DieEvent()
+{
+	GameEngineSound::Play("Die.wav");
+	IsDieEvent = true;
+	Timer = 0;
+}
+
 void BattleUnit::SetIsTurnEnd(bool _Value)
 {
 	UnitData.IsTurnEnd = _Value;
@@ -247,6 +254,14 @@ void BattleUnit::LoadUnitData(Unit _Value)
 		MapSpriteName = "Map_EnemyMage.png";
 		UnitData.IsPlayer = false;
 		break;
+	case UnitIdentityCode::PegasusKnight:
+		UnitData.UnitCode = EnemyNum++;
+		SetName("페가수스나이트");
+		UnitData.SetName("Enemy");
+		MapSpriteName = "Map_EnemyPegasusKnight.png";
+		WalkSoundName = "Walk_Pegasus.wav";
+		UnitData.IsPlayer = false;
+		break;
 	default:
 		break;
 	}
@@ -303,6 +318,30 @@ void BattleUnit::LoadUnitData(Unit _Value)
 	FrontRenderer->ChangeAnimation("Select");
 }
 
+void BattleUnit::SetUnitData(Unit _Value, bool _UnitOnOff)
+{
+	if (UnitData.IdentityCode != _Value.IdentityCode)
+	{
+		SetUnitAnimation(_Value.IdentityCode);
+	}
+	UnitData = _Value;
+	if (_UnitOnOff == true)
+	{
+		if (false == UnitData.IsDie)
+		{
+			On();
+			Renderer->SetBrightness(0);
+			Renderer->SetOpacity(1);
+			IsDieEvent = false;
+		}
+		else
+		{
+			Off();
+		}
+	}
+	SetIsTurnEnd(GetIsTurnEnd());
+}
+
 bool BattleUnit::IsAttackable(int _Distance)
 {
 	if (nullptr == UnitData.CurWeapon)
@@ -339,14 +378,24 @@ bool BattleUnit::IsAttackable(int2 _Other)
 
 void BattleUnit::Start()
 {
-	
-
 	SetMapPos({ 0,0 });
 }
 
 void BattleUnit::Update(float _DeltaTime)
 {
 	MapUnit::Update(_DeltaTime);
+	if (false == IsDieEvent) { return; }
+
+	Timer += _DeltaTime;
+	Renderer->SetOpacity(1 - Timer);
+	Renderer->SetBrightness(1 - Timer);
+	if (1 < Timer)
+	{
+		Off();
+		Renderer->SetBrightness(0);
+		Renderer->SetOpacity(1);
+		IsDieEvent = false;
+	}
 }
 
 void BattleUnit::SetMoveDir(int2 _Dir)
@@ -573,6 +622,14 @@ void BattleUnit::SetUnitAnimation(UnitIdentityCode _Value)
 		SetName("다크메이지");
 		UnitData.SetName("Enemy");
 		MapSpriteName = "Map_EnemyMage.png";
+		UnitData.IsPlayer = false;
+		break;
+	case UnitIdentityCode::PegasusKnight:
+		UnitData.UnitCode = EnemyNum++;
+		SetName("페가수스나이트");
+		UnitData.SetName("Enemy");
+		MapSpriteName = "Map_EnemyPegasusKnight.png";
+		WalkSoundName = "Walk_Pegasus.wav";
 		UnitData.IsPlayer = false;
 		break;
 	case UnitIdentityCode::Batta:

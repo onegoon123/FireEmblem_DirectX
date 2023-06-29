@@ -44,8 +44,11 @@ void UnitInformationUI::SetUnit(std::shared_ptr<BattleUnit> _Unit)
 		case BattleClass::Soldier:
 			ImageName += "Soldier.png";
 			break;
+		case BattleClass::PegasusKnight:
+			ImageName += "Pegasus.png";
+			break;
 		default:
-			ImageName += "Enemy.png";
+			ImageName += "BattleIcon_Enemy.png";
 			break;
 		}
 

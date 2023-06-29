@@ -70,11 +70,22 @@ void FECore::GameStart()
 	GameEngineCore::CreateLevel<Stage10>();
 	GameEngineCore::CreateLevel<TestStage>();
 	GameEngineCore::ChangeLevel("TitleLevel");
+
+	GameEngineFont::Load("Silhoua14");
+
 }
 
 void FECore::GameEnd()
 {
-
+	GameEngineDirectory NewDir;
+	NewDir.MoveParentToDirectory("ContentResources");
+	NewDir.Move("ContentResources");
+	NewDir.Move("Font");
+	if (0 == RemoveFontResourceA(NewDir.GetPlusFileName("Silhoua14.ttf").GetFullPath().data()))
+	{
+		MsgTextBox("폰트삭제에 실패했습니다.");
+	}
+	SendMessage(HWND_BROADCAST, WM_FONTCHANGE, NULL, NULL);
 }
 
 void FECore::ResourcesCreate()
@@ -82,6 +93,14 @@ void FECore::ResourcesCreate()
 	GameEngineDirectory NewDir;
 	NewDir.MoveParentToDirectory("ContentResources");
 	NewDir.Move("ContentResources");
+	NewDir.Move("Font");
+	if (0 == AddFontResourceA(NewDir.GetPlusFileName("Silhoua14.ttf").GetFullPath().data()))
+	{
+		MsgTextBox("폰트설치에 실패했습니다.");
+	}
+	SendMessage(HWND_BROADCAST, WM_FONTCHANGE, NULL, NULL);
+
+	NewDir.MoveParent();
 	NewDir.Move("Shader");
 
 	{
@@ -121,12 +140,5 @@ void FECore::ResourcesCreate()
 
 
 
-	NewDir.MoveParent();
-	NewDir.Move("Font");
-	if (0 == AddFontResourceA(NewDir.GetPlusFileName("Silhoua14.ttf").GetFullPath().data()))
-	{
-		MsgTextBox("폰트설치에 실패했습니다.");
-	}
-	GameEngineFont::Load("Silhoua14");
 	return;
 }

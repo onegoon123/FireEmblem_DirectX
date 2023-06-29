@@ -93,7 +93,7 @@ int BattleMap::GetTerrainCostFoot(Terrain _Value)
 	case Terrain::Forest:
 		return 2;
 	case Terrain::Mountain:
-		return 3;
+		return 4;
 	case Terrain::River:
 		return 5;
 	case Terrain::None:

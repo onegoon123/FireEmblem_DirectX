@@ -26,7 +26,7 @@ bool BattleLevel::UnitMoveAnim()
 }
 
 
-int DirX[] = { 0, 1, 0, -1 };
+int DirX[] = { 0, -1, 0, 1 };
 int DirY[] = { 1, 0, -1, 0 };
 int BowDirX[] = { 0, 2, 0, -2, 1, 1, -1, -1 };
 int BowDirY[] = { 2, 0, -2, 0, 1, -1, 1, -1 };
@@ -222,6 +222,8 @@ void BattleLevel::MoveSearchForEnemy()
 {
 
 	std::queue<SearchData> Queue;
+	BattleClass ClassValue = SelectUnit->GetUnitData().GetClassValue();
+
 	SearchData StartData = { SelectUnit->GetMapPos(), SelectUnit->GetMoveStat() };
 	Queue.push(StartData);
 
@@ -260,7 +262,14 @@ void BattleLevel::MoveSearchForEnemy()
 			}
 
 
-			NextMove.MoveStat -= GetTerrainCostFoot(NextMove.Pos);
+			if (ClassValue == BattleClass::PegasusKnight)
+			{
+				NextMove.MoveStat -= GetTerrainCostFly(NextMove.Pos);
+			}
+			else
+			{
+				NextMove.MoveStat -= GetTerrainCostFoot(NextMove.Pos);
+			}
 			if (NextMove.MoveStat < 0)
 			{
 				continue;
@@ -283,10 +292,9 @@ void BattleLevel::MoveSearchForEnemy()
 		IsMove[Pos.y][Pos.x] = false;
 	}
 
-	// 일단 임시
-	if (false /*SelectUnit->GetClass() == 1*/)
+	if (SelectUnit->GetUnitData().GetClassValue() == BattleClass::Archer)
 	{
-		AttackSearchForEnemy();
+		AttackSearchBow();
 		return;
 	}
 	AttackSearchForEnemy();
@@ -294,6 +302,7 @@ void BattleLevel::MoveSearchForEnemy()
 
 void BattleLevel::TargetSearchForEnemy()
 {
+	BattleClass ClassValue = SelectUnit->GetUnitData().GetClassValue();
 
 	int2 StartPos = SelectUnit->GetMapPos();
 	std::vector<int2> Targets;
@@ -317,7 +326,6 @@ void BattleLevel::TargetSearchForEnemy()
 
 		MainCursor->SetCursorPos(TargetPos);
 
-		BattleClass ClassValue = SelectUnit->GetUnitData().GetClassValue();
 
 		std::vector<std::vector<bool>> Moved;
 		Moved.resize(IsMove.size());
@@ -340,7 +348,6 @@ void BattleLevel::TargetSearchForEnemy()
 		{
 			CalData CurrentData = Queue.front();
 			Queue.pop_front();
-			bool Check = false;
 			for (int i = 0; i < 4; i++)
 			{
 				CalData NextMove = CurrentData;
@@ -361,7 +368,6 @@ void BattleLevel::TargetSearchForEnemy()
 					{
 						NextMove.History.push_back(TargetPos);
 						MoveData[UnitIndex] = NextMove;
-						Check = true;
 						break;
 					}
 					continue;
@@ -389,17 +395,13 @@ void BattleLevel::TargetSearchForEnemy()
 						Queue.push_back(NextMove);
 						break;
 					}
-					if (NextMove.Pos.GetDistance(TargetPos) > (*QueIter).Pos.GetDistance(TargetPos))
+					if (NextMove.Pos.GetDistance(TargetPos) - NextMove.MoveStat > (*QueIter).Pos.GetDistance(TargetPos) - (*QueIter).MoveStat)
 					{
 						Queue.insert(QueIter, NextMove);
 						break;
 					}
 					QueIter++;
 				}
-			}
-			if (true == Check)
-			{
-				//break;
 			}
 		}
 	}
@@ -434,8 +436,15 @@ void BattleLevel::TargetSearchForEnemy()
 	ArrowPos[0] = ResultMove[0];
 	for (int i = 1; i < Size; i++)
 	{
-		MoveStat -= GetTerrainCostFoot(ResultMove[i]);
-		if (MoveStat <= 0)
+		if (ClassValue == BattleClass::PegasusKnight)
+		{
+			MoveStat -= GetTerrainCostFly(ResultMove[i]);
+		}
+		else
+		{
+			MoveStat -= GetTerrainCostFoot(ResultMove[i]);
+		}
+		if (MoveStat < 0)
 		{
 			ArrowPos.resize(i);
 			break;
@@ -752,6 +761,7 @@ void BattleLevel::MoveCalculationForEnemyAttack()
 {
 	int2 StartPos = SelectUnit->GetMapPos();
 	int2 TargetPos = MainCursor->WorldPos;
+	BattleClass ClassValue = SelectUnit->GetUnitData().GetClassValue();
 
 	if (true == IsMapOut(TargetPos))
 	{
@@ -800,7 +810,15 @@ void BattleLevel::MoveCalculationForEnemyAttack()
 				}
 				continue;
 			}
-			NextMove.MoveStat -= GetTerrainCostFoot(NextMove.Pos);
+
+			if (ClassValue == BattleClass::PegasusKnight)
+			{
+				NextMove.MoveStat -= GetTerrainCostFly(NextMove.Pos);
+			}
+			else
+			{
+				NextMove.MoveStat -= GetTerrainCostFoot(NextMove.Pos);
+			}
 			if (NextMove.MoveStat < 0)
 			{
 				continue;
@@ -821,6 +839,7 @@ void BattleLevel::MoveCalculationForEnemy()
 {
 	int2 StartPos = SelectUnit->GetMapPos();
 	int2 TargetPos = MainCursor->WorldPos;
+	BattleClass ClassValue = SelectUnit->GetUnitData().GetClassValue();
 
 	if (true == IsMapOut(TargetPos))
 	{
@@ -862,7 +881,14 @@ void BattleLevel::MoveCalculationForEnemy()
 				}
 				continue;
 			}
-			NextMove.MoveStat -= GetTerrainCostFoot(NextMove.Pos);
+			if (ClassValue == BattleClass::PegasusKnight)
+			{
+				NextMove.MoveStat -= GetTerrainCostFly(NextMove.Pos);
+			}
+			else
+			{
+				NextMove.MoveStat -= GetTerrainCostFoot(NextMove.Pos);
+			}
 			if (NextMove.MoveStat < 0)
 			{
 				continue;

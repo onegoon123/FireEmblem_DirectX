@@ -42,6 +42,7 @@ void NumberActor::Setting(int _Value)
 
 void NumberActor::SetValue(int _Value, bool _ChangeSize)
 {
+	if (_Value < 0) { _Value = 0; }
 	if (0 == Renders.size()) { NumberCreate(); }
 	Value = _Value;
 	if (1000 <= _Value)

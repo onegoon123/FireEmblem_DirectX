@@ -100,6 +100,9 @@ void Stat::SetIdentity(UnitIdentityCode _IdentityCode)
 	case UnitIdentityCode::DarkMage:
 		SetStat_Mage();
 		break;
+	case UnitIdentityCode::PegasusKnight:
+		SetStat_Florina();
+		break;
 	case UnitIdentityCode::Batta:
 		SetStat_Batta();
 		break;
@@ -612,22 +615,22 @@ void Stat::SetStat_Soldier()
 	MainStatValue.HP = 20;
 	MainStatValue.Strength = 3;
 	MainStatValue.Magic = 2;
-	MainStatValue.Dexterity = 0;
-	MainStatValue.Speed = 1;
+	MainStatValue.Dexterity = 2;
+	MainStatValue.Speed = 3;
 	MainStatValue.Luck = 0;
-	MainStatValue.Defense = 0;
+	MainStatValue.Defense = 1;
 	MainStatValue.Resistance = 0;
-	MainStatValue.Constitution = 6;
+	MainStatValue.Constitution = 8;
 	ClassValue = BattleClass::Soldier;
 	Movement = 5;
 	GrowthRates_HP = 80;
-	GrowthRates_Strength = 50;
+	GrowthRates_Strength = 60;
 	GrowthRates_Magic = 40;
-	GrowthRates_Dexterity = 30;
-	GrowthRates_Speed = 20;
+	GrowthRates_Dexterity = 40;
+	GrowthRates_Speed = 30;
 	GrowthRates_Luck = 25;
-	GrowthRates_Defense = 12;
-	GrowthRates_Resistance = 15;
+	GrowthRates_Defense = 32;
+	GrowthRates_Resistance = 35;
 }
 
 void Stat::SetStat_Mercenary()

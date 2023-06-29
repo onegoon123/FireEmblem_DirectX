@@ -737,8 +737,8 @@ void BattleLevel::BattleReturnUpdate(float _DeltaTime)
 		ReturnTimer = 0;
 		if (AttackRecord.size() != 0)
 		{
-			SelectUnit->SetUnitData(Unit(AttackRecord.back().SubjectUnit));
-			TargetUnit->SetUnitData(Unit(AttackRecord.back().TargetUnit));
+			SelectUnit->SetUnitData(Unit(AttackRecord.back().SubjectUnit), false);
+			TargetUnit->SetUnitData(Unit(AttackRecord.back().TargetUnit), false);
 		}
 		if (false == GameOverCheck())
 		{
@@ -766,12 +766,12 @@ void BattleLevel::BattleReturnEnd()
 	SelectUnit->SetIsTurnEnd(true);
 	if (SelectUnit->GetIsDie())
 	{
-		SelectUnit->Off();
+		SelectUnit->DieEvent();
 		SelectUnit = nullptr;
 	}
 	if (nullptr != TargetUnit && TargetUnit->GetIsDie())
 	{
-		TargetUnit->Off();
+		TargetUnit->DieEvent();
 		TargetUnit = nullptr;
 	}
 
@@ -1173,8 +1173,8 @@ void BattleLevel::EnemyBattleReturnUpdate(float _DeltaTime)
 	if (0.5f < ReturnTimer || true == IsSkip)
 	{
 		ReturnTimer = 0;
-		SelectUnit->SetUnitData(Unit(AttackRecord.back().SubjectUnit));
-		TargetUnit->SetUnitData(Unit(AttackRecord.back().TargetUnit));
+		SelectUnit->SetUnitData(Unit(AttackRecord.back().SubjectUnit), false);
+		TargetUnit->SetUnitData(Unit(AttackRecord.back().TargetUnit), false);
 		if (false == GameOverCheck())
 		{
 			ChangeState(BattleState::EnemySelect);
@@ -1201,12 +1201,12 @@ void BattleLevel::EnemyBattleReturnEnd()
 	SelectUnit->SetIsTurnEnd(true);
 	if (SelectUnit->GetIsDie())
 	{
-		SelectUnit->Off();
+		SelectUnit->DieEvent();
 		SelectUnit = nullptr;
 	}
 	if (nullptr != TargetUnit && TargetUnit->GetIsDie())
 	{
-		TargetUnit->Off();
+		TargetUnit->DieEvent();
 		TargetUnit = nullptr;
 	}
 

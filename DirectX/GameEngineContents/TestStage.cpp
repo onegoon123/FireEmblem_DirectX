@@ -29,11 +29,13 @@ void TestStage::StageSetting()
 	ClearTarget = BattleClearTarget::AllKill;
 	ClearTargetText = "목표:적 전멸";
 
+	NewPlayerUnit(UnitIdentityCode::GeneralWallace, 10, { 3, 1 }, { ItemCode::IronAxe, ItemCode::IronLance, ItemCode::MasterSeal });
 	NewPlayerUnit(UnitIdentityCode::Lyn, 1, { 3, 3 }, { ItemCode::KillingSword, ItemCode::IronSword, ItemCode::MasterSeal})->GetUnitData().AddExp(80);
 	NewPlayerUnit(UnitIdentityCode::Kent, 1, { 2, 4 }, { ItemCode::IronSword, ItemCode::KillerLance, ItemCode::Vulnerary })->GetUnitData().AddExp(80);
 	NewPlayerUnit(UnitIdentityCode::Sain, 1, { 4, 4 }, { ItemCode::KillingSword, ItemCode::KillerLance });
 	NewPlayerUnit(UnitIdentityCode::Florina, 1, { 2, 2 }, { ItemCode::KillerLance, ItemCode::SlimLance, ItemCode::Vulnerary });
-	NewPlayerUnit(UnitIdentityCode::WarriorDorcas, 10, { 3, 1 }, { ItemCode::IronAxe, ItemCode::MasterSeal });
+	NewEnemyUnit(UnitIdentityCode::Brigand, 1, { 3, 2 }, { ItemCode::IronAxe });
+
 
 	// 세라, 에르크 (중립)
 	NewPlayerUnit(UnitIdentityCode::Serra, 1, { 4, 2 }, { ItemCode::Heal,ItemCode::Heal, ItemCode::Vulnerary });

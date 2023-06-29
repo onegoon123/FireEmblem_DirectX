@@ -480,27 +480,27 @@ void BattleLevel::CameraSetPos()
 	while (true == Check)
 	{
 		Check = false;
-		if (CursorPos.x < 2)
+		if (CursorPos.x < 3)
 		{
 			Check = true;
 			CursorPos.x += 1;
 			MoveValue += int2::Left;
 		}
-		else if (12 < CursorPos.x)
+		else if (11 < CursorPos.x)
 		{
 			Check = true;
 			// 오른쪽으로 이동
 			CursorPos.x -= 1;
 			MoveValue += int2::Right;
 		}
-		if (CursorPos.y < 2)
+		if (CursorPos.y < 3)
 		{
 			Check = true;
 			// 아래로 이동
 			CursorPos.y += 1;
 			MoveValue += int2::Down;
 		}
-		else if (7 < CursorPos.y)
+		else if (6 < CursorPos.y)
 		{
 			Check = true;
 			// 위로 이동

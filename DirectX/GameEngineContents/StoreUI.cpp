@@ -286,6 +286,7 @@ void StoreUI::Start()
 				SelectUnit->GetUnitData().NewItem(ItemList[CurrentCursor]);
 				Money -= Price[CurrentCursor];
 				MoneyText->SetValue(Money, true);
+				GameEngineSound::Play("Buy.wav");
 				Dialogue->SetTextAnim(L"다른 것도 살 건가?");
 				return;
 			}
@@ -383,6 +384,7 @@ void StoreUI::Start()
 				SelectUnit->GetUnitData().DropItem(ItemIter);
 
 				MoneyText->SetValue(Money, true);
+				GameEngineSound::Play("Buy.wav");
 				Dialogue->SetTextAnim(L"다른 것도 팔 건가?");
 
 				PlayerItems = SelectUnit->GetUnitData().GetItems();

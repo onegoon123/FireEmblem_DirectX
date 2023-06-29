@@ -75,6 +75,7 @@ enum class UnitIdentityCode
 	Knight,
 	Mage,
 	DarkMage,
+	PegasusKnight,
 
 	Batta,	// 0보스
 	Zugu,	// 1보스

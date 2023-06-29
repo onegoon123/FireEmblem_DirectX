@@ -18,7 +18,7 @@ public:
 
 	void Select();
 	void SetIdle();
-
+	void DieEvent();
 	// 유닛의 턴엔드 여부를 지정하는 함수
 	void SetIsTurnEnd(bool _Value);
 	// 유닛의 턴엔드 여부를 반환
@@ -53,23 +53,8 @@ public:
 	void LoadUnitData(Unit _Value);
 
 	// 유닛 데이터를 지정
-	void SetUnitData(Unit _Value)
-	{
-		if (UnitData.IdentityCode != _Value.IdentityCode)
-		{
-			SetUnitAnimation(_Value.IdentityCode);
-		}
-		UnitData = _Value;
-		if (false == UnitData.IsDie)
-		{
-			On();
-		}
-		else
-		{
-			Off();
-		}
-		SetIsTurnEnd(GetIsTurnEnd());
-	}
+	void SetUnitData(Unit _Value, bool _UnitOnOff = true);
+
 	// 유닛 데이터를 반환
 	Unit& GetUnitData()
 	{
@@ -160,6 +145,8 @@ private:
 	int DetectionRange = 0;		// 적이 플레이어를 발견하는 범위 (0은 거리제한 X)
 	bool IsCheckTile = false;
 	bool SoundDealy = false;
+	bool IsDieEvent = false;
+	float Timer = 0;
 	void SetUnitAnimation(UnitIdentityCode _Value);
 };
 

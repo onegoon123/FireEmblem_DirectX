@@ -72,11 +72,17 @@ int Unit::GetAttackPoint(const Unit& _Other) const
 
 int Unit::GetDefPoint() const
 {
-	return UnitStat.MainStatValue.Defense + TerrainDeffence;
+	int Result = UnitStat.MainStatValue.Defense;
+	if (UnitStat.ClassValue != BattleClass::PegasusKnight)
+	{
+		Result += TerrainDeffence;
+	}
+	return Result;
 }
 
 int Unit::GetDefPoint(WeaponType _Type) const
 {
+	int Result = 0;
 	switch (_Type)
 	{
 	case WeaponType::None:
@@ -87,15 +93,21 @@ int Unit::GetDefPoint(WeaponType _Type) const
 	case WeaponType::Axe:
 	case WeaponType::SwordReaver:
 	case WeaponType::Bow:
-		return UnitStat.MainStatValue.Defense + TerrainDeffence;
+		Result = UnitStat.MainStatValue.Defense;
+		break;
 	case WeaponType::AnimaTome:
 	case WeaponType::DarkTome:
 	case WeaponType::LightTome:
-		return UnitStat.MainStatValue.Resistance + TerrainDeffence;
+		Result = UnitStat.MainStatValue.Resistance;
+		break;
 	default:
-		return UnitStat.MainStatValue.Defense + TerrainDeffence;
+		Result = UnitStat.MainStatValue.Defense;
 	}
-	
+	if (UnitStat.ClassValue != BattleClass::PegasusKnight)
+	{
+		Result += TerrainDeffence;
+	}
+	return Result;
 }
 
 int Unit::GetMagicAttackPoint() const
@@ -165,7 +177,10 @@ int Unit::GetAttackSpeedPoint() const
 int Unit::GetDodgePoint() const
 {
 	int Result = 2 * GetAttackSpeedPoint() + UnitStat.MainStatValue.Luck / 2;
-	Result += TerrainDodge;
+	if (UnitStat.ClassValue != BattleClass::PegasusKnight)
+	{
+		Result += TerrainDodge;
+	}
 	return Result;
 }
 

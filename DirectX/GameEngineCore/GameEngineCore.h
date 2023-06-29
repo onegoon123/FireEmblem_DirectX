@@ -50,6 +50,7 @@ public:
 		}
 
 		Name = GameEngineString::ToUpper(Name);
+
 		if (LevelMap.end() != LevelMap.find(Name))
 		{
 			MsgAssert("같은 이름의 레벨을 2개 만들수는 없습니다.");
@@ -73,7 +74,7 @@ public:
 protected:
 
 private:
-	static class GameEngineLevel* CurLoadLevel;
+	static std::shared_ptr<class GameEngineLevel> CurLoadLevel;
 
 	static void CoreResourcesInit();
 	static void CoreResourcesEnd();
