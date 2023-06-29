@@ -11,6 +11,8 @@
 #include "BattleAnimationUnit.h"
 #include "BattleAnimationUI.h"
 #include "ContentsEnum.h"
+#include "EventSystem.h"
+
 std::shared_ptr<BattleUnit> BattleAnimationLevel::SubjectUnit = nullptr;
 std::shared_ptr<BattleUnit> BattleAnimationLevel::TargetUnit = nullptr;
 bool BattleAnimationLevel::IsClassChange = false;
@@ -251,7 +253,6 @@ void BattleAnimationLevel::Update(float _DeltaTime)
 	{
 		GameEngineCore::ChangeLevel(ReturnLevelStr);
 	}
-
 	if (true == IsTurnEnd && true == UI->IsTurnEnd())
 	{
 		IsTurnEnd = false;
@@ -293,6 +294,7 @@ void BattleAnimationLevel::LevelChangeStart()
 		UI = CreateActor<BattleAnimationUI>(RenderOrder::UI);
 
 		FEffect = GetLastTarget()->CreateEffect<FadeEffect>();
+		EventInit();
 	}
 
 	if (true == IsClassChange)
@@ -317,6 +319,8 @@ void BattleAnimationLevel::LevelChangeStart()
 	// 유닛 지정
 	if (SubjectUnit->GetIsPlayer())
 	{
+		PlayerUnit = SubjectUnit;
+		EnemyUnit = TargetUnit;
 		SubjectAnimation = LeftUnit;
 		TargetAnimation = RightUnit;
 
@@ -327,6 +331,8 @@ void BattleAnimationLevel::LevelChangeStart()
 	}
 	else
 	{
+		PlayerUnit = TargetUnit;
+		EnemyUnit = SubjectUnit;
 		SubjectAnimation = RightUnit;
 		TargetAnimation = LeftUnit;
 
@@ -382,8 +388,6 @@ void BattleAnimationLevel::PlayAttack()
 				UI->SetEXP(TargetUnit->GetUnitData().GetExp(), BattleData.back().Exp, BattleData.back().TargetUnit);
 			}
 
-			
-
 			if (true == BattleData.back().IsLevelUp)
 			{
 				return;
@@ -392,6 +396,20 @@ void BattleAnimationLevel::PlayAttack()
 
 		if (true == LeftUnit->GetIsDie() || true == RightUnit->GetIsDie())
 		{
+			if (true == LeftUnit->GetIsDie())
+			{
+				if (true == EventStart(PlayerUnit))
+				{
+					return;
+				}
+			}
+			else
+			{
+				if (true == EventStart(EnemyUnit))
+				{
+					return;
+				}
+			}
 			TimeEvent.AddEvent(3.0f, std::bind(&BattleAnimationLevel::FadeOut, this, 0.15f));
 			TimeEvent.AddEvent(3.3f, std::bind(&BattleAnimationLevel::End, this));
 			return;
@@ -540,6 +558,51 @@ void BattleAnimationLevel::FadeOut(float _Time)
 	BgmPlayer.SoundFadeOut(_Time);
 
 	GameEngineTime::GlobalTime.SetGlobalTimeScale(1.0f);
+}
+
+void BattleAnimationLevel::EventInit()
+{
+	std::shared_ptr<EventSystem> NewEvent = CreateActor<EventSystem>();
+	NewEvent->PushEvent([=] {
+		UI->Off();
+		BgmPlayer.SoundFadeOut(0.5f);
+		BgmPlayer = GameEngineSound::Play("DieBGM.mp3");
+		BgmPlayer.SetLoop();
+		NewEvent->Portrait1->SetTexture("Portrait_Lyn.png");
+		NewEvent->Portrait1->On();
+		NewEvent->Dialogue->SetSize({ 20, 5 });
+		NewEvent->Dialogue->SetFadeIn(1.0f);
+		}
+	, false, 0.5f);
+
+
+	NewEvent->PushEvent([=] {
+		NewEvent->Dialogue->Text->SetTextAnim(L"...말도 안 돼\n미안해... 마크...");
+		}
+	, true, 0.5f);
+
+	NewEvent->PushEvent([=] {
+		NewEvent->Dialogue->Text->SetTextAnim(L"다들... 용서해줘......");
+		}
+	, true, 0.2f);
+	NewEvent->PushEvent([=] {
+		TimeEvent.AddEvent(0.1f, std::bind(&BattleAnimationLevel::FadeOut, this, 0.15f));
+		TimeEvent.AddEvent(0.4f, std::bind(&BattleAnimationLevel::End, this));
+		}
+	, false, 0.0f);
+	DeathEvent.insert(std::pair<UnitIdentityCode, std::shared_ptr<EventSystem>>(UnitIdentityCode::Lyn, NewEvent));
+}
+
+bool BattleAnimationLevel::EventStart(std::shared_ptr<BattleUnit> _Unit)
+{
+	std::map<UnitIdentityCode, std::shared_ptr<EventSystem>>::iterator EventIter = DeathEvent.find(_Unit->GetUnitData().GetIdentityCode());
+	if (EventIter == DeathEvent.end())
+	{
+		return false;
+	}
+	(*EventIter).second->EventStart();
+
+	return true;
 }
 
 void BattleAnimationLevel::CameraShake(float _Time)

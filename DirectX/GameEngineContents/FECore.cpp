@@ -72,7 +72,6 @@ void FECore::GameStart()
 	GameEngineCore::ChangeLevel("TitleLevel");
 
 	GameEngineFont::Load("Silhoua14");
-
 }
 
 void FECore::GameEnd()
@@ -99,6 +98,7 @@ void FECore::ResourcesCreate()
 		MsgTextBox("폰트설치에 실패했습니다.");
 	}
 	SendMessage(HWND_BROADCAST, WM_FONTCHANGE, NULL, NULL);
+	
 
 	NewDir.MoveParent();
 	NewDir.Move("Shader");

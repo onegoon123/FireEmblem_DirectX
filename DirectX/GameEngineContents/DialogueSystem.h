@@ -1,6 +1,7 @@
 #pragma once
 #include <GameEngineCore/GameEngineActor.h>
 #include "Int2.h"
+#include "TextRenderer.h"
 // Ό³Έν :
 class GameEngineUIRenderer;
 class DialogueSystem : public GameEngineActor
@@ -21,6 +22,7 @@ public:
 
 	void SetSize(float4 _Size);
 
+	std::shared_ptr<TextRenderer> Text;
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;

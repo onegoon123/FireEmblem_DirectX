@@ -27,9 +27,10 @@ void Stage0::StageSetting()
 	ClearTargetText = "목표:문 제압";
 
 	// 린
-	Unit_Lyn = NewPlayerUnit(UnitIdentityCode::Lyn, 1, { 14, 0 }, { ItemCode::IronSword, ItemCode::Vulnerary, ItemCode::Vulnerary, ItemCode::MasterSeal });
+	Unit_Lyn = NewPlayerUnit(UnitIdentityCode::Lyn, 1, {13, 2}, { ItemCode::IronSword, ItemCode::Vulnerary, ItemCode::Vulnerary, ItemCode::MasterSeal });
 	
 	// 산적
+	NewEnemyUnit(UnitIdentityCode::Brigand, 99, { 14, 1 }, { ItemCode::IronAxe });
 	NewEnemyUnit(UnitIdentityCode::Brigand, 1, { 2, 3 }, { ItemCode::IronAxe });
 	// 바타
 	NewEnemyUnit(UnitIdentityCode::Batta, 1, { 3, 7 }, { ItemCode::IronAxe})->SetDetectionRange(1);
@@ -46,7 +47,7 @@ void Stage0::OpeningEventInit()
 		OpeningEvent->Portrait1->SetTexture("Portrait_Lyn.png");
 		OpeningEvent->Portrait1->Off();
 		OpeningEvent->SetFadeIn(1.0f);
-		OpeningEvent->Dialogue->SetFadeIn(1.0f);
+		Unit_Lyn->SetMapPos({ 14, 0 });
 		}
 	, false, 1.0f);
 

@@ -30,6 +30,7 @@ public:
 	GameEngineTimeEvent TimeEvent;
 	static GameEngineSoundPlayer BgmPlayer;
 
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -40,6 +41,8 @@ private:
 	static std::string_view ReturnLevelStr;
 	static std::shared_ptr<class BattleUnit> SubjectUnit;
 	static std::shared_ptr<BattleUnit> TargetUnit;
+	std::shared_ptr<BattleUnit> PlayerUnit;
+	std::shared_ptr<BattleUnit> EnemyUnit;
 	static std::list<AttackCommand> BattleData;
 	static std::list<AttackCommand>::iterator BattleIter;
 
@@ -53,7 +56,9 @@ private:
 	std::shared_ptr<class BattleAnimationUI> UI;
 
 	std::shared_ptr<class FadeEffect> FEffect;
-
+	std::map<UnitIdentityCode , std::shared_ptr<class EventSystem>> DeathEvent;
+	void EventInit();
+	bool EventStart(std::shared_ptr<BattleUnit> _Unit);
 	GameEngineTransform* CameraTransform = nullptr;
 
 	bool IsTurnEnd = false;

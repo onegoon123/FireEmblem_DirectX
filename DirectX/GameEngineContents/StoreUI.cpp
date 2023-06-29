@@ -112,6 +112,18 @@ void StoreUI::Start()
 		}
 	}
 
+	FSM.CreateState({ .Name = "Off",
+		.Start = [this]
+		{
+		},
+		.Update = [this](float _DeltaTime)
+		{
+		},
+		.End = [this]
+		{
+		},
+		});
+
 
 	FSM.CreateState({ .Name = "Start1",
 		.Start = [this]
@@ -424,7 +436,7 @@ void StoreUI::Start()
 		{
 		},
 		});
-	FSM.ChangeState("Start1");
+	FSM.ChangeState("Off");
 }
 
 void StoreUI::Update(float _DeltaTime)

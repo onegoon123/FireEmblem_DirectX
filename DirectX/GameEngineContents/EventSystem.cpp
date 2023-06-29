@@ -55,8 +55,8 @@ void EventSystem::Start()
 	Foreground->Off();
 
 	Portrait1 = CreateComponent<GameEngineUIRenderer>(1);
-	Portrait1->GetTransform()->SetLocalPosition({ 0, -160 });
-	Portrait1->GetTransform()->SetLocalScale({ 384, 320 });
+	Portrait1->GetTransform()->SetLocalPosition({ -284, -160 });
+	Portrait1->GetTransform()->SetLocalScale({ -384, 320 });
 	Portrait1->Off();
 
 	Portrait2 = CreateComponent<GameEngineUIRenderer>(1);
@@ -150,8 +150,8 @@ void EventSystem::Reset()
 	Foreground->SetTexture("Black.png");
 	Foreground->Off();
 
-	Portrait1->GetTransform()->SetLocalPosition({ 0, -160 });
-	Portrait1->GetTransform()->SetLocalScale({ 384, 320 });
+	Portrait1->GetTransform()->SetLocalPosition({ -284, -160 });
+	Portrait1->GetTransform()->SetLocalScale({ -384, 320 });
 	Portrait1->Off();
 
 	Portrait2->GetTransform()->SetLocalPosition({ 284, -160 }); // 오른쪽 구석
@@ -165,6 +165,7 @@ void EventSystem::Reset()
 	Portrait4->Off();
 
 	Dialogue->GetTransform()->SetParent(GetTransform());
+	Dialogue->GetTransform()->SetLocalPosition({ -132, -160 });
 	Dialogue->Off();
 
 	FadeTimer = 0;

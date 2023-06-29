@@ -33,12 +33,18 @@ void TextRenderer::Update(float _DeltaTime)
 	if (Index == AnimText.size())
 	{
 		IsTextAnim = false;
+		TalkSound.Stop();
 		return;
 	}
 
 	Index++;
 	Timer = AnimTime;
 	SetText(AnimText.substr(0, Index), false);
+}
+
+void TextRenderer::Off()
+{
+	GameEngineComponent::Off();
 }
 
 //Setting("Silhoua14", 55, float4::White, float4::Black, FontAligned::Center);
@@ -65,9 +71,14 @@ void TextRenderer::SetFont(const std::string_view& _Font)
 
 void TextRenderer::SetText(const std::string_view& _Text, bool _Clear)
 {
+	if (true == TalkSound.IsValid())
+	{
+		TalkSound.Stop();
+	}
 	if (_Clear == true)
 	{
 		IsTextAnim = false;
+		
 	}
 	FontRender->SetText(_Text);
 	for (int i = 0; i < OutlineRenders.size(); i++)
@@ -78,9 +89,14 @@ void TextRenderer::SetText(const std::string_view& _Text, bool _Clear)
 
 void TextRenderer::SetText(const std::wstring_view& _Text, bool _Clear)
 {
+	
 	if (_Clear == true)
 	{
 		IsTextAnim = false;
+		if (true == TalkSound.IsValid())
+		{
+			TalkSound.Stop();
+		}
 	}
 	FontRender->SetText(_Text);
 	for (int i = 0; i < OutlineRenders.size(); i++)
@@ -123,6 +139,12 @@ void TextRenderer::SetAligned(FontAligned _Aligned)
 
 void TextRenderer::SetTextAnim(const std::wstring_view& _Text)
 {
+	if (true == TalkSound.IsValid())
+	{
+		TalkSound.Stop();
+	}
+	TalkSound = GameEngineSound::Play("Talk.wav");
+	TalkSound.SetLoop();
 	AnimText = _Text;
 	Index = 0;
 	IsTextAnim = true;

@@ -12,12 +12,13 @@ DialogueSystem::~DialogueSystem()
 
 void DialogueSystem::SetFadeIn(float _Timer)
 {
+	On();
 	FadeSpeed = 1 / _Timer;
-	FadeTimer = 1;
+	FadeTimer = 0;
 	IsFadeIn = true;
 	for (std::shared_ptr<GameEngineUIRenderer> _Render : DialogueBoxRenders)
 	{
-		_Render->ColorOptionValue.MulColor.a = 1;
+		_Render->ColorOptionValue.MulColor.a = 0;
 	}
 }
 
@@ -26,11 +27,11 @@ void DialogueSystem::SetFadeOut(float _Timer)
 	On();
 
 	FadeSpeed = 1 / _Timer;
-	FadeTimer = 0;
+	FadeTimer = 1;
 	IsFadeOut = true;
 	for (std::shared_ptr<GameEngineUIRenderer> _Render : DialogueBoxRenders)
 	{
-		_Render->ColorOptionValue.MulColor.a = 0;
+		_Render->ColorOptionValue.MulColor.a = 1;
 	}
 }
 
@@ -101,19 +102,24 @@ void DialogueSystem::Start()
 
 	DialogueBoxRenders[8] = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
 	DialogueBoxRenders[8]->SetSprite("DialogueBox.png", 8);
+
+	Text = CreateComponent<TextRenderer>(RenderOrder::UIText);
+	Text->Setting("Silhoua14", 55, float4::Black, float4::Null, FontAligned::Left);
+	Text->GetTransform()->SetLocalPosition({ 24, -24 });
+	
 }
 
 void DialogueSystem::Update(float _DeltaTime)
 {
 	if (true == IsFadeIn)
 	{
-		FadeTimer -= _DeltaTime * FadeSpeed;
-		if (FadeTimer < 0)
+		FadeTimer += _DeltaTime * FadeSpeed;
+		if (FadeTimer > 1)
 		{
 			IsFadeIn = false;
 			for (std::shared_ptr<GameEngineUIRenderer> _Render : DialogueBoxRenders)
 			{
-				_Render->ColorOptionValue.MulColor.a = 0;
+				_Render->ColorOptionValue.MulColor.a = 1;
 			}
 			return;
 		}
@@ -125,13 +131,13 @@ void DialogueSystem::Update(float _DeltaTime)
 
 	if (true == IsFadeOut)
 	{
-		FadeTimer += _DeltaTime * FadeSpeed;
-		if (FadeTimer > 1)
+		FadeTimer -= _DeltaTime * FadeSpeed;
+		if (FadeTimer < 0)
 		{
 			IsFadeOut = false;
 			for (std::shared_ptr<GameEngineUIRenderer> _Render : DialogueBoxRenders)
 			{
-				_Render->ColorOptionValue.MulColor.a = 1;
+				_Render->ColorOptionValue.MulColor.a = 0;
 			}
 			return;
 		}

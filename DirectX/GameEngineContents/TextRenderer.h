@@ -1,4 +1,5 @@
 #pragma once
+#include <GameEnginePlatform/GameEngineSound.h>
 #include <GameEngineCore/GameEngineComponent.h>
 #include <GameEngineCore/GameEngineFontRenderer.h>
 // Ό³Έν :
@@ -14,6 +15,8 @@ public:
 	TextRenderer(TextRenderer&& _Other) noexcept = delete;
 	TextRenderer& operator=(const TextRenderer& _Other) = delete;
 	TextRenderer& operator=(TextRenderer&& _Other) noexcept = delete;
+
+	void Off();
 
 	void Setting(const std::string_view& _Font, float _FontScale, float4 _FontColor, float4 _OutLineColor, FontAligned _Aligned);
 	void SetFont(const std::string_view& _Font);
@@ -34,7 +37,7 @@ protected:
 private:
 	std::shared_ptr<class GameEngineFontRenderer> FontRender;
 	std::vector<std::shared_ptr<GameEngineFontRenderer>> OutlineRenders;
-
+	GameEngineSoundPlayer TalkSound;
 	std::wstring AnimText = L"";
 	int Index = 0;
 	bool IsTextAnim = false;

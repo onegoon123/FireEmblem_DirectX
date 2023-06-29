@@ -1580,6 +1580,9 @@ void BattleLevel::StoreStart()
 {
 	BattleUI->SetFadeIn(0.3f);
 	BattleUI->StoreOn(SelectUnit);
+	BgmPlayer.Stop();
+	BgmPlayer = GameEngineSound::Play("Armory.mp3");
+	BgmPlayer.SetLoop();
 }
 
 void BattleLevel::StoreUpdate(float _DeltaTime)
@@ -1588,6 +1591,9 @@ void BattleLevel::StoreUpdate(float _DeltaTime)
 
 void BattleLevel::StoreEnd()
 {
+	BgmPlayer.Stop();
+	BgmPlayer = GameEngineSound::Play("PlayerMap.mp3");	
+	BgmPlayer.SetLoop();
 	SelectUnit->SetIsTurnEnd(true);
 	BattleUI->SetFadeIn(0.3f);
 }
