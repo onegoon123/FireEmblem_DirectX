@@ -213,6 +213,9 @@
     <ClCompile Include="DanceUI.cpp">
       <Filter>Battle\UI\Battle</Filter>
     </ClCompile>
+    <ClCompile Include="BattleAnimationLevel_Event.cpp">
+      <Filter>Battle\Animation\Level</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FECore.h" />

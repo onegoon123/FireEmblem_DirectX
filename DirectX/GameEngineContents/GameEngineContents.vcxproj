@@ -175,6 +175,7 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="BattleAnimationLevel_Event.cpp" />
     <ClCompile Include="BattleAnimationUI.cpp">
       <SubType>
       </SubType>
