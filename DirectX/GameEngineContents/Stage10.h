@@ -19,5 +19,7 @@ protected:
 private:
 	void OpeningEventInit();
 	void ClearEventInit();
+
+	GameEngineSoundPlayer BgmPlayer;
 };
 

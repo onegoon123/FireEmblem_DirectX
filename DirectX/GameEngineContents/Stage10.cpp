@@ -57,10 +57,140 @@ void Stage10::StageSetting()
 void Stage10::OpeningEventInit()
 {
 	OpeningEvent->PushEvent([this] {
-		OpeningEvent->SetFadeIn(1.0f);
+		BgmPlayer = GameEngineSound::Play("Companions.mp3");
+		OpeningEvent->SetFadeIn(0.5f);
 		}
-	, false, 1.0f);
+	, false, 1.5f);
 
+	OpeningEvent->PushEvent([this] {
+		OpeningEvent->SetFadeOut(0.5f);
+		}
+	, false, 0.8f);
+
+	OpeningEvent->PushEvent([this] {
+		OpeningEvent->Background->SetTexture("EventBackground_Plains.png");
+		OpeningEvent->Background->On();
+		OpeningEvent->Portrait2->SetPortrait(UnitIdentityCode::Lyn);
+		OpeningEvent->Portrait2->On();
+		OpeningEvent->Portrait3->SetPortrait(UnitIdentityCode::Sain);
+		OpeningEvent->Portrait3->On();
+		OpeningEvent->Portrait4->SetPortrait(UnitIdentityCode::Kent);
+		OpeningEvent->Portrait4->On();
+		OpeningEvent->SetFadeIn(0.5f);
+		}
+	, false, 0.8f);
+
+
+	OpeningEvent->PushEvent([this] {
+		OpeningEvent->Dialogue->SetSize({ 20, 5 });
+		OpeningEvent->Portrait4->SetLipAnimation(1.0f);
+		OpeningEvent->Dialogue->Text->SetTextAnim(L"린디스님, 산을 우회하면\n키아란성이 보일 겁니다.");
+		OpeningEvent->Dialogue->ArrowRender->On();
+		OpeningEvent->Dialogue->ArrowRender->SetFlipX();
+		OpeningEvent->Dialogue->SetFadeIn(.5f);
+		OpeningEvent->Dialogue->GetTransform()->SetLocalPosition({ -324, 164 });
+		}
+	, true, 0.5f);
+
+	OpeningEvent->PushEvent([this] {
+		OpeningEvent->Dialogue->SetFadeOut(.2f);
+		}
+	, false, 0.2f);
+
+	OpeningEvent->PushEvent([this] {
+		OpeningEvent->Dialogue->SetSize({ 13, 5 });
+		OpeningEvent->Dialogue->ArrowRender->On();
+		OpeningEvent->Dialogue->ArrowRender->SetFlipX();
+		OpeningEvent->Dialogue->SetFadeIn(.2f);
+		OpeningEvent->Portrait2->SetLipAnimation(1.0f);
+		OpeningEvent->Dialogue->Text->SetTextAnim(L"할아버님...");
+		OpeningEvent->Dialogue->GetTransform()->SetLocalPosition({ -32, 164 });
+		}
+	, true, 0.5f);
+
+	OpeningEvent->PushEvent([this] {
+		OpeningEvent->Portrait2->SetLipAnimation(1.0f);
+		OpeningEvent->Dialogue->Text->SetTextAnim(L"...이제 곧\n만날 수 있어요...");
+		}
+	, true, 0.5f);
+
+	OpeningEvent->PushEvent([this] {
+		OpeningEvent->Dialogue->SetFadeOut(.2f);
+		}
+	, false, 0.2f);
+
+	OpeningEvent->PushEvent([this] {
+		OpeningEvent->Dialogue->SetFadeIn(.2f);
+		OpeningEvent->Dialogue->SetSize({ 20, 5 });
+		OpeningEvent->Dialogue->ArrowRender->On();
+		OpeningEvent->Dialogue->ArrowRender->SetFlipX();
+		OpeningEvent->Portrait3->SetLipAnimation(1.0f);
+		OpeningEvent->Dialogue->Text->SetTextAnim(L"모든 것은\n이 전투에 달려 있습니다.");
+		OpeningEvent->Dialogue->GetTransform()->SetLocalPosition({ -432, 164 });
+		}
+	, true, 0.5f);
+
+	OpeningEvent->PushEvent([this] {
+		OpeningEvent->Portrait3->SetLipAnimation(1.0f);
+		OpeningEvent->Dialogue->Text->SetTextAnim(L"믿고 있던 인근 영지로부터\n지원도 나오지 않게 된 지금...");
+		}
+	, true, 0.5f);
+
+	OpeningEvent->PushEvent([this] {
+		OpeningEvent->Portrait3->SetLipAnimation(1.0f);
+		OpeningEvent->Dialogue->Text->SetTextAnim(L"랑그렌 공도 사력을 다해\n덤벼 올 테니까요!");
+		}
+	, true, 0.5f);
+
+	OpeningEvent->PushEvent([this] {
+		OpeningEvent->Dialogue->SetFadeOut(.2f);
+		}
+	, false, 0.2f);
+
+	OpeningEvent->PushEvent([this] {
+		OpeningEvent->Dialogue->SetSize({ 17, 5 });
+		OpeningEvent->Dialogue->ArrowRender->On();
+		OpeningEvent->Dialogue->ArrowRender->SetFlipX();
+		OpeningEvent->Dialogue->SetFadeIn(.2f);
+		OpeningEvent->Portrait2->SetLipAnimation(1.0f);
+		OpeningEvent->Dialogue->Text->SetTextAnim(L"얼마나 많은 수를 쓰든\n난 지지 않아!");
+		OpeningEvent->Dialogue->GetTransform()->SetLocalPosition({ 0, 164 });
+		}
+	, true, 0.5f);
+	OpeningEvent->PushEvent([this] {
+		OpeningEvent->Portrait2->SetLipAnimation(1.0f);
+		OpeningEvent->Dialogue->Text->SetTextAnim(L"할아버님을\n만나 뵙기 위해서...");
+		}
+	, true, 0.5f);
+	OpeningEvent->PushEvent([this] {
+		OpeningEvent->Portrait2->SetLipAnimation(1.0f);
+		OpeningEvent->Dialogue->Text->SetTextAnim(L"그것만을 위해서\n여기까지 온 거니까!");
+		}
+	, true, 0.5f);
+	OpeningEvent->PushEvent([this] {
+		OpeningEvent->Portrait2->SetLipAnimation(1.0f);
+		OpeningEvent->Dialogue->Text->SetTextAnim(L"모두들!\n부디 내게 힘을 빌려줘!!");
+		}
+	, true, 0.5f);
+	OpeningEvent->PushEvent([this] {
+		OpeningEvent->Dialogue->SetFadeOut(.2f);
+		OpeningEvent->SetFadeOut(0.5f);
+		BgmPlayer.SoundFadeOut(1.0f);
+		}
+	, false, 0.6f);
+
+	OpeningEvent->PushEvent([this] {
+		OpeningEvent->Background->Off();
+		OpeningEvent->Portrait2->Off();
+		OpeningEvent->Portrait3->Off();
+		OpeningEvent->Portrait4->Off();
+		OpeningEvent->SetFadeIn(.5f);
+		}
+	, false, 0.5f);
+
+	OpeningEvent->SkipFunction = [this] {
+		BgmPlayer.SoundFadeOut(0.3f);
+	};
 }
 
 void Stage10::ClearEventInit()

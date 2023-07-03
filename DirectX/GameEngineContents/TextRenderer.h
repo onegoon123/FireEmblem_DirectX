@@ -31,6 +31,7 @@ public:
 	void SetTextAnim(const std::wstring_view& _Text);
 	bool IsAnimEnd();
 
+	static GameEngineSoundPlayer TalkSound;
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -38,7 +39,6 @@ protected:
 private:
 	std::shared_ptr<class GameEngineFontRenderer> FontRender;
 	std::vector<std::shared_ptr<GameEngineFontRenderer>> OutlineRenders;
-	GameEngineSoundPlayer TalkSound;
 	std::wstring AnimText = L"";
 	int Index = 0;
 	bool IsTextAnim = false;

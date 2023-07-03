@@ -1,5 +1,8 @@
 #include "PrecompileHeader.h"
 #include "TextRenderer.h"
+
+GameEngineSoundPlayer TextRenderer::TalkSound;
+
 TextRenderer::TextRenderer() 
 {
 }

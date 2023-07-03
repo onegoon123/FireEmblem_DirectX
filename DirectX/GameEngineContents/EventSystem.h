@@ -1,6 +1,8 @@
 #pragma once
 #include <GameEngineCore/GameEngineActor.h>
+#include <GameEngineCore/GameEngineUIRenderer.h>
 #include "DialogueSystem.h"
+#include "PortraitAnimation.h"
 
 class EventSystem : public GameEngineActor
 {
@@ -16,12 +18,12 @@ public:
 	EventSystem& operator=(EventSystem&& _Other) noexcept = delete;
 
 
-	std::shared_ptr<class GameEngineUIRenderer> Background = nullptr;
-	std::shared_ptr<class GameEngineUIRenderer> Foreground = nullptr;
-	std::shared_ptr<GameEngineUIRenderer> Portrait1 = nullptr;
-	std::shared_ptr<GameEngineUIRenderer> Portrait2 = nullptr;
-	std::shared_ptr<GameEngineUIRenderer> Portrait3 = nullptr;
-	std::shared_ptr<GameEngineUIRenderer> Portrait4 = nullptr;
+	std::shared_ptr<GameEngineUIRenderer> Background = nullptr;
+	std::shared_ptr<GameEngineUIRenderer> Foreground = nullptr;
+	std::shared_ptr<PortraitAnimation> Portrait1 = nullptr;
+	std::shared_ptr<PortraitAnimation> Portrait2 = nullptr;
+	std::shared_ptr<PortraitAnimation> Portrait3 = nullptr;
+	std::shared_ptr<PortraitAnimation> Portrait4 = nullptr;
 	std::shared_ptr<DialogueSystem> Dialogue;
 	std::function<void()> SkipFunction;
 

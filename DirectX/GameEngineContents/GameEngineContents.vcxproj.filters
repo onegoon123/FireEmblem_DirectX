@@ -216,6 +216,9 @@
     <ClCompile Include="BattleAnimationLevel_Event.cpp">
       <Filter>Battle\Animation\Level</Filter>
     </ClCompile>
+    <ClCompile Include="PortraitAnimation.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FECore.h" />
@@ -403,6 +406,9 @@
     </ClInclude>
     <ClInclude Include="DanceUI.h">
       <Filter>Battle\UI\Battle</Filter>
+    </ClInclude>
+    <ClInclude Include="PortraitAnimation.h">
+      <Filter>UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

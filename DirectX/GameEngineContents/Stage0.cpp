@@ -44,7 +44,7 @@ void Stage0::OpeningEventInit()
 {
 	OpeningEvent->PushEvent([this] {
 		OpeningEvent->Background->SetTexture("EventBackground_House.png");
-		OpeningEvent->Portrait1->SetTexture("Portrait_Lyn.png");
+		OpeningEvent->Portrait1->SetPortrait(UnitIdentityCode::Lyn);
 		OpeningEvent->Portrait1->Off();
 		OpeningEvent->SetFadeIn(1.0f);
 		Unit_Lyn->SetMapPos({ 14, 0 });
@@ -130,7 +130,7 @@ void Stage0::OpeningEventInit()
 void Stage0::ClearEventInit()
 {
 	ClearEvent->PushEvent([this] {
-		ClearEvent->Portrait2->SetTexture("Portrait_Lyn.png");
+		ClearEvent->Portrait2->SetPortrait(UnitIdentityCode::Lyn);
 		ClearEvent->Portrait2->On();
 	}, true);
 

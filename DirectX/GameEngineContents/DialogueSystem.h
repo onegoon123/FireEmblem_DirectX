@@ -23,13 +23,13 @@ public:
 	void SetSize(float4 _Size);
 
 	std::shared_ptr<TextRenderer> Text;
+	std::shared_ptr<GameEngineUIRenderer> ArrowRender;
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
 
 private:
 	std::vector<std::shared_ptr<GameEngineUIRenderer>> DialogueBoxRenders;
-	std::shared_ptr<GameEngineUIRenderer> ArrowRender;
 
 	float FadeSpeed = 0.0f;
 	float FadeTimer = 0.0f;

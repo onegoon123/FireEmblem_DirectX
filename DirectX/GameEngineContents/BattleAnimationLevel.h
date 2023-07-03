@@ -41,9 +41,9 @@ private:
 	void EventInit();
 	bool EncounterEventStart(std::shared_ptr<BattleUnit> _Unit);
 	bool DeathEventStart(std::shared_ptr<BattleUnit> _Unit);
-	void NewPlayerDeathEvent(UnitIdentityCode _Code, std::string _Name, std::vector<std::wstring_view> _Script);
-	void NewEnemyDeathEvent(UnitIdentityCode _Code, std::string _Name, std::vector<std::wstring_view> _Script);
-	void NewEncounterEvent(UnitIdentityCode _Code, std::string _Name, std::vector<std::wstring_view> _Script);
+	void NewPlayerDeathEvent(UnitIdentityCode _Code, std::vector<std::wstring_view> _Script);
+	void NewEnemyDeathEvent(UnitIdentityCode _Code, std::vector<std::wstring_view> _Script);
+	void NewEncounterEvent(UnitIdentityCode _Code,  std::vector<std::wstring_view> _Script);
 
 	static std::string_view ReturnLevelStr;
 	static std::shared_ptr<class BattleUnit> SubjectUnit;

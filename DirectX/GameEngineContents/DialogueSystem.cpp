@@ -2,11 +2,11 @@
 #include "DialogueSystem.h"
 #include <GameEngineCore/GameEngineUIRenderer.h>
 #include "ContentsEnum.h"
-DialogueSystem::DialogueSystem() 
+DialogueSystem::DialogueSystem()
 {
 }
 
-DialogueSystem::~DialogueSystem() 
+DialogueSystem::~DialogueSystem()
 {
 }
 
@@ -20,6 +20,7 @@ void DialogueSystem::SetFadeIn(float _Timer)
 	{
 		_Render->ColorOptionValue.MulColor.a = 0;
 	}
+	ArrowRender->ColorOptionValue.MulColor.a = 0;
 	Text->SetColorAlpha(0);
 }
 
@@ -34,6 +35,7 @@ void DialogueSystem::SetFadeOut(float _Timer)
 	{
 		_Render->ColorOptionValue.MulColor.a = 1;
 	}
+	ArrowRender->ColorOptionValue.MulColor.a = 1;
 	Text->SetColorAlpha(1);
 }
 
@@ -58,10 +60,12 @@ void DialogueSystem::SetSize(float4 _Size)
 	DialogueBoxRenders[6]->GetTransform()->SetLocalScale({ 24, 24 });
 
 	DialogueBoxRenders[7]->GetTransform()->SetLocalPosition({ 24.0f * _Size.x * 0.5f + 12.0f, -24.0f * (_Size.y + 1) });
-	DialogueBoxRenders[7]->GetTransform()->SetLocalScale({ 24.0f * _Size.x , 24 });
+	DialogueBoxRenders[7]->GetTransform()->SetLocalScale({ 24.0f * _Size.x , 24, 1 });
 
 	DialogueBoxRenders[8]->GetTransform()->SetLocalPosition({ 24.0f * (_Size.x + 1), -24.0f * (_Size.y + 1) });
 	DialogueBoxRenders[8]->GetTransform()->SetLocalScale({ 24, 24 });
+
+	ArrowRender->Off();
 }
 
 void DialogueSystem::Start()
@@ -86,7 +90,7 @@ void DialogueSystem::Start()
 
 	DialogueBoxRenders[2] = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
 	DialogueBoxRenders[2]->SetSprite("DialogueBox.png", 2);
-	
+
 	DialogueBoxRenders[3] = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
 	DialogueBoxRenders[3]->SetSprite("DialogueBox.png", 3);
 
@@ -105,10 +109,17 @@ void DialogueSystem::Start()
 	DialogueBoxRenders[8] = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
 	DialogueBoxRenders[8]->SetSprite("DialogueBox.png", 8);
 
+	ArrowRender = CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
+	ArrowRender->SetTexture("DialogueArrow.png");
+	ArrowRender->GetTransform()->SetParent(DialogueBoxRenders[7]->GetTransform());
+	ArrowRender->GetTransform()->SetLocalPosition({ 0, -0.93333f });
+	ArrowRender->GetTransform()->SetWorldScale({ 48, 36, 1 });
+	ArrowRender->Off();
+
 	Text = CreateComponent<TextRenderer>(RenderOrder::UIText);
 	Text->Setting("Silhoua14", 55, float4::Black, float4::Null, FontAligned::Left);
 	Text->GetTransform()->SetLocalPosition({ 24, -24 });
-	
+
 }
 
 void DialogueSystem::Update(float _DeltaTime)
@@ -122,15 +133,17 @@ void DialogueSystem::Update(float _DeltaTime)
 			for (std::shared_ptr<GameEngineUIRenderer> _Render : DialogueBoxRenders)
 			{
 				_Render->ColorOptionValue.MulColor.a = 1;
-				Text->SetColorAlpha(1);
 			}
+			ArrowRender->ColorOptionValue.MulColor.a = 1;
+			Text->SetColorAlpha(1);
 			return;
 		}
 		for (std::shared_ptr<GameEngineUIRenderer> _Render : DialogueBoxRenders)
 		{
 			_Render->ColorOptionValue.MulColor.a = FadeTimer;
-			Text->SetColorAlpha(FadeTimer);
 		}
+		ArrowRender->ColorOptionValue.MulColor.a = FadeTimer;
+		Text->SetColorAlpha(FadeTimer);
 	}
 
 	if (true == IsFadeOut)
@@ -142,15 +155,17 @@ void DialogueSystem::Update(float _DeltaTime)
 			for (std::shared_ptr<GameEngineUIRenderer> _Render : DialogueBoxRenders)
 			{
 				_Render->ColorOptionValue.MulColor.a = 0;
-				Text->SetColorAlpha(0);
 			}
+			ArrowRender->ColorOptionValue.MulColor.a = 0;
+			Text->SetColorAlpha(0);
 			return;
 		}
 		for (std::shared_ptr<GameEngineUIRenderer> _Render : DialogueBoxRenders)
 		{
 			_Render->ColorOptionValue.MulColor.a = FadeTimer;
-			Text->SetColorAlpha(FadeTimer);
 		}
+		ArrowRender->ColorOptionValue.MulColor.a = FadeTimer;
+		Text->SetColorAlpha(FadeTimer);
 	}
 }
 
