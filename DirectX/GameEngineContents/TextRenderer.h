@@ -24,6 +24,7 @@ public:
 	void SetText(const std::wstring_view& _Text, bool _Clear = true);
 	void SetScale(float _FontScale);
 	void SetColor(float4 _FontColor);
+	void SetColorAlpha(float _Alpha);
 	void SetOutLine(float4 _FontColor);
 	void SetAligned(FontAligned _Aligned);
 

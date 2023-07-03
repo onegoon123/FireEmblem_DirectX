@@ -37,7 +37,6 @@ public:
 	bool GetIsEnd() { return IsEnd; }
 	void SetFadeIn(float _Time);
 	void SetFadeOut(float _Time);
-
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;

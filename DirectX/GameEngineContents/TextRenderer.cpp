@@ -119,6 +119,15 @@ void TextRenderer::SetColor(float4 _FontColor)
 	FontRender->SetColor(_FontColor);
 }
 
+void TextRenderer::SetColorAlpha(float _Alpha)
+{
+	FontRender->SetAlpha(_Alpha);
+	for (int i = 0; i < OutlineRenders.size(); i++)
+	{
+		OutlineRenders[i]->SetAlpha(_Alpha);
+	}
+}
+
 void TextRenderer::SetOutLine(float4 _FontColor)
 {
 	for (int i = 0; i < OutlineRenders.size(); i++)

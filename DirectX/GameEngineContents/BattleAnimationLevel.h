@@ -39,9 +39,11 @@ protected:
 	void LevelChangeEnd() override;
 private:
 	void EventInit();
-	bool EventStart(std::shared_ptr<BattleUnit> _Unit);
+	bool EncounterEventStart(std::shared_ptr<BattleUnit> _Unit);
+	bool DeathEventStart(std::shared_ptr<BattleUnit> _Unit);
 	void NewPlayerDeathEvent(UnitIdentityCode _Code, std::string _Name, std::vector<std::wstring_view> _Script);
 	void NewEnemyDeathEvent(UnitIdentityCode _Code, std::string _Name, std::vector<std::wstring_view> _Script);
+	void NewEncounterEvent(UnitIdentityCode _Code, std::string _Name, std::vector<std::wstring_view> _Script);
 
 	static std::string_view ReturnLevelStr;
 	static std::shared_ptr<class BattleUnit> SubjectUnit;
@@ -59,6 +61,7 @@ private:
 	std::shared_ptr<class BattleAnimationUI> UI;
 
 	std::shared_ptr<class FadeEffect> FEffect;
+	std::map<UnitIdentityCode , std::shared_ptr<class EventSystem>> EncounterEvent;
 	std::map<UnitIdentityCode , std::shared_ptr<class EventSystem>> DeathEvent;
 	GameEngineTransform* CameraTransform = nullptr;
 

@@ -355,6 +355,14 @@ void BattleAnimationLevel::LevelChangeStart()
 	}
 	FEffect->FadeIn(0.3f);
 
+	if (true == EncounterEventStart(TargetUnit))
+	{
+		return;
+	}
+	else if (true == EncounterEventStart(SubjectUnit))
+	{
+		return;
+	}
 	TimeEvent.AddEvent(0.3f, std::bind(&BattleAnimationLevel::PlayAttack, this));
 }
 
@@ -374,14 +382,14 @@ void BattleAnimationLevel::PlayAttack()
 	{
 		if (true == BattleData.back().SubjectUnit.GetIsDie())
 		{
-			if (true == EventStart(SubjectUnit))
+			if (true == DeathEventStart(SubjectUnit))
 			{
 				return;
 			}
 		}
 		else if (true == BattleData.back().TargetUnit.GetIsDie())
 		{
-			if (true == EventStart(TargetUnit))
+			if (true == DeathEventStart(TargetUnit))
 			{
 				return;
 			}
@@ -557,7 +565,7 @@ void BattleAnimationLevel::FadeOut(float _Time)
 	GameEngineTime::GlobalTime.SetGlobalTimeScale(1.0f);
 }
 
-bool BattleAnimationLevel::EventStart(std::shared_ptr<BattleUnit> _Unit)
+bool BattleAnimationLevel::DeathEventStart(std::shared_ptr<BattleUnit> _Unit)
 {
 	std::map<UnitIdentityCode, std::shared_ptr<EventSystem>>::iterator EventIter = DeathEvent.find(_Unit->GetUnitData().GetIdentityCode());
 	if (EventIter == DeathEvent.end())
@@ -566,6 +574,17 @@ bool BattleAnimationLevel::EventStart(std::shared_ptr<BattleUnit> _Unit)
 	}
 	(*EventIter).second->EventStart();
 
+	return true;
+}
+bool BattleAnimationLevel::EncounterEventStart(std::shared_ptr<BattleUnit> _Unit)
+{
+	std::map<UnitIdentityCode, std::shared_ptr<EventSystem>>::iterator EventIter = EncounterEvent.find(_Unit->GetUnitData().GetIdentityCode());
+	if (EventIter == EncounterEvent.end())
+	{
+		return false;
+	}
+	(*EventIter).second->EventStart();
+	EncounterEvent.erase(EventIter);
 	return true;
 }
 

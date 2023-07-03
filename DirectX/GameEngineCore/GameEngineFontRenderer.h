@@ -30,7 +30,10 @@ public:
 	{
 		FontColor = _FontColor;
 	}
-
+	void SetAlpha(float _Alpha)
+	{
+		FontColor.a = _Alpha;
+	}
 	void SetAligned(FontAligned _Aligned)
 	{
 		Aligned = _Aligned;

@@ -20,6 +20,7 @@ void DialogueSystem::SetFadeIn(float _Timer)
 	{
 		_Render->ColorOptionValue.MulColor.a = 0;
 	}
+	Text->SetColorAlpha(0);
 }
 
 void DialogueSystem::SetFadeOut(float _Timer)
@@ -33,6 +34,7 @@ void DialogueSystem::SetFadeOut(float _Timer)
 	{
 		_Render->ColorOptionValue.MulColor.a = 1;
 	}
+	Text->SetColorAlpha(1);
 }
 
 void DialogueSystem::SetSize(float4 _Size)
@@ -120,12 +122,14 @@ void DialogueSystem::Update(float _DeltaTime)
 			for (std::shared_ptr<GameEngineUIRenderer> _Render : DialogueBoxRenders)
 			{
 				_Render->ColorOptionValue.MulColor.a = 1;
+				Text->SetColorAlpha(1);
 			}
 			return;
 		}
 		for (std::shared_ptr<GameEngineUIRenderer> _Render : DialogueBoxRenders)
 		{
 			_Render->ColorOptionValue.MulColor.a = FadeTimer;
+			Text->SetColorAlpha(FadeTimer);
 		}
 	}
 
@@ -138,12 +142,14 @@ void DialogueSystem::Update(float _DeltaTime)
 			for (std::shared_ptr<GameEngineUIRenderer> _Render : DialogueBoxRenders)
 			{
 				_Render->ColorOptionValue.MulColor.a = 0;
+				Text->SetColorAlpha(0);
 			}
 			return;
 		}
 		for (std::shared_ptr<GameEngineUIRenderer> _Render : DialogueBoxRenders)
 		{
 			_Render->ColorOptionValue.MulColor.a = FadeTimer;
+			Text->SetColorAlpha(FadeTimer);
 		}
 	}
 }
