@@ -67,11 +67,15 @@ void GameEngineSoundPlayer::SoundFadeOut(double _Time, float _Volume, bool _IsSt
 	Channel->addFadePoint(EndClock, _Volume);
 	Channel->setDelay(ParentClock, EndClock, _IsStop);
 }
-
+void GameEngineSoundPlayer::SetVolume(float _Volume)
+{
+	Channel->setVolume(GameEngineSound::MasterVolume * _Volume);
+}
 //////////////////////////// GameEngineSound ////////////////////////////
 
 // FMOD는 자신들의 기능을 이용할수 있게 해주는 클래스의 포인터를 주고
 FMOD::System* SoundSystem = nullptr;
+float GameEngineSound::MasterVolume = 1.0f;
 
 std::unordered_map<std::string, std::shared_ptr<GameEngineSound>> GameEngineSound::AllSound;
 
@@ -152,6 +156,7 @@ GameEngineSoundPlayer GameEngineSound::Play(const std::string_view& _Name)
 	}
 	FMOD::Channel* Channel = Finditer->second->SoundPlay();
 	Channel->setLoopCount(0);
+	Channel->setVolume(MasterVolume);
 	return Channel;
 }
 

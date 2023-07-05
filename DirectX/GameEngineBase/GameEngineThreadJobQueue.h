@@ -11,10 +11,7 @@ enum ThreadWorkType
 	Destroy = -2
 };
 
-// 설명 : IOCP를 사용한 쓰레드 
-// IOCP 썼습니다 => 갑자기 뚜드려 맞을수가 있어.
-// 어 나도 IOCP좋아하는데 나 진짜 연구 많이했는데.
-// 넌 얼마나 아니? 우리 즐겁게 IOCP이야기나 하잖 그래서 그래서...
+// IOCP를 사용한 쓰레드 
 class GameEngineThreadJobQueue
 {
 private:
@@ -45,7 +42,7 @@ protected:
 private:
 
 	HANDLE IOCPHandle = nullptr;
-	int ThreadCount = 0;
+	int ThreadCount;
 
 	static std::atomic_int RunningThreadCount;
 	std::atomic_bool IsRun = true;

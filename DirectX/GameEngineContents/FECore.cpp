@@ -25,7 +25,7 @@
 
 FECore::FECore()
 {
-	
+
 }
 
 FECore::~FECore()
@@ -42,19 +42,16 @@ void FECore::GameStart()
 
 	std::shared_ptr<StageSelectWindow> Window = GameEngineGUI::FindGUIWindowConvert<StageSelectWindow>("StageSelectWindow");
 	{
-		if (nullptr == Window)
+		if (nullptr != Window)
 		{
-			MsgAssert("윈도우 생성 실패");
+			Window->Funcions = [](const std::string_view& _Name) {
+				GameEngineCore::ChangeLevel(_Name);
+			};
 		}
-
-		Window->Funcions = [](const std::string_view& _Name) {
-			GameEngineCore::ChangeLevel(_Name);
-		};
-
 	}
 
-
 	FERandom::SetSeed(0);
+	GameEngineSound::MasterVolume = 0.2f;
 	GameEngineCore::CreateLevel<TitleLevel>();
 	GameEngineCore::CreateLevel<BattleAnimationLevel>();
 	GameEngineCore::CreateLevel<Stage0>();
@@ -98,7 +95,7 @@ void FECore::ResourcesCreate()
 		MsgTextBox("폰트설치에 실패했습니다.");
 	}
 	SendMessage(HWND_BROADCAST, WM_FONTCHANGE, NULL, NULL);
-	
+
 
 	NewDir.MoveParent();
 	NewDir.Move("Shader");

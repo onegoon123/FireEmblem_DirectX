@@ -45,10 +45,7 @@ public:
 		//재생속도 배율
 		Channel->setPitch(_Pitch);
 	}
-	void SetVolume(float _Volume)
-	{
-		Channel->setVolume(_Volume);
-	}
+	void SetVolume(float _Volume);
 	void SetLoop(int _Count = -1)
 	{
 		// -1 -> 무한루프 / 0 -> 루프X
@@ -143,6 +140,8 @@ public:
 	static void Load(const std::string_view& _Name, const std::string_view& _Path);
 
 	static GameEngineSoundPlayer Play(const std::string_view& _Name);
+
+	static float MasterVolume;
 
 protected:
 

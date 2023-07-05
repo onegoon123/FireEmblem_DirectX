@@ -915,6 +915,7 @@ void BattleLevel::EnemyTileCheck()
 		if (true == _Unit->GetIsDie()) { continue; }
 		SelectUnit = _Unit;
 		MoveSearchForEnemy();
+		Tiles->SetEnemyTile(IsMove);
 		Tiles->SetEnemyTile(IsAttack);
 	}
 	SelectUnit = BeforeUnit;

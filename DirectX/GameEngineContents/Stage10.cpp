@@ -24,8 +24,9 @@ Stage10::~Stage10()
 void Stage10::StageSetting()
 {
 	SetStage(10);
-	ClearTarget = BattleClearTarget::AllKill;
-	ClearTargetText = "목표:적 전멸";
+	ClearTarget = BattleClearTarget::Conquer;
+	ConquerPos = { 2, 1 };
+	ClearTargetText = "목표:요새 점령";
 
 	OpeningEventInit();
 	ClearEventInit();
@@ -95,7 +96,7 @@ void Stage10::OpeningEventInit()
 	OpeningEvent->PushEvent([this] {
 		OpeningEvent->Dialogue->SetFadeOut(.2f);
 		}
-	, false, 0.2f);
+	, false, 0.3f);
 
 	OpeningEvent->PushEvent([this] {
 		OpeningEvent->Dialogue->SetSize({ 13, 5 });
@@ -117,7 +118,7 @@ void Stage10::OpeningEventInit()
 	OpeningEvent->PushEvent([this] {
 		OpeningEvent->Dialogue->SetFadeOut(.2f);
 		}
-	, false, 0.2f);
+	, false, 0.3f);
 
 	OpeningEvent->PushEvent([this] {
 		OpeningEvent->Dialogue->SetFadeIn(.2f);
@@ -145,7 +146,7 @@ void Stage10::OpeningEventInit()
 	OpeningEvent->PushEvent([this] {
 		OpeningEvent->Dialogue->SetFadeOut(.2f);
 		}
-	, false, 0.2f);
+	, false, 0.3f);
 
 	OpeningEvent->PushEvent([this] {
 		OpeningEvent->Dialogue->SetSize({ 17, 5 });

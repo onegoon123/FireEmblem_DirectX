@@ -1,6 +1,8 @@
 #include "PrecompileHeader.h"
 #include "StageSelectWindow.h"
 
+bool StageSelectWindow::IsLoadingEnd = false;
+
 StageSelectWindow::StageSelectWindow() 
 {
 }
@@ -15,7 +17,10 @@ void StageSelectWindow::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _Del
 
 	if (ImGui::Button(GameEngineString::AnsiToUTF8("테스트 스테이지").c_str()))
 	{
-		Funcions("TestStage");
+		if (true == IsLoadingEnd)
+		{
+			Funcions("TestStage");
+		}
 	}
 
 	for (int i = 0; i <= 10; i++)
@@ -23,7 +28,10 @@ void StageSelectWindow::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _Del
 		std::string Str = "Stage " + std::to_string(i);
 		if (ImGui::Button(Str.c_str()))
 		{
-			Funcions("Stage"+std::to_string(i));
+			if (true == IsLoadingEnd)
+			{
+				Funcions("Stage"+std::to_string(i));
+			}
 		}
 	}
 }

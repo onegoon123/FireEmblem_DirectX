@@ -5,7 +5,6 @@
 std::atomic_int GameEngineThreadJobQueue::RunningThreadCount = 0;
 
 GameEngineThreadJobQueue::GameEngineThreadJobQueue()
-	: ThreadCount(0)
 {
 }
 

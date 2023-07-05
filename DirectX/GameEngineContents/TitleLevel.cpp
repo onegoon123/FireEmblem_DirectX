@@ -6,6 +6,11 @@
 #include <GameEngineCore/GameEngineUIRenderer.h>
 #include <GameEngineCore/GameEngineCamera.h>
 #include <GameEngineCore/GameEngineCore.h>
+#include "StageSelectWindow.h"
+
+std::atomic_bool IsTextureLoadEnd = false;
+std::atomic_bool IsSoundLoadEnd = false;
+
 TitleLevel::TitleLevel()
 {
 }
@@ -67,15 +72,26 @@ void TitleLevel::Start()
 		TitleRenderer->GetTransform()->SetWorldScale({ 960, 640 });
 	}
 
-	BgmPlayer = GameEngineSound::Play("Title.mp3");
-	BgmPlayer.SetLoop();
+	
 
 	StateInit();
+
+	StageResourceLoadStart();
 }
 
 void TitleLevel::Update(float _DeltaTime)
 {
 	FSM.Update(_DeltaTime);
+	if (true == IsSoundLoadEnd && true == IsTextureLoadEnd)
+	{
+		StageSelectWindow::IsLoadingEnd = true;
+	}
+}
+
+void TitleLevel::LevelChangeStart()
+{
+	FSM.ChangeState("Start");
+	TestStage = false;
 }
 
 void TitleLevel::LevelChangeEnd()
@@ -88,6 +104,8 @@ void TitleLevel::StateInit()
 	FSM.CreateState({ .Name = "Start",
 		.Start = [this]
 		{
+			BgmPlayer = GameEngineSound::Play("Title.mp3");
+			BgmPlayer.SetLoop();
 			TitleRenderer->ColorOptionValue.MulColor = float4::Zero;
 			Timer = 0;
 		},
@@ -120,6 +138,10 @@ void TitleLevel::StateInit()
 			{
 				Exit = true;
 			}
+			if (true == GameEngineInput::IsPress("Cheet1"))
+			{
+				TestStage = true;
+			}
 		}
 	},
 	.End = [this]
@@ -137,20 +159,93 @@ void TitleLevel::StateInit()
 	{
 		Timer += _DeltaTime * 2;
 		TitleRenderer->ColorOptionValue.MulColor = float4::One * (1.0f - Timer);
-		if (1 < Timer)
+		if (1 < Timer && true == IsTextureLoadEnd && true == IsSoundLoadEnd)
 		{
-			FSM.ChangeState("Start");
+			FSM.ChangeState("LevelChange");
 		}
 	},
 	.End = [this]
 	{
+		if (true == TestStage)
+		{
+			GameEngineCore::ChangeLevel("Stage10");
+			return;
+		}
 		if (true == Exit)
 		{
 			GameEngineWindow::AppOff();
+			return;
 		}
-		GameEngineCore::ChangeLevel("Stage10");
+		GameEngineCore::ChangeLevel("Stage0");
+
 	}
 	});
 
-	FSM.ChangeState("Start");
+	FSM.CreateState({ .Name = "LevelChange",
+	.Start = [this]
+	{
+	},
+	.Update = [this](float _DeltaTime)
+	{
+	},
+	.End = [this]
+	{
+	}
+		});
+
+	//FSM.ChangeState("Start");
 }
+
+void SoundLoad(GameEngineThread* Thread)
+{
+	GameEngineDirectory Dir;
+	Dir.MoveParentToDirectory("ContentResources");
+	Dir.Move("ContentResources");
+	Dir.Move("Battle");
+	Dir.Move("Sound");
+	std::vector<GameEngineFile> File = Dir.GetAllFile({ ".mp3", ".wav" });
+	for (size_t i = 0; i < File.size(); i++)
+	{
+		GameEngineSound::Load(File[i].GetFullPath());
+	}
+	IsSoundLoadEnd = true;
+}
+
+void TextureLoad(GameEngineThread* Thread)
+{
+	GameEngineDirectory Dir;
+	Dir.MoveParentToDirectory("ContentResources");
+	Dir.Move("ContentResources");
+	Dir.Move("Character");
+	std::vector<GameEngineFile> File = Dir.GetAllFile({ ".png", });
+	for (size_t i = 0; i < File.size(); i++)
+	{
+		GameEngineTexture::Load(File[i].GetFullPath());
+	}
+
+	Dir.MoveParent();
+	Dir.Move("Battle");
+	File = Dir.GetAllFile({ ".png", });
+	for (size_t i = 0; i < File.size(); i++)
+	{
+		GameEngineTexture::Load(File[i].GetFullPath());
+	}
+
+	Dir.MoveParentToDirectory("ContentResources");
+	Dir.Move("ContentResources");
+	Dir.Move("Event");
+	File = Dir.GetAllFile({ ".png", });
+	for (size_t i = 0; i < File.size(); i++)
+	{
+		GameEngineTexture::Load(File[i].GetFullPath());
+	}
+	IsTextureLoadEnd = true;
+}
+
+
+void TitleLevel::StageResourceLoadStart()
+{
+	GameEngineCore::JobQueue.Work(SoundLoad);
+	GameEngineCore::JobQueue.Work(TextureLoad);
+}
+

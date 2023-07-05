@@ -16,10 +16,9 @@ public:
 	StageSelectWindow& operator=(const StageSelectWindow& _Other) = delete;
 	StageSelectWindow& operator=(StageSelectWindow&& _Other) noexcept = delete;
 
+	static bool IsLoadingEnd;
 	std::function<void(const std::string_view&)> Funcions = nullptr;
-
 	void OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime) override;
-
 protected:
 
 private:

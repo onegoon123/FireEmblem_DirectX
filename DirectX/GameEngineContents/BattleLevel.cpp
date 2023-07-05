@@ -97,59 +97,59 @@ void BattleLevel::LevelChangeStart()
 	MainCamera->GetTransform()->SetLocalPosition({ 448, 288, -554.0f });
 
 
-	// 리소스 로딩
-	if (nullptr == GameEngineTexture::Find("PlayerCursor.png")) {
-		GameEngineDirectory Dir;
-		Dir.MoveParentToDirectory("ContentResources");
-		Dir.Move("ContentResources");
-		Dir.Move("Battle");
-		Dir.Move("Sound");
-		std::vector<GameEngineFile> File = Dir.GetAllFile({ ".mp3", ".wav"});
-		for (size_t i = 0; i < File.size(); i++)
-		{
-			GameEngineSound::Load(File[i].GetFullPath());
-		}
+	//// 리소스 로딩
+	//if (nullptr == GameEngineTexture::Find("PlayerCursor.png")) {
+	//	GameEngineDirectory Dir;
+	//	Dir.MoveParentToDirectory("ContentResources");
+	//	Dir.Move("ContentResources");
+	//	Dir.Move("Battle");
+	//	Dir.Move("Sound");
+	//	std::vector<GameEngineFile> File = Dir.GetAllFile({ ".mp3", ".wav"});
+	//	for (size_t i = 0; i < File.size(); i++)
+	//	{
+	//		GameEngineSound::Load(File[i].GetFullPath());
+	//	}
 
-		Dir.MoveParent();
-		File = Dir.GetAllFile({ ".png", });
-		for (size_t i = 0; i < File.size(); i++)
-		{
-			GameEngineTexture::Load(File[i].GetFullPath());
-		}
+	//	Dir.MoveParent();
+	//	File = Dir.GetAllFile({ ".png", });
+	//	for (size_t i = 0; i < File.size(); i++)
+	//	{
+	//		GameEngineTexture::Load(File[i].GetFullPath());
+	//	}
 
-		Dir.MoveParent();
-		Dir.Move("Character");
-		Dir.Move("BattleIcon");
-		File = Dir.GetAllFile({ ".png", });
-		for (size_t i = 0; i < File.size(); i++)
-		{
-			GameEngineTexture::Load(File[i].GetFullPath());
-		}
-		Dir.MoveParent();
-		Dir.Move("Map");
-		File = Dir.GetAllFile({ ".png", });
-		for (size_t i = 0; i < File.size(); i++)
-		{
-			GameEngineTexture::Load(File[i].GetFullPath());
-		}
-		Dir.MoveParent();
-		Dir.Move("Portrait");
-		File = Dir.GetAllFile({ ".png", });
-		for (size_t i = 0; i < File.size(); i++)
-		{
-			GameEngineTexture::Load(File[i].GetFullPath());
-		}
+	//	Dir.MoveParent();
+	//	Dir.Move("Character");
+	//	Dir.Move("BattleIcon");
+	//	File = Dir.GetAllFile({ ".png", });
+	//	for (size_t i = 0; i < File.size(); i++)
+	//	{
+	//		GameEngineTexture::Load(File[i].GetFullPath());
+	//	}
+	//	Dir.MoveParent();
+	//	Dir.Move("Map");
+	//	File = Dir.GetAllFile({ ".png", });
+	//	for (size_t i = 0; i < File.size(); i++)
+	//	{
+	//		GameEngineTexture::Load(File[i].GetFullPath());
+	//	}
+	//	Dir.MoveParent();
+	//	Dir.Move("Portrait");
+	//	File = Dir.GetAllFile({ ".png", });
+	//	for (size_t i = 0; i < File.size(); i++)
+	//	{
+	//		GameEngineTexture::Load(File[i].GetFullPath());
+	//	}
 
-		Dir.MoveParent();
-		Dir.MoveParent();
-		Dir.Move("Event");
-		File = Dir.GetAllFile({ ".png", });
-		for (size_t i = 0; i < File.size(); i++)
-		{
-			GameEngineTexture::Load(File[i].GetFullPath());
-		}
-	}
-	
+	//	Dir.MoveParent();
+	//	Dir.MoveParent();
+	//	Dir.Move("Event");
+	//	File = Dir.GetAllFile({ ".png", });
+	//	for (size_t i = 0; i < File.size(); i++)
+	//	{
+	//		GameEngineTexture::Load(File[i].GetFullPath());
+	//	}
+	//}
+	//
 
 	OpeningEvent = CreateActor<EventSystem>();
 	ClearEvent = CreateActor<EventSystem>();
@@ -185,7 +185,10 @@ void BattleLevel::LevelChangeStart()
 	BattleUI->SetClearTargetText(ClearTargetText);
 	InfoUI = CreateActor<UnitInformationUI>(RenderOrder::UI);
 
-	FEffect = GetLastTarget()->CreateEffect<FadeEffect>();
+	if (nullptr == FEffect)
+	{
+		FEffect = GetLastTarget()->CreateEffect<FadeEffect>();
+	}
 
 	// 조건 초기화
 	IsMove.resize(MainMap->MapScaleInt2.y);
@@ -201,8 +204,10 @@ void BattleLevel::LevelChangeStart()
 
 
 	std::shared_ptr<DebugWindow> Window = GameEngineGUI::FindGUIWindowConvert<DebugWindow>("DebugWindow");
-	Window->Cursor = MainCursor;
-
+	if (nullptr != Window)
+	{
+		Window->Cursor = MainCursor;
+	}
 	CurState = BattleState::None;
 	ChangeState(BattleState::Opening);
 
@@ -255,6 +260,12 @@ void BattleLevel::LevelChangeEnd()
 
 	CameraUnit->Death();
 	CameraUnit = nullptr;
+
+	OpeningEvent->Death();
+	OpeningEvent = nullptr;
+
+	ClearEvent->Death();
+	ClearEvent = nullptr;
 
 	std::list<std::shared_ptr <BattleUnit>>::iterator UnitIter = PlayerUnits.begin();
 	std::list<std::shared_ptr <BattleUnit>>::iterator UnitEnd = PlayerUnits.end();
