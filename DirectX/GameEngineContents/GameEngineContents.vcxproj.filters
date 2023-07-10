@@ -219,6 +219,9 @@
     <ClCompile Include="PortraitAnimation.cpp">
       <Filter>UI</Filter>
     </ClCompile>
+    <ClCompile Include="EndingLevel.cpp">
+      <Filter>Levels</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FECore.h" />
@@ -409,6 +412,9 @@
     </ClInclude>
     <ClInclude Include="PortraitAnimation.h">
       <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="EndingLevel.h">
+      <Filter>Levels</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

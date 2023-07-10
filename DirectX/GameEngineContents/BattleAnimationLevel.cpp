@@ -479,6 +479,7 @@ std::string_view BattleAnimationLevel::GetTerrainTexture(Terrain _Value)
 	case Terrain::Door:
 	case Terrain::Wall:
 	case Terrain::Fort:
+	case Terrain::CastleGate:
 	case Terrain::Pillar:
 	case Terrain::Throne:
 		return "Castle_Close.png";
@@ -518,6 +519,7 @@ std::string_view BattleAnimationLevel::GetBackgroundTexture(Terrain _Value)
 	case Terrain::Door:
 	case Terrain::Wall:
 	case Terrain::Fort:
+	case Terrain::CastleGate:
 	case Terrain::Pillar:
 	case Terrain::Throne:
 		return "BattleBackground_Castle.png";

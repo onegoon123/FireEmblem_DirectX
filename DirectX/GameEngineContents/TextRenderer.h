@@ -25,6 +25,8 @@ public:
 	void SetScale(float _FontScale);
 	void SetColor(float4 _FontColor);
 	void SetColorAlpha(float _Alpha);
+	void SetFadeIn(float _Timer);
+	void SetFadeOut(float _Timer);
 	void SetOutLine(float4 _FontColor);
 	void SetAligned(FontAligned _Aligned);
 
@@ -37,6 +39,8 @@ protected:
 	void Update(float _DeltaTime) override;
 
 private:
+	void FadeUpdate(float _DeltaTime);
+
 	std::shared_ptr<class GameEngineFontRenderer> FontRender;
 	std::vector<std::shared_ptr<GameEngineFontRenderer>> OutlineRenders;
 	std::wstring AnimText = L"";
@@ -44,5 +48,11 @@ private:
 	bool IsTextAnim = false;
 	const float AnimTime = 0.03f;
 	float Timer = 0.0f;
+
+	float FadeSpeed = 0;
+	float FadeTimer = 0;
+	bool IsFadeIn = false;
+	bool IsFadeOut = false;
+
 };
 

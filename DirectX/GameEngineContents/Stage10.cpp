@@ -26,7 +26,7 @@ void Stage10::StageSetting()
 	SetStage(10);
 	ClearTarget = BattleClearTarget::Conquer;
 	ConquerPos = { 2, 1 };
-	ClearTargetText = "목표:요새 점령";
+	ClearTargetText = "목표:성문 제압";
 
 	OpeningEventInit();
 	ClearEventInit();
@@ -197,14 +197,353 @@ void Stage10::OpeningEventInit()
 void Stage10::ClearEventInit()
 {
 	ClearEvent->PushEvent([this] {
-		ClearEvent->SetFadeOut(0.5f);
-		}, false, 1.0f);
+		ClearEvent->SetFadeOut(1.5f);
+		BgmPlayer.SoundFadeOut(0.1f);
+		}, false, 0.15f);
 
 	ClearEvent->PushEvent([this] {
-		GameEngineCore::ChangeLevel("TitleLevel");
+		BgmPlayer.Stop();
+		BgmPlayer = GameEngineSound::Play("Win.mp3");
+		}, false, 1.5f);
+
+	ClearEvent->PushEvent([this] {
+		ClearEvent->Background->SetTexture("EventBackground_Castle.png");
+		ClearEvent->Background->On();
+		ClearEvent->Portrait2->SetPortrait(UnitIdentityCode::Lyn);
+		ClearEvent->Portrait2->On();
+		ClearEvent->SetFadeIn(1.5f);
+		}, false, 1.5f);
+
+	ClearEvent->PushEvent([this] {
+		ClearEvent->Dialogue->SetSize({ 16, 5 });
+		ClearEvent->Dialogue->ArrowRender->On();
+		ClearEvent->Dialogue->SetFadeIn(.2f);
+		ClearEvent->Portrait2->SetLipAnimation(1.0f);
+		ClearEvent->Dialogue->Text->SetTextAnim(L"이겼어...\n이걸로, 할아버님께...");
+		ClearEvent->Dialogue->GetTransform()->SetLocalPosition({ -32, 164 });
+		}
+	, true, 0.1f);
+
+	ClearEvent->PushEvent([this] {
+		ClearEvent->Portrait1->SetPortrait(UnitIdentityCode::NPC1);
+		ClearEvent->Portrait1->SetFadeIn(0.5f);
+		ClearEvent->Portrait1->On();
+		}
+	, false, 0.1f);
+
+	ClearEvent->PushEvent([this] {
+		ClearEvent->Dialogue->SetFadeOut(.2f);
+		}
+	, false, 0.5f);
+
+	ClearEvent->PushEvent([this] {
+		ClearEvent->Dialogue->SetFadeIn(.2f);
+		ClearEvent->Dialogue->SetSize({ 16, 5 });
+		ClearEvent->Dialogue->ArrowRender->On();
+		ClearEvent->Dialogue->ArrowRender->SetFlipX();
+		ClearEvent->Portrait1->SetLipAnimation(1.0f);
+		ClearEvent->Dialogue->Text->SetTextAnim(L"린디스님...이시군요?");
+		ClearEvent->Dialogue->GetTransform()->SetLocalPosition({ -432, 164 });
+		}
+	, true, 0.1f);
+
+	ClearEvent->PushEvent([this] {
+		ClearEvent->Dialogue->SetFadeOut(.2f);
+		}
+	, false, 0.5f);
+
+	ClearEvent->PushEvent([this] {
+		ClearEvent->Dialogue->SetSize({ 10, 5 });
+		ClearEvent->Dialogue->ArrowRender->On();
+		ClearEvent->Dialogue->SetFadeIn(.2f);
+		ClearEvent->Dialogue->ArrowRender->SetFlipX();
+		ClearEvent->Portrait2->SetLipAnimation(1.0f);
+		ClearEvent->Dialogue->Text->SetTextAnim(L"당신은 누구야?");
+		ClearEvent->Dialogue->GetTransform()->SetLocalPosition({ -32, 164 });
+		}
+	, true, 0.1f);
+
+	ClearEvent->PushEvent([this] {
+		ClearEvent->Dialogue->SetFadeOut(.2f);
+		}
+	, false, 0.5f);
+
+	ClearEvent->PushEvent([this] {
+		ClearEvent->Dialogue->SetFadeIn(.2f);
+		ClearEvent->Dialogue->SetSize({ 22, 5 });
+		ClearEvent->Dialogue->ArrowRender->On();
+		ClearEvent->Dialogue->ArrowRender->SetFlipX();
+		ClearEvent->Portrait1->SetLipAnimation(1.0f);
+		ClearEvent->Dialogue->Text->SetTextAnim(L"키아란 후작가의 재상을 맡고 있는\n레제만이라고 합니다.");
+		ClearEvent->Dialogue->GetTransform()->SetLocalPosition({ -432, 164 });
+		}
+	, true, 0.1f);
+
+	ClearEvent->PushEvent([this] {
+		ClearEvent->Portrait1->SetLipAnimation(1.0f);
+		ClearEvent->Dialogue->Text->SetTextAnim(L"켄트와 세인으로부터\n보고를 받고 있었지만,");
+		}
+	, true, 0.1f);
+
+	ClearEvent->PushEvent([this] {
+		ClearEvent->Portrait1->SetLipAnimation(1.0f);
+		ClearEvent->Dialogue->Text->SetTextAnim(L"랑그렌에게 들켜서\n지금까지 감금되어 있었습니다.");
+		}
+	, true, 0.1f);
+
+	ClearEvent->PushEvent([this] {
+		ClearEvent->Portrait1->SetLipAnimation(1.0f);
+		ClearEvent->Dialogue->Text->SetTextAnim(L"무사히 돌아오시길\n...기다리고 있었습니다.");
+		}
+	, true, 0.1f);
+
+	ClearEvent->PushEvent([this] {
+		ClearEvent->Dialogue->SetFadeOut(.2f);
+		}
+	, false, 0.5f);
+
+	ClearEvent->PushEvent([this] {
+		ClearEvent->Dialogue->SetSize({ 24, 5 });
+		ClearEvent->Dialogue->ArrowRender->On();
+		ClearEvent->Dialogue->SetFadeIn(.2f);
+		ClearEvent->Dialogue->ArrowRender->SetFlipX();
+		ClearEvent->Portrait2->SetLipAnimation(1.0f);
+		ClearEvent->Dialogue->Text->SetTextAnim(L"고마워...\n그래서, 할아버님을 만날 수 있을까?");
+		ClearEvent->Dialogue->GetTransform()->SetLocalPosition({ -128 , 164 });
+		}
+	, true, 0.1f);
+
+	ClearEvent->PushEvent([this] {
+		ClearEvent->Dialogue->SetFadeOut(.2f);
+		}
+	, false, 0.5f);
+
+	ClearEvent->PushEvent([this] {
+		ClearEvent->Dialogue->SetFadeIn(.2f);
+		ClearEvent->Dialogue->SetSize({ 22, 5 });
+		ClearEvent->Dialogue->ArrowRender->On();
+		ClearEvent->Dialogue->ArrowRender->SetFlipX();
+		ClearEvent->Portrait1->SetLipAnimation(1.0f);
+		ClearEvent->Dialogue->Text->SetTextAnim(L"네, 물론입니다.");
+		ClearEvent->Dialogue->GetTransform()->SetLocalPosition({ -432, 164 });
+		}
+	, true, 0.1f);
+
+	ClearEvent->PushEvent([this] {
+		ClearEvent->Portrait1->SetLipAnimation(1.0f);
+		ClearEvent->Dialogue->Text->SetTextAnim(L"랑그렌이 후작님의 식사에\n여태까지 독을 넣고 있었기에,");
+		}
+	, true, 0.1f);
+
+	ClearEvent->PushEvent([this] {
+		ClearEvent->Portrait1->SetLipAnimation(1.0f);
+		ClearEvent->Dialogue->Text->SetTextAnim(L"완전히 몸이 망가지셔서...\n계속 누워 계셨습니다.");
+		}
+	, true, 0.1f);
+
+	ClearEvent->PushEvent([this] {
+		BgmPlayer.SoundFadeOut(1.0f);
+		ClearEvent->SetFadeOut(1.0f);
+		}
+	, false, 1.3f);
+
+	ClearEvent->PushEvent([this] {
+		ClearEvent->Dialogue->Off();
+		ClearEvent->Background->SetTexture("EventBackground_House2.png");
+		ClearEvent->Portrait1->SetPortrait(UnitIdentityCode::NPC2);
+		ClearEvent->SetFadeIn(1.0f);
+		}
+	, false, 1.3f);
+
+	ClearEvent->PushEvent([this] {
+		ClearEvent->Dialogue->SetFadeIn(.2f);
+		ClearEvent->Dialogue->SetSize({ 22, 5 });
+		ClearEvent->Dialogue->ArrowRender->On();
+		ClearEvent->Portrait1->SetLipAnimation(1.0f);
+		ClearEvent->Dialogue->Text->SetTextAnim(L"...누구지");
+		ClearEvent->Dialogue->GetTransform()->SetLocalPosition({ -432, 164 });
+		}
+	, true, 0.1f);
+
+	ClearEvent->PushEvent([this] {
+		ClearEvent->Portrait1->SetLipAnimation(1.0f);
+		ClearEvent->Dialogue->Text->SetTextAnim(L"나는 누구도\n만나지 않겠다고 하지 않았느냐.");
+		}
+	, true, 0.1f);
+
+	ClearEvent->PushEvent([this] {
+		ClearEvent->Dialogue->SetFadeOut(.2f);
+		}
+	, false, 0.5f);
+
+	ClearEvent->PushEvent([this] {
+		ClearEvent->Dialogue->SetSize({ 10, 5 });
+		ClearEvent->Dialogue->ArrowRender->On();
+		ClearEvent->Dialogue->SetFadeIn(.2f);
+		ClearEvent->Dialogue->ArrowRender->SetFlipX();
+		ClearEvent->Dialogue->Text->SetTextAnim(L"......");
+		ClearEvent->Dialogue->GetTransform()->SetLocalPosition({ 32 , 164 });
+		ClearEvent->Portrait2->SetTexture("Portrait_LynSad.png");
+		}
+	, true, 0.1f);
+
+	ClearEvent->PushEvent([this] {
+		ClearEvent->Dialogue->SetFadeOut(.2f);
+		}
+	, false, 0.5f);
+	ClearEvent->PushEvent([this] {
+		ClearEvent->Dialogue->SetFadeIn(.2f);
+		ClearEvent->Dialogue->SetSize({ 22, 5 });
+		ClearEvent->Dialogue->ArrowRender->On();
+		ClearEvent->Dialogue->ArrowRender->SetFlipX();
+		ClearEvent->Portrait1->SetLipAnimation(1.0f);
+		ClearEvent->Dialogue->Text->SetTextAnim(L"뭘 하고 있는게야!\n빨리 나가라고 하지...");
+		ClearEvent->Dialogue->GetTransform()->SetLocalPosition({ -432, 164 });
+		}
+	, true, 0.1f);
+
+	ClearEvent->PushEvent([this] {
+		ClearEvent->Dialogue->SetFadeOut(.2f);
+		ClearEvent->Portrait2->SetTexture("Portrait_Lyn.png");
+		BgmPlayer = GameEngineSound::Play("Lyn's Desire.mp3");
+		}
+	, false, 0.5f);
+	ClearEvent->PushEvent([this] {
+		ClearEvent->Dialogue->SetSize({ 20, 5 });
+		ClearEvent->Dialogue->ArrowRender->On();
+		ClearEvent->Dialogue->SetFadeIn(.2f);
+		ClearEvent->Dialogue->ArrowRender->SetFlipX();
+		ClearEvent->Portrait2->SetLipAnimation(1.0f);
+		ClearEvent->Dialogue->Text->SetTextAnim(L"...저기!\n저는...");
+		ClearEvent->Dialogue->GetTransform()->SetLocalPosition({ -128 , 164 });
+		}
+	, true, 0.1f);
+
+	ClearEvent->PushEvent([this] {
+		ClearEvent->Portrait2->SetLipAnimation(1.0f);
+		ClearEvent->Dialogue->Text->SetTextAnim(L"저는\n린디스...입니다.");
+		}
+	, true, 0.1f);
+
+	ClearEvent->PushEvent([this] {
+		ClearEvent->Dialogue->SetFadeOut(.2f);
+		}
+	, false, 0.1f);
+	ClearEvent->PushEvent([this] {
+		ClearEvent->Dialogue->SetFadeIn(.2f);
+		ClearEvent->Dialogue->SetSize({ 15, 5 });
+		ClearEvent->Dialogue->ArrowRender->On();
+		ClearEvent->Dialogue->ArrowRender->SetFlipX();
+		ClearEvent->Portrait1->SetLipAnimation(1.0f);
+		ClearEvent->Dialogue->Text->SetTextAnim(L"!? 린디스라고\n...설마");
+		ClearEvent->Dialogue->GetTransform()->SetLocalPosition({ -344, 164 });
+		}
+	, true, 0.1f);
+
+	ClearEvent->PushEvent([this] {
+		ClearEvent->Dialogue->SetFadeOut(.2f);
+		}
+	, false, 0.5f);
+
+	ClearEvent->PushEvent([this] {
+		ClearEvent->Dialogue->SetSize({ 24, 5 });
+		ClearEvent->Dialogue->ArrowRender->On();
+		ClearEvent->Dialogue->SetFadeIn(.2f);
+		ClearEvent->Dialogue->ArrowRender->SetFlipX();
+		ClearEvent->Portrait2->SetLipAnimation(1.0f);
+		ClearEvent->Dialogue->Text->SetTextAnim(L"아버지의 이름은 하살,\n어머니의 이름은... 마델린");
+		ClearEvent->Dialogue->GetTransform()->SetLocalPosition({ -128 , 164 });
+		}
+	, true, 0.1f);
+
+	ClearEvent->PushEvent([this] {
+		ClearEvent->Portrait2->SetLipAnimation(1.0f);
+		ClearEvent->Dialogue->Text->SetTextAnim(L"15살까지\n초원에서 자라왔어요.");
+		}
+	, true, 0.1f);
+
+	ClearEvent->PushEvent([this] {
+		ClearEvent->Dialogue->SetFadeOut(.2f);
+		}
+	, false, 0.5f);
+	ClearEvent->PushEvent([this] {
+		ClearEvent->Dialogue->SetFadeIn(.2f);
+		ClearEvent->Dialogue->SetSize({ 15, 5 });
+		ClearEvent->Dialogue->ArrowRender->On();
+		ClearEvent->Dialogue->ArrowRender->SetFlipX();
+		ClearEvent->Portrait1->SetLipAnimation(1.0f);
+		ClearEvent->Dialogue->Text->SetTextAnim(L"...\n정말인가?");
+		ClearEvent->Dialogue->GetTransform()->SetLocalPosition({ -344, 164 });
+		}
+	, true, 0.1f);
+	ClearEvent->PushEvent([this] {
+		ClearEvent->Portrait1->SetLipAnimation(1.0f);
+		ClearEvent->Dialogue->Text->SetTextAnim(L"이, 이쪽으로\n얼굴을 보여 주게...");
+		}
+	, true, 0.1f);
+
+	ClearEvent->PushEvent([this] {
+		ClearEvent->Dialogue->SetFadeOut(.2f);
+		ClearEvent->Portrait2->SetLerpPos({128, -160}, .5f);
+		}
+	, false, 1.5f);
+	ClearEvent->PushEvent([this] {
+		ClearEvent->Dialogue->SetFadeIn(.2f);
+		ClearEvent->Dialogue->SetSize({ 20, 5 });
+		ClearEvent->Dialogue->ArrowRender->On();
+		ClearEvent->Portrait1->SetLipAnimation(1.0f);
+		ClearEvent->Dialogue->Text->SetTextAnim(L"오오...\n트,틀림없어...");
+		ClearEvent->Dialogue->GetTransform()->SetLocalPosition({ -344, 164 });
+		}
+	, true, 0.1f);
+
+	ClearEvent->PushEvent([this] {
+		ClearEvent->Portrait1->SetLipAnimation(1.0f);
+		ClearEvent->Dialogue->Text->SetTextAnim(L"마델린을 정말 닮았구나...\n오오,오오...");
+		}
+	, true, 0.1f);
+
+	ClearEvent->PushEvent([this] {
+		ClearEvent->Dialogue->SetFadeOut(.2f);
+		}
+	, false, 0.5f);
+
+	ClearEvent->PushEvent([this] {
+		ClearEvent->Dialogue->SetSize({ 15, 5 });
+		ClearEvent->Dialogue->ArrowRender->On();
+		ClearEvent->Dialogue->SetFadeIn(.2f);
+		ClearEvent->Dialogue->ArrowRender->SetFlipX();
+		ClearEvent->Portrait2->SetLipAnimation(1.0f);
+		ClearEvent->Dialogue->Text->SetTextAnim(L"할아버님!!");
+		ClearEvent->Dialogue->GetTransform()->SetLocalPosition({ -128 , 164 });
+		}
+	, true, 0.1f);
+
+	ClearEvent->PushEvent([this] {
+		ClearEvent->SetFadeOut(1.0f);
+		}
+	, false, 1.2f);
+
+	ClearEvent->PushEvent([this] {
+		ClearEvent->Dialogue->Off();
+		ClearEvent->Portrait1->Off();
+		ClearEvent->Portrait2->Off();
+		ClearEvent->SetFadeIn(1.0f);
+		ClearEvent->Background->SetTexture("MeetGrandfather.png");
+		}
+	, true, 1.5f);
+
+	ClearEvent->PushEvent([this] {
+		ClearEvent->SetFadeOut(1.0f);
+		}
+	, false, 1.2f);
+
+	ClearEvent->PushEvent([this] {
+		BgmPlayer.SoundFadeOut(0.2f);
+		GameEngineCore::ChangeLevel("EndingLevel");
 		}, false, .6f);
 
 	ClearEvent->SkipFunction = [this] {
-		GameEngineCore::ChangeLevel("TitleLevel");
+		GameEngineCore::ChangeLevel("EndingLevel");
 	};
 }

@@ -82,6 +82,7 @@ int BattleMap::GetTerrainCostFoot(Terrain _Value)
 	case Terrain::Floor:
 	case Terrain::Road:
 	case Terrain::Fort:
+	case Terrain::CastleGate:
 	case Terrain::Gate:
 	case Terrain::House:
 	case Terrain::Shop:
@@ -147,6 +148,7 @@ int BattleMap::GetTerrainDodge(Terrain _Value)
 	case Terrain::Pillar:
 	case Terrain::Forest:
 	case Terrain::Fort:
+	case Terrain::CastleGate:
 		return 20;
 	case Terrain::Mountain:
 		return 30;
@@ -184,6 +186,7 @@ int BattleMap::GetTerrainDef(Terrain _Value)
 	case Terrain::Throne:
 	case Terrain::Peak:
 	case Terrain::Fort:
+	case Terrain::CastleGate:
 		return 2;
 	case Terrain::Gate:
 		return 3;
@@ -362,7 +365,7 @@ void BattleMap::SetTerrainData_Stage9()
 void BattleMap::SetTerrainData_Stage10()
 {
 	TerrainData[0] = { Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::River, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain };
-	TerrainData[1] = { Terrain::Plain, Terrain::None, Terrain::Fort, Terrain::None, Terrain::Plain, Terrain::Fort, Terrain::River, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::House, Terrain::River, Terrain::River, Terrain::River, Terrain::River };
+	TerrainData[1] = { Terrain::Plain, Terrain::None, Terrain::CastleGate, Terrain::None, Terrain::Plain, Terrain::Fort, Terrain::River, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::House, Terrain::River, Terrain::River, Terrain::River, Terrain::River };
 	TerrainData[2] = { Terrain::Plain, Terrain::None, Terrain::None, Terrain::None, Terrain::Plain, Terrain::Plain, Terrain::River, Terrain::River, Terrain::River, Terrain::River, Terrain::River, Terrain::Shop, Terrain::Shop, Terrain::River, Terrain::River, Terrain::Plain, Terrain::Plain, Terrain::Plain };
 	TerrainData[3] = { Terrain::Plain, Terrain::None, Terrain::None, Terrain::None, Terrain::Plain, Terrain::Plain, Terrain::Fort, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::River, Terrain::River, Terrain::River, Terrain::River, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain };
 	TerrainData[4] = { Terrain::Mountain, Terrain::Mountain, Terrain::Mountain, Terrain::Plain, Terrain::Plain, Terrain::Fort, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Forest, Terrain::Forest, Terrain::River, Terrain::River, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain, Terrain::Plain };

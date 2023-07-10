@@ -22,6 +22,7 @@
 #include "Stage9.h"
 #include "Stage10.h"
 #include "TestStage.h"
+#include "EndingLevel.h"
 
 FECore::FECore()
 {
@@ -51,7 +52,7 @@ void FECore::GameStart()
 	}
 
 	FERandom::SetSeed(0);
-	GameEngineSound::MasterVolume = 0.2f;
+	GameEngineSound::MasterVolume = 0.5f;
 	GameEngineCore::CreateLevel<TitleLevel>();
 	GameEngineCore::CreateLevel<BattleAnimationLevel>();
 	GameEngineCore::CreateLevel<Stage0>();
@@ -66,6 +67,7 @@ void FECore::GameStart()
 	GameEngineCore::CreateLevel<Stage9>();
 	GameEngineCore::CreateLevel<Stage10>();
 	GameEngineCore::CreateLevel<TestStage>();
+	GameEngineCore::CreateLevel<EndingLevel>();
 	GameEngineCore::ChangeLevel("TitleLevel");
 
 	GameEngineFont::Load("Silhoua14");

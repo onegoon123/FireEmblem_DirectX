@@ -121,6 +121,9 @@ void SelectUI::SetTerrainData(Terrain _Data)
 	case Terrain::Fort:
 		TerrainStr = "요새";
 		break;
+	case Terrain::CastleGate:
+		TerrainStr = "성문";
+		break;
 	case Terrain::Pillar:
 		TerrainStr = "기둥";
 		break;

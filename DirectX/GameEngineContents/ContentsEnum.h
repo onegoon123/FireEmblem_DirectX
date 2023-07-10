@@ -86,6 +86,8 @@ enum class UnitIdentityCode
 	Yogi,	// 8보스
 	Eagler,	// 9보스
 	Lundgren,//10보스
+	NPC1,// 이벤트용 NPC캐릭터1
+	NPC2,// 이벤트용 NPC캐릭터2
 };
 
 enum class ItemCode
@@ -172,6 +174,7 @@ enum class Terrain
 	Peak,		//높은 산
 	Door,		//문 이동불가
 	Gate,		//문 게이트 이동가능
+	CastleGate,	//성문
 	Ruins,		//폐허
 	House,		//민가
 	Shop,		//가게 (무기점)

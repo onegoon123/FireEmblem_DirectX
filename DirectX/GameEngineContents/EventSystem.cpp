@@ -79,7 +79,6 @@ void EventSystem::Update(float _DeltaTime)
 	
 	if (true == IsEnd) { return; }
 	FadeUpdate(_DeltaTime);
-
 	if (GameEngineInput::IsDown("Start"))
 	{
 		if (nullptr != SkipFunction)

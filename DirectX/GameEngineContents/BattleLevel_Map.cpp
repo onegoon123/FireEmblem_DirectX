@@ -942,6 +942,10 @@ void BattleLevel::UnitMove()
 		// 이동이 가능하다면 MoveWait State로 전환
 		ChangeState(BattleState::MoveWait);
 	}
+	else
+	{
+		GameEngineSound::Play("Dont.wav");
+	}
 }
 
 bool BattleLevel::IsMapOut(int2 _Pos)

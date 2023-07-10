@@ -29,6 +29,7 @@ void TextRenderer::Start()
 
 void TextRenderer::Update(float _DeltaTime)
 {
+	FadeUpdate(_DeltaTime);
 	if (false == IsTextAnim) { return; }
 
 	Timer -= _DeltaTime;
@@ -43,6 +44,34 @@ void TextRenderer::Update(float _DeltaTime)
 	Index++;
 	Timer = AnimTime;
 	SetText(AnimText.substr(0, Index), false);
+}
+
+void TextRenderer::FadeUpdate(float _DeltaTime)
+{
+
+	if (true == IsFadeIn)
+	{
+		FadeTimer += FadeSpeed * _DeltaTime;
+		if (1 < FadeTimer)
+		{
+			SetColorAlpha(1);
+			IsFadeIn = false;
+			return;
+		}
+		SetColorAlpha(FadeTimer);
+	}
+	else if (true == IsFadeOut)
+	{
+		FadeTimer -= FadeSpeed * _DeltaTime;
+		if (FadeTimer < 0)
+		{
+			SetColorAlpha(0);
+			IsFadeOut = false;
+			return;
+		}
+		SetColorAlpha(FadeTimer);
+	}
+
 }
 
 void TextRenderer::Off()
@@ -129,6 +158,22 @@ void TextRenderer::SetColorAlpha(float _Alpha)
 	{
 		OutlineRenders[i]->SetAlpha(_Alpha);
 	}
+}
+
+void TextRenderer::SetFadeIn(float _Timer)
+{
+	IsFadeIn = true;
+	FadeTimer = 0;
+	FadeSpeed = 1 / _Timer;
+	SetColorAlpha(FadeTimer);
+}
+
+void TextRenderer::SetFadeOut(float _Timer)
+{
+	IsFadeOut = true;
+	FadeTimer = 1;
+	FadeSpeed = 1 / _Timer;
+	SetColorAlpha(FadeTimer);
 }
 
 void TextRenderer::SetOutLine(float4 _FontColor)

@@ -9,6 +9,12 @@ PortraitAnimation::~PortraitAnimation()
 {
 }
 
+void PortraitAnimation::SetTexture(const std::string_view& _Texture)
+{
+	PortraitRender->SetTexture(_Texture);
+	LipRender->Off();
+}
+
 void PortraitAnimation::SetPortrait(UnitIdentityCode _Value)
 {
 	std::string LipSprite;
@@ -147,6 +153,16 @@ void PortraitAnimation::SetPortrait(UnitIdentityCode _Value)
 		LipSprite = "LipSync_Lundgren.png";
 		LipRender->GetTransform()->AddLocalPosition({ 64, 160 });
 		break;
+	case UnitIdentityCode::NPC1:
+		PortraitRender->SetTexture("Portrait_NPC1.png");
+		LipSprite = "LipSync_NPC1.png";
+		LipRender->GetTransform()->AddLocalPosition({ 64, 160 });
+		break;
+	case UnitIdentityCode::NPC2:
+		PortraitRender->SetTexture("Portrait_NPC2.png");
+		LipSprite = "LipSync_NPC2.png";
+		LipRender->GetTransform()->AddLocalPosition({ 64, 160 });
+		break;
 	default:
 		break;
 	}
@@ -173,6 +189,35 @@ void PortraitAnimation::SetLipAnimation(float _Time)
 	Timer = _Time;
 }
 
+void PortraitAnimation::SetFadeIn(float _Timer)
+{
+	FadeSpeed = 1 / _Timer;
+	FadeTimer = 0;
+	IsFadeIn = true;
+	PortraitRender->ColorOptionValue.MulColor.a = 0;
+	//PortraitRender->On();
+	//LipRender->Off();
+}
+
+void PortraitAnimation::SetFadeOut(float _Timer)
+{
+	FadeSpeed = 1 / _Timer;
+	FadeTimer = 1;
+	IsFadeOut = true;
+	PortraitRender->ColorOptionValue.MulColor.a = 1;
+	//PortraitRender->On();
+	//LipRender->Off();
+}
+
+void PortraitAnimation::SetLerpPos(const float4& _Pos, float _Time)
+{
+	LerpStartPos = GetTransform()->GetLocalPosition();
+	LerpEndPos = _Pos;
+	LerpSpeed = 1 / _Time;
+	LerpTimer = 0;
+	IsLerp = true;
+}
+
 void PortraitAnimation::Start()
 {
 	PortraitRender = GetActor()->CreateComponent<GameEngineUIRenderer>(RenderOrder::UI);
@@ -188,10 +233,51 @@ void PortraitAnimation::Start()
 
 void PortraitAnimation::Update(float _DeltaTime)
 {
+	LerpUpdate(_DeltaTime);
+	FadeUpdate(_DeltaTime);
+
 	if (Timer <= 0) { return; }
 	Timer -= _DeltaTime;
 	if (Timer <= 0) {
 		LipRender->Off();
 	}
 
+}
+
+void PortraitAnimation::LerpUpdate(float _DeltaTime)
+{
+	if (false == IsLerp) { return; }
+	LerpTimer += _DeltaTime * LerpSpeed;
+	GetTransform()->SetLocalPosition(float4::LerpClamp(LerpStartPos, LerpEndPos, LerpTimer));
+	if (1 < LerpTimer)
+	{
+		IsLerp = false;
+	}
+}
+
+void PortraitAnimation::FadeUpdate(float _DeltaTime)
+{
+	if (true == IsFadeIn)
+	{
+		FadeTimer += _DeltaTime * FadeSpeed;
+		if (FadeTimer > 1)
+		{
+			IsFadeIn = false;
+			PortraitRender->ColorOptionValue.MulColor.a = 1;
+			return;
+		}
+		PortraitRender->ColorOptionValue.MulColor.a = FadeTimer;
+	}
+
+	if (true == IsFadeOut)
+	{
+		FadeTimer -= _DeltaTime * FadeSpeed;
+		if (FadeTimer < 0)
+		{
+			IsFadeOut = false;
+			PortraitRender->ColorOptionValue.MulColor.a = 0;
+			return;
+		}
+		PortraitRender->ColorOptionValue.MulColor.a = FadeTimer;
+	}
 }
