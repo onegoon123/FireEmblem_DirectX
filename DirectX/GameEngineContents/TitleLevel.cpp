@@ -168,7 +168,7 @@ void TitleLevel::StateInit()
 	{
 		if (true == TestStage)
 		{
-			GameEngineCore::ChangeLevel("Stage10");
+			GameEngineCore::ChangeLevel("TestStage");
 			return;
 		}
 		if (true == Exit)

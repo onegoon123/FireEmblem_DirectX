@@ -63,10 +63,10 @@ void Stage5::ClearEventInit()
 		}, false, 1.0f);
 
 	ClearEvent->PushEvent([this] {
-		GameEngineCore::ChangeLevel("Stage6");
+		GameEngineCore::ChangeLevel("Stage7");
 		}, false, .6f);
 
 	ClearEvent->SkipFunction = [this] {
-		GameEngineCore::ChangeLevel("Stage6");
+		GameEngineCore::ChangeLevel("Stage7");
 	};
 }

@@ -30,7 +30,6 @@ void Stage0::StageSetting()
 	Unit_Lyn = NewPlayerUnit(UnitIdentityCode::Lyn, 1, {13, 2}, { ItemCode::IronSword, ItemCode::Vulnerary, ItemCode::Vulnerary, ItemCode::MasterSeal });
 	
 	// 산적
-	NewEnemyUnit(UnitIdentityCode::Brigand, 99, { 14, 1 }, { ItemCode::IronAxe });
 	NewEnemyUnit(UnitIdentityCode::Brigand, 1, { 2, 3 }, { ItemCode::IronAxe });
 	// 바타
 	NewEnemyUnit(UnitIdentityCode::Batta, 1, { 3, 7 }, { ItemCode::IronAxe})->SetDetectionRange(1);

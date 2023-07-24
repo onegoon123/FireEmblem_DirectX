@@ -26,6 +26,7 @@ void Stage8::StageSetting()
 	SetStage(8);
 	OpeningEventInit();
 	ClearEventInit();
+	ClearTargetText = "¸ñÇ¥:Àû Àü¸ê";
 
 	NewEnemyUnit(UnitIdentityCode::DarkMage, 1, { 13, 14 }, { ItemCode::Flux })->SetDetectionRange(5);
 	NewEnemyUnit(UnitIdentityCode::Mage, 1, { 13, 13 }, { ItemCode::Fire })->SetDetectionRange(5);
@@ -63,11 +64,11 @@ void Stage8::ClearEventInit()
 		}, false, 1.0f);
 
 	ClearEvent->PushEvent([this] {
-		GameEngineCore::ChangeLevel("Stage9");
+		GameEngineCore::ChangeLevel("Stage10");
 		}, false, .6f);
 
 	ClearEvent->SkipFunction = [this] {
-		GameEngineCore::ChangeLevel("Stage9");
+		GameEngineCore::ChangeLevel("Stage10");
 	};
 }
 
