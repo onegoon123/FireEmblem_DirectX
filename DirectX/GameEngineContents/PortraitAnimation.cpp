@@ -22,10 +22,14 @@ void PortraitAnimation::SetPortrait(UnitIdentityCode _Value)
 	switch (_Value)
 	{
 	case UnitIdentityCode::Lyn:
-	case UnitIdentityCode::BladeLordLyn:
 		PortraitRender->SetTexture("Portrait_Lyn.png");
 		LipRender->GetTransform()->AddLocalPosition({ 64, 128 });
 		LipSprite = "LipSync_Lyn.png";
+		break;
+	case UnitIdentityCode::BladeLordLyn:
+		PortraitRender->SetTexture("Portrait_LynFront.png");
+		LipRender->GetTransform()->AddLocalPosition({ 64, 128 });
+		LipSprite = "LipSync_LynFront.png";
 		break;
 	case UnitIdentityCode::Sain:
 	case UnitIdentityCode::SainSword:
