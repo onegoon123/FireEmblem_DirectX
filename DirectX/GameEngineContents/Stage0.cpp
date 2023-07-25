@@ -284,10 +284,27 @@ void Stage0::OpeningEventInit()
 
 void Stage0::ClearEventInit()
 {
+
+	ClearEvent->PushEvent([this] {
+		BgmPlayer.Stop();
+		BgmPlayer = GameEngineSound::Play("Win.mp3");
+		}, false, 0.5f);
+
 	ClearEvent->PushEvent([this] {
 		ClearEvent->Portrait2->SetPortrait(UnitIdentityCode::Lyn);
 		ClearEvent->Portrait2->On();
-	}, true);
+		ClearEvent->Portrait2->SetFadeIn(0.5f);
+	}, false, 1.0f);
+
+	ClearEvent->PushEvent([this] {
+		ClearEvent->Dialogue->SetSize({ 17, 5 });
+		ClearEvent->Dialogue->ArrowRender->On();
+		ClearEvent->Dialogue->SetFadeIn(.2f);
+		ClearEvent->Portrait2->SetLipAnimation(1.0f);
+		ClearEvent->Dialogue->Text->SetTextAnim(L"수고했어, 마크!\n그럼 집으로 돌아가자.");
+		ClearEvent->Dialogue->GetTransform()->SetLocalPosition({ -32, 164 });
+		}
+	, true, 0.5f);
 
 	ClearEvent->PushEvent([this] {
 		ClearEvent->Foreground->On();
