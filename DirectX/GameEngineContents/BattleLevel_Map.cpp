@@ -724,7 +724,7 @@ void BattleLevel::EnemyFindTarget()
 		if (AttackData.TargetUnit.GetIsDie() == true)
 		{
 			// 적을 사망시키면 우선도 상승
-			Priority += 2;
+			Priority += 5;
 		}
 		if (AttackData.SubjectUnit.GetIsDie() == false)
 		{

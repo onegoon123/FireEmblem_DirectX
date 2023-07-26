@@ -355,7 +355,7 @@ void Weapon::SetWeapon_ShortBow()
 {
 	WeaponTypeValue = WeaponType::Bow;
 	SetName("´Ü±Ã");
-	Damage = 5;
+	Damage = 8;
 	Hit = 85;
 	Critical = 0;
 	Weight = 3;
