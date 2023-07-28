@@ -72,7 +72,7 @@ void TitleLevel::Start()
 		TitleRenderer->GetTransform()->SetWorldScale({ 960, 640 });
 	}
 
-	
+
 
 	StateInit();
 
@@ -147,7 +147,7 @@ void TitleLevel::StateInit()
 	.End = [this]
 	{
 	}
-	});
+		});
 
 	FSM.CreateState({ .Name = "End",
 	.Start = [this]
@@ -157,6 +157,14 @@ void TitleLevel::StateInit()
 	},
 	.Update = [this](float _DeltaTime)
 	{
+		if (true == GameEngineInput::IsPress("Start"))
+		{
+			Exit = true;
+		}
+		if (true == GameEngineInput::IsPress("Cheet1"))
+		{
+			TestStage = true;
+		}
 		Timer += _DeltaTime * 2;
 		TitleRenderer->ColorOptionValue.MulColor = float4::One * (1.0f - Timer);
 		if (1 < Timer && true == IsTextureLoadEnd && true == IsSoundLoadEnd)
@@ -179,7 +187,7 @@ void TitleLevel::StateInit()
 		GameEngineCore::ChangeLevel("Stage0");
 
 	}
-	});
+		});
 
 	FSM.CreateState({ .Name = "LevelChange",
 	.Start = [this]
