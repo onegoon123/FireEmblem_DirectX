@@ -83,7 +83,6 @@ void FECore::GameEnd()
 	{
 		MsgTextBox("폰트삭제에 실패했습니다.");
 	}
-	SendMessage(HWND_BROADCAST, WM_FONTCHANGE, NULL, NULL);
 }
 
 void FECore::ResourcesCreate()
@@ -96,8 +95,6 @@ void FECore::ResourcesCreate()
 	{
 		MsgTextBox("폰트설치에 실패했습니다.");
 	}
-	SendMessage(HWND_BROADCAST, WM_FONTCHANGE, NULL, NULL);
-
 
 	NewDir.MoveParent();
 	NewDir.Move("Shader");
