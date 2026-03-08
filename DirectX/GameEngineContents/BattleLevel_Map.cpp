@@ -45,7 +45,9 @@ struct CalData
 void BattleLevel::MoveSearch()
 {
 
+	// BFS
 	std::queue<SearchData> Queue;
+	// SearchData : 위치, 남은 이동력 저장
 	SearchData StartData = { SelectUnit->GetMapPos(), SelectUnit->GetMoveStat() };
 	BattleClass ClassValue = SelectUnit->GetUnitData().GetClassValue();
 	Queue.push(StartData);
@@ -55,21 +57,26 @@ void BattleLevel::MoveSearch()
 		IsMove[i].assign(IsMove[i].size(), false);
 	}
 	IsMove[StartData.Pos.y][StartData.Pos.x] = true;
+
+	// Queue 반복
 	while (false == Queue.empty())
 	{
 		SearchData CurrentData = Queue.front();
 		Queue.pop();
 
+		// 4방향으로 이동 체크
 		for (int i = 0; i < 4; i++)
 		{
 			SearchData NextMove = CurrentData;
 			NextMove.Pos += int2(DirX[i], DirY[i]);
+			// 맵 밖인 경우
 			if (true == IsMapOut(NextMove.Pos))
 			{
 				continue;
 			}
 
 			bool Check = false;
+			// 해당 위치에 다른 유닛이 있는지 체크
 			for (std::shared_ptr<BattleUnit> _Unit : EnemyUnits)
 			{
 				if (true == _Unit->GetIsDie()) { continue; }
@@ -81,9 +88,11 @@ void BattleLevel::MoveSearch()
 			}
 			if (true == Check)
 			{
+				// 다른 유닛이 있으면 continue
 				continue;
 			}
 
+			// 클래스에 따라 이동력을 감소
 			if (ClassValue == BattleClass::PegasusKnight)
 			{
 				NextMove.MoveStat -= GetTerrainCostFly(NextMove.Pos);
@@ -92,16 +101,13 @@ void BattleLevel::MoveSearch()
 			{
 				NextMove.MoveStat -= GetTerrainCostFoot(NextMove.Pos);
 			}
+			// 이동력 부족으로 이동할 수 없는 경우 continue
+			if (NextMove.MoveStat < 0) { continue; }
 
-			if (NextMove.MoveStat < 0)
-			{
-				continue;
-			}
-
-
+			// 이 위치로 이동할 수 있음
 			IsMove[NextMove.Pos.y][NextMove.Pos.x] = true;
 
-			Queue.push(NextMove);
+			Queue.push(NextMove);	// Queue push
 		}
 	}
 

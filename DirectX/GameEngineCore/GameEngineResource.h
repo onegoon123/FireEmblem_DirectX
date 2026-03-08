@@ -4,12 +4,13 @@
 #include <map>
 #include <list>
 #include <memory>
+#include <mutex>
 #include <GameEngineCore/GameEngineNameObject.h>
 #include <GameEngineBase/GameEngineString.h>
 #include <GameEngineBase/GameEngineDebug.h>
 #include "GameEngineDevice.h"
 
-// ¼³¸í :
+// ï¿½ï¿½ï¿½ï¿½ :
 template<typename ResourcesType>
 class GameEngineResource : public GameEngineNameObject
 {
@@ -76,7 +77,7 @@ protected:
 			std::lock_guard<std::mutex> Lock(NameLock);
 			if (NamedResources.end() != NamedResources.find(UpperName))
 			{
-				MsgAssert("ÀÌ¹Ì Á¸ÀçÇÏ´Â ÀÌ¸§ÀÇ ¸®¼Ò½º¸¦ ¶Ç ¸¸µé·Á°í Çß½À´Ï´Ù.");
+				MsgAssert("ï¿½Ì¹ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½Ì¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ò½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß½ï¿½ï¿½Ï´ï¿½.");
 				NameLock.unlock();
 				return nullptr;
 			}
@@ -87,7 +88,7 @@ protected:
 
 		// std::pair<key, value>
 		// NamedResources.insert(std::make_pair(UpperName, NewRes));
-		// ¿©±â »çÀÌ¿¡ Á» ´À·ÁÁ®µµ ÀÌ
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¿ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
 
 		std::lock_guard<std::mutex> Lock(NameLock);
 		NamedResources.insert(std::map<std::string, std::shared_ptr<ResourcesType>>::value_type(UpperName, NewRes));
